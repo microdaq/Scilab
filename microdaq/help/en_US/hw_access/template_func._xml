@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="__FUNC_NAME__">
+	<refnamediv>
+		<refname>__FUNC_NAME__</refname>
+		<refpurpose>SHORT_FUNC_DESC</refpurpose>
+	</refnamediv>
+	
+	<refsynopsisdiv>
+		<title>Calling Sequence</title>
+		<synopsis>
+			out1 = __FUNC_NAME__(arg1);
+		</synopsis>
+	</refsynopsisdiv>
+	
+	<refsection id="Description___FUNC_NAME__">
+		<title>Description</title>
+		<para>
+			FULL_FUNC_DESC
+		</para>
+	</refsection>  
+  
+	<refsection id="Parameters___FUNC_NAME__">
+		<title>Parameters</title>
+		<itemizedlist>
+			<listitem><para><emphasis role="bold">out1: </emphasis> DESC </para></listitem>
+			<listitem><para><emphasis role="bold">arg1: </emphasis> DESC </para></listitem>
+		</itemizedlist>
+	</refsection>
+	
+	<refsection>
+        <title>Examples</title>
+        <programlisting role="example"><![CDATA[
+// __FUNC_NAME__ usage example
+//
+ ]]></programlisting>
+    </refsection>
+	
+  <refsection id="SeeAlso___FUNC_NAME__">
+		<title>See Also</title>
+		<simplelist type="inline">
+		<member>
+			<link type="scilab" linkend="scilab.help/sum">Link to the Scilab help page</link>
+		</member>
+		</simplelist>
+  </refsection>
+</refentry>

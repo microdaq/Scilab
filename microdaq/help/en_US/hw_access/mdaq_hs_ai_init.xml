@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaq_hs_ai_init">
+	<refnamediv>
+		<refname>mdaq_hs_ai_init</refname>
+		<refpurpose>Init MicroDAQ High Speed Analog Inputs (HS AI)</refpurpose>
+	</refnamediv>
+	
+	<refsynopsisdiv>
+		<title>Calling Sequence</title>
+		<synopsis>
+			mdaq_hs_ai_init();
+		</synopsis>
+	</refsynopsisdiv>
+	
+	<refsection id="Description_mdaq_hs_ai_init">
+		<title>Description</title>
+		<para>
+			Function initializes MicroDAQ high speed analog inputs (2 channels, 4msps). This function works only on selected E2xxx series MicroDAQ devices.
+		</para>
+	</refsection>  
+  
+	<refsection id="Parameters_mdaq_hs_ai_init">
+		<title>Parameters</title>
+		<itemizedlist>
+		</itemizedlist>
+	</refsection>
+	
+	<refsection>
+        <title>Examples</title>
+        <programlisting role="example"><![CDATA[
+// mdaq_hs_ai_init usage example
+link_id = mdaq_open();
+mdaq_hs_ai_init(); 
+// acquire 1000 samples, generate 100us trigger pulse on DIO9, add 0us delay before acqusition
+data = mdaq_hs_ai_read(link_id, 1000, 100, 0);
+mdaq_close(link_id);
+ ]]></programlisting>
+    </refsection>
+	
+  <refsection id="SeeAlso_mdaq_hs_ai_init">
+		<title>See Also</title>
+		<simplelist type="inline">
+			<member><link linkend="mdaq_hs_ai_read">mdaq_hs_ai_read</link></member>
+		</simplelist>
+  </refsection>
+</refentry>

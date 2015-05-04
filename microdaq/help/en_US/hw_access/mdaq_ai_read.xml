@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaq_ai_read">
+	<refnamediv>
+		<refname>mdaq_ai_read</refname>
+		<refpurpose>Reads MicroDAQ analog inputs (AI)</refpurpose>
+	</refnamediv>
+	
+	<refsynopsisdiv>
+		<title>Calling Sequence</title>
+		<synopsis>
+			data = mdaq_ai_read(link_id, channels, ai_range, bipolar);
+		</synopsis>
+	</refsynopsisdiv>
+	
+	<refsection id="Description_mdaq_ai_read">
+		<title>Description</title>
+		<para>
+			This function reads MicroDAQ AI inputs. User has to provide array with channels numbers to read. Analog inputs (AI) can accept 0-5V, 0-10V, ±5V, ±10V, voltage ranges are set depending on 'ai_range' and 'bipolar' parameters. In order to set ±5V or ±10V range 'bipolar' has to set to 1. 
+		</para>
+	</refsection>  
+  
+	<refsection id="Parameters_mdaq_ai_read">
+		<title>Parameters</title>
+		<itemizedlist>
+			<listitem><para><emphasis role="bold">link_id: </emphasis> Valid connection link ID</para></listitem>
+			<listitem><para><emphasis role="bold">channels: </emphasis> Single channel of array of channels number to read</para></listitem>
+			<listitem><para><emphasis role="bold">ai_range: </emphasis> Analog input range in volts (5 or 10)</para></listitem>
+			<listitem><para><emphasis role="bold">bipolar: </emphasis> Bipolar parameter, enter 1 to enable bipolar AI configuration, 0 to disable it</para></listitem>
+			<listitem><para><emphasis role="bold">data:  </emphasis> Single value or array with AI voltage values</para></listitem>
+		</itemizedlist>
+	</refsection>
+	
+	<refsection>
+        <title>Examples</title>
+        <programlisting role="example"><![CDATA[
+// mdaq_ai_read usage example
+link_id = mdaq_open();
+// read AI channels with range +/-10V
+ai_data = mdaq_ai_read(link_id, [1 2 3 4 5 6 7 8], 10, 1)
+mdaq_close(link_id);
+ ]]></programlisting>
+    </refsection>
+	
+  <refsection id="SeeAlso_mdaq_ai_read">
+		<title>See Also</title>
+		<simplelist type="inline">
+			<member><link linkend="mdaq_ao_write">mdaq_ao_write</link></member>
+		</simplelist>
+  </refsection>
+</refentry>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" 
+xml:id="mdaq_close">
+	<refnamediv>
+		<refname>mdaq_close</refname>
+		<refpurpose>Close connection with MicroDAQ</refpurpose>
+	</refnamediv>
+	
+	<refsynopsisdiv>
+		<title>Calling Sequence</title>
+		<synopsis>
+			mdaq_close(link_id);
+		</synopsis>
+	</refsynopsisdiv>
+	
+	<refsection id="Description_mdaq_close">
+		<title>Description</title>
+		<para>
+			This function closes connection with MicroDAQ. Connection needs to be open with mdaq_open function.
+		</para>
+	</refsection>  
+  
+	<refsection id="Parameters_mdaq_close">
+		<title>Parameters</title>
+		<itemizedlist>
+			<listitem><para><emphasis role="bold">link_id: </emphasis> Valid connection link ID</para></listitem>
+		</itemizedlist>
+	</refsection>
+	
+	<refsection>
+        <title>Examples</title>
+        <programlisting role="example"><![CDATA[
+// mdaq_close usage example
+link_id = mdaq_open(); 
+mdaq_led_write(link_id, 1, 1);
+sleep (1000); 
+mdaq_led_write(link_id, 1, 0);
+mdaq_close(link_id);
+ ]]></programlisting>
+    </refsection>
+	
+  <refsection id="SeeAlso_mdaq_close">
+		<title>See Also</title>
+		<simplelist type="inline">
+			<member><link linkend="mdaq_open">mdaq_open</link></member>
+			<member><link linkend="mdaq_set_ip">mdaq_set_ip</link></member>
+		</simplelist>
+  </refsection>
+</refentry>

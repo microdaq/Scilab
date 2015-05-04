@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="introduction">
+  <refnamediv>
+    <refname>Introduction</refname>
+    <refpurpose>Introduction to MicroDAQ toolbox.</refpurpose>
+  </refnamediv>
+  <refsection id="Parameters_introduction">
+	<para> MicroDAQ toolbox conbines Scilab/XCos environment with Embedded Solutions MicroDAQ real-time control measurement system equpted with TI C6000 DSP. Module extends Scilab by allowing user to automatically generate DSP applications directly from XCos scheme. User can use custom XCos blocks which gives access to MicroDAQ hardware (ADC, DAC, DIO, PWM, UART, Quadrature Encoder). Generated DSP application utilizes SYS/BIOS real-time opearting system combined with code generated from XCos scheme. </para>
+        <para> Depending on configuration, DSP application can be generated as a standalone or Ext application (similar like External Mode in Matlab/Simulink). In standalone mode generated application contains only real-time task, while in Ext mode code contains real-time task and low priority task which exchanges data with Scilab via TCP/IP protocol. Starting and stoping DSP application is integrated with standard Xcos Start/Stop buttons, module allows using standard sinks blocks to view live data from application running on DSP processor. Module allows to plot DSP execution profiles and generate DSP applications in „release” and „debug” mode. 
+Generated DSP application can be used with Scilab script. Module provides macros for loading DSP application, reading data from running application on MicroDAQ device and terminating DSP execution. Attached example shows how to use generated DSP application to compute FFT from data acquired from ADC input. 
+MicroDAQ module simplifies development of real-time control measurements applications, together with MicroDAQ hardware platform gives „out of the box” exeperience and can be an alternative to expensive commercial systems.</para>
+  </refsection>
+  <refsection id="SeeAlso_introduction">
+    <title>See Also</title>
+    <simplelist type="inline">
+      <member><link linkend="mdaq_set_ip">mdaq_set_ip</link> : corresponding <link type="scilab" linkend="scilab.help/xcos">Xcos</link> block.
+      </member>
+      <member>
+        <link type="scilab" linkend="scilab.help/sum">Link to the Scilab help page</link>
+      </member>
+    </simplelist>
+  </refsection>
+</refentry>

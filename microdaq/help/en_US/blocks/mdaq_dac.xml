@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<refentry xmlns="http://docbook.org/ns/docbook" 
+xmlns:xlink="http://www.w3.org/1999/xlink" 
+xmlns:svg="http://www.w3.org/2000/svg" 
+xmlns:ns5="http://www.w3.org/1999/xhtml" 
+xmlns:mml="http://www.w3.org/1998/Math/MathML" 
+xmlns:db="http://docbook.org/ns/docbook" 
+version="5.0-subset Scilab" 
+xml:id="mdaq_dac">
+    <refnamediv>
+        <refname>mdaq_dac</refname>
+        <refpurpose>
+		
+		Sets MicroDAQ analog outputs (AO)
+		
+		</refpurpose>
+    </refnamediv>
+    <refsection>
+        <title>Block Screenshot</title>
+        <para>
+            <inlinemediaobject>
+                <imageobject>
+                    <imagedata align="center" fileref="../../../images/gif/mdaq_dac.gif" valign="middle"/>
+                </imageobject>
+            </inlinemediaobject>
+        </para>
+    </refsection>
+    <refsection id="Description_mdaq_dac">
+        <title>Description</title>
+        <para>
+		
+		This block sets MicroDAQ analog outputs. Block supports different types of MicroDAQ analog outputs, select analog output type by providing 'Converter' parameter accordingly to MicroDAQ hardware configuration.
+		In order to set more then one AI channel user can pass array of channels in block 'Channels' parameter. 'End value' parameter allows to set AO state after simulation end. User can pass one value which will 
+		be applied to all channels or can pass an array with end values for used channels.
+		
+		</para>
+		<para>This block can be used in host simulation mode and for code generation.</para>
+    </refsection>
+	
+	<refsection id="InputOutput_mdaq_dac">
+        <title>Block Input/Output ports</title>
+		<para>
+			<simplelist type="inline">
+				<member><para>input(1) - AO voltage value (scalar or vector)</para></member>
+			</simplelist>
+		</para>
+	</refsection>
+    <refsection id="SeeAlso_mdaq_dac">
+        <title>See Also</title>
+        <simplelist type="inline">
+            <member> <link linkend="mdaq_ao_write">mdaq_ao_write</link> : Sets MicroDAQ analog outputs (AO) from Scilab script</member>
+			<member> <link linkend="mdaq_adc">mdaq_adc</link> : Reads MicroDAQ analog inputs </member>
+            <member><link type="scilab" linkend="scilab.help/sum">Link to the Scilab help page</link></member>
+        </simplelist>
+    </refsection>
+</refentry>

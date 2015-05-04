@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaq_ao_write">
+	<refnamediv>
+		<refname>mdaq_ao_write</refname>
+		<refpurpose>Sets MicroDAQ analog outputs (AO)</refpurpose>
+	</refnamediv>
+	
+	<refsynopsisdiv>
+		<title>Calling Sequence</title>
+		<synopsis>
+			mdaq_ao_write(link_id, channels, data);
+		</synopsis>
+	</refsynopsisdiv>
+	
+	<refsection id="Description_mdaq_ao_write">
+		<title>Description</title>
+		<para>
+			This function sets MicroDAQ AO outputs. User has to provide array with channels numbers which wants to set and accordingly data to set. 
+		</para>
+	</refsection>  
+  
+	<refsection id="Parameters_mdaq_ao_write">
+		<title>Parameters</title>
+		<itemizedlist>
+			<listitem><para><emphasis role="bold">link_id: </emphasis> Valid connection link ID</para></listitem>
+			<listitem><para><emphasis role="bold">channels: </emphasis> Single channel or array of channels numbers to read</para></listitem>
+			<listitem><para><emphasis role="bold">data :</emphasis> Array or single voltage Analog Output (AO) value</para></listitem>
+		</itemizedlist>
+	</refsection>
+	
+	<refsection>
+        <title>Examples</title>
+        <programlisting role="example"><![CDATA[
+// mdaq_ao_write usage example
+link_id = mdaq_open();
+// write 2, 4, 6 , 8 AI channel with 1, 2, 3, 4 voltage value
+mdaq_ao_write(link_id, [2, 4, 6, 8], [1, 2, 3, 4]);
+mdaq_disconnect(link_id);
+ ]]></programlisting>
+    </refsection>
+	
+  <refsection id="SeeAlso_mdaq_ao_write">
+		<title>See Also</title>
+		<simplelist type="inline">
+		<member>
+			<link linkend="mdaq_ai_read">mdaq_ai_read</link> 
+		</member>
+		</simplelist>
+  </refsection>
+</refentry>

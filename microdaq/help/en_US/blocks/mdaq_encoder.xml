@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<refentry xmlns="http://docbook.org/ns/docbook" 
+xmlns:xlink="http://www.w3.org/1999/xlink" 
+xmlns:svg="http://www.w3.org/2000/svg" 
+xmlns:ns5="http://www.w3.org/1999/xhtml" 
+xmlns:mml="http://www.w3.org/1998/Math/MathML" 
+xmlns:db="http://docbook.org/ns/docbook" 
+version="5.0-subset Scilab" 
+xml:id="mdaq_encoder">
+    <refnamediv>
+        <refname>mdaq_encoder</refname>
+        <refpurpose>
+		
+		Reads MicroDAQ quadrature encoder
+		
+		</refpurpose>
+    </refnamediv>
+    <refsection>
+        <title>Block Screenshot</title>
+        <para>
+            <inlinemediaobject>
+                <imageobject>
+                    <imagedata align="center" fileref="../../../images/gif/mdaq_encoder.gif" valign="middle"/>
+                </imageobject>
+            </inlinemediaobject>
+        </para>
+    </refsection>
+    <refsection id="Description_mdaq_encoder">
+        <title>Description</title>
+        <para>
+		
+		This block reads MicroDAQ quadrature encoder. 'Init position' parameter allows to set initial value of quadrature encoder position register.
+		
+		</para>
+		<para>This block can be used in host simulation mode and for code generation.</para>
+    </refsection>
+	
+	<refsection id="InputOutput_mdaq_encoder">
+        <title>Block Input/Output ports</title>
+		<para>
+		
+		<member><para>input(1) - reset input - value different then 0 resets quadrature encode position register.(scalar)</para></member>
+		<member><para>output(1) - quadrature encoder position(scalar)</para></member>
+		<member><para>output(2) - direction - 0 - no motion, 1 - CW, 2 - CCW (scalar)</para></member>
+		
+		</para>
+    
+	</refsection>
+    <refsection id="SeeAlso_mdaq_encoder">
+        <title>See Also</title>
+        <simplelist type="inline">
+            <member> <link linkend="mdaq_enc_read">mdaq_enc_read</link> : Reads MicroDAQ quadrature encoder from Scilab script</member>
+			<member> <link linkend="mdaq_enc_init">mdaq_enc_init</link> : Inits MicroDAQ quadrature encoder from Scilab script</member>
+            <member><link type="scilab" linkend="scilab.help/sum">Link to the Scilab help page</link></member>
+        </simplelist>
+    </refsection>
+</refentry>

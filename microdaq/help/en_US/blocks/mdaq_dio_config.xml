@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<refentry xmlns="http://docbook.org/ns/docbook" 
+xmlns:xlink="http://www.w3.org/1999/xlink" 
+xmlns:svg="http://www.w3.org/2000/svg" 
+xmlns:ns5="http://www.w3.org/1999/xhtml" 
+xmlns:mml="http://www.w3.org/1998/Math/MathML" 
+xmlns:db="http://docbook.org/ns/docbook" 
+version="5.0-subset Scilab" 
+xml:id="mdaq_dio_config">
+    <refnamediv>
+        <refname>mdaq_dio_config</refname>
+        <refpurpose>
+		
+		Configures MicroDAQ DIO functions and direction
+		
+		</refpurpose>
+    </refnamediv>
+    <refsection>
+        <title>Block Screenshot</title>
+        <para>
+            <inlinemediaobject>
+                <imageobject>
+                    <imagedata align="center" fileref="../../../images/gif/mdaq_dio_config.gif" valign="middle"/>
+                </imageobject>
+            </inlinemediaobject>
+        </para>
+    </refsection>
+    <refsection id="Description_mdaq_dio_config">
+        <title>Description</title>
+        <para>
+		
+		This block configures MicroDAQ DIO alternative functions and DIO direction. 
+		
+		</para>
+		<para>This block can be used in host simulation mode and for code generation.</para>
+    </refsection>
+	
+
+    <refsection id="SeeAlso_mdaq_dio_config">
+        <title>See Also</title>
+        <simplelist type="inline">
+            <member> <link linkend="mdaq_dio_set">mdaq_dio_set</link> : Sets MicroDAQ DIO output state</member>
+			<member> <link linkend="mdaq_dio_get">mdaq_dio_get</link> : Reads MicroDAQ DIO input state</member>
+            <member> <link linkend="mdaq_dio_write">mdaq_dio_write</link> : Sets MicroDAQ DIO output state from Scilab script</member>
+			<member> <link linkend="mdaq_dio_read">mdaq_dio_read</link> : Reads MicroDAQ DIO input state from Scilab script</member>
+			<member> <link linkend="mdaq_dio_func">mdaq_dio_func</link> : Sets alternative DIO function from Scilab script</member>
+			<member> <link linkend="mdaq_dio_dir">mdaq_dio_dir</link> : Sets MicroDAQ DIO bank direction from Scilab script</member>
+            <member><link type="scilab" linkend="scilab.help/sum">Link to the Scilab help page</link></member>
+        </simplelist>
+    </refsection>
+</refentry>

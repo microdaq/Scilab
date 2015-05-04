@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<refentry xmlns="http://docbook.org/ns/docbook" 
+xmlns:xlink="http://www.w3.org/1999/xlink" 
+xmlns:svg="http://www.w3.org/2000/svg" 
+xmlns:ns5="http://www.w3.org/1999/xhtml" 
+xmlns:mml="http://www.w3.org/1998/Math/MathML" 
+xmlns:db="http://docbook.org/ns/docbook" 
+version="5.0-subset Scilab" 
+xml:id="mdaq_pru_reg_set">
+    <refnamediv>
+        <refname>mdaq_pru_reg_set</refname>
+        <refpurpose>
+		
+		Block short descritpion
+		
+		</refpurpose>
+    </refnamediv>
+    <refsection>
+        <title>Block Screenshot</title>
+        <para>
+            <inlinemediaobject>
+                <imageobject>
+                    <imagedata align="center" fileref="../../../images/gif/mdaq_pru_reg_set.gif" valign="middle"/>
+                </imageobject>
+            </inlinemediaobject>
+        </para>
+    </refsection>
+    <refsection id="Description_mdaq_pru_reg_set">
+        <title>Description</title>
+        <para>
+		
+		Block detailed descritpion
+		
+		</para>
+    </refsection>
+	
+	<refsection id="InputOutput_mdaq_pru_reg_set">
+        <title>Block Input/Output ports</title>
+		<para>
+		
+		Block IO ports descritpion
+		
+		</para>
+    
+	</refsection>
+    <refsection id="SeeAlso_mdaq_pru_reg_set">
+        <title>See Also</title>
+        <simplelist type="inline">
+            <member>
+                <link linkend="__COR_BLOCK__">__COR_BLOCK__</link> : corresponding MicroDAQ functionnality
+            </member>
+            <member>
+                <link type="scilab" linkend="scilab.help/sum">Link to the Scilab help page</link>
+            </member>
+        </simplelist>
+    </refsection>
+</refentry>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" 
+xml:id="mdaq_set_ip">
+	<refnamediv>
+		<refname>mdaq_set_ip</refname>
+		<refpurpose>Sets IP address</refpurpose>
+	</refnamediv>
+	
+	<refsynopsisdiv>
+		<title>Calling Sequence</title>
+		<synopsis>
+			mdaq_set_ip(ip_address);
+		</synopsis>
+	</refsynopsisdiv>
+	
+	<refsection id="Description_mdaq_set_ip">
+		<title>Description</title>
+		<para>
+			This function allows to change Scilab/XCos IP settings which are used to connect to MicroDAQ device.
+			This function doesn't change MicroDAQ IP address. In order to change to change MicroDAQ IP address connect device with USB cable, on MicroDAQ user disk locate network.txt file in 'config' directory and modify IP settings.
+		</para>
+	</refsection>  
+  
+	<refsection id="Parameters_mdaq_set_ip">
+		<title>Parameters</title>
+		<itemizedlist>
+			<listitem><para><emphasis role="bold">ip_address: </emphasis> MicroDAQ IP address</para></listitem>
+		</itemizedlist>
+	</refsection>
+	
+	<refsection>
+        <title>Examples</title>
+        <programlisting role="example"><![CDATA[
+// mdaq_set_ip usage example
+mdaq_set_ip("192.168.1.122");
+mdaq_ping();  
+ ]]></programlisting>
+    </refsection>
+	
+  <refsection id="SeeAlso_mdaq_set_ip">
+		<title>See Also</title>
+		<simplelist type="inline">
+			<member><link linkend="mdaq_ping">mdaq_set_ip</link></member>
+		</simplelist>
+  </refsection>
+</refentry>

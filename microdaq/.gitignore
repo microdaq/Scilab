@@ -1,0 +1,50 @@
+#
+# Generated files (common)
+#
+cleaner.sce
+unloader.sce
+*.bin
+macros/lib
+macros/names
+macros/microdaq_blocks/lib
+macros/microdaq_blocks/names
+macros/microdaq_macros/lib
+macros/microdaq_macros/names
+macros/user_blocks/
+etc/sysbios/src/
+etc/sysbios/configPkg/
+src/c/mdaq_ccs/mdaq/Debug/
+src/c/mdaq_ccs/mdaq/Release/
+images/h5/*.h5
+images/h5/*.sod
+help/*/master_help.xml
+help/*/scilab_*_help
+tests/unit_test/code/
+src/c/liblapack/Debug/
+src/c/liblapack/Release/
+src/c/libsciscicos_blocks/Debug/
+src/c/libsciscicos_blocks/Release/
+src/c/userlib/Debug/
+src/c/userlib/Release/
+src/c/userlib/*.c
+release/
+
+#
+# Generated files (Linux/MacOs)
+#
+*.dylib
+*_scig
+*.o
+
+
+#
+# Generated files (Windows)
+#
+*.def
+*.sln
+*.vcxproj
+*.vcxproj.filters
+*.vfproj
+
+# Test directory
+test/*

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<refentry xmlns="http://docbook.org/ns/docbook" 
+xmlns:xlink="http://www.w3.org/1999/xlink" 
+xmlns:svg="http://www.w3.org/2000/svg" 
+xmlns:ns5="http://www.w3.org/1999/xhtml" 
+xmlns:mml="http://www.w3.org/1998/Math/MathML" 
+xmlns:db="http://docbook.org/ns/docbook" 
+version="5.0-subset Scilab" 
+xml:id="mdaq_adc">
+    <refnamediv>
+        <refname>mdaq_adc</refname>
+        <refpurpose>
+		
+		Reads MicroDAQ analog inputs (AI)
+		
+		</refpurpose>
+    </refnamediv>
+    <refsection>
+        <title>Block Screenshot</title>
+        <para>
+            <inlinemediaobject>
+                <imageobject>
+                    <imagedata align="center" fileref="../../../images/gif/mdaq_adc.gif" valign="middle"/>
+                </imageobject>
+            </inlinemediaobject>
+        </para>
+    </refsection>
+    <refsection id="Description_mdaq_adc">
+        <title>Description</title>
+        <para>
+
+		This block reads MicroDAQ analog inputs. Block supports different types of MicroDAQ analog inputs, select analog input type by providing 'Converter' parameter accordingly to MicroDAQ hardware configuration.
+		In order to read more then one AI channel provide array of channels to read in block 'Channels' parameter. Depending on 'Range' and 'Polarity' analog input range can be selected.
+		</para>
+		<para>This block can be used in host simulation mode and for code generation.</para>
+		
+		<para> Analog inputs input range settings: </para>
+		<simplelist type="inline">
+            <member><para>0-5V - range: 5, polarity: 1</para></member>
+			<member><para>0-10V - range: 10, polarity: 1</para></member>
+			<member><para>-/+5V - range: 5, polarity: 2</para></member>
+			<member><para>-/+10V - range: 10, polarity: 2</para></member>
+        </simplelist>
+    </refsection>
+	
+	<refsection id="InputOutput_mdaq_adc">
+        <title>Block Input/Output ports</title>
+		<para>
+			<simplelist type="inline">
+				<member><para>output(1) - raw ADC value (int16)</para></member>
+				<member><para>output(2) - ADC value in volts</para></member>
+			</simplelist>
+		</para>
+	</refsection>
+    <refsection id="SeeAlso_mdaq_adc">
+        <title>See Also</title>
+        <simplelist type="inline">
+            <member> <link linkend="mdaq_ai_read">mdaq_ain_read</link> : Reads MicroDAQ analog inputs (AI) from Scilab script</member>
+			<member> <link linkend="mdaq_dac">mdaq_dac</link> : Sets MicroDAQ analog outputs</member>
+            <member><link type="scilab" linkend="scilab.help/sum">Link to the Scilab help page</link></member>
+        </simplelist>
+    </refsection>
+</refentry>
