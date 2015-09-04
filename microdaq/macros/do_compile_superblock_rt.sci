@@ -9,6 +9,7 @@
 //
 //** 10 Set 2007 : cleaner startup code by Simone Mannori
 //** 15 Aug 2009 : Hierarchical block names by Henrik Slotholt
+//** 04 Set 2015 : Added support for E4Coder SMCube blocks, by Paolo Gai
 
 
 //==========================================================================
@@ -474,6 +475,114 @@ endfunction
 
 //==========================================================================
 
+// SMCube blocks handling
+
+function s=SMCube_getdir()
+    // this function tries to guess the location of SMCube.
+	// Unfortunately there is no way for the microdaq plugin to find the real location of the E4Coder plugin.
+	s = "";
+	possible_versions = [ "1.5"; "1.6"; "1.7"; "1.8"; "1.9"; "2.0"; "2.1"; "2.2"; "2.3"; "2.4"; "2.5"; ];
+	l = length(possible_versions)(1);
+	for i=1:l
+	    temp = SCI + "/contrib/e4coder/" + possible_versions(i) + "/private/E4coder-cg/bin/SMCube.exe";
+		[x_x_x,smcexe_err] = fileinfo(temp);
+		if smcexe_err == 0
+			s = temp;
+			//disp("SMCube found at " + s);
+			return;
+		end
+	end
+endfunction
+
+function s=SMCube_mk_files(SMCube_filelist)
+	s = ""
+    if SMCube_filelist ~= ""
+		s = SMCube_filelist + "smcube_block.c";
+	end
+endfunction
+
+function SMCube_add_vorbidden()
+	[x_x_x,smcexe_err] = fileinfo(SMCube_getdir());
+	if smcexe_err ~= 0
+		vorbidden_items = [vorbidden_items;
+			"SMCube", "SMCube toolbox is not installed on your machine. SMCube block is"]
+
+			disp(vorbidden);
+	end
+endfunction
+
+function SMCube_filelist = SMCube_generate()
+	disp('### Handling SMCube blocks...');
+
+	xml_list = [];
+	smb_id = [];
+	smc_err = 0;
+
+	// initialized empty, so if there is no e4Coder then the makefile substitution still works.
+	SMCube_filelist = "";
+
+	[x_x_x,smcexe_err] = fileinfo(SMCube_getdir());
+	if smcexe_err == 0
+		[cpr.sim.ipar, xml_list, smb_id, smc_err] = EE_search_SmcubeBlocks(XX, cpr.sim.ipar, xml_list, smb_id);
+	end
+
+	if smc_err ~= 0 then
+
+		my_errstr = "### Sorry, Code generation is terminated due to errors in SMCube blocks!";
+		disp(my_errstr);
+		message(my_errstr);
+		return;
+	end
+
+	if smb_id ~= [] then
+
+		[xml_fd,err] = mopen(rpat+'/xml.list', 'w');
+		[xml_list_res,err] = fileinfo(rpat+'/xml.list');
+		if err ~= 0 then
+			my_errstr = "### CodeGen error: File xml.list cannot be created! SMCube code generation aborted!";
+			disp(my_errstr);
+			message(my_errstr);
+			return
+			end
+
+		[smb_fd,err] = mopen(rpat+'/smb.list', 'w');
+		[smb_list_res,err] = fileinfo(rpat+'/smb.list');
+		if err ~= 0 then
+			my_errstr = "### CodeGen error: File smb.list cannot be created! SMCube code generation aborted!";
+			disp(my_errstr);
+			message(my_errstr);
+			mclose(xml_fd);
+			unix('del ' + strsubst(rpat,'/','\') + '\xml.list');
+			return
+		end
+
+		i_end = size(xml_list);
+		for i=1:i_end(1)
+			// Write in this vector the number and the name of this XML file.
+			mfprintf(xml_fd,"%d %s\n", i, xml_list(i));
+			SMCube_filelist = SMCube_filelist + "smcube_" + msprintf("%d",i) + ".c ";
+		end
+
+		for i=1:length(smb_id)
+			// Write in this vector the smcube block id and the number of the corresponding XML file.
+			mfprintf(smb_fd,"%d %d\n", i, smb_id(i));
+		end
+
+		mclose(xml_fd); // Close the XML file
+		mclose(smb_fd); // Close the SMB file
+
+		//disp("### SMCube is parsing the diagram to generate the FSM source files used for the compilation.");
+		cmd = SMCube_getdir() + ' -microdaq -descr ' + rpat + '/xml.list ' + rpat + '/smb.list ' + '-path ' + rpat + ' -output smcube_block';
+		unix(cmd);
+		//disp (cmd);
+		//disp("### ...Done!")
+
+	end
+
+endfunction
+
+//==========================================================================
+
 // Modified for RT purposes by Roberto Bucher - RTAI Team
 // roberto.bucher@supsi.ch
 
@@ -551,6 +660,8 @@ function  [ok,XX,alreadyran,flgcdgen,szclkINTemp,freof] = do_compile_superblock_
     "READC_f","Read_block";
     "WFILE_f","Write block";
     "WRITEC_f","Write block"]
+
+    SMCube_add_vorbidden();
 
     clkIN = [];
 
@@ -975,7 +1086,10 @@ function  [ok,XX,alreadyran,flgcdgen,szclkINTemp,freof] = do_compile_superblock_
     //***********************************
     // Scilab and C files generation
 
+    //***********************************
 
+    // handle SMCube blocks
+    SMCube_filelist=SMCube_generate();
 
     //***********************************
 
@@ -988,7 +1102,7 @@ function  [ok,XX,alreadyran,flgcdgen,szclkINTemp,freof] = do_compile_superblock_
     files=write_code(Code,CCode,FCode,Code_common);
 
     disp('### Generating Makefile...');
-    Makename=rt_gen_make(rdnom,files,archname,standalone,debug_build);
+    Makename=rt_gen_make(rdnom,files,archname,standalone,debug_build,SMCube_filelist);
 
     rt_gen_main(Tsamp, Sim_duration, profiling, standalone)
 
@@ -2709,7 +2823,7 @@ endfunction
 
 // Modified for RT purposes by Roberto Bucher - RTAI Team
 // roberto.bucher@supsi.ch
-function Makename=rt_gen_make(name,files,libs,standalone,debug_build)
+function Makename=rt_gen_make(name,files,libs,standalone,debug_build,SMCube_filelist)
 
     Makename=rpat+'/Makefile';
 
@@ -2741,6 +2855,7 @@ function Makename=rt_gen_make(name,files,libs,standalone,debug_build)
     T=strsubst(T,'$$MDAQLIB$$',MDAQLIB);
     T=strsubst(T,'$$USERLIB$$',USERLIB);
     T=strsubst(T,'$$SCILABLIB$$',SCILABLIB);
+    T=strsubst(T,'$$SMCUBE_FILES$$',SMCube_mk_files(SMCube_filelist));
     
     if( debug_build == %T)
         T=strsubst(T,'$$BUILD_MODE%%','-g');

@@ -9,7 +9,7 @@ MODEL                   = $$MODEL$$
 MDAQLIB			= $$MDAQLIB$$
 USERLIB			= $$USERLIB$$
 SCILABLIB		= $$SCILABLIB$$
-MODULES                 = $$MICRODAQ_MAIN$$ common.c $$MODEL$$.c $$FILES$$
+MODULES                 = $$MICRODAQ_MAIN$$ common.c $$MODEL$$.c $$FILES$$ $$SMCUBE_FILES$$
 MAKEFILE                = Makefile
 NUMST                   = 1
 NCSTATES                = 0
@@ -42,6 +42,10 @@ LDFLAGS += -l$(USERLIB)\lib\userlib.lib
 LDFLAGS += -l$(SCILABLIB)\lib\libsciscicos_blocks.lib
 LDFLAGS += -l$(SCILABLIB)\lib\liblapack.lib
 LDFLAGS := $(subst \,/,$(LDFLAGS))
+
+#--------------------- SMCube external files ------------------------------
+# this is present only if a SMCube block uses external files
+-include smcube-ext-files\smcube-ext-files.mk
 
 #-------------------------------- Target application --------------------------------------
 # Define the target file
