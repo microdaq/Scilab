@@ -3,5 +3,5 @@
 
 // This file is released under the 3-clause BSD license. See COPYING-BSD.
 
-demopath = get_absolute_file_path("pi_controller.dem.sce");
-xcos(demopath+filesep()+".."+filesep()+"examples"+filesep()+"pi_controller.zcos")
+demopath = get_absolute_file_path("dc_motor_demo.dem.sce");
+xcos(demopath+filesep()+".."+filesep()+"examples"+filesep()+"dc_motor_demo.zcos")
