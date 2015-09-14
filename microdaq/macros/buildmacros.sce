@@ -5,12 +5,17 @@ function buildmacros()
     tbx_build_macros(TOOLBOX_NAME, script_path);
     tbx_build_macros(TOOLBOX_NAME, script_path + filesep() + "microdaq_blocks");
     tbx_build_macros(TOOLBOX_NAME, script_path + filesep() + "microdaq_macros");
+
+    // check user_blocks beafore build
+    if isdir(script_path + filesep() + "user_blocks") == %F then
+        mkdir(script_path + filesep() + "user_blocks");
+    end
+
     tbx_build_macros(TOOLBOX_NAME, script_path + filesep() + "user_blocks");
 
     // Build MicroDAQ blocks 
     microdaq_blocks = mgetl( script_path + filesep() + "microdaq_blocks" + filesep() + "names");
     microdaq_blocks = microdaq_blocks';
-
 
     blocks = [];
     for i=1:size(microdaq_blocks, "*")
@@ -20,7 +25,6 @@ function buildmacros()
     end
 
     tbx_build_blocks(module_path, blocks, "macros" + filesep() + "microdaq_blocks");
-
 
     // Build MicroDAQ User blocks 
     if isfile(script_path + filesep() + "user_blocks" + filesep() + "names")  == %T then
