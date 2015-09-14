@@ -27,6 +27,11 @@ function mdaq_block_add(block_def)
         block_def.out = block_def.out';
     end
 
+    if length(block_def.name) > 20 then
+        disp("ERROR: Block name too long!");
+        return;
+    end
+
     path = dirname(get_function_path('mdaq_block_add')) + filesep();
     module_path = part(path,1:length(path)-length("macros") - 1 );
     SCRIPT_FILE_ROOT = path + 'user_blocks' + filesep();
@@ -39,11 +44,11 @@ function mdaq_block_add(block_def)
     params_def_val_size = max(size(block_def.param_def_val));
     in_size = max(size(block_def.in));
     out_size = max(size(block_def.out));
-    
+
     if block_def.in(1) < 1 then
         in_size = 0;
     end
-  
+
     if block_def.out(1) < 1 then
         out_size = 0;
     end
@@ -130,14 +135,14 @@ function mdaq_block_add(block_def)
 
     in_string = '';
     out_string = '';
-   
+
     if  in_size > 0 then 
         for i = 1:(in_size-1)
             in_string = in_string + string(block_def.in(i)) + ';';
         end
         in_string = in_string + string(block_def.in(in_size));
     end
-    
+
     if  out_size > 0 then 
         for i = 1:(out_size-1)
             out_string = out_string + string(block_def.out(i)) + ';';
@@ -145,12 +150,12 @@ function mdaq_block_add(block_def)
         out_string = out_string + string(block_def.out(out_size));
     end 
 
-    
+
     block_v_size = 3;
     if max([out_size in_size]) > 2 then
         block_v_size = block_v_size + (max([out_size in_size]) - 2); 
     end
-    
+
     block_h_size = 4;
     if length(block_def.name) > 8 then
         block_h_size = block_h_size + ((length(block_def.name) - 8) * 0.2);
@@ -169,42 +174,42 @@ function mdaq_block_add(block_def)
     '   select job';
     '   case ''set'' then';
     '       x=arg1;';];
-   if params_size > 0 then
-         block_script = [block_script; 
-    '       model=arg1.model;';
-    '       graphics=arg1.graphics;';
-    '       exprs=graphics.exprs;';
-    '';
-    '       while %t do';
-    '           try';
-    '               getversion(''scilab'');';
-    '               [ok,'+params_string1+'exprs]=..'
-    '               scicos_getvalue( block_desc,..';
-    '               ['+params_string2+'],..';
-    '               list('+params_string3+'), exprs)';
-    '           catch';
-    '               [ok,'+params_string1+'exprs]=..'
-    '               getvalue(block_desc,..';
-    '               ['+params_string2+'],..';
-    '               list('+params_string3+'), exprs);';
-    '           end;';
-    '';
-    '       if ~ok then';
-    '              break';
-    '       end';
-    '';
-    '       if ok then';
-    '           [model,graphics,ok] = check_io(model,graphics, ['+in_string+'], ['+out_string+'], 1, []);';
-    '           graphics.exprs = exprs;';
-    '           model.rpar = ['+params_string5+'];';
-    '           model.ipar = [];';
-    '           model.dstate = [];';
-    '           x.graphics = graphics;';
-    '           x.model = model;';
-    '           break';
-    '       end';
-    '';
-    '   end'];
+    if params_size > 0 then
+        block_script = [block_script; 
+        '       model=arg1.model;';
+        '       graphics=arg1.graphics;';
+        '       exprs=graphics.exprs;';
+        '';
+        '       while %t do';
+        '           try';
+        '               getversion(''scilab'');';
+        '               [ok,'+params_string1+'exprs]=..'
+        '               scicos_getvalue( block_desc,..';
+        '               ['+params_string2+'],..';
+        '               list('+params_string3+'), exprs)';
+        '           catch';
+        '               [ok,'+params_string1+'exprs]=..'
+        '               getvalue(block_desc,..';
+        '               ['+params_string2+'],..';
+        '               list('+params_string3+'), exprs);';
+        '           end;';
+        '';
+        '       if ~ok then';
+        '              break';
+        '       end';
+        '';
+        '       if ok then';
+        '           [model,graphics,ok] = check_io(model,graphics, ['+in_string+'], ['+out_string+'], 1, []);';
+        '           graphics.exprs = exprs;';
+        '           model.rpar = ['+params_string5+'];';
+        '           model.ipar = [];';
+        '           model.dstate = [];';
+        '           x.graphics = graphics;';
+        '           x.model = model;';
+        '           break';
+        '       end';
+        '';
+        '   end'];
     end
     block_script = [block_script; '   case ''define'' then';
     params_string6;
@@ -264,26 +269,26 @@ function mdaq_block_add(block_def)
     // =============================GENERATE C FILE =====================================
     l = 1;
     n_lines = 3;
-    
+
     if in_size > 0 then
-     in_ports_string(1) = '    /* Block input ports */';
-     for i = 2:n_lines:(in_size*n_lines+1)
+        in_ports_string(1) = '    /* Block input ports */';
+        for i = 2:n_lines:(in_size*n_lines+1)
             in_ports_string(i) = '    double *u'+string(l)+' = GetRealInPortPtrs(block,'+string(l)+');';
             in_ports_string(i+1) = '    int u' +string(l)+ '_size = GetInPortRows(block,'+ string(l)+');'+...
-                                   '    /* u' + string(l)+ '_size = '+string(block_def.in(l))+' */';
+            '    /* u' + string(l)+ '_size = '+string(block_def.in(l))+' */';
             in_ports_string(i+2) = '';
             l = l + 1;
         end
     end
 
     l = 1;
-    
+
     if out_size > 0 then
         out_ports_string(1) = '    /* Block output ports */';
         for i = 2:n_lines:(out_size*n_lines+1)
             out_ports_string(i) = '    double *y'+string(l)+' = GetRealOutPortPtrs(block,'+string(l)+');';
             out_ports_string(i+1) = '    int y'+string(l)+'_size = GetOutPortRows(block,'+string(l)+');'+....
-                                    '    /* y' + string(l)+ '_size = '+string(block_def.out(l))+' */';
+            '    /* y' + string(l)+ '_size = '+string(block_def.out(l))+' */';
             out_ports_string(i+2) = '';
             l = l + 1;
         end
@@ -304,9 +309,9 @@ function mdaq_block_add(block_def)
         index = index + block_def.param_size(l);
         l = l + 1;
     end
-    
-    
-    
+
+
+
 
     block_c_file = [
     '/* Generated with MicroDAQ toolbox ver: ' + mdaq_get_version() + ' */';
