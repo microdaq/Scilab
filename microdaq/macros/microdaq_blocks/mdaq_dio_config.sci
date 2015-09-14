@@ -8,8 +8,8 @@ function [x,y,typ] = mdaq_dio_config(job,arg1,arg2)
     '1 - enable DIO alternative function';
     '';
     'DIO bank direction setting:';
-    '0 - configure DIO bank as an INPUT';
-    '1 - configure DIO bank as an OUTPUT';
+    '0 - configure DIO bank as an OUTPUT';
+    '1 - configure DIO bank as an INPUT';
     '';
     "Set block parameters:"];
 
@@ -45,14 +45,14 @@ function [x,y,typ] = mdaq_dio_config(job,arg1,arg2)
                 break
             end
 
-            if bank_1_direction <> 0 then
+            if bank_1_direction == 0 then
                 if uart | enc1 | enc2 then
                     ok = %f; 
                     message("Bank 1 configured as an OUTPUT - unable set selected DIO alternative functions!")
                 end
             end
 
-            if bank_2_direction == 0 then
+            if bank_2_direction <> 0 then
                 if uart | pwm1 | pwm2 | pwm3 then
                     ok = %f; 
                     message("Bank 2 configured as an INPUT - unable set selected DIO alternative functions!")
@@ -78,10 +78,10 @@ function [x,y,typ] = mdaq_dio_config(job,arg1,arg2)
         pwm2 = [1];
         pwm3 = [1];
         uart = [1];
-        bank_1_direction = [0];
-        bank_2_direction = [1];
-        bank_3_direction = [1];
-        bank_4_direction = [0];
+        bank_1_direction = [1];
+        bank_2_direction = [0];
+        bank_3_direction = [0];
+        bank_4_direction = [1];
         model=scicos_model();
         model.sim=list('mdaq_dio_config_sim',5);
         model.in=[];
