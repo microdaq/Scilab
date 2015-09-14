@@ -1,4 +1,4 @@
-﻿//** INRIA / SCILAB / Roberto Bucher / Simone Mannori / Paolo Gai
+//** INRIA / SCILAB / Roberto Bucher / Simone Mannori / Paolo Gai
 //** 16 Jan 2008
 //**
 // Modified by Roberto Bucher roberto.bucher@supsi.ch from the original
@@ -501,14 +501,13 @@ function s=SMCube_mk_files(SMCube_filelist)
 	end
 endfunction
 
-function SMCube_add_vorbidden()
+function result = SMCube_add_vorbidden(vorbidden_items)
 	[x_x_x,smcexe_err] = fileinfo(SMCube_getdir());
 	if smcexe_err ~= 0
 		vorbidden_items = [vorbidden_items;
-			"SMCube", "SMCube toolbox is not installed on your machine. SMCube block is"]
-
-			disp(vorbidden);
+			"SMCube", "E4Coder toolbox is not installed on your machine. SMCube block is"]
 	end
+	result = vorbidden_items;
 endfunction
 
 function SMCube_filelist = SMCube_generate()
@@ -661,7 +660,7 @@ function  [ok,XX,alreadyran,flgcdgen,szclkINTemp,freof] = do_compile_superblock_
     "WFILE_f","Write block";
     "WRITEC_f","Write block"]
 
-    SMCube_add_vorbidden();
+	vorbidden_items = SMCube_add_vorbidden(vorbidden_items);
 
     clkIN = [];
 
