@@ -1,2 +1,3 @@
 microdaq/etc/mlink/ip_config.txt
 microdaq/rt_templates/target_paths.mk
+microdaq/etc/mlink/hwid

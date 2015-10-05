@@ -68,6 +68,8 @@ function MLink()
                                "sci_mlink_pwm_set"..
                                "sci_mlink_pru_reg_get"..
                                "sci_mlink_pru_reg_set"..
+                               "sci_mlink_hwid"..
+                               "sci_mlink_version"..
                                ], 'c');
 endfunction
 

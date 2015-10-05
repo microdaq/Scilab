@@ -32,21 +32,6 @@ function [microdaqlib, microdaqBlocks, microdaqMacros, microdaqUserBlocks] = sta
         return;
     end
 
-    // create global microdaq settings struct
-    global %microdaq; 
-    %microdaq = struct("model", ["E1100"],..
-                       "hw_id", ["ADC1-DAC1-11"],..
-                       "ip_address", [],..
-                       "dsp_loaded", %F,..
-                       "private", struct(..
-                           "mlink_link_id", -1000,..
-                           "connection_id", -1,..
-                           "has_mdaq_block", %F,..
-                           "mem_write_idx", 0,..
-                           "mem_read_idx", 0,..
-                           "mdaq_signal_id", 0)..
-                       );
-
     // Load functions library
     // =============================================================================
     mprintf("\tLoad macros\n");
@@ -63,6 +48,30 @@ function [microdaqlib, microdaqBlocks, microdaqMacros, microdaqUserBlocks] = sta
     else
         microdaqUserBlocks = [];
     end
+
+    // create global microdaq settings struct
+    global %microdaq; 
+    %microdaq = struct("model", ["Unknown"],..
+                       "ip_address", [],..
+                       "dsp_loaded", %F,..
+                       "private", struct(..
+                           "mlink_link_id", -1000,..
+                           "connection_id", -1,..
+                           "has_mdaq_block", %F,..
+                           "mem_write_idx", 0,..
+                           "mem_read_idx", 0,..
+                           "mdaq_signal_id", 0,..
+                           "mdaq_hwid", [])..
+                       );
+                       if isfile(mdaq_toolbox_path() + "etc"+filesep()+"mlink"+filesep()+"hwid") then
+                           load(mdaq_toolbox_path() + "etc"+filesep()+"mlink"+filesep()+"hwid");
+                           %microdaq.private.mdaq_hwid = mdaq_hwid; 
+                           %microdaq.model = 'MicroDAQ E' + string(mdaq_hwid(1))..
+                            + '-ADC0' + string(mdaq_hwid(2)).. 
+                            + '-DAC0' + string(mdaq_hwid(3))..
+                            + '-' + string(mdaq_hwid(4)) + string(mdaq_hwid(5));
+                           clear mdaq_hwid; 
+                       end
 
     // Add MicroDAQ toolbox options to XCos menu
     xcosAddToolsMenu("MicroDAQ web panel", "mdaq_open_webpanel()");

@@ -26,6 +26,7 @@
 /* Utility functions */ 
 EXTERNC MDAQ_API char *mlink_error( int err );
 EXTERNC MDAQ_API char *mlink_version( int *link_fd );
+EXTERNC MDAQ_API int mlink_hwid( int *link_fd, int *hwid );
 
 EXTERNC MDAQ_API int mlink_connect( const char *addr, uint16_t port, int *link );
 EXTERNC MDAQ_API int mlink_disconnect( int link );
@@ -105,6 +106,8 @@ EXTERNC MDAQ_API void sci_mlink_dio_set( int *link_fd, int *pin, int *value, int
 EXTERNC MDAQ_API void sci_mlink_dio_set_dir( int *link_fd, int *pin, int *dir, int *init_value, int *result );
 EXTERNC MDAQ_API void sci_mlink_dio_set_func( int *link_fd, int *function, int *enable, int *result );
 EXTERNC MDAQ_API void sci_mlink_mem_set2( int *link_fd, int *start_idx, float data[], int *len, int *result );
+EXTERNC MDAQ_API void sci_mlink_hwid( int *link_fd, int *hwid, int *result ); 
+EXTERNC MDAQ_API void sci_mlink_version(int *link_fd, int *version, int *result);
 
 EXTERNC MDAQ_API int mlink_pru_mem_set( int *link_fd, uint8_t pru_num, uint32_t addr, uint8_t data[], uint32_t len );
 EXTERNC MDAQ_API int mlink_pru_mem_get( int *link_fd, uint8_t pru_num, uint32_t addr, char data[], uint32_t len );
