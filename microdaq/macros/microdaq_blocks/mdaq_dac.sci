@@ -62,7 +62,12 @@
                 ok = %f;
                 message("Wrong DAC converter selected!");
             end
-
+            
+            global %microdaq; 
+            if converter <> %microdaq.private.mdaq_hwid(3) then 
+                message("Selected DAC converter is different than detected - run mdaq_hwinfo() for more details!");
+            end
+            
             n_channels = size(channel);
             if n_channels(2) > 8 then
                 ok = %f;

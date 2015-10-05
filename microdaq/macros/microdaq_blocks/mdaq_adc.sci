@@ -63,6 +63,11 @@ function [x,y,typ] = mdaq_adc(job,arg1,arg2)
                 message("Wrong ADC converter selected!");
             end
 
+            global %microdaq; 
+            if adc_converter <> %microdaq.private.mdaq_hwid(2) then 
+                message("Selected ADC converter is different than detected - run mdaq_hwinfo() for more details!");
+            end
+
 
             n_channels = size(adc_channels);
             if (adc_converter < 4 & n_channels(2) > 8) | (adc_converter > 3 & n_channels(2) > 16) then
