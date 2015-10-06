@@ -10,7 +10,7 @@ endif
 
 PRODUCT = userlib.lib
 
-USER_INCLUDES = -Iscilab
+USER_INCLUDES = -Iscilab -I../../../etc/mdaqlib/
 
 INCLUDES = -I. -DMODEL=userlib
 

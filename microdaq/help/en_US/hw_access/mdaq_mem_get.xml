@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaq_mem_get">
+	<refnamediv>
+		<refname>mdaq_mem_get</refname>
+		<refpurpose>Reads MEM Write block data</refpurpose>
+	</refnamediv>
+	
+	<refsynopsisdiv>
+		<title>Calling Sequence</title>
+		<synopsis>
+			[data,result] = mdaq_mem_get(start_index, data_size, vector_size)
+		</synopsis>
+	</refsynopsisdiv>
+	
+	<refsection id="Description___FUNC_NAME__">
+		<title>Description</title>
+		<para>
+			This function download data written by 'MEM Write' block. It gives possibility to download data from Standalone application generated from XCos diagram.
+			In order to download data function parameters start_index and vector size needs to be the same as defined in 'MEM Write' block in XCos diagram.
+		</para>
+	</refsection>  
+  
+	<refsection id="Parameters___FUNC_NAME__">
+		<title>Parameters</title>
+		<itemizedlist>
+			<listitem><para><emphasis role="bold">data: </emphasis> Data written by MEM Write block </para></listitem>
+			<listitem><para><emphasis role="bold">result: </emphasis> Read result </para></listitem>
+			<listitem><para><emphasis role="bold">start_index: </emphasis> Memory start index </para></listitem>
+			<listitem><para><emphasis role="bold">data_size: </emphasis> Data size to be downloaded </para></listitem>
+			<listitem><para><emphasis role="bold">vector_size: </emphasis> Data vector size </para></listitem>
+		</itemizedlist>
+	</refsection>
+	
+	<refsection>
+        <title>Examples</title>
+        <programlisting role="example"><![CDATA[
+// mdaq_mem_get usage example
+//
+ ]]></programlisting>
+    </refsection>
+	
+  <refsection id="SeeAlso___FUNC_NAME__">
+		<title>See Also</title>
+		<simplelist type="inline">
+		<member><link linkend="mdaq_mem_set">mdaq_mem_set</link> : Writes MicroDAQ memory</member>
+		<member>
+			<link type="scilab" linkend="scilab.help/sum">Link to the Scilab help page</link>
+		</member>
+		</simplelist>
+  </refsection>
+</refentry>

@@ -10,14 +10,75 @@
 Generated DSP application can be used with Scilab script. Module provides macros for loading DSP application, reading data from running application on MicroDAQ device and terminating DSP execution. Attached example shows how to use generated DSP application to compute FFT from data acquired from ADC input. 
 MicroDAQ module simplifies development of real-time control measurements applications, together with MicroDAQ hardware platform gives „out of the box” exeperience and can be an alternative to expensive commercial systems.</para>
   </refsection>
+
   <refsection id="SeeAlso_introduction">
-    <title>See Also</title>
-    <simplelist type="inline">
-      <member><link linkend="mdaq_set_ip">mdaq_set_ip</link> : corresponding <link type="scilab" linkend="scilab.help/xcos">Xcos</link> block.
-      </member>
-      <member>
-        <link type="scilab" linkend="scilab.help/sum">Link to the Scilab help page</link>
-      </member>
-    </simplelist>
+    <title>Automatic code generation</title>
+	<para>MicroDAQ toolbox for Scilab features automatic code generation from Xcos diagram. Generated code is compiled for Texas Instruments C6000 floating/fixed point DSP core which is the main MicroDAQ processing unit. Toolbox generates periodic applications with user defined sample rate. Generated code utilizes TI-RTOS (SYS/BIOS) real-time operating system which ensures strict timing for generated applications. 
+	The toolbox uses different components to build, load and communicate with DSP application running on MicroDAQ device. The C6000 DSP compiler as a part of Texas Instruments Code Composer Studio 4/5 is used to compile generated C code. Compiler is executed after Xcos diagram code generation, user can select optimization level with SETUP block and compile model for debug and as a release application. 
+Real-time operating system TI-RTOS is used to ensure hard real-time constrains, it provides preemptive multitasking, hardware abstraction, and memory management. Generated code runs under TI-RTOS control, depending on the configuration generated code be compiled as Standalone or Ext mode applications. Communication between DSP application and Scilab host is done with TCP/IP protocol and it allows live DSP data access with standard XCos sinks. 
+	</para>
   </refsection>
+  
+  <refsection id="SeeAlso_introduction">
+    <title>MicroDAQ blocks</title>
+	<para>
+	MicroDAQ toolbox can generate application from Xcos model as a standalone and Ext mode. These modes will be used in different ways and on a different model development stages. 
+	When Standalone mode is selected generated application will contain single TI-RTOS task (clock function) which is executed on the DSP with selected sample rate. Generated model is executed periodicly and there is no communication with Xcos like in Ext mode. MicroDAQ palette provides blocks which can be used to access Standalone application parameters. In order to change Standalone parameters during its execution 'MEM read' block and mdaq_mem_set() function can be used. In case when user wants to download data from Standalone application 'MEM Write' and mdaq_mem_get() function can be a solution. The Standalone application generated from XCos diagram can be uploaded on MicroDAQ and will create independent control-measurement system. 
+	</para>
+  </refsection>
+  
+  <refsection id="SeeAlso_introduction">
+    <title>Standalone mode</title>
+	<para>
+	MicroDAQ toolbox can generate application from Xcos model as a standalone and Ext mode. These modes will be use in different ways and on a different model development stages. 
+When Standalone mode is selected (with SETUP block) generated application contains single TI-RTOS task (clock function) which is executed depending on a selected sample rate. Generated model is executed periodical and there is no communication with Xcos like in Ext mode. However user can generate Standalone application which uses MEM blocks from MicroDAQ block palette and have access to Standalone application parameters.  Generated application will executed endlessly on MicroDAQ, only STOP block from MicroDAQ palette can terminate Standalone execution. Generated Standalone application can be uploaded on MicroDAQ and will be started after every MicroDAQ power up.  
+	</para>
+  </refsection>
+  
+    <refsection id="SeeAlso_introduction">
+    <title>Ext mode</title>
+	<para>
+	During control or measurement application development often user wants to have live application data access to verify if model works as expected or it needs to be modified. MicroDAQ toolbox for Scilab provides integrated way which allows access to live DSP data without external tools. User can use standard XCos sinks (e.g Scope, To workspace) block to view data for real-time application running on MicroDAQ DSP. When user selects Ext mode generated application will be constructed from two tasks. Same as in Standalone mode Ext mode application have real-time task which executes code generated from model and additional low priority task which is taking care of TCP/IP communication with Xcos. Model code runs as a high priority real-time task, idle task on the other hand has the lowest profity and it is executed only when model real-time execution is done. Dedicated MicroDAQ drivers delegates TCP/IP handling from DSP to ARM core which increase processing capabielities and improve real-time processing.</para>
+  </refsection>
+  
+  
+  <refsection id="SeeAlso_introduction">
+    <title>MicroDAQ hardware access functions</title>
+	<para>
+	Not every application requires real-time processing, some applications can be created with Scilab script and perform data acquisition or corntrol tasks. For users which preferes scripting MicroDAQ tooblox for Scilab provides functions which allow easy access to MicroDAQ hardware and resources. User can use functions to access analog input and outputs, read/write digital IO lines, configure PWM of read Quadrature encder from Scilab script. Toolbox also features functions which allows DSP execution managment, generated DSP application can be started and managed from Scilab script. The DSP application data can be read during its execution. For more information about DSP managment functions and real-time processing capabilities see Real-time processing with Scilab script article. </para>
+<programlisting role="example"><![CDATA[
+// mdaq_led_write usage example 
+link_id = mdaq_open(); 
+while mdaq_key_read(link_id, 1) == 0 
+  // keep led on until F1 isn't pressed 
+  mdaq_led_write(link_id, 1, 1) 
+  sleep(100); 
+end 
+mdaq_led_write(link_id, 1, 0) 
+mdaq_close(link_id)
+ ]]></programlisting>
+
+  </refsection>
+  
+        <refsection id="SeeAlso_introduction">
+    <title>Execution profiling</title>
+	<para>
+	MicroDAQ toolbox for Scilab provides tools for target execution profiling. This tool gives clear answer about model execution times which in real-time application is very crucial. By knowing model time budget user can decide to optimize some time consuming parts of the Xcos model by repleacing it with custom block which executes optimized C code. Execution profiling tools can give an answer what is the maximum model sample rate. See ADC performance measurement with execution profiling article to find out more about this feature.</para>
+  </refsection>
+  
+	<refsection id="SeeAlso_introduction">
+		<title>C/C++ code integration tools</title>
+			<para>
+			MicroDAQ toolbox for Scilab allows easy integration of custom C/C++ code making Xcos model development more flexible. User can automaticaly generate Xcos blocks which executes custom C/C++ code. Moreover block code can be debugged with Code Composer Studio like during normal DSP application development. User can optimize some parts of Xcos model by repleacing Xcos standard block with custom block which contains optimized C code for faster execution. Especially C/C++ programmers will benefit from code integration tools which gives easy way to write custom Xcos block which sometimes is easer then making it with standard Xcos blocks. Together with 'Execution profiling' feature which allows precisly determine model execution times code integration tools can be used creating high performance real-time controll and measurement applications. Read Custom C/C++ code integration article to find out more about C/C++ code integration tools.
+		</para>
+	</refsection>
+  
+  
+  	<refsection id="SeeAlso_introduction">
+		<title>Utilizing XCos generated application with LabVIEW</title>
+			<para>It is possible to integrate XCos generated DSP application with external tools and applications. LabVIEW users can benefit from this feature by creating advanced applications where XCos generated DSP application is processing real-time tasks and user has access to its parameters with LabVIEW front panel. To find out more about this feature read C/C++ code utilization with MicroDAQ VIs.
+		</para>
+	</refsection>
+	
+	
 </refentry>

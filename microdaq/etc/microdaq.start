@@ -25,7 +25,7 @@ function [microdaqlib, microdaqBlocks, microdaqMacros, microdaqUserBlocks] = sta
 
     mclose(fd);
 
-    mprintf("Start MicroDAQ toolbox ver: %s\n", mgetl(root_tlbx + filesep() + "VERSION"));
+    mprintf("Start MicroDAQ toolbox ver: %s\n", mgetl(root_tlbx + filesep() + "VERSION", 1));
 
     if isdef("microdaqlib") then
         warning("MicroDAQ toolbox is already loaded!");
@@ -96,6 +96,23 @@ function [microdaqlib, microdaqBlocks, microdaqMacros, microdaqUserBlocks] = sta
     // Add blocks to the Xcos palette
     // =============================================================================
     mprintf("\tLoad MicroDAQ blocks\n");
+    
+    // if TMPDIR contains gif or svg files remove them
+    img_files = ls(TMPDIR); 
+    img_files_index = grep(img_files, ".gif");
+    if img_files_index <> [] then
+        for i = 1:size(img_files_index, '*')
+            deletefile(TMPDIR + filesep() + img_files(img_files_index(i)));
+        end
+    end
+
+    img_files_index = grep(img_files, ".svg");
+    if img_files_index <> [] then
+        for i = 1:size(img_files_index, '*')
+            deletefile(TMPDIR + filesep() + img_files(img_files_index(i)));
+        end
+    end
+
     pal = xcosPal("MicroDAQ");
 
     // Build MicroDAQ blocks
@@ -160,6 +177,11 @@ function [microdaqlib, microdaqBlocks, microdaqMacros, microdaqUserBlocks] = sta
     end
     
     %microdaq.ip_address = mdaq_get_ip();
+
+    if check_mdaq_compiler() == %F then
+        disp("WARNING: C6000 DSP compiler not found - run microdaq_setup to configure MicroDAQ toolbox!");
+
+    end
 
 endfunction
 

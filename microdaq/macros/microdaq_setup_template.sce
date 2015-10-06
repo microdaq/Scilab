@@ -94,7 +94,9 @@ function [] = setup_callback ()
     //Lock setup button
     set(h(22),'Enable','off');
     set(h(22),'String','Building...');
-    
+
+    dir_temp = pwd(); 
+
     //build system
     TARGET_ROOT = dirname(get_function_path('microdaq_setup'))+"\..\etc";
     FILE_ROOT = dirname(get_function_path('microdaq_setup'))+"\..\rt_templates\target_paths.mk"
@@ -150,10 +152,13 @@ function [] = setup_callback ()
             messagebox('Completed.','Building sys','info');
             //consol success message
             disp('');
+
+            cd(dir_temp);
             close_callback();
         end;
 
     else
+        cd(dir_temp);
         messagebox('Building failed.','Building sys','error');
         set(h(22),'callback','close_callback','String','Close','Enable','on');
     end;
