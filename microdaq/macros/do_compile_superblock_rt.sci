@@ -10,6 +10,7 @@
 //** 10 Set 2007 : cleaner startup code by Simone Mannori
 //** 15 Aug 2009 : Hierarchical block names by Henrik Slotholt
 //** 04 Set 2015 : Added support for E4Coder SMCube blocks, by Paolo Gai
+//** 06 Oct 2015 : Automatic detection of the E4Coder plugin location
 
 
 //==========================================================================
@@ -478,19 +479,20 @@ endfunction
 // SMCube blocks handling
 
 function s=SMCube_getdir()
-    // this function tries to guess the location of SMCube.
-	// Unfortunately there is no way for the microdaq plugin to find the real location of the E4Coder plugin.
-	s = "";
-	possible_versions = [ "1.5"; "1.6"; "1.7"; "1.8"; "1.9"; "2.0"; "2.1"; "2.2"; "2.3"; "2.4"; "2.5"; ];
-	l = length(possible_versions)(1);
-	for i=1:l
-	    temp = SCI + "/contrib/e4coder/" + possible_versions(i) + "/private/E4coder-cg/bin/SMCube.exe";
-		[x_x_x,smcexe_err] = fileinfo(temp);
-		if smcexe_err == 0
-			s = temp;
-			//disp("SMCube found at " + s);
-			return;
-		end
+	// this function tries to guess the location of SMCube.
+	s = '';
+	try
+		[n,p]=libraryinfo("e4coder_lib");
+	catch
+		return;
+	end
+
+	temp = p + "..\..\bin\SMCube.exe";
+	[x_x_x,smcexe_err] = fileinfo(temp);
+	if smcexe_err == 0
+		s = temp;
+		//disp("SMCube found at " + s);
+		return;
 	end
 endfunction
 
