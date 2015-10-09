@@ -64,7 +64,7 @@
             end
             
             global %microdaq; 
-            if converter <> %microdaq.private.mdaq_hwid(3) then 
+            if converter <> %microdaq.private.mdaq_hwid(3) & %microdaq.private.mdaq_hwid(3) > 0 then 
                 message("Selected DAC converter is different than detected - run mdaq_hwinfo() for more details!");
             end
             

@@ -64,7 +64,7 @@ function [x,y,typ] = mdaq_adc(job,arg1,arg2)
             end
 
             global %microdaq; 
-            if adc_converter <> %microdaq.private.mdaq_hwid(2) then 
+            if adc_converter <> %microdaq.private.mdaq_hwid(2) & %microdaq.private.mdaq_hwid(3) > 0 then 
                 message("Selected ADC converter is different than detected - run mdaq_hwinfo() for more details!");
             end
 
