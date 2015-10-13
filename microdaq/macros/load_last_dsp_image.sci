@@ -10,7 +10,7 @@ function load_last_dsp_image()
             end
 
             disp('### Loading model to MicroDAQ...');
-            res = mdaq_dsp_load(connection_id, dsp_app_path, '');
+            res = mlink_dsp_load(connection_id, dsp_app_path, '');
             if res < 0 then
                 // try again to load application
                 mdaq_close(connection_id);
@@ -19,7 +19,7 @@ function load_last_dsp_image()
                     message('ERROR: Unable to locate MicroDAQ device - check your setup!');
                     return;
                 end
-                res = mdaq_dsp_load(connection_id, dsp_app_path, '');
+                res = mlink_dsp_load(connection_id, dsp_app_path, '');
                 if res < 0 then
                     message('Unable to load DSP firmware!');
                     mdaq_close(connection_id);
@@ -29,7 +29,7 @@ function load_last_dsp_image()
             end
 
             disp('### Starting model on MicroDAQ...');
-            res = mdaq_dsp_start(connection_id);
+            res = mlink_dsp_start(connection_id);
             if res < 0 then
                 message("Unable to start DSP application!");
                 mdaq_close(connection_id);

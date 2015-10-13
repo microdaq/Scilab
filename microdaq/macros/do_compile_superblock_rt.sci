@@ -1127,7 +1127,7 @@ function  [ok,XX,alreadyran,flgcdgen,szclkINTemp,freof] = do_compile_superblock_
         end
 
         disp('### Loading ' + dsp_binary + ' to MicroDAQ...');
-        res = mdaq_dsp_load(connection_id, rpat + filesep() + dsp_binary, '');
+        res = mlink_dsp_load(connection_id, rpat + filesep() + dsp_binary, '');
         if res < 0 then
             message('Unable to load model! (' + mdaq_error(res) + ')');
             mdaq_close(connection_id);
@@ -1138,8 +1138,8 @@ function  [ok,XX,alreadyran,flgcdgen,szclkINTemp,freof] = do_compile_superblock_
             disp('### Starting model in Standalone mode...');
         end
 
-        res = mdaq_dsp_start(connection_id);
-        if res < 0 theni
+        res = mlink_dsp_start(connection_id);
+        if res < 0 then
             message("Unable to start DSP application!");
             mdaq_close(connection_id);
             return;

@@ -1,4 +1,4 @@
-function result = mdaq_dsp_stop(connection_id)
+function result = mlink_dsp_stop(connection_id)
     result = call("sci_mlink_dsp_stop",..
                 connection_id, 1, "i",..
             "out",..

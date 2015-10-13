@@ -14,7 +14,7 @@ function result = dsp_upload( dsp_firmware )
             return;
         end
 
-        res = mdaq_dsp_load(connection_id, dsp_firmware, '');
+        res = mlink_dsp_load(connection_id, dsp_firmware, '');
         if res < 0 then
             // try again to load application
             mdaq_close(connection_id);
@@ -24,7 +24,7 @@ function result = dsp_upload( dsp_firmware )
                 result = -1;
                 return;
             end
-            res = mdaq_dsp_load(connection_id, dsp_firmware, '');
+            res = mlink_dsp_load(connection_id, dsp_firmware, '');
             if res < 0 then
                 disp('ERROR: Unable to load DSP firmware - reboot MicroDAQ device!');
                 result = -1;
@@ -45,7 +45,7 @@ function result = dsp_upload( dsp_firmware )
         end
     end
 
-    res = mdaq_dsp_upload(connection_id);
+    res = mlink_dsp_upload(connection_id);
     if res < 0 then
         mdaq_close(connection_id);
         result = -1;

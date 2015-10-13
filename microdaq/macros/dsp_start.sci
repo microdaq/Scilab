@@ -12,7 +12,7 @@ function result = dsp_start( dsp_firmware )
         return;
     end
 
-    res = mdaq_dsp_load(connection_id, dsp_firmware, '');
+    res = mlink_dsp_load(connection_id, dsp_firmware, '');
     if res < 0 then
         // try again to load application
         mdaq_close(connection_id);
@@ -21,7 +21,7 @@ function result = dsp_start( dsp_firmware )
             disp('ERROR: Unable to connect to MicroDAQ device - check your setup!');
             return;
         end
-        res = mdaq_dsp_load(connection_id, dsp_firmware, '');
+        res = mlink_dsp_load(connection_id, dsp_firmware, '');
         if res < 0 then
             disp('ERROR: Unable to load DSP firmware - reboot MicroDAQ device!');
             mdaq_close(connection_id);
@@ -29,7 +29,7 @@ function result = dsp_start( dsp_firmware )
         end
     end
 
-    res = mdaq_dsp_start(connection_id);
+    res = mlink_dsp_start(connection_id);
     if res < 0 then
         disp("ERROR: Unable to start DSP application!");
         mdaq_close(connection_id);
