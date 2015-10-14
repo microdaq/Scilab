@@ -7,12 +7,12 @@ function link_id = mdaq_open()
         disp("ERROR: Unable to get IP address - run microdaq_setup!");
         return; 
     end
-    link_id = mdaq_connect(ip_address, 4343);
+    link_id = mlink_connect(ip_address, 4343);
 
-    if link_id == -1 then
+    if link_id < 0 then
         ulink(%microdaq.private.mlink_link_id);
         exec(mdaq_toolbox_path()+filesep()+"etc"+filesep()+..
                 "mlink"+filesep()+"MLink.sce", -1);
-        link_id = mdaq_connect(ip_address, 4343);
+        link_id = mlink_connect(ip_address, 4343);
     end
 endfunction

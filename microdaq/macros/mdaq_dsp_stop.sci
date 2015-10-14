@@ -5,13 +5,7 @@ function result = dsp_stop()
         client_disconnect(1);
         %microdaq.dsp_loaded = %F;
 
-        [mdaq_ip_addr, result] = mdaq_get_ip();
-        if result < 0 then
-            disp("Unable to get MicroDAQ IP address - run microdaq_setup!");
-            result = -1;
-            return;
-        end
-        connection_id = mdaq_connect(mdaq_ip_addr, 4343);
+        connection_id = mdaq_open();
         if connection_id < 0 then
             result = -1;
             return;
