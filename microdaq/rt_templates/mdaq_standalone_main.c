@@ -35,8 +35,8 @@ int NAME(MODEL, _end)(void);
 /* Real-time task */ 
 void rt_task(UArg arg0);
 
-double model_exec_timer = 0.0; 
-double model_stop_flag = 0.0; 
+volatile double model_exec_timer = 0.0; 
+volatile double model_stop_flag = 0.0; 
 
 double get_scicos_time( void )
 {
@@ -78,7 +78,7 @@ Void rt_task(UArg arg0)
 {
     static int end_called = 0; 
 
-    if ( model_stop_flag != 1.0 )
+	if ( model_stop_flag == 0.0 )
     {
         /* Call model isr function */ 
         NAME(MODEL, _isr)();    
