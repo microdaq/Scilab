@@ -1,4 +1,4 @@
-﻿//** INRIA / SCILAB / Roberto Bucher / Simone Mannori / Paolo Gai
+//** INRIA / SCILAB / Roberto Bucher / Simone Mannori / Paolo Gai
 //** 16 Jan 2008
 //**
 // Modified by Roberto Bucher roberto.bucher@supsi.ch from the original
@@ -10,6 +10,7 @@
 //** 10 Set 2007 : cleaner startup code by Simone Mannori
 //** 15 Aug 2009 : Hierarchical block names by Henrik Slotholt
 //** 04 Set 2015 : Added support for E4Coder SMCube blocks, by Paolo Gai
+//** 06 Oct 2015 : Automatic detection of the E4Coder plugin location
 
 
 //==========================================================================
@@ -478,19 +479,20 @@ endfunction
 // SMCube blocks handling
 
 function s=SMCube_getdir()
-    // this function tries to guess the location of SMCube.
-	// Unfortunately there is no way for the microdaq plugin to find the real location of the E4Coder plugin.
-	s = "";
-	possible_versions = [ "1.5"; "1.6"; "1.7"; "1.8"; "1.9"; "2.0"; "2.1"; "2.2"; "2.3"; "2.4"; "2.5"; ];
-	l = length(possible_versions)(1);
-	for i=1:l
-	    temp = SCI + "/contrib/e4coder/" + possible_versions(i) + "/private/E4coder-cg/bin/SMCube.exe";
-		[x_x_x,smcexe_err] = fileinfo(temp);
-		if smcexe_err == 0
-			s = temp;
-			//disp("SMCube found at " + s);
-			return;
-		end
+	// this function tries to guess the location of SMCube.
+	s = '';
+	try
+		[n,p]=libraryinfo("e4coder_lib");
+	catch
+		return;
+	end
+
+	temp = p + "..\..\bin\SMCube.exe";
+	[x_x_x,smcexe_err] = fileinfo(temp);
+	if smcexe_err == 0
+		s = temp;
+		//disp("SMCube found at " + s);
+		return;
 	end
 endfunction
 
@@ -501,14 +503,13 @@ function s=SMCube_mk_files(SMCube_filelist)
 	end
 endfunction
 
-function SMCube_add_vorbidden()
+function result = SMCube_add_vorbidden(vorbidden_items)
 	[x_x_x,smcexe_err] = fileinfo(SMCube_getdir());
 	if smcexe_err ~= 0
 		vorbidden_items = [vorbidden_items;
-			"SMCube", "SMCube toolbox is not installed on your machine. SMCube block is"]
-
-			disp(vorbidden);
+			"SMCube", "E4Coder toolbox is not installed on your machine. SMCube block is"]
 	end
+	result = vorbidden_items;
 endfunction
 
 function SMCube_filelist = SMCube_generate()
@@ -661,7 +662,7 @@ function  [ok,XX,alreadyran,flgcdgen,szclkINTemp,freof] = do_compile_superblock_
     "WFILE_f","Write block";
     "WRITEC_f","Write block"]
 
-    SMCube_add_vorbidden();
+	vorbidden_items = SMCube_add_vorbidden(vorbidden_items);
 
     clkIN = [];
 
