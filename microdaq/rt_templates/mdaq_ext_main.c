@@ -35,16 +35,28 @@ $$MODEL_PROFILING$$
 int NAME(MODEL, _init)(void);
 int NAME(MODEL, _isr)(void);
 int NAME(MODEL, _end)(void);
+double NAME(MODEL, _get_tsamp)(void);
 
 /* Real-time task */ 
 void rt_task(UArg arg0);
 
-double model_exec_timer = 0.0; 
+volatile double model_exec_timer = 0.0; 
 volatile double model_stop_flag = 0.0;
+volatile double ext_mode = 1.0;
 
 double get_scicos_time( void )
 {
     return model_exec_timer; 
+}
+
+double get_scicos_tsamp(void)
+{
+    return MODEL_TSAMP;
+}
+
+double NAME(MODEL, _get_tsamp)(void)
+{ 
+    return MODEL_TSAMP;
 }
 
 Int main()
