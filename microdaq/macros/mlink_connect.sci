@@ -1,12 +1,13 @@
-function [link_fd, hwid] = mdaq_connect(ip, port)
-    [result, link_fd] = call("sci_mlink_connect",..
+function [link_fd, hwid] = mlink_connect(ip, port)
+    result = [];
+    [link_fd, result] = call("sci_mlink_connect",..
             ip, 1, "c",..
             port, 2, "i",..
         "out",..
             [1, 1], 3, "i",..
             [1, 1], 4, "i");
     if result > -1 then
-        [hwid, result] = call("sci_mlink_hwid",..
+            [hwid, result] = call("sci_mlink_hwid",..
             link_fd, 1, "i",..
         "out",..
             [5, 1], 2, "i",..
