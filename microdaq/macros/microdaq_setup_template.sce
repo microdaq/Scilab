@@ -32,7 +32,7 @@ endfunction
 function [] = browse_dir_callback4()
     directory = uigetdir()
     set(h(17),'String',directory)
-    set(h(22),'Enable','on')
+    
 endfunction
 
 //EDIT BOX CALLBACK
@@ -52,7 +52,7 @@ function [] = edit_callback3()
 endfunction
 
 function [] = edit_callback4()
-    set(h(22),'Enable','on')
+
 endfunction
 
 //CHECK CONNECTION FUNCTION
@@ -61,13 +61,16 @@ function [] = connect_callback()
     ip = get(h(20),'String')
     mdaq_set_ip(ip);
 
-    result = mdaq_ping();
-    if result == %F  then
-        messagebox('Unable to connect to MicroDAQ device!','Error','error')
+    result = mdaq_open();
+    if result < 0  then
+        messagebox('Unable to detect MicroDAQ device!','Error','error')
         set(h(21),'Enable','on')
     else
-        messagebox('Connection OK!','MicroDAQ info','info');
+        global %microdaq;
+        messagebox(%microdaq.model + ' detected!','MicroDAQ info','info');
         set(h(21),'Enable','on')
+	    set(h(22),'Enable','on')
+        mdaq_close(result);
     end
 endfunction
 
@@ -103,10 +106,16 @@ function [] = setup_callback ()
 
     cd(TARGET_ROOT+'\sysbios');
     
+    global %microdaq; 
+    if %microdaq.private.mdaq_hwid(4) == 1 then
+        sysbios_config_file = " sysbios.cfg";
+    else
+        sysbios_config_file = " sysbios_456.cfg";
+    end
+       
     sysbios_build_cmd = "SET PATH=" + XDCRoot + filesep() + "jre" + filesep() + "bin" + filesep() +";%PATH% & ";
-    sysbios_build_cmd = sysbios_build_cmd + XDCRoot + filesep() + 'xs --xdcpath=""' + BIOSRoot + '/packages;' + CCSRoot + '/ccs_base;""' + ' xdc.tools.configuro -o configPkg -t ti.targets.elf.C674 -p ti.platforms.evmOMAPL137 -r release -c ' + CompilerRoot + ' --compileOptions ""-g --optimize_with_debug"" sysbios.cfg';
+    sysbios_build_cmd = sysbios_build_cmd + XDCRoot + filesep() + 'xs --xdcpath=""' + BIOSRoot + '/packages;' + CCSRoot + '/ccs_base;""' + ' xdc.tools.configuro -o configPkg -t ti.targets.elf.C674 -p ti.platforms.evmOMAPL137 -r release -c ' + CompilerRoot + ' --compileOptions ""-g --optimize_with_debug""' + sysbios_config_file
     disp("Building TI SYS/BIOS real-time operating system for MicroDAQ");
-    
     unix_w(sysbios_build_cmd);
 
 
@@ -268,7 +277,7 @@ h(19)=uicontrol(fig,"Position",[t_margin window_h-370 window_w-t_margin-10 font_
 //ip edit box
 h(20)=uicontrol(fig,"Position",[edit_x window_h-400 edit_x+100 24],"Style","edit","string","10.10.1.1","Tag","edit1","Horizontalalignment","left","Fontsize",12,"Backgroundcolor",[1.000000 1.000000 1.000000 ]);
 //connect button
-h(21)=uicontrol(fig,"Position",[ edit_x+x_offset+100 window_h-400  130 24],"Style","pushbutton","string","Connection Test","callback","connect_callback","Horizontalalignment","center","Fontsize",12);
+h(21)=uicontrol(fig,"Position",[ edit_x+x_offset+100 window_h-400  130 24],"Style","pushbutton","string","Detect MicroDAQ","callback","connect_callback","Horizontalalignment","center","Fontsize",12);
 
 //final buton
 
