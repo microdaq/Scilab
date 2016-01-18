@@ -165,7 +165,7 @@ function mdaq_block_add(block_def)
     // TODO define default params value
     //  (block_def.name).sci script generator
     block_script = [
-    '// Generated with MicroDAQ toolbox ver: ' + mdaq_get_version() + '';
+    '// Generated with MicroDAQ toolbox ver: ' + mdaq_version() + '';
     'function [x,y,typ] = '+ name_converted + '(job,arg1,arg2)';
     '   block_desc = [''' + block_def.desc + ''';';
     '   '''';]';
@@ -240,7 +240,7 @@ function mdaq_block_add(block_def)
     // =============================GENERATE SIM SCRIPT=====================================
     //  (block_def.name)_sim.sci script generator
     block_script_sim = [
-    '// Generated with MicroDAQ toolbox ver: ' + mdaq_get_version() + '';
+    '// Generated with MicroDAQ toolbox ver: ' + mdaq_version() + '';
     'function block='+name_converted+'_sim(block,flag)';
     'select flag';
 
@@ -314,7 +314,7 @@ function mdaq_block_add(block_def)
 
 
     block_c_file = [
-    '/* Generated with MicroDAQ toolbox ver: ' + mdaq_get_version() + ' */';
+    '/* Generated with MicroDAQ toolbox ver: ' + mdaq_version() + ' */';
     '#include '"scicos_block4.h'"';
     '';
     '';
@@ -376,17 +376,9 @@ function mdaq_block_add(block_def)
     svg_path = IMAGE_FILE_ROOT + 'svg' + filesep();
     gen_svg(svg_path, name_converted, block_def.name);
 
-    tbx_build_macros("microdaq", SCRIPT_FILE_ROOT);
-    blocks = name_converted;
-
-    p_dir = pwd();
-    cd(module_path);
-    tbx_build_blocks(module_path, blocks, "macros" + filesep() + "user_blocks");
-
-    // userlib compilation
+    // build macros and compile C code
     mdaq_block_build();
 
-    cd(p_dir);
 endfunction
 
 function res = save_string(filename, content)
