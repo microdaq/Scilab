@@ -7,7 +7,6 @@ function block=mdaq_dac_sim(block,flag)
         case 1 // Output Update
             if %microdaq.private.connection_id > -1 then  
                 mdaq_ao_write(%microdaq.private.connection_id,..
-                                block.ipar(1),..
                                 block.ipar(4:size(block.ipar,'r'))',..
                                 block.inptr(1)');
             end
@@ -17,7 +16,6 @@ function block=mdaq_dac_sim(block,flag)
         case 5 // Ending
             if %microdaq.private.connection_id > -1 then
                 mdaq_ao_write(%microdaq.private.connection_id,..
-                                block.ipar(1),..
                                 [1:1:8],..
                                 block.rpar(2) * ones(1, 8));
             end

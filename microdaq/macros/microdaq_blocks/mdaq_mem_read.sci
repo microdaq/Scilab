@@ -14,21 +14,23 @@ function [x,y,typ] = mdaq_mem_read(job,arg1,arg2)
         exprs=graphics.exprs;
         while %t do
             try
-                [ok,start_idx, data_size, vec_size,do_increment,exprs]=..
+                [ok,start_idx, data_size, vec_size,init_value,do_increment,exprs]=..
                 scicos_getvalue(mem_write_desc,..
                 ['Start index:';
                 'Size:';
                 'Vector size:';
-                'Periodic:'],..
-                list('vec',1,'vec',1,'vec',1,'vec',1),exprs)
+                'Init value:';
+                'Cilcular:'],..
+                list('vec',1,'vec',1,'vec',1,'vec',-1,'vec',1),exprs)
             catch
-                [ok,start_idx, data_size,vec_size,do_increment,exprs]=..
+                [ok,start_idx, data_size,vec_size,init_value,do_increment,exprs]=..
                 getvalue(mem_write_desc,..
                 ['Start index:';
                 'Size';
                 'Vector size:';
-                'Periodic:'],..
-                list('vec',1,'vec',1,'vec',1,'vec',1),exprs)
+                'Init value:';
+                'Cilcular:'],..
+                list('vec',1,'vec',1,'vec',1,'vec',-1,'vec',1),exprs)
             end;
 
             if ~ok then
@@ -62,14 +64,26 @@ function [x,y,typ] = mdaq_mem_read(job,arg1,arg2)
 
             if do_increment > 1 | do_increment < 0 then
                 ok = %f;
-                message("Use values 0 or 1 to set increment option.");
+                message("Use 0 or 1 to setup cilcular read option.");
             end
 
+            if ok then
+                init_data_size = size(init_value, '*');
+                if  init_data_size > 1 then
+                    if  init_data_size <> vec_size  then
+                        message('Initial values don''t mach vector data!')
+                        ok = %f;
+                    end
+                    init_value = init_value';
+                else
+                    init_value(1:vec_size) = init_value;
+                end
+            end
 
             if ok then
                 [model,graphics,ok] = check_io(model,graphics, [], vec_size, 1, []);
                 graphics.exprs = exprs;
-                model.rpar = [];
+                model.rpar = init_value;
                 model.ipar = [(start_idx-1);vec_size;do_increment;data_size];
                 model.dstate = [];
                 x.graphics = graphics;
@@ -78,11 +92,12 @@ function [x,y,typ] = mdaq_mem_read(job,arg1,arg2)
             end
         end
 
-    case 'define' then
+case 'define' then
         start_idx = 1;
         vec_size = 1;
-        data_size = 100;
-        do_increment = 0;
+        init_value = 0; 
+        data_size = 1;
+        do_increment = 1;
         model=scicos_model()
         model.sim=list('mdaq_mem_read_sim',5)
         model.in =[]
@@ -91,11 +106,11 @@ function [x,y,typ] = mdaq_mem_read(job,arg1,arg2)
         model.outtyp=1
         model.evtin=1
         model.rpar=[];
-        model.ipar=[(start_idx-1);vec_size;do_increment;data_size]
+        model.ipar=[(start_idx-1);vec_size;do_increment;data_size;]
         model.dstate=[];
         model.blocktype='d'
         model.dep_ut=[%t %f]
-        exprs=[sci2exp(start_idx);sci2exp(data_size);sci2exp(vec_size);sci2exp(do_increment)]
+        exprs=[sci2exp(start_idx);sci2exp(data_size);sci2exp(vec_size);sci2exp(init_value);sci2exp(do_increment)]
         gr_i=['xstringb(orig(1),orig(2),['''' ; ],sz(1),sz(2),''fill'');']
         x=standard_define([4 3],model,exprs,gr_i)
         x.graphics.in_implicit=[];
