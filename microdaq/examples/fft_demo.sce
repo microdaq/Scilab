@@ -8,13 +8,13 @@
 // with scilab script
 
 // Start DSP application
-result = dsp_start('fft_demo_scig\fft_demo.out'); 
+result = mdaq_dsp_start('fft_demo_scig\fft_demo.out'); 
 if result < 0 then
     abort;
 end
 
 // Register signal ID and signal size
-result = dsp_signal(123, 1); 
+result = mdaq_dsp_signal(123, 1); 
 if result < 0 then
     disp("ERROR: unable to register signal"); 
     abort;
@@ -25,7 +25,7 @@ a = [];
 // Process data from DSP 
 sample_count = 500;
 for i=1:500
-    [result, s] = dsp_signal_get(sample_count);
+    [result, s] = mdaq_dsp_signal_read(sample_count);
     if result < 0 then
         disp("ERROR: unable to get signal data"); 
         abort;
@@ -48,4 +48,4 @@ for i=1:500
 end
 
 // Stop DSP execution
-dsp_stop(); 
+mdaq_dsp_stop(); 
