@@ -28,5 +28,4 @@ enum mdaq_pwm_polarity
 int mdaq_pwm_init(uint8_t module, int32_t period, uint8_t active_low, float a_channel, float b_channel);
 void mdaq_pwm_write(uint8_t module, float a_channel, float b_channel);
 
-
 #endif /* MDAQ_PWM_H_ */

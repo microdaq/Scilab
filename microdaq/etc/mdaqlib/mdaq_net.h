@@ -10,6 +10,7 @@
 #ifndef MDAQNET_H_
 #define MDAQNET_H_
 
+#include <stdio.h>
 #define EAGAIN      11  /* Try again */
 #define EWOULDBLOCK EAGAIN
 

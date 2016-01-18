@@ -7,7 +7,6 @@
  * of the BSD license.  See the LICENSE file for details.
  */
 
-
 #ifndef MDAQ_AI_H
 #define MDAQ_AI_H
 
@@ -16,7 +15,7 @@
 /* AI channels */
 enum mdaq_ai_ids
 {
-	AI1 = 1,
+    AI1 = 1,
     AI2,
     AI3,
     AI4,
@@ -37,11 +36,11 @@ enum mdaq_ai_ids
 /* AI converters */
 enum mdaq_adc_ids
 {
-	ADC01 = 1,
-	ADC02,
-	ADC03,
-	ADC04,
-	ADC05
+    ADC01 = 1,
+    ADC02,
+    ADC03,
+    ADC04,
+    ADC05
 };
 
 /* AI range */
@@ -58,9 +57,8 @@ enum mdaq_adc_ids
 #define AI_SINGLE  	(1 << 16)
 #define AI_DIFF    	(1 << 17)
 
-
-int mdaq_ai_init(uint8_t converter, uint32_t range, uint32_t polarity, uint32_t mode);
-int mdaq_ai_config_ch(uint8_t ch[], uint8_t ch_count);
-int mdaq_ai_read(uint8_t ch[], uint8_t ch_count, uint16_t *adc_value, float *value);
+int mdaq_ai_init( uint8_t converter, uint32_t range, uint32_t polarity, uint32_t mode );
+int mdaq_ai_config_ch( uint8_t ch[], uint8_t ch_count );
+int mdaq_ai_read( uint8_t ch[], uint8_t ch_count, uint16_t *adc_value, float *value );
 
 #endif /* MDAQ_AI_H */

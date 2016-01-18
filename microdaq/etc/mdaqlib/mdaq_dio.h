@@ -12,7 +12,7 @@
 
 #include <stdint.h>
 
-/* A0 channels */
+/* AO channels */
 enum mdaq_dio_ids
 {
 	DIO1 = 1,
@@ -78,7 +78,7 @@ enum mdaq_bank_dir_ids
 };
 
 void mdaq_bank_dir( uint8_t bank, uint8_t dir);
-int mdaq_dio_func( uint8_t function, uint8_t enable);
+int  mdaq_dio_func( uint8_t function, uint8_t enable);
 void mdaq_dio_write( uint8_t dio, uint8_t value);
 uint8_t mdaq_dio_read( uint8_t dio);
 

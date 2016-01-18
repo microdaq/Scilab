@@ -12,6 +12,12 @@
 
 #include <stdint.h>
 
+enum mdaq_pru_ids
+{
+    PRU0 = 0,
+    PRU1
+};
+
 int mdaq_pru_load(uint8_t pru_num, const uint32_t *pru_code, uint32_t code_size);
 int mdaq_pru_start(uint8_t pru_num);
 int mdaq_pru_stop (uint8_t pru_num);

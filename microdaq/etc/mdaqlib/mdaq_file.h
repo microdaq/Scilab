@@ -27,7 +27,6 @@ int mdaq_file_init( void );
 int mdaq_file_open(const char *name, int flags);
 int mdaq_file_close(int fd);
 int mdaq_file_write(int fd, const void *buf, size_t len);
-int mdaq_file_read(int fd, void *buf, size_t len);
 int mdaq_file_lseek(int fd, long offset, int whence);
 int mdaq_file_flush(int sockfd);
 
