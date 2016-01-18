@@ -1,16 +1,44 @@
-function mdaq_led_write(link_id, led, state)
-    if link_id < 0 then
-        disp("Wrong link ID!")
-        return;
+function mdaq_led_write(arg1, arg2, arg3)
+    
+    if argn(2) == 2 then
+        led = arg1; 
+        state = arg2; 
     end
     
-    if led > 2 | led < 1 then
-        disp("Wrong LED number!")
+    if argn(2) == 3 then
+        link_id = arg1;   
+        led = arg2; 
+        state = arg3; 
+
+        if link_id < 0 then
+            disp("ERROR: Invalid link ID!")
+            return;
+        end
+    end
+
+    if argn(2) > 3 | argn(2) < 2 | led > 2 | led < 1 then
+        mprintf("Description:\n");
+        mprintf("\tSets MicroDAQ D1 and D2 LED state\n");
+        mprintf("Usage:\n");
+        mprintf("\tmdaq_led_write(link_id, led, state);\n")
+        mprintf("\tlink_id - connection id returned by mdaq_open() (OPTIONAL)\n");
+        mprintf("\tled - LED number (1 or 2)\n");
+        mprintf("\tstate - LED state (%%T or %%F)\n");
         return;
     end
 
-    if state <> 0 then
+    if state == %F | state == 0 then
+        state = 0;
+    else 
         state = 1;
+    end
+
+    if argn(2) == 2 then
+        link_id = mdaq_open();
+        if link_id < 0 then
+            disp("ERROR: Unable to connect to MicroDAQ device!");
+            return; 
+        end
     end
 
     result = call("sci_mlink_led_set",..
@@ -21,6 +49,11 @@ function mdaq_led_write(link_id, led, state)
             [1, 1], 4, "i");
 
     if  result < 0  then
-        mdaq_error(result); 
+        mdaq_error(result) 
+    end
+    
+
+    if argn(2) == 2 then
+        mdaq_close(link_id);
     end
 endfunction

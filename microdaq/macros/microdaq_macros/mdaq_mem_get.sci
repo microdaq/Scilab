@@ -1,7 +1,37 @@
-function [data,result] = mdaq_mem_get(start_index, data_size, vector_size)
+function [data] = mdaq_mem_get(arg1, arg2, arg3, arg4)
     data = [];
     result = 0;
 
+    if argn(2) == 3 then
+        start_index = arg1;  
+        data_size = arg2; 
+        vector_size = arg3; 
+    end
+    
+    if argn(2) == 4 then
+        link_id = arg1; 
+        start_index = arg2;  
+        data_size = arg3; 
+        vector_size = arg4; 
+
+        if link_id < 0 then
+            disp("ERROR: Invalid link ID!")
+            return;
+        end
+    end
+    
+    if argn(2) > 4 | argn(2) < 3 then
+        mprintf("Description:\n");
+        mprintf("\tReads MicroDAQ volatile memory\n");
+        mprintf("Usage:\n");
+        mprintf("\tmdaq_mem_get(link_id, start, size, vec_size);\n")
+        mprintf("\tlink_id - connection id returned by mdaq_open() (OPTIONAL)\n");
+        mprintf("\tstart - memory start index\n");
+        mprintf("\tsize - total data size to be read\n");
+        mprintf("\tvec_size - MEM write block vector size\n");
+        return;
+    end
+    
     if  start_index < 1 | start_index > 4000000 then
         disp("ERROR: Incorrect start index - use values from 1 to 4000000!")
         return;
