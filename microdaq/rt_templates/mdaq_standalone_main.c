@@ -29,7 +29,7 @@
 #define STR(x)          XSTR(x)uo
 
 int NAME(MODEL, _init)(void);
-int NAME(MODEL, _isr)(void);
+int NAME(MODEL, _isr)(double t);
 int NAME(MODEL, _end)(void);
 double NAME(MODEL, _get_tsamp)(void);
 
@@ -92,7 +92,7 @@ Void rt_task(UArg arg0)
 	if ( model_stop_flag == 0.0 )
     {
         /* Call model isr function */ 
-        NAME(MODEL, _isr)();    
+        NAME(MODEL, _isr)(model_exec_timer);    
     }
     else 
     {

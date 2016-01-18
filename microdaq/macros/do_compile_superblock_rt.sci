@@ -959,7 +959,7 @@ function  [ok,XX,alreadyran,flgcdgen,szclkINTemp,freof] = do_compile_superblock_
             solver_type = 1;
         end
         odefun = 'ode' + string(solver_type);  //** default solver
-        odestep = '10';   //** default continous step size
+        odestep = '5';   //** default continous step size
     else
         target  = XX.model.rpar.props.void3(1); //** user defined parameters
         odefun  = XX.model.rpar.props.void3(2);
@@ -1097,7 +1097,7 @@ function  [ok,XX,alreadyran,flgcdgen,szclkINTemp,freof] = do_compile_superblock_
     [CCode,FCode]=gen_blocks()
 
     disp('### Generating block structure...');
-    [Code,Code_common]=make_standalone42();
+    [Code,Code_common]=make_standalone42(Tsamp);
 
     disp('### Writing generated code...');
     files=write_code(Code,CCode,FCode,Code_common);
@@ -1130,7 +1130,7 @@ function  [ok,XX,alreadyran,flgcdgen,szclkINTemp,freof] = do_compile_superblock_
         disp('### Loading ' + dsp_binary + ' to MicroDAQ...');
         res = mlink_dsp_load(connection_id, rpat + filesep() + dsp_binary, '');
         if res < 0 then
-            message('Unable to load model! (' + mdaq_error(res) + ')');
+            message('Unable to load model!');
             mdaq_close(connection_id);
             return;
         end
@@ -1366,7 +1366,7 @@ endfunction
 // Modified for RT purposes by Robertoa Bucher - RTAI Team
 // roberto.bucher@supsi.ch
 
-function [Code,Code_common]=make_standalone42()
+function [Code,Code_common]=make_standalone42(sample_time)
 
     x=cpr.state.x;
     modptr=cpr.sim.modptr;
@@ -1974,7 +1974,7 @@ function [Code,Code_common]=make_standalone42()
 
     if (x <> []) then
         Code=[Code
-        '  double tout, dt, he, h;'
+        ' volatile double tout, dt, he, h;'
         '']
     end
 
@@ -2055,7 +2055,7 @@ function [Code,Code_common]=make_standalone42()
         Code=[Code
         ''
         '  tout=t;'
-        '  dt='+rdnom+'_get_tsamp();'
+        '  dt='+sample_time+';'
         '  h=dt/'+odestep+';'
         '  while (tout+h<t+dt){'
         '    '+odefun+'(C2F('+rdnom+'simblk),tout,h);'
