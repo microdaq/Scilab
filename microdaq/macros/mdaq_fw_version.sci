@@ -17,5 +17,6 @@ function fw_ver = mdaq_fw_version()
         disp("Unable to connect to MicroDAQ device!");
         fw_ver = [];
     end
+    fw_ver = fw_ver';
     clear result; 
 endfunction
