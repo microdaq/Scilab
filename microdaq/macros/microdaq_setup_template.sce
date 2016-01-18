@@ -108,9 +108,9 @@ function [] = setup_callback ()
     
     global %microdaq; 
     if %microdaq.private.mdaq_hwid(4) == 1 then
-        sysbios_config_file = " sysbios.cfg";
-    else
         sysbios_config_file = " sysbios_456.cfg";
+    else
+        sysbios_config_file = " sysbios.cfg";
     end
        
     sysbios_build_cmd = "SET PATH=" + XDCRoot + filesep() + "jre" + filesep() + "bin" + filesep() +";%PATH% & ";
@@ -197,12 +197,14 @@ font_size = 12;
 lab1 = 'MicroDAQ Setup';
 
 //General installation description
-line1 = 'Setup wizard will configure MicroDAQ to work with Scilab. To use';
-line2 = 'MicroDAQ package provide Code Composer Studio install paths and';
-line3 = 'MicroDAQ device IP address. Select Help button for more info.';
+line1 = 'The microdaq_setup wizard will configure MicorDAQ device to work';
+line2 = 'with Scilab. Install TI Code Composer Studio 4/5 and connect your'
+line3 = 'MicroDAQ device. Select Help button for more info.';
 
-help_desc = ['During installation user has to point where Code Composer Studio';
-            'components are located. User has to select directories with:';
+help_desc = ['Check your IP settings and verify connection with MicroDAQ'; 
+             'device with system ''ping'' command.';
+            'During installation point where Code Composer Studio';
+            'components are located. User has to provide directories with:';
             '- Code Composer Studio 4/5 root directory';
             '- C6000 compiler';
             '- XDCTools';
@@ -214,10 +216,10 @@ help_desc = ['During installation user has to point where Code Composer Studio';
             'XDCTools install path → C:\ti\xdctools_3_25_03_72';
             'SYS/BIOS RTOS install path → C:\ti\bios_6_35_04_50';
             '';
-            'MicroDAQ Setup allows to check if connection with MicroDAQ device';
-            'is OK. In order to test connection connect MicroDAQ with Ethernet';
-            'cable, make sure that your IP address is in range with MicroDAQ IP';
-            'settings and press Connection Test button.';
+            'In order to start setup procedure MicroDAQ device has to be detected.';
+            'Use ''Detect MicroDAQ'' button to detect your MicroDAQ device.';
+            'If MicroDAQ is detected, continue by clicking ''OK'' button';
+            'to start setup procedure.';
             ]
 
 //First step
