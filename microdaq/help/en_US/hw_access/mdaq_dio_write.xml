@@ -8,6 +8,8 @@
 	<refsynopsisdiv>
 		<title>Calling Sequence</title>
 		<synopsis>
+			mdaq_dio_write();
+			mdaq_dio_write(dio, state);
 			mdaq_dio_write(link_id, dio, state);
 		</synopsis>
 	</refsynopsisdiv>

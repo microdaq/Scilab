@@ -3,25 +3,10 @@
 
 #include <stdint.h>
 
-#ifdef APP_BUILD
-#define EXTERNC
-#define MDAQ_API
-#endif 
+#define MLINK_VERSION 	"1.3.0"
 
-#ifdef __GNUC__
 #define EXTERNC 
 #define MDAQ_API extern
-#endif 
-
-#ifdef DLL_BUILD
-#define EXTERNC extern "C" 
-#define MDAQ_API __declspec(dllexport)
-#endif 
-
-#if !(__GNUC__ || APP_BUILD || DLL_BUILD)
-#define EXTERNC extern "C" 
-#define MDAQ_API __declspec(dllimport)
-#endif 
 
 /* Utility functions */ 
 EXTERNC MDAQ_API char *mlink_error( int err );

@@ -8,6 +8,8 @@
 	<refsynopsisdiv>
 		<title>Calling Sequence</title>
 		<synopsis>
+			mdaq_dio_func();
+			mdaq_dio_func(func, enable);
 			mdaq_dio_func(link_id, func, enable);
 		</synopsis>
 	</refsynopsisdiv>
@@ -15,8 +17,8 @@
 	<refsection id="Description_mdaq_dio_set_func">
 		<title>Description</title>
 		<para>
-			This function sets alternave function for DIO channels. By default alternative DIO channel functions ENC1, ENC2, PWM1, PWM2, PWM3 and UART are anabled.  
-			This function will return error if direction of DIO channels does not allow to set selected function (e.g DIO channle configured as an output, user wants to configure ENC1). 
+			This function sets alternative function for DIO channels. By default alternative DIO channel functions ENC1, ENC2, PWM1, PWM2, PWM3 and UART are enabled.  
+			This function will return error if direction of DIO channels does not allow to set selected function (e.g DIO channel configured as an output, user wants to configure ENC1). 
 		</para>
 		<para>
 			DIO alternative functions ('func' parameter): 
