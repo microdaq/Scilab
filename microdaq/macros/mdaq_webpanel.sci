@@ -1,4 +1,4 @@
-function mdaq_open_webpanel()
+function mdaq_webpanel()
     [ip_address, result] = mdaq_get_ip(); 
     if result < 0 then
         message("ERROR: Unable to get device IP address!");
