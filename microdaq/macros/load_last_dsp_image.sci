@@ -1,5 +1,7 @@
 function load_last_dsp_image()
     global %microdaq;
+    res = 0; 
+    
     if isfile(TMPDIR + filesep() + "last_mdaq_dsp_image") == %t then
         dsp_app_path = mgetl(TMPDIR + filesep() + "last_mdaq_dsp_image");
         if isfile(dsp_app_path) == %t then
@@ -37,7 +39,7 @@ function load_last_dsp_image()
                 return;
             end
             %microdaq.dsp_loaded = %T;
-
+            mdaq_close(connection_id);
         else
             message("Unable to find model, build model and try again!")
         end
