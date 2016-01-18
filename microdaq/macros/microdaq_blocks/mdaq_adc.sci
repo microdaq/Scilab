@@ -18,6 +18,10 @@ function [x,y,typ] = mdaq_adc(job,arg1,arg2)
     "   1 - Unipolar";
     "   2 - Bipolar";
     "";
+    "Mode:";
+    "   0 - Single-ended";
+    "   1 - Differential";
+    "";
     "Set block parameters:"];
 
     x=[];y=[];typ=[];
@@ -30,21 +34,23 @@ function [x,y,typ] = mdaq_adc(job,arg1,arg2)
         while %t do
             try
                 getversion('scilab');
-                [ok,adc_converter_str,adc_channels, adc_range, adc_polarity,exprs]=..
+                [ok,adc_converter_str,adc_channels, adc_range,adc_polarity,adc_mode,exprs]=..
                 scicos_getvalue(adc_desc,..
                 ['Converter:';
                 'Channels:';
                 'Range:';
-                'Polarity:'],..
-                list('str',1,'vec',-1,'vec',1,'vec',1),exprs)
+                'Polarity:';
+                'Mode:'],..
+                list('str',1,'vec',-1,'vec',1,'vec',1,'vec',1),exprs)
             catch
-                [ok,adc_converter_str,adc_channels, adc_range, adc_polarity,exprs]=..
+                [ok,adc_converter_str,adc_channels, adc_range,adc_polarity,adc_mode,exprs]=..
                 scicos_getvalue(adc_desc,..
                 ['Converter:';
                 'Channels:';
                 'Range:';
-                'Polarity:'],..
-                list('str',1,'vec',-1,'vec',1,'vec',1),exprs)
+                'Polarity:';
+                'Mode:'],..
+                list('str',1,'vec',-1,'vec',1,'vec',1,'vec',1),exprs)
             end
             
             if ~ok then
@@ -103,9 +109,12 @@ function [x,y,typ] = mdaq_adc(job,arg1,arg2)
                 end
             end
             
+            if adc_mode <> 0 & adc_mode <> 1 then
+                ok = %f;
+                message("Wrong ADC mode selected - use 0 or 1 to set single-ended or differential mode!");
+            end
+            
             if ok then
-                //Differential mode is not supported, only one option is available
-                adc_mode = 0;
                 [model,graphics,ok] = check_io(model,graphics, [], [n_channels(2),n_channels(2)], 1, []);
                 graphics.exprs = exprs;
                 model.rpar = []; 
@@ -124,7 +133,7 @@ function [x,y,typ] = mdaq_adc(job,arg1,arg2)
         n_channels = 1;
         adc_range = 10;
         adc_polarity = 2;
-        adc_mode = 1;
+        adc_mode = 0;
         model=scicos_model()
         model.sim=list('mdaq_adc_sim',5)
         model.in =[]
@@ -137,7 +146,7 @@ function [x,y,typ] = mdaq_adc(job,arg1,arg2)
         model.dstate=[];
         model.blocktype='d'
         model.dep_ut=[%t %f]
-        exprs=["ADC01";sci2exp(adc_channels);sci2exp(adc_range);sci2exp(adc_polarity)]
+        exprs=["ADC01";sci2exp(adc_channels);sci2exp(adc_range);sci2exp(adc_polarity); sci2exp(adc_mode)]
         gr_i=['xstringb(orig(1),orig(2),[''CH: '' ; string(adc_channels)],sz(1),sz(2),''fill'');']
         x=standard_define([4 3],model,exprs,gr_i)
         x.graphics.in_implicit=[];
