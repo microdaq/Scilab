@@ -6,31 +6,29 @@ xmlns:ns5="http://www.w3.org/1999/xhtml"
 xmlns:mml="http://www.w3.org/1998/Math/MathML" 
 xmlns:db="http://docbook.org/ns/docbook" 
 version="5.0-subset Scilab" 
-xml:id="mdaq_dsp_signal_read">
+xml:id="mdaq_dsp_build">
   <refnamediv>
-    <refname>mdaq_dsp_signal_read</refname>
-    <refpurpose>Read SIGNAL block data</refpurpose>
+    <refname>mdaq_dsp_build</refname>
+    <refpurpose>Build model for MicroDAQ DSP</refpurpose>
   </refnamediv>
   <refsynopsisdiv>
 	<title>Description</title>
-	<para>This function reads live data from DSP application generated from XCos model. Xcos model has to contain SIGNAL block with defined ID. The DSP data is read SIGNAL block. Function blocks execution until it gathers all requested samples. In order to use this function SIGNAL block needs to be registered with mdaq_dsp_signal() function. </para>
-    <para>WARNING: Current mdaq_dsp_signal_read() implementation allows reading only single XCos signal - use MUX block to gather signals into one signal vector.  </para>
-	<title>Calling Sequence</title>
+	<para>This function builds DSP executable from provided Xcos model.</para>
+    <title>Calling Sequence</title>
     <synopsis>
-      [result, data] = mdaq_dsp_signal_read(sample_count);
-      [result, data] = mdaq_dsp_signal_read(connection_id, sample_count);
+      mdaq_dsp_build(path);
+	  mdaq_dsp_build(connection_id,path);
     </synopsis>
   </refsynopsisdiv>
   <refsection id="Parameters___FUNC_NAME__">
     <title>Arguments</title>
     <itemizedlist>
-      <listitem><para><emphasis role="bold">connection_id : </emphasis> Connection ID returned by mdaq_open() (OPTIONAL)</para></listitem>
-	  <listitem><para><emphasis role="bold">sample_count : </emphasis> number of signal reads</para></listitem>
-      <listitem><para><emphasis role="bold">result : </emphasis> function call result</para></listitem>
-	  <listitem><para><emphasis role="bold">data : </emphasis> resulting data</para></listitem>	  
+	    <listitem><para><emphasis role="bold">connection_id : </emphasis> Connection ID returned by mdaq_open() (OPTIONAL)</para></listitem>
+	    <listitem><para><emphasis role="bold">path : </emphasis> Xcos model path</para></listitem>
     </itemizedlist>
   </refsection>
-  	<refsection>
+  
+    	<refsection>
 	<title>Example</title>
           <programlisting role="example"><![CDATA[
 // Script execution duration in seconds
@@ -89,8 +87,8 @@ mdaq_dsp_stop();
     <simplelist type="inline">
      <member><link linkend="mdaq_dsp_start">mdaq_dsp_start</link> : Start DSP execution </member>
 	  <member><link linkend="mdaq_dsp_stop">mdaq_dsp_stop</link> : Terminate DSP execution </member>
+	  <member><link linkend="mdaq_dsp_signal_read">mdaq_dsp_signal_read</link> : Read DSP signal data </member>
 	  <member><link linkend="mdaq_dsp_signal">mdaq_dsp_signal</link> : Register DSP Signal ID </member>
-	  <member><link linkend="mdaq_dsp_build">mdaq_dsp_build</link> : Builds DSP application from provided Xcos model </member>
       <member>
         <link type="scilab" linkend="scilab.help/sum">Link to the Scilab help page</link>
       </member>

@@ -6,21 +6,27 @@ xmlns:ns5="http://www.w3.org/1999/xhtml"
 xmlns:mml="http://www.w3.org/1998/Math/MathML" 
 xmlns:db="http://docbook.org/ns/docbook" 
 version="5.0-subset Scilab" 
-xml:id="dsp_stop">
+xml:id="mdaq_dsp_stop">
   <refnamediv>
-    <refname>dsp_stop</refname>
+    <refname>mdaq_dsp_stop</refname>
     <refpurpose>Terminate currently running DSP application</refpurpose>
   </refnamediv>
   <refsynopsisdiv>
 	<title>Description</title>
-	<para>This function terminates model execution on MicroDAQ DSP core. If function isn't called the TCP/IP connection will remain open and calling dsp_start function will fail.</para>
-	<para>Due to nature of TCP/IP protocol opened connection has to be closed with dsp_stop() - otherwise next attempt to start DSP application will fail and MicroDAQ device reboot will be needed!  	</para>
+	<para>This function terminates model execution on MicroDAQ DSP core. It has to be called after DSP processing is done.</para>
+	<para>WARNING: TCP/IP protocol is used for data exchange - make sure that after DSP work is done the mdaq_dsp_stop() is called - otherwise next attempt to start DSP application with mdaq_dsp_start() will fail and MicroDAQ device reboot will be needed!  	</para>
     <title>Calling Sequence</title>
     <synopsis>
-      dsp_stop();
+      mdaq_dsp_stop();
+	  mdaq_dsp_stop(connection_id);
     </synopsis>
   </refsynopsisdiv>
-
+  <refsection id="Parameters___FUNC_NAME__">
+    <title>Arguments</title>
+    <itemizedlist>
+	    <listitem><para><emphasis role="bold">connection_id : </emphasis> Connection ID returned by mdaq_open() (OPTIONAL)</para></listitem>
+    </itemizedlist>
+  </refsection>
   
     	<refsection>
 	<title>Example</title>
@@ -28,23 +34,17 @@ xml:id="dsp_stop">
 // Script execution duration in seconds
 TIME = 20;
 
-// Load Xcos libs
-loadXcosLibs();
+// build DSP binary from Xcos model 
+mdaq_dsp_build(mdaq_toolbox_path() + filesep() + "examples" + filesep() +"fft_demo.zcos");
 
-// Open FFT example 
-importXcosDiagram(mdaq_toolbox_path() + filesep() + "examples" + filesep() +"fft_demo.zcos");
-
-// Build DSP application (don't load on target)
-mdaq_code_gen(%F);
-		  
 // Start DSP application
-result = dsp_start('fft_demo_scig\fft_demo.out'); 
+result = mdaq_dsp_start('fft_demo_scig\fft_demo.out'); 
 if result < 0 then
     abort;
 end
 
 // Register signal ID and signal size
-result = dsp_signal(123, 1); 
+result = mdaq_dsp_signal(123, 1); 
 if result < 0 then
     disp("ERROR: unable to register signal"); 
     abort;
@@ -55,7 +55,7 @@ a = [];
 // Process data from DSP 
 sample_count = 500;
 for i=1:(10 * TIME)
-    [result, s] = dsp_signal_get(sample_count);
+    [result, s] = mdaq_dsp_signal_read(sample_count);
     if result < 0 then
         disp("ERROR: unable to read signal data!"); 
         abort;
@@ -78,16 +78,17 @@ for i=1:(10 * TIME)
 end
 
 // Stop DSP execution
-dsp_stop(); 
+mdaq_dsp_stop(); 
 
  ]]></programlisting>
  </refsection>
   <refsection id="SeeAlso___FUNC_NAME__">
     <title>See Also</title>
     <simplelist type="inline">
-      <member><link linkend="dsp_start">dsp_start</link> : Start DSP execution </member>
-	  <member><link linkend="dsp_signal_get">dsp_signal_get</link> : Read DSP signal data </member>
-	  <member><link linkend="dsp_signal">dsp_signal</link> : Register DSP Signal ID </member>
+      <member><link linkend="mdaq_dsp_start">mdaq_dsp_start</link> : Start DSP execution </member>
+	  <member><link linkend="mdaq_dsp_signal_read">mdaq_dsp_signal_read</link> : Read DSP signal data </member>
+	  <member><link linkend="mdaq_dsp_signal">mdaq_dsp_signal</link> : Register DSP Signal ID </member>
+	  <member><link linkend="mdaq_dsp_build">mdaq_dsp_build</link> : Builds DSP application from provided Xcos model </member>
       <member>
         <link type="scilab" linkend="scilab.help/sum">Link to the Scilab help page</link>
       </member>

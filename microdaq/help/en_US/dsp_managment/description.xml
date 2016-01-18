@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="description">
+  <refnamediv>
+    <refname>Introduction</refname>
+    <refpurpose>C/C++ code integration tools introduction</refpurpose>
+  </refnamediv>
+  <refsection id="Parameters_introduction">
+	
+		<para> MicroDAQ toolbox for Scilab features automatic code generation for MicroDAQ DSP from Xcos model. Resulting DSP application can 
+	can be utilized in a different ways, it can be executed under Xcos control, integrated with LabVIEW applicaiton 
+	and used in Scilab script to combine real-time processing on dedicated DSP core with Scilab script capabilities. </para>
+	
+	<para>
+	DSP management functions allows control of Xcos generated DSP application. User can build, load, read data and change DSP application
+	parameters during its execution. Combining real-time processing with script gives flexibility and allows utilizing MicroDAQ device for 
+	advanced control, signal processing and measurement applications.
+	</para>
+	
+    <simplelist type="inline">
+<title>DSP managment function howto</title>
+
+	<member><para>Define block input/output ports and block properties</para></member>
+<para>As a first step Xcos model for MicroDAQ has to be created. Model must contain SETUP block. If data exchange with 
+	 model application is needed SETUP block has to be configured to Ext mode and duration to -1. Enabling Ext mode allows 
+	 SIGNAL block data read with mdaq_dsp_signal_read() function from script. If model parameter change is required 'MEM Read' 
+	 block has to be used in Xcos model. Together with mdaq_mem_set() function 'MEM Read' block allows model parameter change 
+	 It is also possible to control Standalone application generated from Xcos model. In order to do that 'MEM Read' and 
+	 'MEM Write' blocks needs to be used in Xcos model. On the script side accordingly mdaq_mem_set() and mdaq_mem_get() functions shall 
+	 be used.
+	 </para>
+
+	
+	</simplelist>
+  </refsection>
+
+	
+
+	
+  <refsection id="SeeAlso_introduction">
+    <title>See Also</title>
+    <simplelist type="inline">
+		<member><link linkend="mdaq_block">mdaq_block</link> : Initialize MicroDAQ block structure</member>
+		<member><link linkend="mdaq_block_add">mdaq_block_add</link> : Generate MicroDAQ block from provided block structure </member>
+	  	<member><link linkend="mdaq_block_build">mdaq_block_build</link> : Build/Rebuild MicroDAQ custom block C/C++ source code</member>
+      <member>
+        <link type="scilab" linkend="scilab.help/sum">Link to the Scilab help page</link>
+      </member>
+    </simplelist>
+  </refsection>
+</refentry>
