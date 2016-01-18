@@ -1,4 +1,4 @@
-function result = dsp_upload( dsp_firmware )
+function result = mdaq_dsp_upload( dsp_firmware )
     // Load and upload DSP application
     if dsp_firmware <> "" then
         if isfile(dsp_firmware) <> %t then

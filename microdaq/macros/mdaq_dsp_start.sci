@@ -1,54 +1,84 @@
-function result = dsp_start( dsp_firmware )
+function result = mdaq_dsp_start( arg1, arg2 )
+
     global %microdaq;
     result = -1;
-    if isfile(dsp_firmware) <> %t then
-        mprintf(" ERROR: Unable to load DSP firmware - file %s doesn''t exists!", dsp_firmware);
-        return
+
+    if argn(2) == 1 then
+        dsp_firmware = arg1; 
     end
 
-    connection_id = mdaq_open();
-    if connection_id < 0 then
-        disp('ERROR: Unable to connect to MicroDAQ device - check your setup!');
+    if argn(2) == 2 then
+        link_id = arg1;   
+        dsp_firmware = arg2; 
+        if link_id < 0 then
+            disp("ERROR: Invalid link ID!")
+            return;
+        end
+    end
+
+    if argn(2) > 2 | argn(2) < 1 | isfile(dsp_firmware) <> %T then
+        mprintf("Description:\n");
+        mprintf("\tStarts DSP execution\n");
+        mprintf("Usage:\n");
+        mprintf("\tmdaq_dsp_start(link_id, dsp_firmware);\n")
+        mprintf("\tlink_id - connection id returned by mdaq_open() (OPTIONAL)\n");
+        mprintf("\tdsp_firmware - XCos generated DSP application path\n");
         return;
     end
 
-    res = mlink_dsp_load(connection_id, dsp_firmware, '');
-    if res < 0 then
-        // try again to load application
-        mdaq_close(connection_id);
-        connection_id = mdaq_open();
-        if connection_id < 0 then
-            disp('ERROR: Unable to connect to MicroDAQ device - check your setup!');
-            return;
+    if argn(2) == 1 then
+        link_id = mdaq_open();
+        if link_id < 0 then
+            disp("ERROR: Unable to connect to MicroDAQ device!");
+            return; 
         end
-        res = mlink_dsp_load(connection_id, dsp_firmware, '');
+    end
+
+    res = mlink_dsp_load(link_id, dsp_firmware, '');
+    if res < 0 then
+        res = mlink_dsp_load(link_id, dsp_firmware, '');
         if res < 0 then
             disp('ERROR: Unable to load DSP firmware - reboot MicroDAQ device!');
-            mdaq_close(connection_id);
+            if argn(2) == 1 then
+                mdaq_close(link_id);
+            end
             return;
         end
     end
 
-    res = mlink_dsp_start(connection_id);
+    res = mlink_dsp_start(link_id);
     if res < 0 then
         disp("ERROR: Unable to start DSP application!");
-        mdaq_close(connection_id);
+        if argn(2) == 1 then
+            mdaq_close(link_id);
+        end
         return;
     end
 
-    mdaq_close(connection_id);
+    if res < 0  then
+        mdaq_error(res)
+    end    
 
     //Give time to start DSP firmware
     sleep(200);
 
     %microdaq.dsp_loaded = %T;
-    result = client_connect(mdaq_get_ip(), 4344);
-    if result < 0 then
-        disp("ERROR: Unable to connect to MicroDAQ - reboot MicroDAQ device!")
-        %microdaq.dsp_loaded = %F;
-        return;
+    res = mlink_set_obj(link_id, 'ext_mode', 1 );
+
+    if argn(2) == 1 then
+        mdaq_close(link_id);
     end
 
+    if res == 0 then
+        result = client_connect(mdaq_get_ip(), 4344);
+        if result < 0 then
+            disp("ERROR: Unable to connect to MicroDAQ - reboot MicroDAQ device!")
+            %microdaq.dsp_loaded = %F;
+            return;
+        end
+        %microdaq.dsp_ext_mode = %T;
+    else
+        %microdaq.dsp_ext_mode = %F;
+    end
     result = 0;
-
 endfunction
