@@ -8,6 +8,8 @@
 	<refsynopsisdiv>
 		<title>Calling Sequence</title>
 		<synopsis>
+			data = mdaq_ai_read();
+			data = mdaq_ai_read(channels, ai_range, bipolar);
 			data = mdaq_ai_read(link_id, channels, ai_range, bipolar);
 		</synopsis>
 	</refsynopsisdiv>
@@ -15,30 +17,50 @@
 	<refsection id="Description_mdaq_ai_read">
 		<title>Description</title>
 		<para>
-			This function reads MicroDAQ AI inputs. User has to provide array with channels numbers to read. Analog inputs (AI) can accept 0-5V, 0-10V, ±5V, ±10V, voltage ranges are set depending on 'ai_range' and 'bipolar' parameters. In order to set ±5V or ±10V range 'bipolar' has to set to 1. 
+			This function reads MicroDAQ AI (analog inputs) channels. In order to select channels to read an array of channels has to be provided. Analog inputs (AI) can accept 0-5V, 0-10V, ±5V, ±10V, voltage ranges are set depending on 'ai_range' and 'bipolar' parameters. In order to set ±5V or ±10V range 'bipolar' has to set to %T, for single-ended AI configuration 'bipolar' parameter has to be set to %F. </para>
+        <para> 
+    For function usage description call function without parameters. In order to increase AI read performance call mdaq_ai_read with link_id (returned by mdaq_open()).
 		</para>
 	</refsection>  
   
 	<refsection id="Parameters_mdaq_ai_read">
 		<title>Parameters</title>
 		<itemizedlist>
-			<listitem><para><emphasis role="bold">link_id: </emphasis> Valid connection link ID</para></listitem>
+			<listitem><para><emphasis role="bold">link_id: </emphasis> Valid connection link ID (optional)</para></listitem>
 			<listitem><para><emphasis role="bold">channels: </emphasis> Single channel of array of channels number to read</para></listitem>
 			<listitem><para><emphasis role="bold">ai_range: </emphasis> Analog input range in volts (5 or 10)</para></listitem>
-			<listitem><para><emphasis role="bold">bipolar: </emphasis> Bipolar parameter, enter 1 to enable bipolar AI configuration, 0 to disable it</para></listitem>
+			<listitem><para><emphasis role="bold">bipolar: </emphasis> Bipolar parameter, %T - bipolar AI configuration, %F - single-ended AI configuration</para></listitem>
 			<listitem><para><emphasis role="bold">data:  </emphasis> Single value or array with AI voltage values</para></listitem>
 		</itemizedlist>
 	</refsection>
 	
 	<refsection>
         <title>Examples</title>
+        <para> Getting function usage description </para>
+
+        <programlisting role="example"><![CDATA[
+// show mdaq_ai_read usage description
+mdaq_ai_read
+ ]]></programlisting>
+        <para> Calling function without link_id </para>
         <programlisting role="example"><![CDATA[
 // mdaq_ai_read usage example
-link_id = mdaq_open();
-// read AI channels with range +/-10V
-ai_data = mdaq_ai_read(link_id, [1 2 3 4 5 6 7 8], 10, 1)
-mdaq_close(link_id);
+data = mdaq_ai_read([1 2 3 4 5 6 7 8], 10, %F);
+mprintf("ADC data: %f %f %f %f %f %f %f %f \n", data) 
  ]]></programlisting>
+
+        <para> Calling function with link_id for better performance </para>
+        <programlisting role="example"><![CDATA[
+// mdaq_ai_read usage example with link_id parameter
+con = mdaq_open();
+for i=1:1000
+    data = mdaq_ai_read(con, [1 2 3 4 5 6 7 8], 10, %F);
+    mprintf("ADC data: %f %f %f %f %f %f %f %f \n", data)
+end
+mdaq_close(con)
+ ]]></programlisting>
+
+ 
     </refsection>
 	
   <refsection id="SeeAlso_mdaq_ai_read">

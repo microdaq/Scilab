@@ -8,6 +8,8 @@
 	<refsynopsisdiv>
 		<title>Calling Sequence</title>
 		<synopsis>
+			mdaq_ao_write();
+			mdaq_ao_write(channels, data);
 			mdaq_ao_write(link_id, channels, data);
 		</synopsis>
 	</refsynopsisdiv>
@@ -15,7 +17,7 @@
 	<refsection id="Description_mdaq_ao_write">
 		<title>Description</title>
 		<para>
-			This function sets MicroDAQ AO outputs. User has to provide array with channels numbers which wants to set and accordingly data to set. 
+			This function sets MicroDAQ AO outputs. An array or single channel number has to be provided as a 'channels' parameter. The 'data' parameter contais AO voltage values.
 		</para>
 	</refsection>  
   
@@ -35,7 +37,7 @@
 link_id = mdaq_open();
 // write 2, 4, 6 , 8 AI channel with 1, 2, 3, 4 voltage value
 mdaq_ao_write(link_id, [2, 4, 6, 8], [1, 2, 3, 4]);
-mdaq_disconnect(link_id);
+mdaq_close(link_id);
  ]]></programlisting>
     </refsection>
 	
