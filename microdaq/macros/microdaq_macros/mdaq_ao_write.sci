@@ -36,7 +36,7 @@ function mdaq_ao_write(arg1, arg2, arg3)
     
     data_size = size(data, '*');
     if data_size <> ch_count then
-        disp("ERROR: Wrong data for selected AO channels!");
+        disp("ERROR: Wrong data for selected AO channels!');
         return; 
     end
     if argn(2) == 2 then

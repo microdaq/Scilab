@@ -25,7 +25,7 @@ function main_builder()
 // =============================================================================
 
   if ~isdef('tbx_build_loader') then
-    error(msprintf(gettext('%s module not installed.'), 'modules_manager'));
+    error(msprintf(gettext('%s module not installed."), 'modules_manager'));
   end
 
 
