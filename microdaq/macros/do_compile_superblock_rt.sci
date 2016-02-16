@@ -1015,7 +1015,7 @@ function  [ok,XX,alreadyran,flgcdgen,szclkINTemp,freof] = do_compile_superblock_
         [pathrp, fnamerp, extensionrp] = fileparts(rpat);
         ok = mkdir(pathrp, fnamerp+extensionrp) ;
         if ~ok then
-            message("Directory '+rpat+' cannot be created");
+            message('Directory '+rpat+' cannot be created');
         end
     elseif filetype(dirinfo(2))<>'Directory' then
         ok = %f;
