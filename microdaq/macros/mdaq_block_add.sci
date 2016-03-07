@@ -98,6 +98,7 @@ function mdaq_block_add(block_def)
     in_ports_string = [];
     out_ports_string = [];
     params_c_string = [];
+    params_sci_string = [];
 
     name_converted = convstr(block_def.name,'l');
     name_converted = strsubst(name_converted, ' ', '_');
@@ -224,6 +225,7 @@ function mdaq_block_add(block_def)
     '       model.evtin=1;';
     '       model.rpar=['+params_string5+'];';
     '       model.ipar=[];';
+
     '       model.dstate=[];';
     '       model.blocktype=''d'';';
     '       model.dep_ut=[%t %f];';
@@ -238,23 +240,36 @@ function mdaq_block_add(block_def)
     ];
 
     // =============================GENERATE SIM SCRIPT=====================================
+    
+    index = 0;
+    n_lines = 1;
+    l = 1;
+    for i = 1:n_lines:(params_size*n_lines)
+        params_sci_string(i+1) =  '    '+params_converted(l)+' = block.rpar('+string(index + 1)+');';
+        index = index + block_def.param_size(l);
+        l = l + 1;
+    end
     //  (block_def.name)_sim.sci script generator
     block_script_sim = [
     '// Generated with MicroDAQ toolbox ver: ' + mdaq_version() + '';
     'function block='+name_converted+'_sim(block,flag)';
-    'select flag';
-
-
-    '   case -5 // Error';
-    '   case 0 // Derivative State Update';
-    '   case 1 // Output Update';
-    '   case 2 // State Update';
-    '   case 3 // OutputEventTiming';
-    '   case 4 // Initialization';
-    '   case 5 // Ending';
-    '   case 6 // Re-Initialisation';
-    '   case 9 // ZeroCrossing';
-    '   else // Unknown flag';
+    '';
+    '    global %microdaq';
+    '    if %microdaq.dsp_loaded == %F then';
+    params_sci_string;
+    '    select flag';
+    '       case -5 // Error';
+    '       case 0 // Derivative State Update';
+    '       case 1 // Output Update';
+    '       case 2 // State Update';
+    '       case 3 // OutputEventTiming';
+    '       case 4 // Initialization';
+    '       case 5 // Ending';
+    '       case 6 // Re-Initialisation';
+    '       case 9 // ZeroCrossing';
+    '       else // Unknown flag';
+    '       break';
+    '    end';
     'end';
     'endfunction';
     ];
@@ -269,6 +284,7 @@ function mdaq_block_add(block_def)
     // =============================GENERATE C FILE =====================================
     l = 1;
     n_lines = 3;
+    index = 0; 
 
     if in_size > 0 then
         in_ports_string(1) = '    /* Block input ports */';
