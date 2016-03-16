@@ -35,9 +35,16 @@ function continueSimulation=pre_xcos_simulate(scs_m, needcompile)
 
                 result = client_connect(mdaq_ip_addr, 4344);
                 if result < 0 then
-                    disp("ERROR: Unable to connect to MicroDAQ - reboot device!")
+                    con = mdaq_open(); 
+                    result = mlink_set_obj(con, "ext_mode", 1);
+                    mdaq_close(con);
+                    if result == -25 then
+                        message("ERROR: Unable to connect - your are running model in Standalone mode!");
+                    else
+                        message("ERROR: Unable to connect to MicroDAQ - reboot device!")
+                        %microdaq.dsp_loaded = %F;
+                    end
                     continueSimulation = %F;
-                    %microdaq.dsp_loaded = %F;
                     break;
                 end
                 disp('### Starting model in Ext mode...');
@@ -46,6 +53,7 @@ function continueSimulation=pre_xcos_simulate(scs_m, needcompile)
     end
 
     if look_for_mdaq_blocks then
+        disp("### Running model in simulation mode... ")
         tmp = scs_m;
         scan_mdaq_blocks(tmp);
         if %microdaq.private.has_mdaq_block then
@@ -53,7 +61,8 @@ function continueSimulation=pre_xcos_simulate(scs_m, needcompile)
             if result > -1 then
                 %microdaq.private.connection_id = result; 
             else
-                disp("ERROR: Unable to connect - simulation will run without MicroDAQ blocks!");
+                message("ERROR: Unable to connect to MicroDAQ device!");
+                continueSimulation = %F;
                 %microdaq.private.connection_id = -1; 
             end
         end

@@ -18,7 +18,7 @@ function load_last_dsp_image()
                 mdaq_close(connection_id);
                 connection_id = mdaq_open();
                 if connection_id < 0 then
-                    message('ERROR: Unable to locate MicroDAQ device - check your setup!');
+                    message('ERROR: Unable to connect to MicroDAQ device - check your setup!');
                     return;
                 end
                 res = mlink_dsp_load(connection_id, dsp_app_path, '');
@@ -30,7 +30,11 @@ function load_last_dsp_image()
                 end
             end
 
-            disp('### Starting model on MicroDAQ...');
+            res = mlink_set_obj(connection_id, "ext_mode", 1);
+            if res == -25 then
+                disp('### Starting model in Standalone mode...');    
+            end
+
             res = mlink_dsp_start(connection_id);
             if res < 0 then
                 message("Unable to start DSP application!");
