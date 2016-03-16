@@ -71,3 +71,6 @@ all : $(PRODUCT)
 
 $(PRODUCT): $(OBJS)
 	$(CC) $(LDFLAGS) $(OBJS) $(CCOUTPUTFLAG)$(PRODUCT) 
+ifeq ($(DEBUG_BUILD), 1)
+	@$(STRIP) $(PRODUCT)
+endif

@@ -33,6 +33,8 @@ LDOUTPUTFLAG = --output_file=
 AR      = "$(CompilerRoot)/bin/ar6x"
 ARFLAGS = -r
 
+STRIP   = "$(CompilerRoot)/bin/strip6x"
+
 # Binary file format converter command and options
 OBJCOPY      = 
 OBJCOPYFLAGS = 
