@@ -1,5 +1,6 @@
 function continueSimulation=pre_xcos_simulate(scs_m, needcompile)
     global %microdaq;
+    %microdaq.private.has_mdaq_block = %F;
     continueSimulation = %T;
     look_for_mdaq_blocks = %T; 
 
@@ -53,10 +54,10 @@ function continueSimulation=pre_xcos_simulate(scs_m, needcompile)
     end
 
     if look_for_mdaq_blocks then
-        disp("### Running model in simulation mode... ")
         tmp = scs_m;
         scan_mdaq_blocks(tmp);
         if %microdaq.private.has_mdaq_block then
+            disp("### Running model in simulation mode... ")
             result = mdaq_open();
             if result > -1 then
                 %microdaq.private.connection_id = result; 
