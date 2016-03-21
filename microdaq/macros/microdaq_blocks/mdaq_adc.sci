@@ -6,10 +6,10 @@ function [x,y,typ] = mdaq_adc(job,arg1,arg2)
     "output(2) - measured value in volts";
     "";
     "Converter:";
-    "   ADC01 - 8 channel, 166ksps, 12-bit, ±10V range";
-    "   ADC02 - 8 channel, 166ksps, 16-bit, ±10V range";
-    "   ADC03 - 8 channel, 600ksps, 12-bit, ±10V range";
-    "   ADC04 - 16 channel, 600ksps, 12-bit, ±10V range";
+    "   ADC01 - 8 channel,  166ksps, 12/16-bit, ±10V range";
+    "   ADC02 - 8 channel,  600ksps, 12-bit, ±10V range";
+    "   ADC03 - 16 channel, 600ksps, 12-bit, ±10V range";
+    "   ADC04 - 8 channel,  500ksps, 16-bit, ±10V range";
     "   ADC05 - 16 channel, 500ksps, 16-bit, ±10V range";
     "";
     "Range: 5, 10";
@@ -23,6 +23,8 @@ function [x,y,typ] = mdaq_adc(job,arg1,arg2)
     "   1 - Differential";
     "";
     "Set block parameters:"];
+
+    adc_ch_lookup_table = [8,8,16,8,16];
 
     x=[];y=[];typ=[];
     select job
@@ -52,7 +54,7 @@ function [x,y,typ] = mdaq_adc(job,arg1,arg2)
                 'Mode:'],..
                 list('str',1,'vec',-1,'vec',1,'vec',1,'vec',1),exprs)
             end
-            
+
             if ~ok then
                 break
             end
@@ -69,20 +71,19 @@ function [x,y,typ] = mdaq_adc(job,arg1,arg2)
                 message("Wrong ADC converter selected!");
             end
 
-            global %microdaq; 
-            if adc_converter <> %microdaq.private.mdaq_hwid(2) & %microdaq.private.mdaq_hwid(3) > 0 then 
+            global %microdaq;
+            if adc_converter <> %microdaq.private.mdaq_hwid(2) & %microdaq.private.mdaq_hwid(3) > 0 then
                 message("Selected ADC converter is different than detected - run mdaq_hwinfo() for more details!");
             end
 
-
             n_channels = size(adc_channels);
-            if (adc_converter < 4 & n_channels(2) > 8) | (adc_converter > 3 & n_channels(2) > 16) then
+            if n_channels(2) > adc_ch_lookup_table(adc_converter) then
                 ok = %f;
                 error_msg = 'Too many channels selected for ADC0' + string(adc_converter) + '!';
                 message(error_msg);
             end
 
-            if (adc_converter < 4 & max(adc_channels) > 8) | (adc_converter > 3 & max(adc_channels) > 16) then
+            if max(adc_channels) > adc_ch_lookup_table(adc_converter) then
                 ok = %f;
                 error_msg = 'Wrong channel number selected for ADC0' + string(adc_converter) + '!';
                 message(error_msg);
@@ -101,23 +102,32 @@ function [x,y,typ] = mdaq_adc(job,arg1,arg2)
 
             if adc_polarity < 1 | adc_polarity > 2 then
                 ok = %f;
-                message("Wrong ADC range selected - use 5 or 10!");
+                message("Wrong polarity selected - use 1 or 2!");
             else
-                if adc_converter > 2 & adc_polarity == 1 then
+                if adc_converter > 1 & adc_polarity == 1 then
                     ok = %f;
                     message("This converter doesn''t support unipolar mode!");
                 end
             end
-            
+
             if adc_mode <> 0 & adc_mode <> 1 then
                 ok = %f;
                 message("Wrong ADC mode selected - use 0 or 1 to set single-ended or differential mode!");
             end
-            
+
+            if adc_mode == 1 & adc_converter <> 1 then
+                message("This converter dones''t support differential mode!")
+                of=%f;
+            end
+
+            if adc_mode == 1 & adc_converter == 1 & max(adc_channels) > (adc_ch_lookup_table(adc_converter) / 2)  then
+                message("Wrong channel number - in differential mode 1-4 channels can be used!")
+            end
+
             if ok then
                 [model,graphics,ok] = check_io(model,graphics, [], [n_channels(2),n_channels(2)], 1, []);
                 graphics.exprs = exprs;
-                model.rpar = []; 
+                model.rpar = [];
                 model.ipar = [adc_converter;adc_range;adc_polarity;adc_mode;n_channels(2);adc_channels'];
                 model.dstate = [];
                 x.graphics = graphics;
@@ -125,7 +135,6 @@ function [x,y,typ] = mdaq_adc(job,arg1,arg2)
                 break;
             end
         end
-
     case 'define' then
         adc_converter_str = [];
         adc_converter = 1;
