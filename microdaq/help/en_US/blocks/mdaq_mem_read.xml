@@ -11,7 +11,7 @@ xml:id="mdaq_mem_read">
         <refname>mdaq_mem_read</refname>
         <refpurpose>
 		
-		Block short descritpion
+		Reads MicroDAQ memory
 		
 		</refpurpose>
     </refnamediv>
@@ -29,7 +29,19 @@ xml:id="mdaq_mem_read">
         <title>Description</title>
         <para>
 		
-		Block detailed descritpion
+		This block reads MicroDAQ volatile memory. Block can be used 
+		to pass data to Standalone or Ext application generated from
+		Xcos diagram. User has to provide 'Start index' which points to 
+		beginning or memory area. The 'Size' block parameter defines 
+		overall size of the memory which block reads data from. 
+		'Vector size' defines size of signal read by block. The 'Init
+		value' parameter allows user to initialize memory with provided 
+		value. The last parameter determines how data will be read - 
+		if "Circular" is enabled (value 1) block returns data in every 
+		model step, if the end of memory region is reached blocks starts from 
+		beginning or the memory area. If 'Circular' is disabled block returns data in every 
+		model step, if the end of memory region is reached block returns value from 
+		the end of memory region. 
 		
 		</para>
     </refsection>
@@ -38,20 +50,15 @@ xml:id="mdaq_mem_read">
         <title>Block Input/Output ports</title>
 		<para>
 		
-		Block IO ports descritpion
+		<member><para>output(1) - data from MicroDAQ memory</para></member>
 		
 		</para>
     
 	</refsection>
-    <refsection id="SeeAlso_mdaq_mem_read">
+<refsection id="SeeAlso_mdaq_dio_set">
         <title>See Also</title>
         <simplelist type="inline">
-            <member>
-                <link linkend="__COR_BLOCK__">__COR_BLOCK__</link> : corresponding MicroDAQ functionnality
-            </member>
-            <member>
-                <link type="scilab" linkend="scilab.help/sum">Link to the Scilab help page</link>
-            </member>
+			<member> <link linkend="mdaq_mem_write">mdaq_mem_write</link> : Writes data to MicroDAQ memory</member>
         </simplelist>
     </refsection>
 </refentry>

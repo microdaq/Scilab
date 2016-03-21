@@ -29,7 +29,7 @@ xml:id="mdaq_dio_get">
         <title>Description</title>
         <para>
 		
-		This block reads MicroDAQ DIO state. If DIO isn't configured as an input, value returned by block will be invalid.
+		This block reads MicroDAQ DIO state. If DIO isn't configured as an input or has alternative function enabled value returned by block will be invalid.
 		
 		</para>
 		<para>This block can be used in host simulation mode and for code generation.</para>

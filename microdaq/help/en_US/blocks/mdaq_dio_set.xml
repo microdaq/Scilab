@@ -29,7 +29,7 @@ xml:id="mdaq_dio_set">
         <title>Description</title>
         <para>
 		
-		This block sets MicroDAQ DIO output state. 'DIO init state' and 'DIO end state' allows to set DIO state after model load action and after model execution end.
+		This block sets MicroDAQ DIO output state. 'DIO init state' and 'DIO end state' allows to set DIO state after model load action and after model termination.
 		
 		</para>
 		<para>This block can be used in host simulation mode and for code generation.</para>
