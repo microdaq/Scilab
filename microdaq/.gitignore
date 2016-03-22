@@ -11,8 +11,10 @@ macros/microdaq_blocks/names
 macros/microdaq_macros/lib
 macros/microdaq_macros/names
 macros/user_blocks/
-etc/sysbios/src/
-etc/sysbios/configPkg/
+etc/sysbios/cpu0/src/
+etc/sysbios/cpu0/configPkg/
+etc/sysbios/cpu1/src/
+etc/sysbios/cpu1/configPkg/
 src/c/mdaq_ccs/mdaq/Debug/
 src/c/mdaq_ccs/mdaq/Release/
 images/h5/*.h5

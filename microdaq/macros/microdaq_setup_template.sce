@@ -103,28 +103,23 @@ function [] = setup_callback ()
     //build system
     TARGET_ROOT = dirname(get_function_path('microdaq_setup'))+"\..\etc";
     FILE_ROOT = dirname(get_function_path('microdaq_setup'))+"\..\rt_templates\target_paths.mk"
-
-    cd(TARGET_ROOT+'\sysbios');
-    
-    global %microdaq; 
-    if %microdaq.private.mdaq_hwid(4) == 1 then
-        sysbios_config_file = " sysbios_456.cfg";
-    else
-        sysbios_config_file = " sysbios.cfg";
-    end
        
     sysbios_build_cmd = "SET PATH=" + XDCRoot + filesep() + "jre" + filesep() + "bin" + filesep() +";%PATH% & ";
-    sysbios_build_cmd = sysbios_build_cmd + XDCRoot + filesep() + 'xs --xdcpath=""' + BIOSRoot + '/packages;' + CCSRoot + '/ccs_base;""' + ' xdc.tools.configuro -o configPkg -t ti.targets.elf.C674 -p ti.platforms.evmOMAPL137 -r release -c ' + CompilerRoot + ' --compileOptions ""-g --optimize_with_debug""' + sysbios_config_file
+    sysbios_build_cmd = sysbios_build_cmd + XDCRoot + filesep() + 'xs --xdcpath=""' + BIOSRoot + '/packages;' + CCSRoot + '/ccs_base;""' + ' xdc.tools.configuro -o configPkg -t ti.targets.elf.C674 -p ti.platforms.evmOMAPL137 -r release -c ' + CompilerRoot + ' --compileOptions ""-g --optimize_with_debug""  sysbios.cfg'
+
     disp("Building TI SYS/BIOS real-time operating system for MicroDAQ");
+    cd( TARGET_ROOT+ filesep() + 'sysbios' + filesep() + 'cpu0' + filesep());
+    unix_w(sysbios_build_cmd);
+    cd( TARGET_ROOT+ filesep() + 'sysbios' + filesep() + 'cpu1' + filesep());
     unix_w(sysbios_build_cmd);
 
-
     //path to /configPkg/linker.cmd
-    LINKER_PATH = TARGET_ROOT + '\sysbios\configPkg\linker.cmd';
+    LINKER0_PATH = TARGET_ROOT + '\sysbios\cpu0\configPkg\linker.cmd';
+    LINKER1_PATH = TARGET_ROOT + '\sysbios\cpu1\configPkg\linker.cmd';
 
-    if isfile(LINKER_PATH) then
-
-        [linker,err] = mopen(LINKER_PATH,'a')
+    if isfile(LINKER0_PATH) then
+        [linker0,err] = mopen(LINKER0_PATH,'a')
+        [linker1,err] = mopen(LINKER1_PATH,'a')
         if err < 0 then
             messagebox('Building failed.','Building sys','error');
             set(h(22),'callback','close_callback','String','Close','Enable','on');
@@ -134,8 +129,10 @@ function [] = setup_callback ()
             [sysbios_linker,err] = mopen(SYSBIOS_LINKER_PATH, 'r');
             content = mgetl(sysbios_linker);
             mclose(sysbios_linker)
-            mputl(content,linker)
-            mclose(linker);
+            mputl(content,linker0)
+            mputl(content,linker1)
+            mclose(linker0);
+            mclose(linker1);
 
             //Generate 'target_path.mk'
             [f,result0] = mopen(FILE_ROOT,'w');

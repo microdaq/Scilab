@@ -2825,7 +2825,7 @@ endfunction
 // Modified for RT purposes by Roberto Bucher - RTAI Team
 // roberto.bucher@supsi.ch
 function Makename=rt_gen_make(name,files,libs,standalone,debug_build,SMCube_filelist)
-
+	global %microdaq
     Makename=rpat+'/Makefile';
 
     MICRODAQ_ROOT = dirname(get_function_path('do_compile_superblock_rt'))+"\..\";
@@ -2857,6 +2857,7 @@ function Makename=rt_gen_make(name,files,libs,standalone,debug_build,SMCube_file
     T=strsubst(T,'$$USERLIB$$',USERLIB);
     T=strsubst(T,'$$SCILABLIB$$',SCILABLIB);
     T=strsubst(T,'$$SMCUBE_FILES$$',SMCube_mk_files(SMCube_filelist));
+	T=strsubst(T,'$$CPUOPT$$','cpu' + string(%microdaq.private.mdaq_hwid(4)));
     
     if( debug_build == %T)
         T=strsubst(T,'$$BUILD_MODE%%','-g');
