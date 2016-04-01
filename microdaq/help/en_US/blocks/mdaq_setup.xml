@@ -11,7 +11,7 @@ xml:id="mdaq_setup">
         <refname>mdaq_setup</refname>
         <refpurpose>
 		
-		Block short descritpion
+		Configures Xcos model for MicroDAQ
 		
 		</refpurpose>
     </refnamediv>
@@ -28,30 +28,30 @@ xml:id="mdaq_setup">
     <refsection id="Description_mdaq_setup">
         <title>Description</title>
         <para>
-		
-		Block detailed descritpion
-		
+		This block configures Xcos model properties. In order to generate model for MicroDAQ DSP this block must be placed on 
+		Xcos diagram.
+		</para>
+		<para>
+		'Duration' block parameter determines model execution time in seconds, if -1 is provided model will run infinitely. 
+		The 'Duration' parameter is ignored (runs infinitely) if 'Standalone' model mode is selected. 'Build' parameter
+		controls compiler options related to optimization - if 'Debug' is selected model is compiled without optimization 
+		and with debug symbols. If 'Release' is seleceted model is compiled with optimization (-O2).
+		'Mode' parameter configures model type. When 'Standalone' mode is selected generated DSP application will 
+		work as a standalone application on MicroDAQ device. If 'Ext' mode is selected resulting DSP application created from 
+		Xcos model exchange data with Scilab - this mode shall be used if one wants to analize live data from model 
+		running on MicroDAQ DSP core. 'Profiling' parameters allows to enable model execution time measurements - model execution 
+		profiling. 'Solver' parameters determines solver used for Continuous-Time Models. Three solvers are available: ODE1, ODE2, ODE4.
+				
 		</para>
     </refsection>
 	
-	<refsection id="InputOutput_mdaq_setup">
-        <title>Block Input/Output ports</title>
-		<para>
-		
-		Block IO ports descritpion
-		
-		</para>
-    
-	</refsection>
     <refsection id="SeeAlso_mdaq_setup">
         <title>See Also</title>
         <simplelist type="inline">
             <member>
-                <link linkend="__COR_BLOCK__">__COR_BLOCK__</link> : corresponding MicroDAQ functionnality
+                <link linkend="mdaq_signal">mdaq_signal</link> : reads signal data from MicroDAQ DSP application
             </member>
-            <member>
-                <link type="scilab" linkend="scilab.help/sum">Link to the Scilab help page</link>
-            </member>
+
         </simplelist>
     </refsection>
 </refentry>

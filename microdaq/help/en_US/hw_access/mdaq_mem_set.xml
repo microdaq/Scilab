@@ -8,7 +8,9 @@
 	<refsynopsisdiv>
 		<title>Calling Sequence</title>
 		<synopsis>
-			mdaq_mem_set(start_idx, data)
+			mdaq_mem_set()
+			mdaq_mem_set(start, data)
+			mdaq_mem_set(link_id, start, data)
 		</synopsis>
 	</refsynopsisdiv>
 	
@@ -23,8 +25,9 @@
 	<refsection id="Parameters___FUNC_NAME__">
 		<title>Parameters</title>
 		<itemizedlist>
-			<listitem><para><emphasis role="bold">out1: </emphasis> DESC </para></listitem>
-			<listitem><para><emphasis role="bold">arg1: </emphasis> DESC </para></listitem>
+			<listitem><para><emphasis role="bold">link_id: </emphasis> Valid connection link ID (optional) </para></listitem>
+			<listitem><para><emphasis role="bold">start: </emphasis> MicroDAQ memory start index </para></listitem>
+			<listitem><para><emphasis role="bold">data: </emphasis> Data to be written to MicroDAQ memory </para></listitem>
 		</itemizedlist>
 	</refsection>
 	
@@ -32,7 +35,9 @@
         <title>Examples</title>
         <programlisting role="example"><![CDATA[
 // mdaq_mem_set usage example
-//
+// write 10 values to MicroDAQ memory at the index 5
+data = ones(1, 10);
+mdaq_mem_set(5, data);
  ]]></programlisting>
     </refsection>
 	

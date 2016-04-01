@@ -11,7 +11,7 @@ xml:id="mdaq_uart_config">
         <refname>mdaq_uart_config</refname>
         <refpurpose>
 		
-		Block short descritpion
+		Configures UART interface
 		
 		</refpurpose>
     </refnamediv>
@@ -29,29 +29,10 @@ xml:id="mdaq_uart_config">
         <title>Description</title>
         <para>
 		
-		Block detailed descritpion
+		This block configures UART serial interface. Base on block parameters in configures: module number, baud rate, number of data bits, parity, number of stop bits and flow control.  
 		
 		</para>
     </refsection>
 	
-	<refsection id="InputOutput_mdaq_uart_config">
-        <title>Block Input/Output ports</title>
-		<para>
-		
-		Block IO ports descritpion
-		
-		</para>
-    
-	</refsection>
-    <refsection id="SeeAlso_mdaq_uart_config">
-        <title>See Also</title>
-        <simplelist type="inline">
-            <member>
-                <link linkend="__COR_BLOCK__">__COR_BLOCK__</link> : corresponding MicroDAQ functionnality
-            </member>
-            <member>
-                <link type="scilab" linkend="scilab.help/sum">Link to the Scilab help page</link>
-            </member>
-        </simplelist>
-    </refsection>
+
 </refentry>

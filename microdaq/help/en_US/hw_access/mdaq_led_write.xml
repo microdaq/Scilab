@@ -8,7 +8,9 @@
 	<refsynopsisdiv>
 		<title>Calling Sequence</title>
 		<synopsis>
-			mdaq_led_write(link_id, led, state);
+			mdaq_led_write()
+			mdaq_led_write(led, state)
+			mdaq_led_write(link_id, led, state)
 		</synopsis>
 	</refsynopsisdiv>
 	
@@ -22,7 +24,7 @@
 	<refsection id="Parameters_mdaq_led_write">
 		<title>Parameters</title>
 		<itemizedlist>
-			<listitem><para><emphasis role="bold">link_id: </emphasis> Valid connection link ID</para></listitem>
+			<listitem><para><emphasis role="bold">link_id: </emphasis> Valid connection link ID (optional)</para></listitem>
 			<listitem><para><emphasis role="bold">led: </emphasis> LED number (1 or 2)</para></listitem>
 			<listitem><para><emphasis role="bold">state: </emphasis> LED state (value different than 0 will ON selected LED)</para></listitem>
 		</itemizedlist>

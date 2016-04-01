@@ -8,6 +8,8 @@
 	<refsynopsisdiv>
 		<title>Calling Sequence</title>
 		<synopsis>
+			mdaq_key_read()
+		    state = mdaq_key_read(func_key)
 			state = mdaq_key_read(link_id, func_key)
 		</synopsis>
 	</refsynopsisdiv>
@@ -22,7 +24,7 @@
 	<refsection id="Parameters_mdaq_key_read">
 		<title>Parameters</title>
 		<itemizedlist>
-			<listitem><para><emphasis role="bold">link_id: </emphasis> Valid connection link ID</para></listitem>
+			<listitem><para><emphasis role="bold">link_id: </emphasis> Valid connection link ID (optional)</para></listitem>
 			<listitem><para><emphasis role="bold">func_key: </emphasis> Function key number (1 or 2)</para></listitem>
 			<listitem><para><emphasis role="bold">state: </emphasis> Function key state</para></listitem>
 		</itemizedlist>
@@ -32,14 +34,12 @@
         <title>Examples</title>
         <programlisting role="example"><![CDATA[
 // mdaq_key_read usage example
-link_id = mdaq_open(); 
-while mdaq_key_read(link_id, 1) == 0
+while mdaq_key_read(link_id, 1) == %F
 	// keep led on until F1 isn't pressed
-	mdaq_led_write(link_id, 1, 1)
+	mdaq_led_write(1, %T)
 	sleep(100);
 end
-mdaq_led_write(link_id, 1, 0)
-mdaq_close(link_id)
+mdaq_led_write(1, %F)
  ]]></programlisting>
     </refsection>
 	

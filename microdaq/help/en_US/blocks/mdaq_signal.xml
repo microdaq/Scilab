@@ -11,7 +11,7 @@ xml:id="mdaq_signal">
         <refname>mdaq_signal</refname>
         <refpurpose>
 		
-		Block short descritpion
+		Reads signal data from MicroDAQ DSP application
 		
 		</refpurpose>
     </refnamediv>
@@ -29,7 +29,13 @@ xml:id="mdaq_signal">
         <title>Description</title>
         <para>
 		
-		Block detailed descritpion
+		This block reads signal data from DSP application generated from Xcos model. Block can be used for code generation and in 
+		simulation mode. In simulation mode block copies its input to output. In case of code generation mode block reads data 
+		from DSP application running on MicroDAQ. Block works only in Ext mode where data exchange between MicroDAQ and Scilab is 
+		done. In order to read signal data from application running on MicroDAQ DSP 'SIGNAL' block has to be placed before 
+		block sink block e.g. scope block. User has to provide unique 'Signal ID' block parameter for every 'SIGNAL' block 
+		placed on Xcos diagram. If Xcos generated DSP application is used with DSP managment macros or LabVIEW 'Signal ID' parameter
+		value is used.
 		
 		</para>
     </refsection>
@@ -38,7 +44,8 @@ xml:id="mdaq_signal">
         <title>Block Input/Output ports</title>
 		<para>
 		
-		Block IO ports descritpion
+		<member><para>input(1) - signal data input</para></member>
+		<member><para>output(1) - signal data output</para></member>
 		
 		</para>
     
@@ -47,10 +54,7 @@ xml:id="mdaq_signal">
         <title>See Also</title>
         <simplelist type="inline">
             <member>
-                <link linkend="__COR_BLOCK__">__COR_BLOCK__</link> : corresponding MicroDAQ functionnality
-            </member>
-            <member>
-                <link type="scilab" linkend="scilab.help/sum">Link to the Scilab help page</link>
+                <link linkend="mdaq_setup">mdaq_setup</link> : configures Xcos model for MicroDAQ
             </member>
         </simplelist>
     </refsection>

@@ -11,7 +11,7 @@ xml:id="mdaq_pru_reg_get">
         <refname>mdaq_pru_reg_get</refname>
         <refpurpose>
 		
-		Block short descritpion
+		Gets PRU register value
 		
 		</refpurpose>
     </refnamediv>
@@ -29,7 +29,7 @@ xml:id="mdaq_pru_reg_get">
         <title>Description</title>
         <para>
 		
-		Block detailed descritpion
+		This block reads MicroDAQ PRU (additional real-time processing units) registers.
 		
 		</para>
     </refsection>
@@ -38,7 +38,7 @@ xml:id="mdaq_pru_reg_get">
         <title>Block Input/Output ports</title>
 		<para>
 		
-		Block IO ports descritpion
+		<member><para>output(1) - PRU register value</para></member>
 		
 		</para>
     
@@ -46,12 +46,7 @@ xml:id="mdaq_pru_reg_get">
     <refsection id="SeeAlso_mdaq_pru_reg_get">
         <title>See Also</title>
         <simplelist type="inline">
-            <member>
-                <link linkend="__COR_BLOCK__">__COR_BLOCK__</link> : corresponding MicroDAQ functionnality
-            </member>
-            <member>
-                <link type="scilab" linkend="scilab.help/sum">Link to the Scilab help page</link>
-            </member>
+<member> <link linkend="mdaq_pru_reg_set">mdaq_pru_reg_set</link> : Sets PRU register value</member>
         </simplelist>
     </refsection>
 </refentry>

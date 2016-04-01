@@ -8,7 +8,9 @@
 	<refsynopsisdiv>
 		<title>Calling Sequence</title>
 		<synopsis>
-			mdaq_pwm_init(link_id, module, period, active_low, channel_a, channel_b);
+			mdaq_pwm_init()
+			mdaq_pwm_init(module, period, active_low)
+			mdaq_pwm_init(link_id, module, period, active_low)
 		</synopsis>
 	</refsynopsisdiv>
 	
@@ -22,12 +24,11 @@
 	<refsection id="Parameters_mdaq_pwm_init">
 		<title>Parameters</title>
 		<itemizedlist>
-			<listitem><para><emphasis role="bold">link_id: </emphasis> Valid connection link ID </para></listitem>
+			<listitem><para><emphasis role="bold">link_id: </emphasis> Valid connection link ID (optional) </para></listitem>
 			<listitem><para><emphasis role="bold">module: </emphasis> PWM module number (1, 2, or 3) </para></listitem>
-			<listitem><para><emphasis role="bold">period: </emphasis> PWM module period defined in microseconds</para></listitem>
-			<listitem><para><emphasis role="bold">active_low: </emphasis> Generate inverted PWM waveform (1 - enable, 0 - disable) </para></listitem>
-			<listitem><para><emphasis role="bold">channel_a: </emphasis> PWM channel A initial duty </para></listitem>
-			<listitem><para><emphasis role="bold">channel_b: </emphasis> PWM channel B initial duty </para></listitem>
+			<listitem><para><emphasis role="bold">period: </emphasis> PWM module period in microseconds (1-1000000)</para></listitem>
+			<listitem><para><emphasis role="bold">active_low: </emphasis> Generate inverted PWM waveform (%T/%F to enable or disable) </para></listitem>
+
 		</itemizedlist>
 	</refsection>
 	
@@ -37,7 +38,7 @@
 // mdaq_pwm_init usage example
 link_id = mdaq_open();
 // setup PWM1 to 1khz period and initial duty for A and B channel to 0 
-mdaq_pwm_init(link_id, 1, 1000, 0, 0, 0)
+mdaq_pwm_init(link_id, 1, 1000, %F)
 // set PWM1 duty channel A to 25% ane channel B to 50%
 mdaq_pwm_write(link_id, 1, 25, 50)
 mdaq_close(link_id)

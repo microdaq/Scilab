@@ -8,7 +8,9 @@
 	<refsynopsisdiv>
 		<title>Calling Sequence</title>
 		<synopsis>
-			[data,result] = mdaq_mem_get(start_index, data_size, vector_size)
+			mdaq_mem_get()
+			data = mdaq_mem_get(start, size, vec_size)
+			data = mdaq_mem_get(link_id, start, size, vec_size)
 		</synopsis>
 	</refsynopsisdiv>
 	
@@ -23,11 +25,12 @@
 	<refsection id="Parameters___FUNC_NAME__">
 		<title>Parameters</title>
 		<itemizedlist>
-			<listitem><para><emphasis role="bold">data: </emphasis> Data written by MEM Write block </para></listitem>
-			<listitem><para><emphasis role="bold">result: </emphasis> Read result </para></listitem>
-			<listitem><para><emphasis role="bold">start_index: </emphasis> Memory start index </para></listitem>
-			<listitem><para><emphasis role="bold">data_size: </emphasis> Data size to be downloaded </para></listitem>
-			<listitem><para><emphasis role="bold">vector_size: </emphasis> Data vector size </para></listitem>
+			
+			<listitem><para><emphasis role="bold">link_id: </emphasis> Valid connection link ID (optional) </para></listitem>
+			<listitem><para><emphasis role="bold">start: </emphasis> MicroDAQ memory start index </para></listitem>
+			<listitem><para><emphasis role="bold">size: </emphasis> Data size to be downloaded </para></listitem>
+			<listitem><para><emphasis role="bold">vec_size: </emphasis> Data vector size </para></listitem>
+		    <listitem><para><emphasis role="bold">data: </emphasis> Resulting data </para></listitem>
 		</itemizedlist>
 	</refsection>
 	
@@ -35,7 +38,9 @@
         <title>Examples</title>
         <programlisting role="example"><![CDATA[
 // mdaq_mem_get usage example
-//
+// read 10 values from memory index 5
+mdaq_mem_get(5, 10, 10);
+
  ]]></programlisting>
     </refsection>
 	

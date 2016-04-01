@@ -27,9 +27,9 @@
 	<refsection id="Parameters_mdaq_dio_write">
 		<title>Parameters</title>
 		<itemizedlist>
-			<listitem><para><emphasis role="bold">link_id: </emphasis> Valid connection link ID</para></listitem>
+			<listitem><para><emphasis role="bold">link_id: </emphasis> Valid connection link ID (optional)</para></listitem>
 			<listitem><para><emphasis role="bold">dio: </emphasis> DIO pin number (E1xxx series 1 to 32, E2xxx series 1 to 16 ) </para></listitem>
-			<listitem><para><emphasis role="bold">state: </emphasis> DIO pin state (value different then 0 will set HIGH) </para></listitem>
+			<listitem><para><emphasis role="bold">state: </emphasis> DIO pin state (%T/%F or 1/other then 1) </para></listitem>
 		</itemizedlist>
 	</refsection>
 	

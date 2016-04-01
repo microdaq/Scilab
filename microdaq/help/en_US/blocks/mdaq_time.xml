@@ -6,12 +6,12 @@ xmlns:ns5="http://www.w3.org/1999/xhtml"
 xmlns:mml="http://www.w3.org/1998/Math/MathML" 
 xmlns:db="http://docbook.org/ns/docbook" 
 version="5.0-subset Scilab" 
-xml:id="mdaq_uart_write">
+xml:id="mdaq_time">
     <refnamediv>
-        <refname>mdaq_uart_write</refname>
+        <refname>mdaq_time</refname>
         <refpurpose>
 		
-		Writes data to UART
+		Returns current time
 		
 		</refpurpose>
     </refnamediv>
@@ -20,27 +20,20 @@ xml:id="mdaq_uart_write">
         <para>
             <inlinemediaobject>
                 <imageobject>
-                    <imagedata align="center" fileref="../../../images/gif/mdaq_uart_write.gif" valign="middle"/>
+                    <imagedata align="center" fileref="../../../images/gif/mdaq_time.gif" valign="middle"/>
                 </imageobject>
             </inlinemediaobject>
         </para>
     </refsection>
-    <refsection id="Description_mdaq_uart_write">
+    <refsection id="Description_mdaq_stop">
         <title>Description</title>
         <para>
 		
-		This block writes data to MicroDAQ serial port (UART). In order to use block UART port has to be configured with UART Config block.
+		This block return current execution time. Initial model execution time is 0.0. Time execution time is 
+		increased on every model step with defined model step time. 
 		
 		</para>
     </refsection>
 	
-	<refsection id="InputOutput_mdaq_uart_write">
-        <title>Block Input/Output ports</title>
-		<para>
-		
-		<member><para>input(1) - data to be written to UART</para></member>
-		
-		</para>
-    
-	</refsection>
+
 </refentry>

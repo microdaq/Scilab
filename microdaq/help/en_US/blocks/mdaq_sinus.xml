@@ -11,7 +11,7 @@ xml:id="mdaq_sinus">
         <refname>mdaq_sinus</refname>
         <refpurpose>
 		
-		Block short descritpion
+		Sinusoidal waveform generator
 		
 		</refpurpose>
     </refnamediv>
@@ -29,7 +29,7 @@ xml:id="mdaq_sinus">
         <title>Description</title>
         <para>
 		
-		Block detailed descritpion
+		This block generates sinusoidal waveform.
 		
 		</para>
     </refsection>
@@ -37,21 +37,11 @@ xml:id="mdaq_sinus">
 	<refsection id="InputOutput_mdaq_sinus">
         <title>Block Input/Output ports</title>
 		<para>
+		<member><para>output(1) - sinusoidal waveform data</para></member>
 		
-		Block IO ports descritpion
 		
 		</para>
     
 	</refsection>
-    <refsection id="SeeAlso_mdaq_sinus">
-        <title>See Also</title>
-        <simplelist type="inline">
-            <member>
-                <link linkend="__COR_BLOCK__">__COR_BLOCK__</link> : corresponding MicroDAQ functionnality
-            </member>
-            <member>
-                <link type="scilab" linkend="scilab.help/sum">Link to the Scilab help page</link>
-            </member>
-        </simplelist>
-    </refsection>
+
 </refentry>

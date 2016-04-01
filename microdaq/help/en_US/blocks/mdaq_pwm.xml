@@ -11,7 +11,7 @@ xml:id="mdaq_pwm">
         <refname>mdaq_pwm</refname>
         <refpurpose>
 		
-		Block short descritpion
+		Sets PWM outputs
 		
 		</refpurpose>
     </refnamediv>
@@ -29,7 +29,8 @@ xml:id="mdaq_pwm">
         <title>Description</title>
         <para>
 		
-		Block detailed descritpion
+		This block controls MicroDAQ PWM modules. One of three PWM modules can be selected (PWM1, PWM2, PWM3), PWM period is defined with 1us resolution, 
+		'Polarity' parameters allows generate inverted PWM waveform. Block inputs range is 0-100 (duty in %). 
 		
 		</para>
     </refsection>
@@ -37,21 +38,16 @@ xml:id="mdaq_pwm">
 	<refsection id="InputOutput_mdaq_pwm">
         <title>Block Input/Output ports</title>
 		<para>
+		<member><para>
+			input(1) - PWM A channel waveform duty
+		</para></member>
 		
-		Block IO ports descritpion
-		
+		<member><para>
+			input(2) - PWM B channel waveform duty
+		</para></member>
+	
 		</para>
     
 	</refsection>
-    <refsection id="SeeAlso_mdaq_pwm">
-        <title>See Also</title>
-        <simplelist type="inline">
-            <member>
-                <link linkend="__COR_BLOCK__">__COR_BLOCK__</link> : corresponding MicroDAQ functionnality
-            </member>
-            <member>
-                <link type="scilab" linkend="scilab.help/sum">Link to the Scilab help page</link>
-            </member>
-        </simplelist>
-    </refsection>
+
 </refentry>

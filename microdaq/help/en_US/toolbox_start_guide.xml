@@ -14,6 +14,21 @@ Generated DSP application can be used with Scilab script. Module provides macros
 MicroDAQ module simplifies development of real-time control measurements applications, together with MicroDAQ hardware platform gives „out of the box” experience and can be an alternative to expensive commercial systems.</para>
 	</refsection>
 
+	<refsection id="Parameters_introduction">
+	<title>MicroDAQ resources</title>
+		<para> MicroDAQ useful links: 
+			<simplelist type="inline">
+			<para><ulink url="https://github.com/microdaq">MicroDAQ software on GitHub</ulink></para>
+			<para><ulink url="https://github.com/microdaq/MLink">MicroDAQ firmware and host software</ulink></para>
+			<para><ulink url="https://github.com/microdaq/LabVIEW">LabVIEW support package</ulink></para>
+			<para><ulink url="https://github.com/microdaq/Matlab">Matlab support package</ulink></para>
+			<para><ulink url="https://www.youtube.com/channel/UCpfNdP1JK0mM0zr2pJkuYIA">MicroDAQ YouTube channel</ulink></para>
+			</simplelist>
+		</para>
+		<para> MicroDAQ toolbox combines Scilab/XCos environment with Embedded Solutions MicroDAQ real-time control measurement system equipped with TI C6000 DSP. Module extends Scilab by allowing user to automatically generate DSP applications directly from XCos scheme. User can use custom XCos blocks which gives access to MicroDAQ hardware (ADC, DAC, DIO, PWM, UART, Quadrature Encoder). Generated DSP application utilizes SYS/BIOS real-time operating system combined with code generated from XCos scheme. </para>
+	</refsection>
+	
+	
 	<refsection id="SeeAlso_introduction">
 		<title>MicroDAQ device setup</title>
 		<para>

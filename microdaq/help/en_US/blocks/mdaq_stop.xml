@@ -11,7 +11,7 @@ xml:id="mdaq_stop">
         <refname>mdaq_stop</refname>
         <refpurpose>
 		
-		Block short descritpion
+		Ends model execution
 		
 		</refpurpose>
     </refnamediv>
@@ -29,29 +29,10 @@ xml:id="mdaq_stop">
         <title>Description</title>
         <para>
 		
-		Block detailed descritpion
+		This block ends model execution on MicroDAQ DSP. Block can be used in 'Ext' and 'Standalone' mode applications.
 		
 		</para>
     </refsection>
 	
-	<refsection id="InputOutput_mdaq_stop">
-        <title>Block Input/Output ports</title>
-		<para>
-		
-		Block IO ports descritpion
-		
-		</para>
-    
-	</refsection>
-    <refsection id="SeeAlso_mdaq_stop">
-        <title>See Also</title>
-        <simplelist type="inline">
-            <member>
-                <link linkend="__COR_BLOCK__">__COR_BLOCK__</link> : corresponding MicroDAQ functionnality
-            </member>
-            <member>
-                <link type="scilab" linkend="scilab.help/sum">Link to the Scilab help page</link>
-            </member>
-        </simplelist>
-    </refsection>
+
 </refentry>

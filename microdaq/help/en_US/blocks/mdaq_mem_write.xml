@@ -29,8 +29,21 @@ xml:id="mdaq_mem_write">
         <title>Description</title>
         <para>
 		
-		Block detailed descritpion
+		This block writes data to MicroDAQ volatile memory. Block can be used 
+		to pass data from Standalone or Ext application to Scilab or external application. 
 		
+		
+		User has to provide 'Start index' which points to 
+		beginning or memory area. The 'Size' block parameter defines 
+		overall size of the memory which block reads data from. 
+		'Vector size' defines size of signal read by block. The 'Overwrite' 
+		parameter determines if memory data will be overwritten when end of the 
+		buffer is reached. If 'Overwrite' parameters is enabled block works as a 
+		circular buffer. 
+		</para>
+		
+		<para>
+		In order to read data written by this block mdaq_mem_get() toolbox function can be used.
 		</para>
     </refsection>
 	
@@ -38,7 +51,7 @@ xml:id="mdaq_mem_write">
         <title>Block Input/Output ports</title>
 		<para>
 		
-		Block IO ports descritpion
+		<member><para>input(1) - data to write to MicroDAQ memory</para></member>
 		
 		</para>
     
@@ -46,12 +59,7 @@ xml:id="mdaq_mem_write">
     <refsection id="SeeAlso_mdaq_mem_write">
         <title>See Also</title>
         <simplelist type="inline">
-            <member>
-                <link linkend="__COR_BLOCK__">__COR_BLOCK__</link> : corresponding MicroDAQ functionnality
-            </member>
-            <member>
-                <link type="scilab" linkend="scilab.help/sum">Link to the Scilab help page</link>
-            </member>
+<member> <link linkend="mdaq_mem_read">mdaq_mem_read</link> : Reads data from MicroDAQ memory</member>
         </simplelist>
     </refsection>
 </refentry>

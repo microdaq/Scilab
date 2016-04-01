@@ -11,7 +11,7 @@ xml:id="mdaq_to_file">
         <refname>mdaq_to_file</refname>
         <refpurpose>
 		
-		Block short descritpion
+		Saves data to file
 		
 		</refpurpose>
     </refnamediv>
@@ -29,7 +29,18 @@ xml:id="mdaq_to_file">
         <title>Description</title>
         <para>
 		
-		Block detailed descritpion
+		This block saves data to file. Resulting file is located on MicroDAQ user disk in the 'dsp/data/' directory. 
+		Block supports binary and text mode. In text mode, data is written as CSV format and can be imported from 
+		MicroDAQ user disk with mdaq_get_file_data() function. MicroDAQ user disk can be accessed with Xcos tools menu 
+		'Tools -> MicroDAQ user disk'. 'File type' block parameter is used to select between text and binary file. 
+		Data can be written to file in text of binary format. Depending on selected option data can appended to 
+		previous content of the file or data will be written to empty file (Create option). To avoid time time 
+		consuming wirte operations during every simulation step block can buffer data.
+
+		Block parameter 'Vector buffer size' indicates how many vectors will be buffered. For example sample rate 
+		of block is 0.001sec, when user sets buffer size to 100, effective write to file will be performed
+		every 0.1sec
+		
 		
 		</para>
     </refsection>
@@ -38,20 +49,9 @@ xml:id="mdaq_to_file">
         <title>Block Input/Output ports</title>
 		<para>
 		
-		Block IO ports descritpion
+		<member><para>input(1) - data to be written to file</para></member>
 		
 		</para>
     
 	</refsection>
-    <refsection id="SeeAlso_mdaq_to_file">
-        <title>See Also</title>
-        <simplelist type="inline">
-            <member>
-                <link linkend="__COR_BLOCK__">__COR_BLOCK__</link> : corresponding MicroDAQ functionnality
-            </member>
-            <member>
-                <link type="scilab" linkend="scilab.help/sum">Link to the Scilab help page</link>
-            </member>
-        </simplelist>
-    </refsection>
 </refentry>

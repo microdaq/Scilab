@@ -11,7 +11,7 @@ xml:id="mdaq_square">
         <refname>mdaq_square</refname>
         <refpurpose>
 		
-		Block short descritpion
+		Square waveform generator 
 		
 		</refpurpose>
     </refnamediv>
@@ -29,7 +29,7 @@ xml:id="mdaq_square">
         <title>Description</title>
         <para>
 		
-		Block detailed descritpion
+		This block generates square waveform. 
 		
 		</para>
     </refsection>
@@ -38,20 +38,10 @@ xml:id="mdaq_square">
         <title>Block Input/Output ports</title>
 		<para>
 		
-		Block IO ports descritpion
+		<member><para>output(1) - square waveform data</para></member>
 		
 		</para>
     
 	</refsection>
-    <refsection id="SeeAlso_mdaq_square">
-        <title>See Also</title>
-        <simplelist type="inline">
-            <member>
-                <link linkend="__COR_BLOCK__">__COR_BLOCK__</link> : corresponding MicroDAQ functionnality
-            </member>
-            <member>
-                <link type="scilab" linkend="scilab.help/sum">Link to the Scilab help page</link>
-            </member>
-        </simplelist>
-    </refsection>
+
 </refentry>

@@ -8,6 +8,8 @@
 	<refsynopsisdiv>
 		<title>Calling Sequence</title>
 		<synopsis>
+			mdaq_enc_read();
+			[position, direction] = mdaq_enc_read(module);
 			[position, direction] = mdaq_enc_read(link_id, module);
 		</synopsis>
 	</refsynopsisdiv>
@@ -26,7 +28,7 @@
 	<refsection id="Parameters_mdaq_enc_read">
 		<title>Parameters</title>
 		<itemizedlist>
-			<listitem><para><emphasis role="bold">link_id: </emphasis> Valid connection link ID</para></listitem>
+			<listitem><para><emphasis role="bold">link_id: </emphasis> Valid connection link ID (optional)</para></listitem>
 			<listitem><para><emphasis role="bold">module: </emphasis> MicroDAQ quadrature encoder module number (1 or 2) </para></listitem>
 			<listitem><para><emphasis role="bold">position: </emphasis> Current quadrature encoder position value </para></listitem>
 			<listitem><para><emphasis role="bold">direction: </emphasis> Current rotation direction (0 - no motion, 1 - CW, 2 - CCW)</para></listitem>

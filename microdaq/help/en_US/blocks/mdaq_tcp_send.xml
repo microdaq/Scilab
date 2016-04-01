@@ -11,7 +11,7 @@ xml:id="mdaq_tcp_send">
         <refname>mdaq_tcp_send</refname>
         <refpurpose>
 		
-		Block short descritpion
+		Sends data to remote TCP host
 		
 		</refpurpose>
     </refnamediv>
@@ -29,7 +29,7 @@ xml:id="mdaq_tcp_send">
         <title>Description</title>
         <para>
 		
-		Block detailed descritpion
+		This block sends data to remote TCP host. 
 		
 		</para>
     </refsection>
@@ -38,20 +38,8 @@ xml:id="mdaq_tcp_send">
         <title>Block Input/Output ports</title>
 		<para>
 		
-		Block IO ports descritpion
+		<member><para>input(1) - data to be send</para></member>
 		
 		</para>
-    
 	</refsection>
-    <refsection id="SeeAlso_mdaq_tcp_send">
-        <title>See Also</title>
-        <simplelist type="inline">
-            <member>
-                <link linkend="__COR_BLOCK__">__COR_BLOCK__</link> : corresponding MicroDAQ functionnality
-            </member>
-            <member>
-                <link type="scilab" linkend="scilab.help/sum">Link to the Scilab help page</link>
-            </member>
-        </simplelist>
-    </refsection>
 </refentry>
