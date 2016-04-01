@@ -12,6 +12,7 @@ function subdemolist = demo_gateway()
                  "DC motor demo", "dc_motor_demo.dem.sce" ;
                  "Analog loop demo (Ext)", "ext_analog_demo.dem.sce" ;
                  "Analog loop demo (standalone)", "standalone_analog_demo.dem.sce" ;
+                 "LabVIEW demo", "labview_demo.dem.sce" ;
                 ];
 
   subdemolist(:,2) = demopath + subdemolist(:,2);
