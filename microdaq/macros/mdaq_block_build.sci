@@ -3,7 +3,8 @@ function mdaq_block_build(debug_build)
         disp("ERROR: Compiler not found - run microdaq_setup! ");
         return;
     end
-    
+
+    p_dir = pwd();
     mprintf(" ### Building user block macros...\n")
     macros_path = mdaq_toolbox_path() + "macros" + filesep() + "user_blocks" + filesep();
     tbx_build_macros("microdaq", macros_path);
@@ -15,10 +16,9 @@ function mdaq_block_build(debug_build)
         blocks(i) = part(macros(i), 1:length(macros(i)) - 8);
     end
 
-    p_dir = pwd();
     cd(mdaq_toolbox_path());
     tbx_build_blocks(mdaq_toolbox_path(), blocks, "macros" + filesep() + "user_blocks");
-    
+// TODO: load newly created block upon creation - avoid Scilab restart 
 //    root_tlbx = mdaq_toolbox_path();
 //    if isfile(root_tlbx + filesep() + "macros" + filesep() + "user_blocks" + filesep() + "names")  == %T then
 //        errcatch(999,"continue");
@@ -50,7 +50,6 @@ function mdaq_block_build(debug_build)
     userlib_src_path = root_path + filesep() + "src" + filesep() + "c"+ filesep() + "userlib" + filesep();
     userlib_path = root_path + filesep() + "etc" + filesep() + "userlib" + filesep() + "lib" + filesep();
 
-    wd = pwd();
     chdir(userlib_src_path);
     GMAKE = root_path + "\etc\bin\gmake.exe";
     mprintf(" ### Building userlib...\n")
