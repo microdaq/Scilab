@@ -191,7 +191,7 @@ function [microdaqlib, microdaqBlocks, microdaqMacros, microdaqUserBlocks] = sta
     %microdaq.ip_address = mdaq_get_ip();
 
     if check_mdaq_compiler() == %F then
-        mprintf("\nMicroDAQ toolbox is not configured, connect your MicroDAQ device and run microdaq_setup.\nFor more help on Xcos blocks, DSP managment functions, C code integration tools and other\nMicroDAQ toolbox features read help (help microdaq).\n");
+        mprintf("\nRun microdaq_setup to configure MicroDAQ toolbox.\n\nFor more help on MicroDAQ toolbox, DSP managment functions,\nC code integration tools and other MicroDAQ toolbox \nfeatures see help (help microdaq).\n");
     end
 
 endfunction
