@@ -13,10 +13,15 @@
     "  DAC01 - 8 channel, 12-bit, 0-5V range";
     "  DAC02 - 8 channel, 12-bit, ±10V range";
     "  DAC03 - 8 channel, 16-bit, ±10V range";
+    "  DAC04 - 16 channel, 12-bit, ±10V range";
+    "  DAC05 - 16 channel, 16-bit, ±10V range";
     "";
-    "Mode:";
-    "  1 - Sequential";
-    "  2 - Simultaneous";
+    "Range (only for DAC4...5):";
+    " 0: 0-5V";
+    " 1: 0-10V";
+    " 2: ±5V";
+    " 3: ±10V";
+    " 4: ±2.5V";
     "";
     "Set block parameters:"];
 
@@ -34,7 +39,7 @@
                 scicos_getvalue(dac_desc,..
                 ['Converter:';
                 'Channels:';
-                'Mode:';
+                'Range:';
                 'Termination value:'],..
                 list('str',1,'vec',-1,'vec',1,'vec',-1),exprs)
             catch
@@ -42,7 +47,7 @@
                 scicos_getvalue(dac_desc,..
                 ['Converter:';
                 'Channels:';
-                'Mode:';
+                'Range:';
                 'Termination value:'],..
                 list('str',1,'vec',-1,'vec',1,'vec',-1),exprs)
             end;
@@ -58,7 +63,7 @@
                 message("Wrong DAC converter selected!");
             end
 
-            if converter > 3 | converter < 1 then
+            if converter > 5 | converter < 1 then
                 ok = %f;
                 message("Wrong DAC converter selected!");
             end
@@ -68,22 +73,27 @@
                 message("Selected DAC converter is different than detected - run mdaq_hwinfo() for more details!");
             end
             
+            ch_count = 8; 
+            if converter > 3 then
+                ch_count = 16;
+            end
+
             n_channels = size(channel);
-            if n_channels(2) > 8 then
+            if n_channels(2) > ch_count then
                 ok = %f;
                 error_msg = 'Too many channels selected for DAC0' + string(converter) + '!';
                 message(error_msg);
             end
 
-            if max(channel) > 8 | min(channel) < 1 then
+            if max(channel) > ch_count | min(channel) < 1 then
                 ok = %f;
                 error_msg = 'Wrong channel number selected for DAC0' + string(converter) + '!';
                 message(error_msg);
             end
 
-            if dac_mode > 2 | dac_mode < 1 then
+            if dac_mode > 4 | dac_mode < 0 then
                 ok = %f;
-                message("Wrong mode selected, use 1 or 2!");
+                message("Wrong mode selected, use 0,1,2,3 or 4!");
             end
 
             if ok then
@@ -96,7 +106,7 @@
                     end
                     term_value = term_value';
                 else
-                    term_value(1:8) = term_value;
+                    term_value(1:ch_count) = term_value;
                 end
             end
 
@@ -116,7 +126,7 @@
         converter_str = [];
         channel=1
         term_value=0
-        dac_mode=1
+        dac_mode=3
         model=scicos_model()
         model.sim=list('mdaq_dac_sim',5)
         model.in =1

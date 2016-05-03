@@ -22,7 +22,15 @@ enum mdaq_ao_ids
     AO5,
     AO6,
     AO7,
-    AO8
+    AO8,
+    AO9,
+    AO10,
+    AO11,
+    AO12,
+    AO13,
+    AO14,
+    AO15,
+    AO16
 };
 
 /* AO converter IDs */
@@ -30,7 +38,18 @@ enum mdaq_dac_ids
 {
     DAC01 = 1,
     DAC02,
-    DAC03
+    DAC03,
+    DAC04,
+    DAC05
+};
+
+enum mdaq_ao_range
+{
+    AO_0_TO_5V = 0,
+    AO_0_TO_10V,
+    AO_PLUS_MINUS_5V,
+    AO_PLUS_MINUS_10V,
+    AO_PLUS_MINUS_2V5
 };
 
 /* AO mode */
@@ -39,5 +58,6 @@ enum mdaq_dac_ids
 
 int mdaq_ao_init( uint8_t converter,  uint8_t mode);
 int mdaq_ao_write( uint8_t ch[], uint8_t ch_count, const float *value);
+int mdaq_ao_ch_config(uint8_t ch[], uint8_t range[], uint8_t ch_count);
 
 #endif /* MDAQ_AO_H */

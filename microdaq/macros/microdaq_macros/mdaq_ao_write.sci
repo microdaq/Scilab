@@ -16,7 +16,7 @@ function mdaq_ao_write(arg1, arg2, arg3)
             return;
         end
     end
-
+ 
     if argn(2) > 3 | argn(2) < 2 then
         mprintf("Description:\n");
         mprintf("\tWrites data to MicroDAQ analog outputs\n");
@@ -28,8 +28,15 @@ function mdaq_ao_write(arg1, arg2, arg3)
         return;
     end
 
+    global %microdaq;
+    
     ch_count = size(channels, '*');
-    if ch_count < 1 | ch_count > 8 then
+    max_ch = 8; 
+    if %microdaq.private.mdaq_hwid(3) > 3 then
+        max_ch = 16; 
+    end 
+    
+    if ch_count < 1 | ch_count > max_ch then
         disp("ERROR: Wrong AO channel selected!")
         return; 
     end
