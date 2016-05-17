@@ -37,12 +37,16 @@ xml:id="mdaq_adc">
 		<para>This block can be used in host simulation mode and for code generation.</para>
 
 		<para>
-		ADC01 input channel configuration in differential mode: 
+		Analog input channel selection in differential mode: 
 		<simplelist type="inline">
             <member><para>Channel 1 - AI1(+), AI2(-)</para></member>
-            <member><para>Channel 2 - AI3(+), AI4(-)</para></member>
-            <member><para>Channel 3 - AI5(+), AI6(-)</para></member>
-            <member><para>Channel 4 - AI7(+), AI8(-)</para></member>
+			<member><para>Channel 2 - AI1(-), AI2(+)</para></member>
+            <member><para>Channel 3 - AI3(+), AI4(-)</para></member>
+			<member><para>Channel 4 - AI3(-), AI4(+)</para></member>
+            <member><para>Channel 5 - AI5(+), AI6(-)</para></member>
+			<member><para>Channel 6 - AI5(-), AI6(+)</para></member>
+            <member><para>Channel 7 - AI7(+), AI8(-)</para></member>
+			<member><para>Channel 8 - AI7(-), AI8(+)</para></member>
         </simplelist>
 		</para>
 
