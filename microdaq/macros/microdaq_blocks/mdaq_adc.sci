@@ -120,10 +120,6 @@ function [x,y,typ] = mdaq_adc(job,arg1,arg2)
                 of=%f;
             end
 
-            if adc_mode == 1 & adc_converter == 1 & max(adc_channels) > (adc_ch_lookup_table(adc_converter) / 2)  then
-                message("Wrong channel number - in differential mode 1-4 channels can be used!")
-            end
-
             if ok then
                 [model,graphics,ok] = check_io(model,graphics, [], [n_channels(2),n_channels(2)], 1, []);
                 graphics.exprs = exprs;

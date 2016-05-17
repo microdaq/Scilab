@@ -9,15 +9,15 @@
 		<title>Calling Sequence</title>
 		<synopsis>
 			data = mdaq_ai_read();
-			data = mdaq_ai_read(channels, ai_range, bipolar);
-			data = mdaq_ai_read(link_id, channels, ai_range, bipolar);
+			data = mdaq_ai_read(channels, ai_range, bipolar, differential);
+			data = mdaq_ai_read(link_id, channels, ai_range, bipolar, differential);
 		</synopsis>
 	</refsynopsisdiv>
 	
 	<refsection id="Description_mdaq_ai_read">
 		<title>Description</title>
 		<para>
-			This function reads MicroDAQ AI (analog inputs) channels. In order to select channels to read an array of channels has to be provided. Analog inputs (AI) can accept 0-5V, 0-10V, ±5V, ±10V, voltage ranges are set depending on 'ai_range' and 'bipolar' parameters. In order to set ±5V or ±10V range 'bipolar' has to set to %T, for single-ended AI configuration 'bipolar' parameter has to be set to %F. </para>
+			This function reads MicroDAQ AI (analog inputs) channels. In order to select channels to read an array of channels has to be provided. Analog inputs (AI) can accept 0-5V, 0-10V, ±5V, ±10V, voltage ranges are set depending on 'ai_range' and 'bipolar' parameters. In order to set ±5V or ±10V range 'bipolar' has to set to %T, for single-ended AI configuration 'bipolar' parameter has to be set to %F. The 'differential' parameter sets single ended or differential mode analog input mode</para>
         <para> 
     For function usage description call function without parameters. In order to increase AI read performance call mdaq_ai_read with link_id (returned by mdaq_open()).
 		</para>
@@ -29,7 +29,8 @@
 			<listitem><para><emphasis role="bold">link_id: </emphasis> Valid connection link ID (optional)</para></listitem>
 			<listitem><para><emphasis role="bold">channels: </emphasis> Single channel of array of channels number to read</para></listitem>
 			<listitem><para><emphasis role="bold">ai_range: </emphasis> Analog input range in volts (5 or 10)</para></listitem>
-			<listitem><para><emphasis role="bold">bipolar: </emphasis> Bipolar parameter, %T - bipolar AI configuration, %F - single-ended AI configuration</para></listitem>
+			<listitem><para><emphasis role="bold">bipolar: </emphasis> Bipolar parameter: %T - bipolar AI configuration, %F - unipolar AI configuration</para></listitem>
+			<listitem><para><emphasis role="bold">differential: </emphasis> Analog input mode: %T - differential, %F - single ended mode</para></listitem>
 			<listitem><para><emphasis role="bold">data:  </emphasis> Single value or array with AI voltage values</para></listitem>
 		</itemizedlist>
 	</refsection>
