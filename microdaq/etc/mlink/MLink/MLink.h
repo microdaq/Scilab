@@ -3,10 +3,46 @@
 
 #include <stdint.h>
 
-#define MLINK_VERSION 	"1.3.0"
+#ifdef APP_BUILD
+#define EXTERNC
+#define MDAQ_API
+#endif 
 
+#ifdef __GNUC__
 #define EXTERNC 
 #define MDAQ_API extern
+#endif 
+
+#ifdef DLL_BUILD
+#define EXTERNC extern "C" 
+#define MDAQ_API __declspec(dllexport)
+#endif 
+
+#if !(__GNUC__ || APP_BUILD || DLL_BUILD)
+#define EXTERNC extern "C" 
+#define MDAQ_API __declspec(dllimport)
+#endif 
+
+/* AO range */ 
+#define  AO_0_TO_5V             0
+#define  AO_0_TO_10V            1
+#define  AO_PLUS_MINUS_5V       2
+#define  AO_PLUS_MINUS_10V      3
+#define  AO_PLUS_MINUS_2V5      4
+
+/* AI range */
+#define AI_10V 					0
+#define AI_5V 					1
+
+
+/* AI polarity */
+#define AI_BIPOLAR 				0
+#define AI_UNIPOLAR				1
+
+/* AI mode */
+#define AI_SINGLE  				0
+#define AI_DIFF    				1
+
 
 /* Utility functions */ 
 EXTERNC MDAQ_API char *mlink_error( int err );
@@ -54,8 +90,14 @@ EXTERNC MDAQ_API int mlink_uart_close( int *link_fd, uint8_t module );
 EXTERNC MDAQ_API int mlink_hs_ai_init( int *link_fd );
 EXTERNC MDAQ_API int mlink_hs_ai_read( int *link_fd, uint32_t count, uint32_t delay, uint32_t trig_duration, double *data );
 
+/* AI function */ 
 EXTERNC MDAQ_API int mlink_ai_read( int *link_fd, uint8_t adc, uint8_t *ch, uint8_t ch_count, uint8_t range, uint8_t polarity, uint8_t mode, float *data );
 EXTERNC MDAQ_API int mlink_ao_write( int *link_fd, uint8_t dac, uint8_t *ch, uint8_t ch_count, uint8_t mode, float *data );
+EXTERNC MDAQ_API int mlink_ao_ch_config(int *link_fd, uint8_t *ch, uint8_t ch_count, uint8_t *range);
+
+EXTERNC MDAQ_API int mlink_ai_scan_init(int *link_fd, uint8_t *ch, uint8_t ch_count, uint8_t range, uint8_t polarity, uint8_t mode, float freq, int32_t scan_count);
+EXTERNC MDAQ_API int mlink_ai_scan(double *data, uint32_t scan_count, int32_t blocking);
+EXTERNC MDAQ_API void mlink_ai_scan_stop( void );
 
 /* Scilab interface funcations */ 
 EXTERNC MDAQ_API void scilab_dsp_start( const char *addr, int *port, const char *dspapp, int *link_id );
@@ -79,8 +121,14 @@ EXTERNC MDAQ_API void sci_signal_register( int32_t *id, int32_t *size, int32_t *
 EXTERNC MDAQ_API void sci_mlink_func_key_get( int *link_fd, int *key, int *state, int *result );
 EXTERNC MDAQ_API void sci_mlink_pwm_set( int *link_fd, int *module, double *channel_a, double *channel_b, int *result );
 EXTERNC MDAQ_API void sci_mlink_pwm_config( int *link_fd, int *module, int *period, int *active_low, double *pwm_a, double *pwm_b, int *result );
-EXTERNC MDAQ_API void sci_mlink_ai_read( int *link_fd, int *ch, int *ch_count, int *range, int *polarity, double *data, int *result );
+EXTERNC MDAQ_API void sci_mlink_ai_read( int *link_fd, int *ch, int *ch_count, int *range, int *polarity, int *mode, double *data, int *result );
+
+EXTERNC MDAQ_API void sci_mlink_ai_scan_get_ch_count(int *count);
+EXTERNC MDAQ_API void sci_mlink_ai_scan(double *data, int	*scan_count, int *blocking, int *result);
+EXTERNC MDAQ_API void sci_mlink_ai_scan_init(int *link_fd, int *ch, int *ch_count, int *range, int *polarity, int *mode, double *freq, int *scan_count, int *result);
+
 EXTERNC MDAQ_API void sci_mlink_ao_write( int *link_fd, int *dac, int *ch, int *ch_count, double *data, int *result );
+EXTERNC MDAQ_API void sci_mlink_ao_ch_config(int *link_fd, int *ch, int *ch_count, int *range, int *result);
 EXTERNC MDAQ_API void sci_mlink_hs_ai_init( int *link_fd, int *result );
 EXTERNC MDAQ_API void sci_mlink_hs_ai_read( int *link_fd, int *count, int *delay, int *trig_duration, double *data, int *result );
 EXTERNC MDAQ_API void sci_mlink_enc_reset( int *link_fd, int *ch, int *init_value, int *result );
@@ -103,6 +151,14 @@ EXTERNC MDAQ_API int mlink_mem_open( int *link_fd, uint32_t addr, uint32_t len )
 EXTERNC MDAQ_API int mlink_mem_close( int *link_fd, uint32_t addr, uint32_t len );
 EXTERNC MDAQ_API int mlink_mem_set( int *link_fd, uint32_t addr, int8_t *data, uint32_t len );
 EXTERNC MDAQ_API int mlink_mem_get( int *link_fd, uint32_t addr, int8_t *data, uint32_t len );
+#endif 
+
+/* Private functions */ 
+#ifdef MLINK_SERVICE
+EXTERNC MDAQ_API int mlink_ao_calib(int *link_fd, uint32_t magic, double *A, double *B);
+EXTERNC MDAQ_API int mlink_ao_calib_read(int *link_fd, uint32_t magic, double *A, double *B);
+EXTERNC MDAQ_API void sci_mlink_ao_calib(int *link_fd, int *magic, double *A, double *B, int *result);
+EXTERNC MDAQ_API void sci_mlink_ao_calib_read(int *link_fd, int *magic, double *A, double *B, int *result);
 #endif 
 
 #endif /* MLINK_H */ 
