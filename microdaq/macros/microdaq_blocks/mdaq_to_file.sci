@@ -21,7 +21,12 @@ function [x,y,typ] = mdaq_to_file(job,arg1,arg2)
     "user sets buffer size to 100, efective write to file will be performed";
     "every 0.1sec.";
     "";
+    "Rising edge on Trigger input(2) will create new file. To define sequential file";
+    "name use ''%d'' e.g. data_%d.txt will produce files data_0.txt, data_1.txt,...";
+    "If ''%d'' isn''t included in file name data will be written to one file.";
+    "";
     "Data input(1) - input data"
+    "Trigger input(2) - trigger new sequential file creation"
     "";
     "Filt type:";
     "   1 - Text";
@@ -89,7 +94,7 @@ function [x,y,typ] = mdaq_to_file(job,arg1,arg2)
             end
 
             if ok then
-                [model,graphics,ok]=check_io(model,graphics,vec_size,[],1,[])
+                [model,graphics,ok]=check_io(model,graphics,[vec_size 1],[],1,[])
                 graphics.exprs=exprs;
                 model.rpar=[]
                 model.ipar=[filt_type;file_mode;vec_buff_size;vec_size;ascii(file_name)';0];
@@ -107,9 +112,9 @@ function [x,y,typ] = mdaq_to_file(job,arg1,arg2)
 
         model=scicos_model()
         model.sim=list('mdaq_to_file_sim',5)
-        model.in =1
-        model.in2=1
-        model.intyp=1
+        model.in = [1; 1]
+        model.in2=[1; 1]
+        model.intyp=[1; 1]
         model.out=[]
         model.evtin=1
         model.rpar=[]
