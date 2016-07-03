@@ -1,22 +1,24 @@
-function result = mdaq_dsp_start( arg1, arg2 )
+function result = mdaq_dsp_start( arg1, arg2, arg3 )
 
     global %microdaq;
     result = -1;
 
-    if argn(2) == 1 then
+    if argn(2) == 2 then
         dsp_firmware = arg1; 
+        model_freq = arg2;
     end
 
-    if argn(2) == 2 then
+    if argn(2) == 3 then
         link_id = arg1;   
         dsp_firmware = arg2; 
+        model_freq = arg3; 
         if link_id < 0 then
             disp("ERROR: Invalid link ID!")
             return;
         end
     end
 
-    if argn(2) > 2 | argn(2) < 1 | isfile(dsp_firmware) <> %T then
+    if argn(2) > 3 | argn(2) < 2 | isfile(dsp_firmware) <> %T then
         mprintf("Description:\n");
         mprintf("\tStarts DSP execution\n");
         mprintf("Usage:\n");
@@ -26,7 +28,7 @@ function result = mdaq_dsp_start( arg1, arg2 )
         return;
     end
 
-    if argn(2) == 1 then
+    if argn(2) == 2 then
         link_id = mdaq_open();
         if link_id < 0 then
             disp("ERROR: Unable to connect to MicroDAQ device!");
@@ -46,7 +48,7 @@ function result = mdaq_dsp_start( arg1, arg2 )
         end
     end
 
-    res = mlink_dsp_start(link_id);
+    res = mlink_dsp_start(link_id, model_freq);
     if res < 0 then
         disp("ERROR: Unable to start DSP application!");
         if argn(2) == 1 then
@@ -65,7 +67,7 @@ function result = mdaq_dsp_start( arg1, arg2 )
     %microdaq.dsp_loaded = %T;
     res = mlink_set_obj(link_id, 'ext_mode', 1 );
 
-    if argn(2) == 1 then
+    if argn(2) == 2 then
         mdaq_close(link_id);
     end
 

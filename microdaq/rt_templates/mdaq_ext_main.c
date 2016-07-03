@@ -43,6 +43,8 @@ void rt_task(UArg arg0);
 volatile double model_exec_timer = 0.0; 
 volatile double model_stop_flag = 0.0;
 volatile double ext_mode = 1.0;
+#pragma NOINIT(model_tsamp);
+double model_tsamp;
 
 double get_scicos_time( void )
 {
@@ -51,12 +53,12 @@ double get_scicos_time( void )
 
 double get_scicos_tsamp(void)
 {
-    return MODEL_TSAMP;
+    return model_tsamp;
 }
 
 double NAME(MODEL, _get_tsamp)(void)
 { 
-    return MODEL_TSAMP;
+    return model_tsamp;
 }
 
 Int main()
@@ -81,7 +83,13 @@ Int main()
 
     /* Create timer for user system tick */
     Timer_Params_init(&user_sys_tick_params);
-    user_sys_tick_params.period = (uint32_t)(MODEL_TSAMP * USEC_PER_SEC);
+
+
+    if(model_tsamp <= 0.0)
+		model_tsamp = MODEL_TSAMP;
+
+	user_sys_tick_params.period = (uint32_t)(model_tsamp * USEC_PER_SEC);
+
     user_sys_tick_params.periodType = Timer_PeriodType_MICROSECS;
     user_sys_tick_params.arg = 1;
     user_sys_tick_timer = Timer_create(1, 
@@ -139,7 +147,7 @@ Void rt_task(UArg arg0)
         mdaq_profile_save( t_end - t_begin,0);
 #endif
         /* increment execution timer */ 
-        model_exec_timer += MODEL_TSAMP;
+        model_exec_timer += model_tsamp;
     }
     else
     {

@@ -1139,7 +1139,7 @@ function  [ok,XX,alreadyran,flgcdgen,szclkINTemp,freof] = do_compile_superblock_
             disp('### Starting model in Standalone mode...');
         end
 
-        res = mlink_dsp_start(connection_id);
+        res = mlink_dsp_start(connection_id,-1);
         if res < 0 then
             message("Unable to start DSP application!");
             mdaq_close(connection_id);
@@ -2872,6 +2872,13 @@ function Makename=rt_gen_make(name,files,libs,standalone,debug_build,SMCube_file
     end
 
     T=strsubst(T,'$$MICRODAQ_MAIN$$',mdaq_main);
+
+    global %microdaq;
+    if( %microdaq.dsp_debug_mode == %T)
+        T=strsubst(T,'$$STRIP$$','0');
+    else
+        T=strsubst(T,'$$STRIP$$','1');        
+    end
 
     MICRODAQ_MAIN_PATH = MICRODAQ_MAIN_PATH + mdaq_main;
 

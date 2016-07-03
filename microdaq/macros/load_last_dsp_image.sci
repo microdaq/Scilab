@@ -35,7 +35,7 @@ function load_last_dsp_image()
                 disp('### Starting model in Standalone mode...');    
             end
 
-            res = mlink_dsp_start(connection_id);
+            res = mlink_dsp_start(connection_id,-1);
             if res < 0 then
                 message("Unable to start DSP application!");
                 mdaq_close(connection_id);
