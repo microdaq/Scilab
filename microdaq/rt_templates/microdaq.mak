@@ -3,7 +3,7 @@ MICRODAQ_DOWNLOAD   	= 1
 ON_TARGET_WAIT_FOR_STARTM   = 1
 
 # Enable debugging
-DEBUG_BUILD         	= 1
+STRIP_BUILD         	= $$STRIP$$
 
 MODEL                   = $$MODEL$$
 MDAQLIB			= $$MDAQLIB$$
@@ -74,6 +74,6 @@ all : $(PRODUCT)
 
 $(PRODUCT): $(OBJS)
 	$(CC) $(LDFLAGS) $(OBJS) $(CCOUTPUTFLAG)$(PRODUCT) 
-ifeq ($(DEBUG_BUILD), 1)
+ifeq ($(STRIP_BUILD), 1)
 	@$(STRIP) $(PRODUCT)
 endif

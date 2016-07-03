@@ -55,6 +55,7 @@ function [microdaqlib, microdaqBlocks, microdaqMacros, microdaqUserBlocks] = sta
                        "ip_address", [],..
                        "dsp_loaded", %F,..
                        "dsp_ext_mode", %T,..
+                       "dsp_debug_mode", %F,..
                        "private", struct(..
                            "mlink_link_id", -1000,..
                            "connection_id", -1,..
