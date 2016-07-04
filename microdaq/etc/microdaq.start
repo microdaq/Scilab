@@ -50,7 +50,7 @@ function [microdaqlib, microdaqBlocks, microdaqMacros, microdaqUserBlocks] = sta
     end
 
     // create global microdaq settings struct
-    global %microdaq; 
+    global %microdaq;
     %microdaq = struct("model", ["Unknown"],..
                        "ip_address", [],..
                        "dsp_loaded", %F,..
@@ -62,23 +62,24 @@ function [microdaqlib, microdaqBlocks, microdaqMacros, microdaqUserBlocks] = sta
                            "has_mdaq_block", %F,..
                            "mem_write_idx", 0,..
                            "mem_read_idx", 0,..
+                           "to_file_idx", 0,..
                            "mdaq_signal_id", 0,..
                            "mdaq_hwid", [])..
                        );
-                       if isfile(mdaq_toolbox_path() + "etc"+filesep()+"mlink"+filesep()+"hwid") then
-                           load(mdaq_toolbox_path() + "etc"+filesep()+"mlink"+filesep()+"hwid");
-                           %microdaq.private.mdaq_hwid = mdaq_hwid; 
-                           %microdaq.model = 'MicroDAQ E' + string(mdaq_hwid(1))..
-                            + '-ADC0' + string(mdaq_hwid(2)).. 
-                            + '-DAC0' + string(mdaq_hwid(3))..
-                            + '-' + string(mdaq_hwid(4)) + string(mdaq_hwid(5));
-                           clear mdaq_hwid; 
-                       end
+    if isfile(mdaq_toolbox_path() + "etc"+filesep()+"mlink"+filesep()+"hwid") then
+        load(mdaq_toolbox_path() + "etc"+filesep()+"mlink"+filesep()+"hwid");
+        %microdaq.private.mdaq_hwid = mdaq_hwid;
+        %microdaq.model = 'MicroDAQ E' + string(mdaq_hwid(1))..
+        + '-ADC0' + string(mdaq_hwid(2))..
+        + '-DAC0' + string(mdaq_hwid(3))..
+        + '-' + string(mdaq_hwid(4)) + string(mdaq_hwid(5));
+        clear mdaq_hwid;
+    end
 
     // Add MicroDAQ toolbox options to XCos menu
     xcosAddToolsMenu("MicroDAQ web panel", "mdaq_webpanel()");
     xcosAddToolsMenu("MicroDAQ user disk", "mdaq_userdisk()");
-	xcosAddToolsMenu("MicroDAQ WebScope", "mdaq_open_webscope()");
+    xcosAddToolsMenu("MicroDAQ WebScope", "mdaq_open_webscope()");
     xcosAddToolsMenu("MicroDAQ execution profile", "mdaq_exec_profile_show()");
     xcosAddToolsMenu("MicroDAQ upload model", "mdaq_dsp_upload()");
     xcosAddToolsMenu("MicroDAQ build model", "mdaq_code_gen(%F)");
@@ -109,9 +110,9 @@ function [microdaqlib, microdaqBlocks, microdaqMacros, microdaqUserBlocks] = sta
     // Add blocks to the Xcos palette
     // =============================================================================
     mprintf("\tLoad MicroDAQ blocks\n");
-    
+
     // if TMPDIR contains gif or svg files remove them
-    img_files = ls(TMPDIR); 
+    img_files = ls(TMPDIR);
     img_files_index = grep(img_files, ".gif");
     if img_files_index <> [] then
         for i = 1:size(img_files_index, '*')
@@ -130,8 +131,8 @@ function [microdaqlib, microdaqBlocks, microdaqMacros, microdaqUserBlocks] = sta
 
     // Build MicroDAQ blocks
     microdaq_blocks = mgetl( root_tlbx + filesep() + "macros" +..
-             filesep() + "microdaq_blocks" + filesep() + "names");
-    
+    		filesep() + "microdaq_blocks" + filesep() + "names");
+
     microdaq_blocks = microdaq_blocks';
 
     blocks = [];
@@ -188,7 +189,7 @@ function [microdaqlib, microdaqBlocks, microdaqMacros, microdaqUserBlocks] = sta
             error(msprintf(gettext("%s: Unable to export %s.\n"), "microdaq.start", "pal"));
         end
     end
-    
+
     %microdaq.ip_address = mdaq_get_ip();
 
     if check_mdaq_compiler() == %F then
@@ -202,7 +203,7 @@ if with_module('xcos') then
     if microdaqUserBlocks == [] then
         clear microdaqUserBlocks;
     end
-    
+
     clear startModule;
 end
 

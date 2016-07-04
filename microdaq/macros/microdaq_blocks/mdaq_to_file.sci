@@ -49,7 +49,7 @@ function [x,y,typ] = mdaq_to_file(job,arg1,arg2)
                 [ok,file_name, filt_type, file_mode, vec_buff_size, vec_size,exprs]=..
                 scicos_getvalue(to_file_desc,..
                 ['File name:';
-                'Filt type:';
+                'File type:';
                 'Mode:';
                 'Vector buffer size:';
                 'Vector size:'],..
@@ -59,7 +59,7 @@ function [x,y,typ] = mdaq_to_file(job,arg1,arg2)
                 [ok,file_name, filt_type, file_mode, vec_buff_size, vec_size,exprs]=..
                 scicos_getvalue(to_file_desc,..
                 ['File name:';
-                'Filt type:';
+                'File type:';
                 'Mode:';
                 'Vector buffer size:';
                 'Vector size:'],..
@@ -97,7 +97,7 @@ function [x,y,typ] = mdaq_to_file(job,arg1,arg2)
                 [model,graphics,ok]=check_io(model,graphics,[vec_size 1],[],1,[])
                 graphics.exprs=exprs;
                 model.rpar=[]
-                model.ipar=[filt_type;file_mode;vec_buff_size;vec_size;ascii(file_name)';0];
+                model.ipar=[filt_type;file_mode;vec_buff_size;vec_size;0;ascii(file_name)';0];
                 model.dstate=[];
                 x.graphics=graphics;x.model=model
                 break
@@ -118,7 +118,7 @@ function [x,y,typ] = mdaq_to_file(job,arg1,arg2)
         model.out=[]
         model.evtin=1
         model.rpar=[]
-        model.ipar=[filt_type;file_mode;vec_buff_size;vec_size;ascii(file_name)';0]
+        model.ipar=[filt_type;file_mode;vec_buff_size;vec_size;0;ascii(file_name)';0]
         model.dstate=[];
         model.blocktype='d'
         model.dep_ut=[%t %f]

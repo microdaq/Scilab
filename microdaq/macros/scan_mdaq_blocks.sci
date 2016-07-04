@@ -42,6 +42,11 @@ function obj=scan_mdaq_blocks(scs_m)
                     scs_m.objs(i).model.ipar(5) = %microdaq.private.mem_read_idx;
                     %microdaq.private.mem_read_idx = %microdaq.private.mem_read_idx + 1;
                 end
+                
+                if scs_m.objs(i).model.sim(1) == "mdaq_to_file_sim"
+                    scs_m.objs(i).model.ipar(5) = %microdaq.private.to_file_idx;
+                    %microdaq.private.to_file_idx = %microdaq.private.to_file_idx + 1;
+                end
             end
         end
     end
