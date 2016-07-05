@@ -7,6 +7,13 @@ function [x,y,typ] = mdaq_udp_send(job,arg1,arg2)
     "stored in block buffer and send when defined";
     "buffer end is reached. Buffer size defines how many vectors";
     "will be buffered";
+    "When ''Trigger input'' is enabled (set to 1) additional";
+    "block input can be used to trigger UDP data send.";
+    "Rising edge on trigger input will send data from UDP block";
+    "buffer. If defined block buffer size end is reached data" ;
+    "will be send independently from trigger input state.";
+    "";
+    "NOTE: Only one UDP send block can be used on Xcos scheme";
     "";
     "Set UDP Send block parameters:";
     ];
@@ -21,22 +28,24 @@ function [x,y,typ] = mdaq_udp_send(job,arg1,arg2)
         while %t do
             try
                 getversion('scilab');
-                [ok,ip_addr, udp_port, data_size, buf_size,exprs]=..
+                [ok,ip_addr, udp_port, data_size, buf_size, trigger_input,exprs]=..
                 scicos_getvalue(tcp_recv_desc,..
                                     ['Remote address:';
                                     'Port:';
                                     'Vector size:';
-                                    'Buffer size:'],..
-                                    list('str',1,'vec',1,'vec',1,'vec',1),exprs)
+                                    'Buffer size:';
+                                    'Trigger input:'],..
+                                    list('str',1,'vec',1,'vec',1,'vec',1,'vec',1),exprs)
             catch
 
-                [ok,ip_addr, udp_port, data_size, buf_size,exprs]=..
+                [ok,ip_addr, udp_port, data_size, buf_size, trigger_input,exprs]=..
                 scicos_getvalue(tcp_recv_desc,..
                                     ['Remote address:';
                                     'Port:';
                                     'Vector size:';
-                                    'Buffer size:'],..
-                                    list('str',1,'vec',1,'vec',1,'vec',1),exprs)
+                                    'Buffer size:';
+                                    'Trigger input:'],..
+                                    list('str',1,'vec',1,'vec',1,'vec',1,'vec',1),exprs)
             end;
 
             if ~ok then
@@ -52,9 +61,14 @@ function [x,y,typ] = mdaq_udp_send(job,arg1,arg2)
                 ok = %f;
                 message("Incorrect data size (max 1024).");
             end
-
+            
+            input_ports = data_size;
+            if trigger_input == 1 then
+                input_ports = [data_size 1];
+            end
+             
             if ok then
-                [model,graphics,ok] = check_io(model,graphics, data_size, [], 1, []);          
+                [model,graphics,ok] = check_io(model, graphics, input_ports, [], 1, []);          
                 graphics.exprs = exprs;
                 model.rpar = [];
                 ip_addr = part(ip_addr, [2:length(ip_addr)-1]);
@@ -71,6 +85,7 @@ function [x,y,typ] = mdaq_udp_send(job,arg1,arg2)
         udp_port = 9090;
         data_size = 1;
         buf_size = 1;
+        trigger_input = 0; 
         model=scicos_model()
         model.sim=list('mdaq_udp_send_sim',5)
         model.in =1;
@@ -82,11 +97,10 @@ function [x,y,typ] = mdaq_udp_send(job,arg1,arg2)
         model.dstate=[];
         model.blocktype='d'
         model.dep_ut=[%t %f]
-        exprs=[sci2exp(ip_addr); sci2exp(udp_port); sci2exp(data_size); sci2exp(buf_size)]
+        exprs=[sci2exp(ip_addr); sci2exp(udp_port); sci2exp(data_size); sci2exp(buf_size); sci2exp(trigger_input)]
         gr_i=['xstringb(orig(1),orig(2),['''' ; ],sz(1),sz(2),''fill'');']
         x=standard_define([4 3],model,exprs,gr_i)
         x.graphics.in_implicit=[];
         x.graphics.exprs=exprs;
-
     end
 endfunction
