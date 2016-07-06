@@ -4,10 +4,11 @@
     if connection_id > -1 then
         result = -1;
         [hwid, result] = call("sci_mlink_hwid",..
-        connection_id, 1, "i",..
+            connection_id, 1, "i",..
         "out",..
-        [5, 1], 2, "i",..
-        [1, 1], 3, "i");
+            [5, 1], 2, "i",..
+            [1, 1], 3, "i");
+
         mdaq_close(connection_id);
 
         if hwid(1) <> 0 then
@@ -42,11 +43,11 @@
             end
 
             if hwid(1) == 2000 then
-                ai_config = ["8 channel, 166ksps, 16-bit, ±10V range",..
-                "8 channel, 600ksps, 12-bit, ±10V range",..
-                "16 channel, 600ksps, 12-bit, ±10V range",..
-                "8 channel, 500ksps, 16-bit, ±10V range",..
-                "16 channel, 500ksps, 16-bit, ±10V range"];
+                ai_config = ["8 channel, 166ksps, 16-bit, 0-5V, 0-10V, ±5V, ±10V range",..
+                "8 channel, 600ksps, 12-bit, ±5V, ±10V range",..
+                "16 channel, 600ksps, 12-bit, ±5V, ±10V range",..
+                "8 channel, 500ksps, 16-bit, ±5V, ±10V range",..
+                "16 channel, 500ksps, 16-bit, ±5V, ±10V range"];
 
                 ao_config = ["8 channel, 12-bit, 0-5V range",..
                 "8 channel, 12-bit, ±10V range",..
@@ -54,8 +55,8 @@
                 "16 channel, 12-bit, ±10V range",..
                 "16 channel, 16-bit, ±10V range"];
             else
-                ai_config = ["8 channel, 166ksps, 12-bit, ±10V range",..
-                "8 channel, 166ksps, 16-bit, ±10V range"];
+                ai_config = ["8 channel, 166ksps, 12-bit, 0-5V, 0-10V, ±5V, ±10V range",..
+                "8 channel, 166ksps, 16-bit, 0-5V, 0-10V, ±5V, ±10V range"];
 
                 ao_config = ["8 channel, 12-bit, 0-5V range"];
             end
@@ -85,7 +86,33 @@
             else
                 mprintf("\tUnable to read firmware version!\n");
             end
-
+            
+            mprintf("Latest firmware version:\n");
+            try 
+                getURL("raw.githubusercontent.com/microdaq/MLink/master/LATEST", TMPDIR + filesep() + "LATEST");
+            catch
+                mprintf("\tUnable to connect to MicroDAQ firmware server\n")
+                return
+            end
+            
+            latest_mdaq_fw = mdaq_latest_fw();
+            if latest_mdaq_fw <> [] then
+                mprintf("\t%d.%d.%d (build: %d)\n",..
+                            latest_mdaq_fw(1),..
+                            latest_mdaq_fw(2),..
+                            latest_mdaq_fw(3),..
+                            latest_mdaq_fw(4));
+    
+                if latest_mdaq_fw(1) > mdaq_fw(1) | latest_mdaq_fw(2) > mdaq_fw(2) then
+                    mprintf("\tMicroDAQ firmware upgrade is required\n"); 
+                    return;
+                end
+    
+                if latest_mdaq_fw(2) >= mdaq_fw(2) & latest_mdaq_fw(3) > mdaq_fw(3) then
+                    mprintf("\tMicroDAQ firmware upgrade is recomended\n"); 
+                    return;
+                end
+            end
         else
             disp("Unable to read hardware ID - upgrade MicroDAQ firmware!")
         end
