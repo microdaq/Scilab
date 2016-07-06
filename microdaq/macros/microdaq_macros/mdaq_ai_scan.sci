@@ -1,7 +1,8 @@
-function data = mdaq_ai_scan(arg1, arg2, arg3)
+function [data, result] = mdaq_ai_scan(arg1, arg2, arg3)
     link_id = -1; 
     data = [];
-    
+    result = [];
+       
     ch_count = call("sci_mlink_ai_scan_get_ch_count", "out", [1, 1], 1, "i");
     if ch_count < 0 | ch_count > 16 then
         disp("ch_count ERROR");
@@ -30,7 +31,11 @@ function data = mdaq_ai_scan(arg1, arg2, arg3)
         return;
     end
     
-    result = [];
+    if blocking == %T then
+        blocking = 1;
+    else 
+        blocking = 0; 
+    end
     
     [ data result ] = call("sci_mlink_ai_scan",..
                 scan_count, 2, "i",..
@@ -45,5 +50,10 @@ function data = mdaq_ai_scan(arg1, arg2, arg3)
     end
     
     data = data';
-   
+    
+    result = round(result / ch_count); 
+    
+    if result < scan_count then
+        data = data(1:result,:)
+    end
 endfunction
