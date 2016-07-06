@@ -43,6 +43,7 @@ function MLink()
                                "sci_mlink_dsp_upload"..
                                "sci_mlink_dsp_stop"..
                                "sci_mlink_dsp_profile_get"..
+                               "sci_mlink_dsp_param"..
                                "sci_mlink_set_obj"..
                                "sci_client_connect"..
                                "sci_signal_get"..
@@ -74,6 +75,10 @@ function MLink()
                                "sci_mlink_pru_reg_set"..
                                "sci_mlink_hwid"..
                                "sci_mlink_version"..
+                               "sci_mlink_fw_upload"..
+                               "sci_mlink_udp_open"..
+                               "sci_mlink_udp_recv"..
+                               "sci_mlink_udp_close"..
                                ], 'c');
 endfunction
 
