@@ -37,8 +37,8 @@ function [x,y,typ] = mdaq_mem_read(job,arg1,arg2)
                 break
             end
 
-            //~16MB = 16 000 000B = 4 000 000 floats
-            max_index = 4000000;
+            //~4MB = 1 000 000 floats
+            max_index = 1000000;
 
             if  start_idx < 1 | start_idx > max_index then
                 ok = %f;
@@ -75,8 +75,6 @@ function [x,y,typ] = mdaq_mem_read(job,arg1,arg2)
                         ok = %f;
                     end
                     init_value = init_value';
-                else
-                    init_value(1:vec_size) = init_value;
                 end
             end
 
@@ -84,7 +82,7 @@ function [x,y,typ] = mdaq_mem_read(job,arg1,arg2)
                 [model,graphics,ok] = check_io(model,graphics, [], vec_size, 1, []);
                 graphics.exprs = exprs;
                 model.rpar = init_value;
-                model.ipar = [(start_idx-1);vec_size;do_increment;data_size];
+                model.ipar = [(start_idx-1);vec_size;do_increment;data_size;0;init_data_size];
                 model.dstate = [];
                 x.graphics = graphics;
                 x.model = model;
@@ -98,6 +96,7 @@ case 'define' then
         init_value = 0; 
         data_size = 1;
         do_increment = 1;
+        init_data_size = 1; 
         model=scicos_model()
         model.sim=list('mdaq_mem_read_sim',5)
         model.in =[]
@@ -106,7 +105,7 @@ case 'define' then
         model.outtyp=1
         model.evtin=1
         model.rpar=[];
-        model.ipar=[(start_idx-1);vec_size;do_increment;data_size;]
+        model.ipar=[(start_idx-1);vec_size;do_increment;data_size;0;init_data_size]
         model.dstate=[];
         model.blocktype='d'
         model.dep_ut=[%t %f]
