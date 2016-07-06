@@ -38,11 +38,12 @@ function mdaq_pwm_init(arg1, arg2, arg3, arg4)
         else 
             active_low = 0; 
         end
+    else 
+        if active_low <> 0 then
+            active_low = 1;
+        end  
     end
     
-    if active_low <> 0 then
-        active_low = 1;
-    end
     
     if argn(2) == 3 then
         link_id = mdaq_open();

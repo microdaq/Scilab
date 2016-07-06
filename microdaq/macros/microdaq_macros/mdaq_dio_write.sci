@@ -33,10 +33,16 @@ function mdaq_dio_write(arg1, arg2, arg3)
         return;
     end
 
-    if state <> %F then
-        state = 1;
-    else 
-        state = 0; 
+    if type(state) == 4 then
+        if state then
+            state = 1;
+        else 
+            state = 0; 
+        end
+    else
+        if state <> 0 then
+           state = 1;  
+        end
     end
     
     if argn(2) == 2 then
