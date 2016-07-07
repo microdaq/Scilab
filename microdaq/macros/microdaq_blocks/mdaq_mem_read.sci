@@ -1,10 +1,16 @@
 function [x,y,typ] = mdaq_mem_read(job,arg1,arg2)
     mem_write_desc = ["This block reads data from MicroDAQ memory.";
     "Block with mdaq_mem_set function can be used to"; 
-    "change Standalone and Ext model parameters";
+    "change Standalone and Ext model parameters. ";
+    "Mode parameter config block read behaviour.";
+    "";
+    "Mode:";
+    "0 - single read, ignore init value";
+    "1 - circular read, use init value";
+    "2 - signle read, use init value";
+    "3 - circular read, ignore init value";
     "";
     "Set block parameters:"];
-
     x=[];y=[];typ=[];
     select job
     case 'set' then
@@ -14,22 +20,22 @@ function [x,y,typ] = mdaq_mem_read(job,arg1,arg2)
         exprs=graphics.exprs;
         while %t do
             try
-                [ok,start_idx, data_size, vec_size,init_value,do_increment,exprs]=..
+                [ok,start_idx, data_size, vec_size,init_value,read_mode,exprs]=..
                 scicos_getvalue(mem_write_desc,..
                 ['Start index:';
                 'Size:';
                 'Vector size:';
                 'Init value:';
-                'Cilcular:'],..
+                'Mode:'],..
                 list('vec',1,'vec',1,'vec',1,'vec',-1,'vec',1),exprs)
             catch
-                [ok,start_idx, data_size,vec_size,init_value,do_increment,exprs]=..
+                [ok,start_idx, data_size,vec_size,init_value,read_mode,exprs]=..
                 getvalue(mem_write_desc,..
                 ['Start index:';
                 'Size';
                 'Vector size:';
                 'Init value:';
-                'Cilcular:'],..
+                'Mode:'],..
                 list('vec',1,'vec',1,'vec',1,'vec',-1,'vec',1),exprs)
             end;
 
@@ -62,9 +68,9 @@ function [x,y,typ] = mdaq_mem_read(job,arg1,arg2)
             end
 
 
-            if do_increment > 1 | do_increment < 0 then
+            if read_mode > 3 | read_mode < 0 then
                 ok = %f;
-                message("Use 0 or 1 to setup cilcular read option.");
+                message("Use 0-3 to setup read mode.");
             end
 
             if ok then
@@ -82,7 +88,7 @@ function [x,y,typ] = mdaq_mem_read(job,arg1,arg2)
                 [model,graphics,ok] = check_io(model,graphics, [], vec_size, 1, []);
                 graphics.exprs = exprs;
                 model.rpar = init_value;
-                model.ipar = [(start_idx-1);vec_size;do_increment;data_size;0;init_data_size];
+                model.ipar = [(start_idx-1);vec_size;read_mode;data_size;0;init_data_size];
                 model.dstate = [];
                 x.graphics = graphics;
                 x.model = model;
@@ -95,7 +101,7 @@ case 'define' then
         vec_size = 1;
         init_value = 0; 
         data_size = 1;
-        do_increment = 1;
+        read_mode = 1;
         init_data_size = 1; 
         model=scicos_model()
         model.sim=list('mdaq_mem_read_sim',5)
@@ -105,11 +111,11 @@ case 'define' then
         model.outtyp=1
         model.evtin=1
         model.rpar=[];
-        model.ipar=[(start_idx-1);vec_size;do_increment;data_size;0;init_data_size]
+        model.ipar=[(start_idx-1);vec_size;read_mode;data_size;0;init_data_size]
         model.dstate=[];
         model.blocktype='d'
         model.dep_ut=[%t %f]
-        exprs=[sci2exp(start_idx);sci2exp(data_size);sci2exp(vec_size);sci2exp(init_value);sci2exp(do_increment)]
+        exprs=[sci2exp(start_idx);sci2exp(data_size);sci2exp(vec_size);sci2exp(init_value);sci2exp(read_mode)]
         gr_i=['xstringb(orig(1),orig(2),['''' ; ],sz(1),sz(2),''fill'');']
         x=standard_define([4 3],model,exprs,gr_i)
         x.graphics.in_implicit=[];
