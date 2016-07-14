@@ -36,23 +36,25 @@ function [x,y,typ] = mdaq_adc(job,arg1,arg2)
         while %t do
             try
                 getversion('scilab');
-                [ok,adc_converter_str,adc_channels, adc_range,adc_polarity,adc_mode,exprs]=..
+                [ok,adc_converter_str,adc_channels, adc_range,adc_polarity,adc_mode,oversamp_count,exprs]=..
                 scicos_getvalue(adc_desc,..
-                ['Converter:';
-                'Channels:';
-                'Range:';
-                'Polarity:';
-                'Mode:'],..
-                list('str',1,'vec',-1,'vec',1,'vec',1,'vec',1),exprs)
+                            ['Converter:';
+                            'Channels:';
+                            'Range:';
+                            'Polarity:';
+                            'Mode:';
+                            'Oversampling:'],..
+                            list('str',1,'vec',-1,'vec',1,'vec',1,'vec',1,'vec',1),exprs)
             catch
-                [ok,adc_converter_str,adc_channels, adc_range,adc_polarity,adc_mode,exprs]=..
+                [ok,adc_converter_str,adc_channels, adc_range,adc_polarity,adc_mode,oversamp_count,exprs]=..
                 scicos_getvalue(adc_desc,..
-                ['Converter:';
-                'Channels:';
-                'Range:';
-                'Polarity:';
-                'Mode:'],..
-                list('str',1,'vec',-1,'vec',1,'vec',1,'vec',1),exprs)
+                            ['Converter:';
+                            'Channels:';
+                            'Range:';
+                            'Polarity:';
+                            'Mode:';
+                            'Oversampling:'],..
+                            list('str',1,'vec',-1,'vec',1,'vec',1,'vec',1,'vec',1),exprs)
             end
 
             if ~ok then
@@ -119,12 +121,18 @@ function [x,y,typ] = mdaq_adc(job,arg1,arg2)
                 message("This converter dones''t support differential mode!")
                 of=%f;
             end
+            
+            if oversamp_count < 1 | oversamp_count > 16 then
+                message("Wrong oversampling sample count - use 1-16 value!")
+                of=%f;
+            end
+            
 
             if ok then
                 [model,graphics,ok] = check_io(model,graphics, [], [n_channels(2),n_channels(2)], 1, []);
                 graphics.exprs = exprs;
                 model.rpar = [];
-                model.ipar = [adc_converter;adc_range;adc_polarity;adc_mode;n_channels(2);adc_channels'];
+                model.ipar = [adc_converter;adc_range;adc_polarity;adc_mode;oversamp_count;n_channels(2);adc_channels'];
                 model.dstate = [];
                 x.graphics = graphics;
                 x.model = model;
@@ -139,6 +147,7 @@ function [x,y,typ] = mdaq_adc(job,arg1,arg2)
         adc_range = 10;
         adc_polarity = 2;
         adc_mode = 0;
+        oversamp_count=1; 
         model=scicos_model()
         model.sim=list('mdaq_adc_sim',5)
         model.in =[]
@@ -147,11 +156,11 @@ function [x,y,typ] = mdaq_adc(job,arg1,arg2)
         model.outtyp=[1;1]
         model.evtin=1
         model.rpar=[]
-        model.ipar=[adc_converter;adc_range;adc_polarity;adc_mode;1;adc_channels]
+        model.ipar=[adc_converter;adc_range;adc_polarity;adc_mode;oversamp_count;1;adc_channels]
         model.dstate=[];
         model.blocktype='d'
         model.dep_ut=[%t %f]
-        exprs=["ADC01";sci2exp(adc_channels);sci2exp(adc_range);sci2exp(adc_polarity); sci2exp(adc_mode)]
+        exprs=["ADC01";sci2exp(adc_channels);sci2exp(adc_range);sci2exp(adc_polarity); sci2exp(adc_mode);sci2exp(oversamp_count) ]
         gr_i=['xstringb(orig(1),orig(2),[''CH: '' ; string(adc_channels)],sz(1),sz(2),''fill'');']
         x=standard_define([4 3],model,exprs,gr_i)
         x.graphics.in_implicit=[];
