@@ -49,6 +49,18 @@ function continueSimulation=pre_xcos_simulate(scs_m, needcompile)
                     break;
                 end
                 disp('### Starting model in Ext mode...');
+
+                scan_mdaq_blocks(tmp);
+                if %microdaq.private.has_mdaq_param_sim then
+                    result = mdaq_open();
+                    if result > -1 then
+                        %microdaq.private.connection_id = result; 
+                    else
+                        message("ERROR: Unable to connect to MicroDAQ device!");
+                        continueSimulation = %F;
+                        %microdaq.private.connection_id = -1; 
+                    end
+                end
             end
         end
     end
@@ -70,6 +82,7 @@ function continueSimulation=pre_xcos_simulate(scs_m, needcompile)
         %microdaq.private.mem_write_idx = 0;
         %microdaq.private.mem_read_idx = 0;
         %microdaq.private.mdaq_signal_id = 0;
+        %microdaq.private.to_file_idx = 0;
     end
 
     scs_m=resume(scs_m)

@@ -31,6 +31,9 @@ function obj=scan_mdaq_blocks(scs_m)
                 // in case of mdaq_signal_sim block save Signal ID param
                 if scs_m.objs(i).model.sim(1) == "mdaq_signal_sim"
                     %microdaq.private.mdaq_signal_id = [%microdaq.private.mdaq_signal_id, scs_m.objs(i).model.ipar(1)];
+                end                
+                if scs_m.objs(i).model.sim(1) == "mdaq_param_sim"
+                    %microdaq.private.has_mdaq_param_sim = %T;
                 end
 
                 if scs_m.objs(i).model.sim(1) == "mdaq_mem_write_sim"
@@ -47,6 +50,12 @@ function obj=scan_mdaq_blocks(scs_m)
                     scs_m.objs(i).model.ipar(5) = %microdaq.private.to_file_idx;
                     %microdaq.private.to_file_idx = %microdaq.private.to_file_idx + 1;
                 end
+                
+                // Clear opar for code generation
+                if scs_m.objs(i).model.sim(1) == "e4codergui_block"
+                    scs_m.objs(i).model.opar = [];
+                end
+
             end
         end
     end

@@ -1,0 +1,69 @@
+<gui version="1.5">
+  <inputs>
+    <port type="integer-input" name="volt" scicosDesc="3 1"/>
+  </inputs>
+  <outputs>
+    <port type="integer-output" name="volt" scicosDesc="3 1"/>
+  </outputs>
+  <frame>
+    <name>Analog loop demo</name>
+    <size x="245" y="317"/>
+    <fullScreen>false</fullScreen>
+    <element type="filling-color-bar">
+      <position x="155" y="48"/>
+      <size x="35" y="205"/>
+      <inputPort>volt</inputPort>
+      <minimum>0</minimum>
+      <maximum>500</maximum>
+      <value>0</value>
+      <orientation>BottomToTop</orientation>
+      <fillColor alpha="255" red="85" blue="255" green="170"/>
+      <textOption>Percentage</textOption>
+      <textFont>MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0</textFont>
+      <textColor alpha="255" red="0" blue="0" green="0"/>
+    </element>
+    <element type="slider">
+      <position x="40" y="48"/>
+      <size x="33" y="206"/>
+      <outputPort>volt</outputPort>
+      <vertical>true</vertical>
+      <minimum>0</minimum>
+      <maximum>500</maximum>
+      <value>0</value>
+    </element>
+    <element type="text">
+      <position x="6" y="16"/>
+      <size x="100" y="28"/>
+      <font>MS Shell Dlg 2,14,-1,5,50,0,0,0,0,0</font>
+      <textColor alpha="255" red="85" blue="0" green="170"/>
+      <initialText>AO1 voltage</initialText>
+      <horizontalAlignment>Left</horizontalAlignment>
+      <verticalAlignment>Top</verticalAlignment>
+    </element>
+    <element type="text">
+      <position x="125" y="16"/>
+      <size x="95" y="28"/>
+      <font>MS Shell Dlg 2,14,-1,5,50,0,0,0,0,0</font>
+      <textColor alpha="255" red="255" blue="0" green="0"/>
+      <initialText>AI1 voltage</initialText>
+      <horizontalAlignment>Left</horizontalAlignment>
+      <verticalAlignment>Top</verticalAlignment>
+    </element>
+    <element type="text">
+      <position x="13" y="269"/>
+      <size x="219" y="20"/>
+      <font>MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0</font>
+      <initialText>Analog loop example. Connect AO1 and AI1 </initialText>
+      <horizontalAlignment>Left</horizontalAlignment>
+      <verticalAlignment>Top</verticalAlignment>
+    </element>
+    <element type="text">
+      <position x="13" y="287"/>
+      <size x="193" y="18"/>
+      <font>MS Shell Dlg 2,8.25,-1,5,50,0,0,0,0,0</font>
+      <initialText>Use slider to change AO voltage.</initialText>
+      <horizontalAlignment>Left</horizontalAlignment>
+      <verticalAlignment>Top</verticalAlignment>
+    </element>
+  </frame>
+</gui>
