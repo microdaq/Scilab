@@ -79,6 +79,10 @@ function MLink()
                                "sci_mlink_udp_open"..
                                "sci_mlink_udp_recv"..
                                "sci_mlink_udp_close"..
+                               "sci_mlink_ao_scan_init"..
+                               "sci_mlink_ao_scan"..
+                               "sci_mlink_ao_scan_stop"..
+                               "sci_mlink_ao_scan_data"..
                                ], 'c');
 endfunction
 
