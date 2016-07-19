@@ -2,7 +2,10 @@ function [x,y,typ] = mdaq_mem_read(job,arg1,arg2)
     mem_write_desc = ["This block reads data from MicroDAQ memory.";
     "Block with mdaq_mem_set function can be used to"; 
     "change Standalone and Ext model parameters. ";
-    "Mode parameter config block read behaviour.";
+    "Mode parameter sets block read behaviour.";
+    "If Trigger input enabled (value 1), rising";
+    "edge on trigger input will reset data ";
+    "index to index 0. ";  
     "";
     "Mode:";
     "0 - single read, ignore init value";
@@ -20,23 +23,26 @@ function [x,y,typ] = mdaq_mem_read(job,arg1,arg2)
         exprs=graphics.exprs;
         while %t do
             try
-                [ok,start_idx, data_size, vec_size,init_value,read_mode,exprs]=..
-                scicos_getvalue(mem_write_desc,..
-                ['Start index:';
-                'Size:';
-                'Vector size:';
-                'Init value:';
-                'Mode:'],..
-                list('vec',1,'vec',1,'vec',1,'vec',-1,'vec',1),exprs)
+
+                [ok,start_idx, data_size, vec_size,init_value,read_mode,trigger_input,exprs]=..
+                                scicos_getvalue(mem_write_desc,..
+                                ['Start index:';
+                                'Size:';
+                                'Vector size:';
+                                'Init value:';
+                                'Mode:';
+                                'Trigger input:'],..
+                                list('vec',1,'vec',1,'vec',1,'vec',-1,'vec',1,'vec',1),exprs)
             catch
-                [ok,start_idx, data_size,vec_size,init_value,read_mode,exprs]=..
-                getvalue(mem_write_desc,..
-                ['Start index:';
-                'Size';
-                'Vector size:';
-                'Init value:';
-                'Mode:'],..
-                list('vec',1,'vec',1,'vec',1,'vec',-1,'vec',1),exprs)
+                [ok,start_idx, data_size, vec_size,init_value,read_mode,trigger_input,exprs]=..
+                scicos_getvalue(mem_write_desc,..
+                                ['Start index:';
+                                'Size:';
+                                'Vector size:';
+                                'Init value:';
+                                'Mode:';
+                                'Trigger input:'],..
+                                list('vec',1,'vec',1,'vec',1,'vec',-1,'vec',1,'vec',1),exprs)
             end;
 
             if ~ok then
@@ -84,11 +90,17 @@ function [x,y,typ] = mdaq_mem_read(job,arg1,arg2)
                 end
             end
 
+            trigger_input_size = 1;
+            if trigger_input <> 1 then
+                trigger_input_size = []; 
+                trigger_input = 0
+            end
+            
             if ok then
-                [model,graphics,ok] = check_io(model,graphics, [], vec_size, 1, []);
+                [model,graphics,ok] = check_io(model,graphics, trigger_input_size, vec_size, 1, []);
                 graphics.exprs = exprs;
                 model.rpar = init_value;
-                model.ipar = [(start_idx-1);vec_size;read_mode;data_size;0;init_data_size];
+                model.ipar = [(start_idx-1);vec_size;read_mode;data_size;0;init_data_size;trigger_input];
                 model.dstate = [];
                 x.graphics = graphics;
                 x.model = model;
@@ -103,6 +115,7 @@ case 'define' then
         data_size = 1;
         read_mode = 1;
         init_data_size = 1; 
+        trigger_input = 0;
         model=scicos_model()
         model.sim=list('mdaq_mem_read_sim',5)
         model.in =[]
@@ -111,11 +124,11 @@ case 'define' then
         model.outtyp=1
         model.evtin=1
         model.rpar=[];
-        model.ipar=[(start_idx-1);vec_size;read_mode;data_size;0;init_data_size]
+        model.ipar=[(start_idx-1);vec_size;read_mode;data_size;0;init_data_size;0]
         model.dstate=[];
         model.blocktype='d'
         model.dep_ut=[%t %f]
-        exprs=[sci2exp(start_idx);sci2exp(data_size);sci2exp(vec_size);sci2exp(init_value);sci2exp(read_mode)]
+        exprs=[sci2exp(start_idx);sci2exp(data_size);sci2exp(vec_size);sci2exp(init_value);sci2exp(read_mode);sci2exp(trigger_input)]
         gr_i=['xstringb(orig(1),orig(2),['''' ; ],sz(1),sz(2),''fill'');']
         x=standard_define([4 3],model,exprs,gr_i)
         x.graphics.in_implicit=[];
