@@ -1,19 +1,21 @@
-function  mdaq_ao_scan_init(arg1, arg2, arg3, arg4, arg5)
+function  mdaq_ao_scan_init(arg1, arg2, arg3, arg4, arg5, arg6)
 
     link_id = -1;
-    if argn(2) == 4 then
+    if argn(2) == 5 then
         channels = arg1;
         ao_range = arg2;
-        scan_freq = arg3;
-        scan_time = arg4;
+        ao_trigger = arg3; 
+        scan_freq = arg4;
+        scan_time = arg5;
     end
 
-    if argn(2) == 5 then
+    if argn(2) == 6 then
         link_id = arg1;
         channels = arg2;
         ao_range = arg3;
-        scan_freq = arg4;
-        scan_time = arg5;
+        ao_trigger = arg4;
+        scan_freq = arg5;
+        scan_time = arg6;
 
         if link_id < 0 then
             disp("ERROR: Invalid link ID!")
@@ -21,13 +23,13 @@ function  mdaq_ao_scan_init(arg1, arg2, arg3, arg4, arg5)
         end
     end
     
-    if argn(2) > 5 | argn(2) < 4 then
+    if argn(2) > 6 | argn(2) < 5 then
         mprintf("Description:\n");
         mprintf("\tInit AO scan\n");
         mprintf("Usage:\n");
-        mprintf("\tmdaq_ao_scan_init(link_id, channels, range, frequency, time);\n")
+        mprintf("\tmdaq_ao_scan_init(link_id, channels, range, trigger, frequency, duration);\n")
         mprintf("\tlink_id - connection id returned by mdaq_open() (OPTIONAL)\n");
-        mprintf("\tchannels - analog input channels to read\n");
+        mprintf("\tchannels - analog output channels to write\n");
         mprintf("\trange - analog output range\n");
         mprintf("\t\tAvaliable output ranges: \n");
         mprintf("\t\t  0: 0-5V\n");
@@ -35,11 +37,11 @@ function  mdaq_ao_scan_init(arg1, arg2, arg3, arg4, arg5)
         mprintf("\t\t  2: ±5V\n");
         mprintf("\t\t  3: ±10V\n");
         mprintf("\t\t  4: ±2.5V\n");
+        mprintf("\ttrigger - DIO number (DIO1-8), high state triggers scanning\n"); 
         mprintf("\tfrequency - analog input scan frequency\n");
-        mprintf("\ttime - analog output scan duration in seconds\n");
+        mprintf("\tduration - analog output scan duration in seconds\n");
         return;
     end
-
 
     if scan_time < 0 then
         scan_time = -1;
@@ -72,7 +74,7 @@ function  mdaq_ao_scan_init(arg1, arg2, arg3, arg4, arg5)
         return 
     end
 
-    if argn(2) == 4 then
+    if argn(2) == 5 then
         link_id = mdaq_open();
         if link_id < 0 then
             disp("ERROR: Unable to connect to MicroDAQ device!");
@@ -84,7 +86,10 @@ function  mdaq_ao_scan_init(arg1, arg2, arg3, arg4, arg5)
         disp("ERROR: Wrong AO output range!")
         return;
     end
-
+    if ao_trigger == [] | ao_trigger > 8 then
+        ao_trigger = 0; 
+    end
+    
     result = [];
 
     result = call("sci_mlink_ao_scan_init",..
@@ -92,10 +97,11 @@ function  mdaq_ao_scan_init(arg1, arg2, arg3, arg4, arg5)
             channels, 2, "i",..
             ao_range, 3, "i",..
             ch_count, 4, "i",..
-            scan_freq, 5, "d",..
-            scan_time, 6, "d",..
+            ao_trigger,5, "i",..
+            scan_freq, 6, "d",..
+            scan_time, 7, "d",..
         "out",..
-            [1, 1], 7, "i");
+            [1, 1], 8, "i");
 
     if result < 0 then
         mdaq_error(result);
@@ -113,12 +119,23 @@ function  mdaq_ao_scan_init(arg1, arg2, arg3, arg4, arg5)
         end 
         mprintf("\tChannles:\t%s\n", str);
 
-        mprintf("\tFrequency:\t%dHz\n", scan_freq);
+        if ao_trigger == 0 then
+            mprintf("\tTrigger:\tNONE\n"); 
+        else
+            mprintf("\tTrigger:\tDIO%d\n", ao_trigger); 
+        end
+        
+        if scan_freq >= 1000
+            mprintf("\tFrequency:\t%.3fkHz\n", scan_freq/1000);
+        else
+            mprintf("\tFrequency:\t%dHz\n", scan_freq);
+        end
+        
         if scan_time < 0
             mprintf("\tDuration:\tInf\n");
             mprintf("\tScan count:\tInf");
         else
-            mprintf("\tDuration:\t%dsec\n", scan_time);
+            mprintf("\tDuration:\t%.2fsec\n", scan_time);
             mprintf("\tScan count:\t%d", scan_time * scan_freq);
         end
     end
@@ -126,5 +143,4 @@ function  mdaq_ao_scan_init(arg1, arg2, arg3, arg4, arg5)
     if argn(2) == 4 then
         mdaq_close(link_id);
     end
-
 endfunction
