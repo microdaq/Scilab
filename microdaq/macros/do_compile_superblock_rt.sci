@@ -1437,43 +1437,43 @@ function [Code,Code_common]=make_standalone42(sample_time)
         '']
     end
 
-    Code=[Code;
-    '/* Table of constant values */'
-    'static int nrd_'+string(0:maxtotal)'+' = '+string(0:maxtotal)'+';']
-
-    if maxtotal<10 then
-        Code=[Code;
-        'static int nrd_10 = 10;']
-    end
-    if maxtotal<11 then
-        Code=[Code;
-        'static int nrd_11 = 11;']
-    end
-
-    if maxtotal<81 then
-        Code=[Code;
-        'static int nrd_81 = 81;']
-    end
-    if maxtotal<82 then
-        Code=[Code;
-        'static int nrd_82 = 82;']
-    end
-    if maxtotal<84 then
-        Code=[Code;
-        'static int nrd_84 = 84;']
-    end
-    if maxtotal<811 then
-        Code=[Code;
-        'static int nrd_811 = 811;']
-    end
-    if maxtotal<812 then
-        Code=[Code;
-        'static int nrd_812 = 812;']
-    end
-    if maxtotal<814 then
-        Code=[Code;
-        'static int nrd_814 = 814;']
-    end
+//    Code=[Code;
+//    '/* Table of constant values */'
+//    'static int nrd_'+string(0:maxtotal)'+' = '+string(0:maxtotal)'+';']
+//
+//    if maxtotal<10 then
+//        Code=[Code;
+//        'static int nrd_10 = 10;']
+//    end
+//    if maxtotal<11 then
+//        Code=[Code;
+//        'static int nrd_11 = 11;']
+//    end
+//
+//    if maxtotal<81 then
+//        Code=[Code;
+//        'static int nrd_81 = 81;']
+//    end
+//    if maxtotal<82 then
+//        Code=[Code;
+//        'static int nrd_82 = 82;']
+//    end
+//    if maxtotal<84 then
+//        Code=[Code;
+//        'static int nrd_84 = 84;']
+//    end
+//    if maxtotal<811 then
+//        Code=[Code;
+//        'static int nrd_811 = 811;']
+//    end
+//    if maxtotal<812 then
+//        Code=[Code;
+//        'static int nrd_812 = 812;']
+//    end
+//    if maxtotal<814 then
+//        Code=[Code;
+//        'static int nrd_814 = 814;']
+//    end
 
     Code=[Code;
     ''
@@ -1533,18 +1533,6 @@ function [Code,Code_common]=make_standalone42(sample_time)
     '{'
     '  double t;'
     '  int local_flag;'
-    '  double *args[100];'
-    ''
-    '  init_IPAR_RPAR(&NRPAR);'
-    '  init_IPAR_RPAR(&NTOTRPAR);'
-    '  init_IPAR_RPAR((void *)strRPAR);'
-    '  init_IPAR_RPAR(lenRPAR);'
-    ''
-    '  init_IPAR_RPAR(&NIPAR);'
-    '  init_IPAR_RPAR(&NTOTIPAR);'
-    '  init_IPAR_RPAR((void *)strIPAR);'
-    '  init_IPAR_RPAR(lenIPAR);'
-    ''
     '']
 
     if size(z,1) <> 0 then
@@ -1966,10 +1954,6 @@ function [Code,Code_common]=make_standalone42(sample_time)
     '{'
     //        '  int nevprt=1;'
     '  int local_flag;'
-    '  int i;'
-    //	'#ifdef linux'
-    '  double *args[100];'
-    //	'#endif'
     ]
 
     if (x <> []) then
@@ -2101,9 +2085,6 @@ function [Code,Code_common]=make_standalone42(sample_time)
     '{'
     '  double t;'
     '  int local_flag;'
-    //	'#ifdef linux'
-    '  double *args[100];'
-    //	'#endif'
     '']
 
     Code=[Code;
@@ -2192,10 +2173,6 @@ function [Code,Code_common]=make_standalone42(sample_time)
         '  int phase=2;'
         '  int local_flag;'
         '  int nport;'
-        //          '  int nevprt=1;'
-        //	  '#ifdef linux'
-        '  double *args[100];'
-        //	  '#endif'
         '  C2F(dset)(&neq, &c_b14,xd , &c__1);'
         '']
 
@@ -2444,29 +2421,7 @@ function txt=make_static_standalone42()
     else
         txt($+1)='double RPAR[1];';
     end
-
-    txt = [txt;
-    '';
-    ]
-    txt($+1) = '#pragma DATA_SECTION(NRPAR, "".data_exchange"");';
-    txt($+1) = 'int NRPAR = '+string(nbrpa)+';';
-    txt($+1) = '#pragma DATA_SECTION(NTOTRPAR, "".data_exchange"");';
-    txt($+1) = 'int NTOTRPAR = '+string(ntot_r)+';';
-
-    txt($+1) = '#pragma DATA_SECTION(strRPAR, "".data_exchange"");';
-    strRCode = 'char strRPAR[] = {""' + ..
-    part(strRCode,[1:length(strRCode)]) + '""};';
-
-    if nbrpa <> 0 then
-        txt($+1) = strRCode;
-        txt($+1) = '#pragma DATA_SECTION(lenRPAR, "".data_exchange"");';
-        lenRCode = 'int lenRPAR[' + string(nbrpa) + '] = {' + ..
-        part(lenRCode,[1:length(lenRCode)-1]) + '};';
-    else
-        txt($+1) = 'char * strRPAR;'
-        lenRCode = 'int lenRPAR[1] = {0};'
-    end
-    txt($+1) = lenRCode;
+    
     txt = [txt;
     '';
     ]
@@ -2541,28 +2496,6 @@ function txt=make_static_standalone42()
         txt($+1)='int IPAR[1];';
     end
 
-    txt = [txt;
-    '';
-    ]
-    txt($+1) = '#pragma DATA_SECTION(NIPAR, "".data_exchange"");';
-    txt($+1) = 'int NIPAR = '+string(nbipa)+';';
-    txt($+1) = '#pragma DATA_SECTION(NTOTIPAR, "".data_exchange"");';
-    txt($+1) = 'int NTOTIPAR = '+string(ntot_i)+';';
-
-    txt($+1) = '#pragma DATA_SECTION(strIPAR, "".data_exchange"");';
-    strICode = 'char strIPAR[] = {""' + ..
-    part(strICode,[1:length(strICode)]) + '""};';
-
-    if nbipa <> 0 then
-        txt($+1) = strICode;
-        txt($+1) = '#pragma DATA_SECTION(lenIPAR, "".data_exchange"");';
-        lenICode = 'int lenIPAR[' + string(nbipa) + '] = {' + ..
-        part(lenICode,[1:length(lenICode)-1]) + '};';
-    else
-        txt($+1) = 'char * strIPAR;'
-        lenICode = 'int lenIPAR[1] = {0};'
-    end
-    txt($+1) = lenICode;
     txt = [txt;
     '';
     ]
