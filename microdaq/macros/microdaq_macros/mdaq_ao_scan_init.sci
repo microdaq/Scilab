@@ -140,7 +140,7 @@ function  mdaq_ao_scan_init(arg1, arg2, arg3, arg4, arg5, arg6)
         end
     end
 
-    if argn(2) == 4 then
+    if argn(2) == 5 then
         mdaq_close(link_id);
     end
 endfunction

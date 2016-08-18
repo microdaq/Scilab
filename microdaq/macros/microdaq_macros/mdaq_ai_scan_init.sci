@@ -37,7 +37,7 @@ function  mdaq_ai_scan_init(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
         mprintf("\tbipolar - analog input polarity (%%T - bipolar, %%F - unipolar)\n");
         mprintf("\tdifferential - analog input mode (%%T - differential, %%F - single-ended)\n");
         mprintf("\tfrequency - analog input scan frequency\n");
-        mprintf("\ttime - analog input scan time in seconds\n");
+        mprintf("\ttime - analog input scan duration in seconds\n");
         return;
     end
 
