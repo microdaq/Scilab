@@ -39,8 +39,15 @@ CXXFLAGS += $(subst \,/,$(INCLUDES))
 
 LDFLAGS += -l"$(TargetRoot)/sysbios/$(CPU_OPTION)/configPkg/linker.cmd"
 LDFLAGS += -l"libc.a"
-LDFLAGS += -l$(MDAQLIB)\mdaq_blocks.lib
-LDFLAGS += -l$(MDAQLIB)\microdaq.lib
+
+ifeq ($(STRIP_BUILD), 1)
+	LDFLAGS += -l$(MDAQLIB)\mdaq_blocks.lib
+	LDFLAGS += -l$(MDAQLIB)\microdaq.lib
+else
+	LDFLAGS += -l$(MDAQLIB)\mdaq_blocks_debug.lib
+	LDFLAGS += -l$(MDAQLIB)\microdaq_debug.lib
+endif 
+
 LDFLAGS += -l$(USERLIB)\lib\userlib.lib
 LDFLAGS += -l$(SCILABLIB)\lib\libsciscicos_blocks.lib
 LDFLAGS += -l$(SCILABLIB)\lib\liblapack.lib
