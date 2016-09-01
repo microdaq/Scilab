@@ -113,12 +113,12 @@
 				<member>Restart Scilab - in order to reload 'MicroDAQ User' palette MicroDAQ toolbox for Scilab has to be reloaded.</member>
 				<member>Start Xcos and open palette browser and locate 'MicroDAQ User' block category.
 					<para></para>
-					<imagedata align="center" fileref="C:\Users\skibool\Pictures\MicroDAQ\instrukcja_scilab\my_step.png" valign="middle"/>
+					<imagedata align="center" fileref="..\images\my_step.png" valign="middle"/>
 					<para/>
 				</member>
 				<member>Create Xcos diagram containing newly created 'My_step' Xcos block
 					<para></para>
-					<imagedata align="center" fileref="C:\Users\skibool\Pictures\MicroDAQ\instrukcja_scilab\my_step_test.png" valign="middle"/>
+					<imagedata align="center" fileref="..\images\my_step_test.png" valign="middle"/>
 					<para/>
 				</member>
 
@@ -128,7 +128,7 @@
 
 				<member> 
 							Start model with Xcos 'Start' simulation button
-					<imagedata align="center" fileref="C:\Users\skibool\Pictures\MicroDAQ\instrukcja_scilab\my_step_test_result.png" valign="middle"/>
+					<imagedata align="center" fileref="..\images\my_step_test_result.png" valign="middle"/>
 					<para/>
 				</member>
 
