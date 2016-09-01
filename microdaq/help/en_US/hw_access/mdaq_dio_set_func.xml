@@ -39,7 +39,7 @@
 		<itemizedlist>
 			<listitem><para><emphasis role="bold">link_id: </emphasis> Valid connection link ID (optional)</para></listitem>
 			<listitem><para><emphasis role="bold">func: </emphasis> Alternative DIO function </para></listitem>
-			<listitem><para><emphasis role="bold">enable: </emphasis> Alternative DIO function state (1 - enable, 0 - disable) </para></listitem>
+			<listitem><para><emphasis role="bold">enable: </emphasis> Alternative DIO function state (%T/%F to enable or disable) </para></listitem>
 		</itemizedlist>
 	</refsection>
 	
