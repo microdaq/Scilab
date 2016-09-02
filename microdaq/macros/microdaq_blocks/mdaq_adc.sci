@@ -1,16 +1,9 @@
 function [x,y,typ] = mdaq_adc(job,arg1,arg2)
+   
     adc_desc = ["This block reads MicroDAQ analog inputs (AI).";
     "Select ADC type according to your hardware setup.";
     "";
-    "output(1) - 16bit raw ADC value";
-    "output(2) - measured value in volts";
-    "";
-    "Converter:";
-    "   ADC01 - 8 channel,  166ksps, 12/16-bit, ±10V range";
-    "   ADC02 - 8 channel,  600ksps, 12-bit, ±10V range";
-    "   ADC03 - 16 channel, 600ksps, 12-bit, ±10V range";
-    "   ADC04 - 8 channel,  500ksps, 16-bit, ±10V range";
-    "   ADC05 - 16 channel, 500ksps, 16-bit, ±10V range";
+    "output - measured value in volts";
     "";
     "Range: 5, 10";
     "";
@@ -36,46 +29,34 @@ function [x,y,typ] = mdaq_adc(job,arg1,arg2)
         while %t do
             try
                 getversion('scilab');
-                [ok,adc_converter_str,adc_channels, adc_range,adc_polarity,adc_mode,oversamp_count,exprs]=..
+                [ok, adc_channels, adc_range,adc_polarity,adc_mode,oversamp_count,exprs]=..
                 scicos_getvalue(adc_desc,..
-                            ['Converter:';
-                            'Channels:';
+                            ['Channels:';
                             'Range:';
                             'Polarity:';
                             'Mode:';
                             'Oversampling:'],..
-                            list('str',1,'vec',-1,'vec',1,'vec',1,'vec',1,'vec',1),exprs)
+                            list('vec',-1,'vec',1,'vec',1,'vec',1,'vec',1),exprs)
             catch
-                [ok,adc_converter_str,adc_channels, adc_range,adc_polarity,adc_mode,oversamp_count,exprs]=..
+                [ok, adc_channels, adc_range,adc_polarity,adc_mode,oversamp_count,exprs]=..
                 scicos_getvalue(adc_desc,..
-                            ['Converter:';
-                            'Channels:';
+                            ['Channels:';
                             'Range:';
                             'Polarity:';
                             'Mode:';
                             'Oversampling:'],..
-                            list('str',1,'vec',-1,'vec',1,'vec',1,'vec',1,'vec',1),exprs)
+                            list('vec',-1,'vec',1,'vec',1,'vec',1,'vec',1),exprs)
             end
 
             if ~ok then
                 break
             end
 
-            adc_converter_str = convstr(adc_converter_str, 'l');
-            adc_converter = strtod(part(adc_converter_str, 4:5));
-            if isnan(adc_converter) == %t | part(adc_converter_str, 1:3) <> "adc" then
-                ok = %f;
-                message("Wrong converter selected!");
-            end
-
-            if adc_converter > 5 | adc_converter < 1 then
-                ok = %f;
-                message("Wrong ADC converter selected!");
-            end
-
             global %microdaq;
-            if adc_converter <> %microdaq.private.mdaq_hwid(2) & %microdaq.private.mdaq_hwid(3) > 0 then
+            adc_converter =  %microdaq.private.mdaq_hwid(2);
+            if adc_converter < 1 then
                 message("Selected ADC converter is different than detected - run mdaq_hwinfo() for more details!");
+                ok = %f;
             end
 
             n_channels = size(adc_channels);
@@ -129,7 +110,7 @@ function [x,y,typ] = mdaq_adc(job,arg1,arg2)
             
 
             if ok then
-                [model,graphics,ok] = check_io(model,graphics, [], [n_channels(2),n_channels(2)], 1, []);
+                [model,graphics,ok] = check_io(model,graphics, [], n_channels(2), 1, []);
                 graphics.exprs = exprs;
                 model.rpar = [];
                 model.ipar = [adc_converter;adc_range;adc_polarity;adc_mode;oversamp_count;n_channels(2);adc_channels'];
@@ -141,7 +122,7 @@ function [x,y,typ] = mdaq_adc(job,arg1,arg2)
         end
     case 'define' then
         adc_converter_str = [];
-        adc_converter = 1;
+        adc_converter = 0;
         adc_channels = 1;
         n_channels = 1;
         adc_range = 10;
@@ -150,21 +131,19 @@ function [x,y,typ] = mdaq_adc(job,arg1,arg2)
         oversamp_count=1; 
         model=scicos_model()
         model.sim=list('mdaq_adc_sim',5)
-        model.in =[]
-        model.out=[1;1]
-        model.out2=[7;1]
-        model.outtyp=[1;1]
+        model.out=[1]
+        model.outtyp=[1]
         model.evtin=1
         model.rpar=[]
-        model.ipar=[adc_converter;adc_range;adc_polarity;adc_mode;oversamp_count;1;adc_channels]
+        model.ipar=[adc_converter; adc_range;adc_polarity;adc_mode;oversamp_count;1;adc_channels]
         model.dstate=[];
         model.blocktype='d'
         model.dep_ut=[%t %f]
-        exprs=["ADC01";sci2exp(adc_channels);sci2exp(adc_range);sci2exp(adc_polarity); sci2exp(adc_mode);sci2exp(oversamp_count) ]
+        exprs=[sci2exp(adc_channels);sci2exp(adc_range);sci2exp(adc_polarity); sci2exp(adc_mode);sci2exp(oversamp_count) ]
         gr_i=['xstringb(orig(1),orig(2),[''CH: '' ; string(adc_channels)],sz(1),sz(2),''fill'');']
         x=standard_define([4 3],model,exprs,gr_i)
         x.graphics.in_implicit=[];
         x.graphics.exprs=exprs;
-        x.graphics.style=["blockWithLabel;verticalLabelPosition=center;displayedLabel=CH:%2$s;fontColor=#5f5f5f"]
+        x.graphics.style=["blockWithLabel;verticalLabelPosition=center;displayedLabel=CH:%1$s;fontColor=#5f5f5f"]
     end
 endfunction

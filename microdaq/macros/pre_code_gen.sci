@@ -4,6 +4,9 @@ function [ok,out]=pre_code_gen(scs_m)
     %microdaq.private.mem_write_idx = 0;
     %microdaq.private.mem_read_idx = 0;
     %microdaq.private.to_file_idx = 0;
+    %microdaq.private.mdaq_dac_idx = 0;
+    %microdaq.private.mdaq_adc_idx = 0;
+    
     ok = %t;
 
     // scan_mdaq_block will fill mdaq_signal_id
@@ -20,4 +23,6 @@ function [ok,out]=pre_code_gen(scs_m)
     %microdaq.private.mem_write_idx = 0;
     %microdaq.private.mem_read_idx = 0;
     %microdaq.private.to_file_idx = 0;
+    %microdaq.private.mdaq_dac_idx = 0;
+    %microdaq.private.mdaq_adc_idx = 0;
 endfunction

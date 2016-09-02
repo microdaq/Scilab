@@ -49,7 +49,11 @@ function continueSimulation=pre_xcos_simulate(scs_m, needcompile)
                     break;
                 end
                 disp('### Starting model in Ext mode...');
-
+                
+                //adc, dac quantity restriction (1), prevent error 
+                %microdaq.private.mdaq_dac_idx = 0;
+                %microdaq.private.mdaq_adc_idx = 0;
+                
                 scan_mdaq_blocks(tmp);
                 if %microdaq.private.has_mdaq_param_sim then
                     result = mdaq_open();
@@ -81,8 +85,12 @@ function continueSimulation=pre_xcos_simulate(scs_m, needcompile)
         end
         %microdaq.private.mem_write_idx = 0;
         %microdaq.private.mem_read_idx = 0;
-        %microdaq.private.mdaq_signal_id = 0;
         %microdaq.private.to_file_idx = 0;
+        %microdaq.private.mdaq_dac_idx = 0;
+        %microdaq.private.mdaq_adc_idx = 0;
+        
+        %microdaq.private.mdaq_signal_id = 0;
+        
     end
 
     scs_m=resume(scs_m)

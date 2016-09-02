@@ -51,6 +51,23 @@ function obj=scan_mdaq_blocks(scs_m)
                     %microdaq.private.to_file_idx = %microdaq.private.to_file_idx + 1;
                 end
                 
+                if scs_m.objs(i).model.sim(1) == "mdaq_dac_sim" then
+                    %microdaq.private.mdaq_dac_idx = %microdaq.private.mdaq_dac_idx + 1;
+                    if %microdaq.private.mdaq_dac_idx > 1 then
+                        messagebox('Error: There is more than one mdaq_dac block.');
+                        error('Error: There is more than one mdaq_dac block. Check your xcos model.', 1);
+                    end
+                end
+                
+                
+                if scs_m.objs(i).model.sim(1) == "mdaq_adc_sim"
+                    %microdaq.private.mdaq_adc_idx = %microdaq.private.mdaq_adc_idx + 1;
+                    if %microdaq.private.mdaq_adc_idx > 1 
+                        messagebox('Error: There is more than one mdaq_adc block.');
+                        error('Error: There is more than one mdaq_adc block. Check your xcos model.', 1);
+                    end
+                end
+                
                 // Clear opar for code generation
                 if scs_m.objs(i).model.sim(1) == "e4codergui_block"
                     scs_m.objs(i).model.opar = [];
