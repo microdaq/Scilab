@@ -3,6 +3,10 @@ function continueSimulation=pre_xcos_simulate(scs_m, needcompile)
     %microdaq.private.has_mdaq_block = %F;
     continueSimulation = %T;
     look_for_mdaq_blocks = %T; 
+    
+    //reset mdaq_adc, mdaq_dac block counters 
+    %microdaq.private.mdaq_dac_idx = 0;
+    %microdaq.private.mdaq_adc_idx = 0;
 
     for i = 1:size(scs_m.objs)
         curObj= scs_m.objs(i);
@@ -86,8 +90,6 @@ function continueSimulation=pre_xcos_simulate(scs_m, needcompile)
         %microdaq.private.mem_write_idx = 0;
         %microdaq.private.mem_read_idx = 0;
         %microdaq.private.to_file_idx = 0;
-        %microdaq.private.mdaq_dac_idx = 0;
-        %microdaq.private.mdaq_adc_idx = 0;
         
         %microdaq.private.mdaq_signal_id = 0;
         
