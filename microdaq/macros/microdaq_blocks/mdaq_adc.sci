@@ -1,7 +1,7 @@
 function [x,y,typ] = mdaq_adc(job,arg1,arg2)
     global %microdaq;
     range_validation = [];
-    
+
     if %microdaq.private.mdaq_hwid <> [] then
         adc_info = get_adc_info(%microdaq.private.mdaq_hwid);
         range_spec_opt = [];
@@ -22,33 +22,42 @@ function [x,y,typ] = mdaq_adc(job,arg1,arg2)
             end
         end
 
-        adc_desc = ["This block reads MicroDAQ analog inputs (AI).";
-        "Select ADC type according to your hardware setup.";
-        "";
-        "output - measured value in volts";
-        "";
-        "Detected ADC parameters:";
-        "channels: "+adc_info.channel;
-        "rate: "+adc_info.rate;
-        "resolution: "+adc_info.resolution;
-        "range: "+adc_info.range_desc;
-        "";
-        "ADC settings:"
-        "Range:";
-        range_spec_opt;
-        "";
-        "Mode:";
-        "   0 - Single-ended";
-        "   1 - Differential";
-        "";
-        "Oversampling:"
-        "";
-        "Set block parameters:"];
+        adc_converter = adc_info.id;
+        channel_desc = adc_info.channel;
+        rate_desc = adc_info.rate;
+        resolution_desc = adc_info.resolution;
+        range_desc = adc_info.range_desc;
     else
-        dac_desc = "";
+        adc_converter = 1;
+        channel_desc = "Unknown";
+        rate_desc = "Unknown";
+        resolution_desc = "Unknown";
+        range_desc = "Unknown";
+        range_spec_opt = "Unknown";
     end
 
-
+    adc_desc = ["This block reads MicroDAQ analog inputs (AI).";
+    "Select ADC type according to your hardware setup.";
+    "";
+    "output - measured value in volts";
+    "";
+    "Detected ADC parameters:";
+    "channels: "+channel_desc;
+    "rate: "+rate_desc;
+    "resolution: "+resolution_desc;
+    "range: "+range_desc;
+    "";
+    "ADC settings:"
+    "Range:";
+    range_spec_opt;
+    "";
+    "Mode:";
+    "   0 - Single-ended";
+    "   1 - Differential";
+    "";
+    "Oversampling:"
+    "";
+    "Set block parameters:"];
     x=[];y=[];typ=[];
     select job
     case 'set' then
@@ -81,55 +90,59 @@ function [x,y,typ] = mdaq_adc(job,arg1,arg2)
             end
 
             n_channels = size(adc_channels);
-            if n_channels(2) > strtod(adc_info.channel) then
-                ok = %f;
-                error_msg = 'Too many channels selected for ADC0' + string(adc_info.id) + '!';
-                message(error_msg);
-            end
 
-            if max(adc_channels) > strtod(adc_info.channel) then
-                ok = %f;
-                error_msg = 'Wrong channel number selected for ADC0' + string(adc_info.id) + '!';
-                message(error_msg);
-            end
-
-            if min(adc_channels) < 1 then
-                ok = %f;
-                error_msg = 'Wrong channel number selected for ADC0' + string(adc_info.id) + '!';
-                message(error_msg);
-            end
-
-            if range_validation <> [] then
-                if find(range_validation == adc_range) == [] then
+            //when hardware is detected check if parameters meet the requirements 
+            if %microdaq.private.mdaq_hwid <> [] then
+                if n_channels(2) > strtod(adc_info.channel) then
                     ok = %f;
-                    error_msg = 'Wrong range selected for ADC0' + string(adc_info.id) + '!';
+                    error_msg = 'Too many channels selected for ADC0' + string(adc_id) + '!';
                     message(error_msg);
                 end
+
+                if max(adc_channels) > strtod(adc_info.channel) then
+                    ok = %f;
+                    error_msg = 'Wrong channel number selected for ADC0' + string(adc_id) + '!';
+                    message(error_msg);
+                end
+
+                if min(adc_channels) < 1 then
+                    ok = %f;
+                    error_msg = 'Wrong channel number selected for ADC0' + string(adc_id) + '!';
+                    message(error_msg);
+                end
+
+                if range_validation <> [] then
+                    if find(range_validation == adc_range) == [] then
+                        ok = %f;
+                        error_msg = 'Wrong range selected for ADC0' + string(adc_id) + '!';
+                        message(error_msg);
+                    end
+                end
+
+                if adc_mode == 1 & adc_info.id <> 1 then
+                    message("This converter dones''t support differential mode!")
+                    of=%f;
+                end
             end
-            
+
             //translate new range definition to the old one 1,2,3,4 --> 5,10 V uni/bi
-             if adc_range == 0 then
-                 adc_range = 5;   //0-5V
-                 adc_polarity = 1;//unipolar
-             elseif adc_range == 1 then 
-                 adc_range = 10;  //0-10V
-                 adc_polarity = 1;//unipolar
-             elseif adc_range == 2 then 
-                 adc_range = 5;   //±5V
-                 adc_polarity = 2;//bipolar
-             elseif adc_range == 3 then 
-                 adc_range = 10;  //±10
-                 adc_polarity = 2;//bipolar
-             end 
+            if adc_range == 0 then
+                adc_range = 5;   //0-5V
+                adc_polarity = 1;//unipolar
+            elseif adc_range == 1 then 
+                adc_range = 10;  //0-10V
+                adc_polarity = 1;//unipolar
+            elseif adc_range == 2 then 
+                adc_range = 5;   //±5V
+                adc_polarity = 2;//bipolar
+            elseif adc_range == 3 then 
+                adc_range = 10;  //±10
+                adc_polarity = 2;//bipolar
+            end 
 
             if adc_mode <> 0 & adc_mode <> 1 then
                 ok = %f;
                 message("Wrong ADC mode selected - use 0 or 1 to set single-ended or differential mode!");
-            end
-
-            if adc_mode == 1 & adc_info.id <> 1 then
-                message("This converter dones''t support differential mode!")
-                of=%f;
             end
 
             if oversamp_count < 1 | oversamp_count > 16 then
@@ -142,7 +155,7 @@ function [x,y,typ] = mdaq_adc(job,arg1,arg2)
                 [model,graphics,ok] = check_io(model,graphics, [], n_channels(2), 1, []);
                 graphics.exprs = exprs;
                 model.rpar = [];
-                model.ipar = [adc_info.id;adc_range;adc_polarity;adc_mode;oversamp_count;n_channels(2);adc_channels'];
+                model.ipar = [adc_converter;adc_range;adc_polarity;adc_mode;oversamp_count;n_channels(2);adc_channels'];
                 model.dstate = [];
                 x.graphics = graphics;
                 x.model = model;

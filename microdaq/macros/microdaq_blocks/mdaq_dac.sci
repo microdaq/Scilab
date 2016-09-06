@@ -1,7 +1,7 @@
 ﻿function [x,y,typ] = mdaq_dac(job,arg1,arg2)
     global %microdaq;
     range_validation = [];
-    
+
     if %microdaq.private.mdaq_hwid <> [] then
         dac_info = get_dac_info(%microdaq.private.mdaq_hwid);
         range_base_opt = [" 0: 0-5V"; " 1: 0-10V"; " 2: ±5V"; " 3: ±10V";" 4: ±2.5V";];
@@ -21,30 +21,38 @@
             end
         end
 
-
-        dac_desc = ["This block sets MicroDAQ analog outputs (AO).";
-        "DAC block allows to set terminate voltage which will be set at";
-        "the end of simulation in Ext mode.";
-        "";
-        "User can use option Terminate all DACs with voltage to set";
-        "same voltage at all DAC channels. Without selecting this option";
-        "user can define different terminate voltages for DAC channel.";
-        "";
-        "input - input value in volts"
-        "";
-        "Detected DAC parameters:";
-        "channels: "+dac_info.channel;
-        "resolution: "+dac_info.resolution;
-        "range: "+dac_info.range_desc;
-        "";
-        "DAC settings:"
-        "Range:";
-        range_spec_opt;
-        "";
-        "Set block parameters:"];
+        dac_converter = dac_info.id;
+        channel_desc = dac_info.channel;
+        resolution_desc = dac_info.resolution;
+        range_desc = dac_info.range_desc;
     else
-        dac_desc = "";
+        dac_converter = 1;
+        channel_desc = "Unknown";
+        resolution_desc = "Unknown";
+        range_desc = "Unknown";
+        range_spec_opt = "Unknown";
     end
+
+    dac_desc = ["This block sets MicroDAQ analog outputs (AO).";
+    "DAC block allows to set terminate voltage which will be set at";
+    "the end of simulation in Ext mode.";
+    "";
+    "User can use option Terminate all DACs with voltage to set";
+    "same voltage at all DAC channels. Without selecting this option";
+    "user can define different terminate voltages for DAC channel.";
+    "";
+    "input - input value in volts"
+    "";
+    "Detected DAC parameters:";
+    "channels: "+channel_desc;
+    "resolution: "+resolution_desc;
+    "range: "+range_desc;
+    "";
+    "DAC settings:"
+    "Range:";
+    range_spec_opt;
+    "";
+    "Set block parameters:"];
 
     x=[];y=[];typ=[];
     select job
@@ -74,39 +82,44 @@
             if ~ok then
                 break
             end
-
-            if dac_info.id > 5 | dac_info.id < 1 then
-                ok = %f;
-                message("DAC not detected, run mdaq_hwinfo and try again!");
-            end
-
+            
             ch_count = 8;
-            if dac_info.id > 3 then
-                ch_count = 16;
-            end
-
-            n_channels = size(channel);
-            if n_channels(2) > ch_count then
-                ok = %f;
-                error_msg = 'Too many channels selected for DAC0' + string(dac_info.id) + '!';
-                message(error_msg);
-            end
-
-            if max(channel) > ch_count | min(channel) < 1 then
-                ok = %f;
-                error_msg = 'Wrong channel number selected for DAC0' + string(dac_info.id) + '!';
-                message(error_msg);
-            end
-
-            if dac_mode > 4 | dac_mode < 0 then
-                ok = %f;
-                message("Wrong range selected, use 0,1,2,3 or 4!");
-            end
-
-            if range_validation <> [] then
-                if find(range_validation == dac_mode) == [] then
+            
+            //when hardware is detected check if parameters meet the requirements 
+            if %microdaq.private.mdaq_hwid <> [] then
+                if dac_info.id > 5 | dac_info.id < 1 then
                     ok = %f;
-                    message("Wrong range selected!");
+                    message("DAC not detected, run mdaq_hwinfo and try again!");
+                end
+
+                
+                if dac_info.id > 3 then
+                    ch_count = 16;
+                end
+
+                n_channels = size(channel);
+                if n_channels(2) > ch_count then
+                    ok = %f;
+                    error_msg = 'Too many channels selected for DAC0' + string(dac_info.id) + '!';
+                    message(error_msg);
+                end
+
+                if max(channel) > ch_count | min(channel) < 1 then
+                    ok = %f;
+                    error_msg = 'Wrong channel number selected for DAC0' + string(dac_info.id) + '!';
+                    message(error_msg);
+                end
+
+                if dac_mode > 4 | dac_mode < 0 then
+                    ok = %f;
+                    message("Wrong range selected, use 0,1,2,3 or 4!");
+                end
+
+                if range_validation <> [] then
+                    if find(range_validation == dac_mode) == [] then
+                        ok = %f;
+                        message("Wrong range selected!");
+                    end
                 end
             end
 
@@ -128,7 +141,7 @@
                 [model,graphics,ok] = check_io(model,graphics, n_channels(2), [], 1, []);
                 graphics.exprs = exprs;
                 model.rpar = [8; term_value];
-                model.ipar = [dac_info.id;dac_mode;n_channels(2);channel'];
+                model.ipar = [dac_converter;dac_mode;n_channels(2);channel'];
                 model.dstate = [];
                 x.graphics = graphics;
                 x.model = model;
@@ -138,15 +151,8 @@
     case 'define' then
         channel=1
         term_value=0
-
-        if( range_validation <> []) then
-            dac_mode = range_validation(1);
-            converter = dac_info.id;
-        else
-            dac_mode = 3;//±10V
-            converter = 1;//DAC01
-        end
-
+        dac_mode = 3;//±10V
+        dac_converter = 1;//DAC01
         model=scicos_model()
         model.sim=list('mdaq_dac_sim',5)
         model.in =1
@@ -155,7 +161,7 @@
         model.out=[]
         model.evtin=1
         model.rpar = [1; term_value];
-        model.ipar = [converter;dac_mode;1;channel'];
+        model.ipar = [dac_converter;dac_mode;1;channel'];
         model.dstate=[];
         model.blocktype='d'
         model.dep_ut=[%t %f]
