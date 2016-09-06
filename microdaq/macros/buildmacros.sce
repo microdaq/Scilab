@@ -1,4 +1,23 @@
 function buildmacros()
+    // create global microdaq settings struct
+    global %microdaq;
+    %microdaq = struct("model", ["Unknown"],..
+                       "ip_address", [],..
+                       "dsp_loaded", %F,..
+                       "dsp_ext_mode", %T,..
+                       "dsp_debug_mode", %F,..
+                       "private", struct(..
+                           "mlink_link_id", -1000,..
+                           "connection_id", -1,..
+                           "has_mdaq_block", %F,..
+                           "has_mdaq_param_sim", %F,..
+                           "mem_write_idx", 0,..
+                           "mem_read_idx", 0,..
+                           "to_file_idx", 0,..
+                           "mdaq_signal_id", 0,..
+                           "mdaq_hwid", [])..
+                       );
+    
     script_path = get_absolute_file_path("buildmacros.sce");
     module_path = part(script_path,1:length(script_path)-length("macros") - 1 )
 
