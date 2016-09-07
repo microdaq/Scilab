@@ -3,10 +3,6 @@ function continueSimulation=pre_xcos_simulate(scs_m, needcompile)
     %microdaq.private.has_mdaq_block = %F;
     continueSimulation = %T;
     look_for_mdaq_blocks = %T; 
-    
-    //reset mdaq_adc, mdaq_dac block counters 
-    %microdaq.private.mdaq_dac_idx = 0;
-    %microdaq.private.mdaq_adc_idx = 0;
 
     for i = 1:size(scs_m.objs)
         curObj= scs_m.objs(i);
@@ -20,7 +16,8 @@ function continueSimulation=pre_xcos_simulate(scs_m, needcompile)
 
             // if model has microdaq block set real-time scaling to 1
             tmp = scs_m;
-            scan_mdaq_blocks(tmp);
+            
+            perform_scan(tmp);
             if %microdaq.private.has_mdaq_block then
                 scs_m.props.tol(5) = 1;
             end
@@ -53,12 +50,8 @@ function continueSimulation=pre_xcos_simulate(scs_m, needcompile)
                     break;
                 end
                 disp('### Starting model in Ext mode...');
-                
-                //adc, dac quantity restriction (1), prevent error 
-                %microdaq.private.mdaq_dac_idx = 0;
-                %microdaq.private.mdaq_adc_idx = 0;
-                
-                scan_mdaq_blocks(tmp);
+                   
+                perform_scan(tmp);
                 if %microdaq.private.has_mdaq_param_sim then
                     result = mdaq_open();
                     if result > -1 then
@@ -75,7 +68,7 @@ function continueSimulation=pre_xcos_simulate(scs_m, needcompile)
 
     if look_for_mdaq_blocks then
         tmp = scs_m;
-        scan_mdaq_blocks(tmp);
+        perform_scan(tmp);
         if %microdaq.private.has_mdaq_block then
             disp("### Running model in simulation mode... ")
             result = mdaq_open();
@@ -87,12 +80,8 @@ function continueSimulation=pre_xcos_simulate(scs_m, needcompile)
                 %microdaq.private.connection_id = -1; 
             end
         end
-        %microdaq.private.mem_write_idx = 0;
-        %microdaq.private.mem_read_idx = 0;
-        %microdaq.private.to_file_idx = 0;
-        
-        %microdaq.private.mdaq_signal_id = 0;
-        
+       
+        %microdaq.private.mdaq_signal_id = 0;      
     end
 
     scs_m=resume(scs_m)
