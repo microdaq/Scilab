@@ -14,6 +14,10 @@ function buildmacros()
                            "mem_write_idx", 0,..
                            "mem_read_idx", 0,..
                            "to_file_idx", 0,..
+                           "dac_idx", 0,..
+                           "adc_idx", 0,..
+                           "webscope_idx", 0,..
+                           "udpsend_idx", 0,..
                            "mdaq_signal_id", 0,..
                            "mdaq_hwid", [])..
                        );

@@ -1,11 +1,7 @@
 function [ok,out]=pre_code_gen(scs_m)
     global %microdaq
     %microdaq.private.mdaq_signal_id = [];
-    %microdaq.private.mem_write_idx = 0;
-    %microdaq.private.mem_read_idx = 0;
-    %microdaq.private.to_file_idx = 0;
-    %microdaq.private.mdaq_dac_idx = 0;
-    %microdaq.private.mdaq_adc_idx = 0;
+    reset_mdaq_blk_idx();
     
     ok = %t;
 
@@ -20,9 +16,5 @@ function [ok,out]=pre_code_gen(scs_m)
     end
 
     %microdaq.private.mdaq_signal_id = [];
-    %microdaq.private.mem_write_idx = 0;
-    %microdaq.private.mem_read_idx = 0;
-    %microdaq.private.to_file_idx = 0;
-    %microdaq.private.mdaq_dac_idx = 0;
-    %microdaq.private.mdaq_adc_idx = 0;
+    reset_mdaq_blk_idx();
 endfunction
