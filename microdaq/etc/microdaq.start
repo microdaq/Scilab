@@ -131,41 +131,8 @@ function [microdaqlib, microdaqBlocks, microdaqMacros, microdaqUserBlocks] = sta
         end
     end
 
-    pal = xcosPal("MicroDAQ");
-
-    // Build MicroDAQ blocks
-    microdaq_blocks = mgetl( root_tlbx + filesep() + "macros" +..
-    filesep() + "microdaq_blocks" + filesep() + "names");
-
-    microdaq_blocks = microdaq_blocks';
-
-    blocks = [];
-    for i=1:size(microdaq_blocks, "*")
-        if strstr(microdaq_blocks(i), "_sim") == ""
-            blocks = [blocks, microdaq_blocks(i)];
-        end
-    end
-
-    for i=1:size(blocks, "*")
-        h5  = ls(root_tlbx + "/images/h5/"  + blocks(i) + "." + ["sod" "h5"]);
-        gif = ls(root_tlbx + "/images/gif/" + blocks(i) + "." + ["png" "jpg" "gif"]);
-        svg = ls(root_tlbx + "/images/svg/" + blocks(i) + "." + ["png" "jpg" "gif" "svg"]);
-        pal = xcosPalAddBlock(pal, h5(1), gif(1), svg(1));
-    end
-
-    if ~xcosPalAdd(pal,"MicroDAQ") then
-        error(msprintf(gettext("%s: Unable to export %s.\n"), "microdaq.start", "pal"));
-    end
-
-    //Create complete mdaq palette
-    if isdef("gen_palette") == %T then
-        //load xcos library
-        if isdef("c_pass1") == %F then
-            loadXcosLibs();
-        end
-        gen_palette();
-        clear gen_palette;
-    end
+    // Load MicroDAQ base blocks 
+    load_mdaq_palette();
 
     // Build MicroDAQ User blocks
     if isfile(root_tlbx + filesep() + "macros" + filesep() + "user_blocks" + filesep() + "names")  == %T then
