@@ -94,7 +94,7 @@ function  mdaq_ai_scan_init(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
             bipolar, 5, "i",..
             adc_mode, 6, "i",..
             scan_freq, 7, "d",..
-            scan_time, 8, "i",..
+            scan_time, 8, "d",..
         "out",..
             [1, 1], 9, "i");
 
@@ -129,12 +129,18 @@ function  mdaq_ai_scan_init(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
         else
             mprintf("0 to +%d Volts\n", ai_range);
         end
-        mprintf("\tFrequency:\t%dHz\n", scan_freq);
+
+        if scan_freq >= 1000
+            mprintf("\tFrequency:\t%.3fkHz\n", scan_freq/1000);
+        else
+            mprintf("\tFrequency:\t%dHz\n", scan_freq);
+        end
+        
         if scan_time < 0
             mprintf("\tDuration:\tInf\n");
             mprintf("\tScan count:\tInf");
         else
-            mprintf("\tDuration:\t%dsec\n", scan_time);
+            mprintf("\tDuration:\t%.2fsec\n", scan_time);
             mprintf("\tScan count:\t%d", scan_time * scan_freq);
         end
     end
