@@ -18,12 +18,12 @@ function mdaq_dio_write(arg1, arg2, arg3)
 
     if argn(2) > 3 | argn(2) < 2 then
         mprintf("Description:\n");
-        mprintf("\tWrites DIO state\n");
+        mprintf("\tStart and reads scann data\n");
         mprintf("Usage:\n");
-        mprintf("\tmdaq_dio_write(link_id, dio, state);\n")
+        mprintf("\tmdaq_ai_scan(link_id, scan_count, blocking);\n")
         mprintf("\tlink_id - connection id returned by mdaq_open() (OPTIONAL)\n");
-        mprintf("\tdio - DIO number\n");
-        mprintf("\tstate - DIO output state\n");
+        mprintf("\tscan_count - number of scans to read\n");
+        mprintf("\tblocking - blocking or non-blocking read (%T/%F)\n");
         return;
     end
     

@@ -5,22 +5,6 @@ function []=post_xcos_simulate(%cpr, scs_m, needcompile)
         curObj= scs_m.objs(i);
         if (typeof(curObj) == "Block" & curObj.gui == "mdaq_setup")
             if  %microdaq.dsp_loaded == %T then
-
-                // make scope nicer
-                list_fig=winsid();
-                for i=1:length(list_fig)
-                    h=get_figure_handle(list_fig(i));
-                    if h.children.type == "Axes" then
-                        axes = h.children;
-                        axes.grid = [1,1];
-                        axes.grid_style = [9,10];
-                        poliline = axes.children;
-                        if isempty(poliline.children) then
-                            poliline.polyline_style = 2;
-                        end
-                    end
-                end
-
                 client_disconnect(1);
                 %microdaq.dsp_loaded = %F;
 
@@ -54,11 +38,32 @@ function []=post_xcos_simulate(%cpr, scs_m, needcompile)
                             clear dsp_exec_profile;
                         end
                     end
+                    
+                    // make scope nicer
+                    list_fig=winsid();
+                    for i=1:length(list_fig)
+                        h=get_figure_handle(list_fig(i));
+                        if h.children.type == "Axes" then
+                            axes = h.children;
+                            axes.grid = [1,1];
+                            axes.grid_style = [9,10];
+                            poliline = axes.children;
+                            if isempty(poliline.children) then
+                                poliline.polyline_style = 2;
+                            end
+                        end
+                    end
                 end
                 mdaq_close(connection_id);
             end
         end
     end
+end
+
+if %microdaq.private.connection_id > -1 & %microdaq.private.has_mdaq_param_sim then
+    mdaq_close(%microdaq.private.connection_id);
+    %microdaq.private.connection_id = -1;
+    %microdaq.private.has_mdaq_param_sim = %F;
 end
 
 if %microdaq.private.connection_id > -1 & %microdaq.private.has_mdaq_block then

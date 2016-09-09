@@ -28,6 +28,12 @@ function [data, result] = mdaq_ai_scan(arg1, arg2, arg3)
 
     if argn(2) > 3 | argn(2) < 2 then
         mprintf("Description:\n");
+        mprintf("\tStarts and reads scan data\n");
+        mprintf("Usage:\n");
+        mprintf("\tmdaq_ai_scan(link_id, scan_count, blocking);\n")
+        mprintf("\tlink_id - connection id returned by mdaq_open() (OPTIONAL)\n");
+        mprintf("\tscan_count - number of scans to read\n");
+        mprintf("\tblocking - blocking or non-blocking read (%%T/%%F)\n");
         return;
     end
     
@@ -44,13 +50,17 @@ function [data, result] = mdaq_ai_scan(arg1, arg2, arg3)
                 [ch_count, scan_count], 1, "d",.. 
                 [1, 1], 4, "i");
 
-    if result < 0  then
-        mdaq_error(result)
-        data = [];
+    if result < 0 then
+        // -91 - timeout
+        if result == -91  then
+            mdaq_error(result)
+        else 
+            error(mdaq_error(result), 10000 + abs(result))
+        end
+        data = [];            
     end
-    
-    data = data';
-    
+
+    data = data';    
     result = round(result / ch_count); 
     
     if result < scan_count then

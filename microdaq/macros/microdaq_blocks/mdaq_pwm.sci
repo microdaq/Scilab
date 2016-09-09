@@ -4,8 +4,8 @@ function [x,y,typ] = mdaq_pwm(job,arg1,arg2)
     "PWM period is defined in microseconds. Polarity allows to generate";
     "inverted PWM waveform. Block input data should be in range 0-100.";
     "";
-    "input(1) - PWM A channel waveform duty"
-    "input(2) - PWM B channel waveform duty"
+    "A input - PWM A channel waveform duty"
+    "B input - PWM B channel waveform duty"
     "";
     "PWM module: PWM1...PWM3";
     "";
@@ -100,5 +100,6 @@ function [x,y,typ] = mdaq_pwm(job,arg1,arg2)
         x.graphics.in_implicit=[];
         x.graphics.exprs=exprs;
         x.graphics.style=["blockWithLabel;verticalLabelPosition=center;displayedLabel=%1$s;fontColor=#5f5f5f"]
+        x.graphics.in_label = ["A", "B"];
     end
 endfunction
