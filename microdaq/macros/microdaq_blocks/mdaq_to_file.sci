@@ -25,8 +25,8 @@ function [x,y,typ] = mdaq_to_file(job,arg1,arg2)
     "name use ''%d'' e.g. data_%d.txt will produce files data_0.txt, data_1.txt,...";
     "If ''%d'' isn''t included in file name data will be written to one file.";
     "";
-    "Data input(1) - input data"
-    "Trigger input(2) - trigger new sequential file creation"
+    "D input - data input"
+    "T input - trigger new sequential file creation"
     "";
     "Filt type:";
     "   1 - Text";
@@ -127,6 +127,7 @@ function [x,y,typ] = mdaq_to_file(job,arg1,arg2)
         x=standard_define([4 3],model,exprs,gr_i)
         x.graphics.in_implicit=[];
         x.graphics.style=["blockWithLabel;verticalLabelPosition=center;displayedLabel=%1$s;fontColor=#5f5f5f"]
+        x.graphics.in_label = ["D"; "T"];
         x.graphics.exprs=exprs;
     end
 endfunction

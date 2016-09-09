@@ -1,10 +1,10 @@
 function [x,y,typ] = mdaq_encoder(job,arg1,arg2)
     encoder_desc = ["This block reads MicroDAQ quadrature encoder inputs.";
     "";
-    "input(1) - reset input";
+    "R input - reset input";
     "";
-    "output(1) - current encoder counter value";
-    "output(2) - direction: 0 - no motion, 1 - CW, 2 - CCW";
+    "P output- current encoder counter value";
+    "D output - direction: 0 - no motion, 1 - CW, 2 - CCW";
     "";
     "Encoder module: ENC1, ENC2";
     "";
@@ -84,5 +84,7 @@ function [x,y,typ] = mdaq_encoder(job,arg1,arg2)
         x.graphics.in_implicit=[];
         x.graphics.exprs=exprs;
         x.graphics.style=["blockWithLabel;verticalLabelPosition=center;displayedLabel=%1$s;fontColor=#5f5f5f"]
+        x.graphics.out_label = ["P", "D"];
+        x.graphics.in_label = ["R"];
     end
 endfunction
