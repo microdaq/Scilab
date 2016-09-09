@@ -3,3 +3,4 @@ microdaq/rt_templates/target_paths.mk
 microdaq/etc/mlink/hwid
 microdaq/mblockstmpdir
 microdaq/etc/mlink/hwid
+microdaq/etc/mblockstmpdir
