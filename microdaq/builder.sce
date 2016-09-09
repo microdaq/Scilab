@@ -7,7 +7,6 @@ mode(-1);
 lines(0);
 
 function main_builder()
-
   TOOLBOX_NAME  = "microdaq";
   TOOLBOX_TITLE = "MicroDAQ toolbox";
   toolbox_dir   = get_absolute_file_path("builder.sce");
@@ -43,6 +42,10 @@ function main_builder()
 //  tbx_builder_help(toolbox_dir);
   tbx_build_loader(TOOLBOX_NAME, toolbox_dir);
   tbx_build_cleaner(TOOLBOX_NAME, toolbox_dir);
+  
+  //delete mblockstmpdir file to force loader to rebuild mdaq palette 
+  deletefile(toolbox_dir+filesep()+"etc"+filesep()+"mblockstmpdir");
+  
 endfunction
 
 if with_module('xcos') then

@@ -1,4 +1,38 @@
 ﻿function [x,y,typ] = mdaq_dac(job,arg1,arg2)
+    global %microdaq;
+    range_validation = [];
+
+    if %microdaq.private.mdaq_hwid <> [] then
+        dac_info = get_dac_info(%microdaq.private.mdaq_hwid);
+        range_base_opt = [" 0: 0-5V"; " 1: 0-10V"; " 2: ±5V"; " 3: ±10V";" 4: ±2.5V";];
+        range_spec_opt = [];
+        n = 1;
+
+        for i=1:max(size(dac_info.range))
+            for j=1:max(size(range_base_opt))
+                if strindex(range_base_opt(j), dac_info.range(i)) <> [] then
+                    range_spec_opt(n) = range_base_opt(j);
+                    valid_num = range_base_opt(j);
+                    valid_num = part(valid_num, 1:strindex(valid_num, ":"));
+                    valid_num = strtod(valid_num);
+                    range_validation(n) = valid_num;
+                    n = n + 1;
+                end
+            end
+        end
+
+        dac_converter = dac_info.id;
+        channel_desc = dac_info.channel;
+        resolution_desc = dac_info.resolution;
+        range_desc = dac_info.range_desc;
+    else
+        dac_converter = 1;
+        channel_desc = "Unknown";
+        resolution_desc = "Unknown";
+        range_desc = "Unknown";
+        range_spec_opt = "Unknown";
+    end
+
     dac_desc = ["This block sets MicroDAQ analog outputs (AO).";
     "DAC block allows to set terminate voltage which will be set at";
     "the end of simulation in Ext mode.";
@@ -7,21 +41,16 @@
     "same voltage at all DAC channels. Without selecting this option";
     "user can define different terminate voltages for DAC channel.";
     "";
-    "input(1) - input value in volts"
+    "input - input value in volts"
     "";
-    "Converter:";
-    "  DAC01 - 8 channel, 12-bit, 0-5V range";
-    "  DAC02 - 8 channel, 12-bit, ±10V range";
-    "  DAC03 - 8 channel, 16-bit, ±10V range";
-    "  DAC04 - 16 channel, 12-bit, ±10V range";
-    "  DAC05 - 16 channel, 16-bit, ±10V range";
+    "Detected DAC parameters:";
+    "channels: "+channel_desc;
+    "resolution: "+resolution_desc;
+    "range: "+range_desc;
     "";
-    "Range (only for DAC4...5):";
-    " 0: 0-5V";
-    " 1: 0-10V";
-    " 2: ±5V";
-    " 3: ±10V";
-    " 4: ±2.5V";
+    "DAC settings:"
+    "Range:";
+    range_spec_opt;
     "";
     "Set block parameters:"];
 
@@ -35,65 +64,63 @@
         while %t do
             try
                 getversion('scilab');
-                [ok,converter_str,channel,dac_mode,term_value,exprs]=..
+                [ok,channel,dac_mode,term_value,exprs]=..
                 scicos_getvalue(dac_desc,..
-                ['Converter:';
-                'Channels:';
+                ['Channels:';
                 'Range:';
                 'Termination value:'],..
-                list('str',1,'vec',-1,'vec',1,'vec',-1),exprs)
+                list('vec',-1,'vec',1,'vec',-1),exprs)
             catch
-                [ok,converter_str,channel,dac_mode,term_value,exprs]=..
+                [ok,channel,dac_mode,term_value,exprs]=..
                 scicos_getvalue(dac_desc,..
-                ['Converter:';
-                'Channels:';
+                ['Channels:';
                 'Range:';
                 'Termination value:'],..
-                list('str',1,'vec',-1,'vec',1,'vec',-1),exprs)
+                list('vec',-1,'vec',1,'vec',-1),exprs)
             end;
 
             if ~ok then
                 break
             end
-
-            converter_str = convstr(converter_str, 'l');
-            converter = strtod(part(converter_str, 4:5));
-            if isnan(converter) == %t | part(converter_str, 1:3) <> "dac" then
-                ok = %f;
-                message("Wrong DAC converter selected!");
-            end
-
-            if converter > 5 | converter < 1 then
-                ok = %f;
-                message("Wrong DAC converter selected!");
-            end
             
-            global %microdaq; 
-            if converter <> %microdaq.private.mdaq_hwid(3) & %microdaq.private.mdaq_hwid(3) > 0 then 
-                message("Selected DAC converter is different than detected - run mdaq_hwinfo() for more details!");
-            end
+            ch_count = 8;
             
-            ch_count = 8; 
-            if converter > 3 then
-                ch_count = 16;
-            end
+            //when hardware is detected check if parameters meet the requirements 
+            if %microdaq.private.mdaq_hwid <> [] then
+                if dac_info.id > 5 | dac_info.id < 1 then
+                    ok = %f;
+                    message("DAC not detected, run mdaq_hwinfo and try again!");
+                end
 
-            n_channels = size(channel);
-            if n_channels(2) > ch_count then
-                ok = %f;
-                error_msg = 'Too many channels selected for DAC0' + string(converter) + '!';
-                message(error_msg);
-            end
+                
+                if dac_info.id > 3 then
+                    ch_count = 16;
+                end
 
-            if max(channel) > ch_count | min(channel) < 1 then
-                ok = %f;
-                error_msg = 'Wrong channel number selected for DAC0' + string(converter) + '!';
-                message(error_msg);
-            end
+                n_channels = size(channel);
+                if n_channels(2) > ch_count then
+                    ok = %f;
+                    error_msg = 'Too many channels selected for DAC0' + string(dac_info.id) + '!';
+                    message(error_msg);
+                end
 
-            if dac_mode > 4 | dac_mode < 0 then
-                ok = %f;
-                message("Wrong mode selected, use 0,1,2,3 or 4!");
+                if max(channel) > ch_count | min(channel) < 1 then
+                    ok = %f;
+                    error_msg = 'Wrong channel number selected for DAC0' + string(dac_info.id) + '!';
+                    message(error_msg);
+                end
+
+                if dac_mode > 4 | dac_mode < 0 then
+                    ok = %f;
+                    message("Wrong range selected, use 0,1,2,3 or 4!");
+                end
+
+                if range_validation <> [] then
+                    if find(range_validation == dac_mode) == [] then
+                        ok = %f;
+                        message("Wrong range selected!");
+                    end
+                end
             end
 
             if ok then
@@ -114,7 +141,7 @@
                 [model,graphics,ok] = check_io(model,graphics, n_channels(2), [], 1, []);
                 graphics.exprs = exprs;
                 model.rpar = [8; term_value];
-                model.ipar = [converter;dac_mode;n_channels(2);channel'];
+                model.ipar = [dac_converter;dac_mode;n_channels(2);channel'];
                 model.dstate = [];
                 x.graphics = graphics;
                 x.model = model;
@@ -122,11 +149,10 @@
             end
         end
     case 'define' then
-        converter=1
-        converter_str = [];
         channel=1
         term_value=0
-        dac_mode=3
+        dac_mode = 3;//±10V
+        dac_converter = 1;//DAC01
         model=scicos_model()
         model.sim=list('mdaq_dac_sim',5)
         model.in =1
@@ -135,15 +161,15 @@
         model.out=[]
         model.evtin=1
         model.rpar = [1; term_value];
-        model.ipar = [converter;dac_mode;1;channel'];
+        model.ipar = [dac_converter;dac_mode;1;channel'];
         model.dstate=[];
         model.blocktype='d'
         model.dep_ut=[%t %f]
-        exprs=["DAC01";sci2exp(channel);sci2exp(dac_mode);sci2exp(term_value)]
+        exprs=[sci2exp(channel);sci2exp(dac_mode);sci2exp(term_value)]
         gr_i=['xstringb(orig(1),orig(2),[''CH:'' ; string(channel)],sz(1),sz(2),''fill'');']
         x=standard_define([4 3],model,exprs,gr_i)
         x.graphics.in_implicit=[];
         x.graphics.exprs=exprs;
-        x.graphics.style=["blockWithLabel;verticalLabelPosition=center;displayedLabel=CH:%2$s;fontColor=#5f5f5f"]
+        x.graphics.style=["blockWithLabel;verticalLabelPosition=center;displayedLabel=CH:%1$s;fontColor=#5f5f5f"]
     end
 endfunction

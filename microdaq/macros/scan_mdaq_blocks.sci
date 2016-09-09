@@ -36,24 +36,40 @@ function obj=scan_mdaq_blocks(scs_m)
                     %microdaq.private.has_mdaq_param_sim = %T;
                 end
 
+                //-------------------------Blocks quantity restriction check--------------------------------
                 if scs_m.objs(i).model.sim(1) == "mdaq_mem_write_sim"
                     scs_m.objs(i).model.ipar(5) = %microdaq.private.mem_write_idx;
                     %microdaq.private.mem_write_idx = %microdaq.private.mem_write_idx + 1;
+                    
+                    if %microdaq.private.mem_write_idx > 16 then
+                        messagebox('Error: There is more than 16 mdaq_mem_write blocks.');
+                        error('Error: There is more than 16 mdaq_mem_write blocks. Check your xcos model.', 1);
+                    end
                 end
 
                 if scs_m.objs(i).model.sim(1) == "mdaq_mem_read_sim"
                     scs_m.objs(i).model.ipar(5) = %microdaq.private.mem_read_idx;
                     %microdaq.private.mem_read_idx = %microdaq.private.mem_read_idx + 1;
+                    
+                    if  %microdaq.private.mem_read_idx > 16 then
+                        messagebox('Error: There is more than 16 mdaq_mem_read blocks.');
+                        error('Error: There is more than 16 mdaq_mem_read blocks. Check your xcos model.', 1);
+                    end
                 end
                 
                 if scs_m.objs(i).model.sim(1) == "mdaq_to_file_sim"
                     scs_m.objs(i).model.ipar(5) = %microdaq.private.to_file_idx;
                     %microdaq.private.to_file_idx = %microdaq.private.to_file_idx + 1;
+                    
+                    if %microdaq.private.to_file_idx > 1 then
+                        messagebox('Error: There is more than one mdaq_to_file block.');
+                        error('Error: There is more than one mdaq_to_file block. Check your xcos model.', 1);
+                    end
                 end
                 
                 if scs_m.objs(i).model.sim(1) == "mdaq_dac_sim" then
-                    %microdaq.private.mdaq_dac_idx = %microdaq.private.mdaq_dac_idx + 1;
-                    if %microdaq.private.mdaq_dac_idx > 1 then
+                    %microdaq.private.dac_idx = %microdaq.private.dac_idx + 1;
+                    if %microdaq.private.dac_idx > 1 then
                         messagebox('Error: There is more than one mdaq_dac block.');
                         error('Error: There is more than one mdaq_dac block. Check your xcos model.', 1);
                     end
@@ -61,10 +77,26 @@ function obj=scan_mdaq_blocks(scs_m)
                 
                 
                 if scs_m.objs(i).model.sim(1) == "mdaq_adc_sim"
-                    %microdaq.private.mdaq_adc_idx = %microdaq.private.mdaq_adc_idx + 1;
-                    if %microdaq.private.mdaq_adc_idx > 1 
+                    %microdaq.private.adc_idx = %microdaq.private.adc_idx + 1;
+                    if %microdaq.private.adc_idx > 1 
                         messagebox('Error: There is more than one mdaq_adc block.');
                         error('Error: There is more than one mdaq_adc block. Check your xcos model.', 1);
+                    end
+                end
+                
+                if scs_m.objs(i).model.sim(1) == "mdaq_webscope_sim"
+                    %microdaq.private.webscope_idx = %microdaq.private.webscope_idx + 1;
+                    if %microdaq.private.webscope_idx > 1 
+                        messagebox('Error: There is more than one mdaq_webscope block.');
+                        error('Error: There is more than one mdaq_webscope block. Check your xcos model.', 1);
+                    end
+                end
+                
+                if scs_m.objs(i).model.sim(1) == "mdaq_udp_send_sim"
+                    %microdaq.private.udpsend_idx = %microdaq.private.udpsend_idx + 1;
+                    if %microdaq.private.udpsend_idx > 1 
+                        messagebox('Error: There is more than one mdaq_udp_send block.');
+                        error('Error: There is more than one mdaq_udp_send block. Check your xcos model.', 1);
                     end
                 end
                 

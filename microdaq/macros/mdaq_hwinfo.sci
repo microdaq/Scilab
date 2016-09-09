@@ -42,25 +42,6 @@
                 storage = 32;
             end
 
-            if hwid(1) == 2000 then
-                ai_config = ["8 channel, 166ksps, 16-bit, 0-5V, 0-10V, ±5V, ±10V range",..
-                "8 channel, 600ksps, 12-bit, ±5V, ±10V range",..
-                "16 channel, 600ksps, 12-bit, ±5V, ±10V range",..
-                "8 channel, 500ksps, 16-bit, ±5V, ±10V range",..
-                "16 channel, 500ksps, 16-bit, ±5V, ±10V range"];
-
-                ao_config = ["8 channel, 12-bit, 0-5V range",..
-                "8 channel, 12-bit, ±10V range",..
-                "8 channel, 16-bit, ±10V range",..
-                "16 channel, 12-bit, ±10V range",..
-                "16 channel, 16-bit, ±10V range"];
-            else
-                ai_config = ["8 channel, 166ksps, 12-bit, 0-5V, 0-10V, ±5V, ±10V range",..
-                "8 channel, 166ksps, 16-bit, 0-5V, 0-10V, ±5V, ±10V range"];
-
-                ao_config = ["8 channel, 12-bit, 0-5V range"];
-            end
-
             mprintf("-----------------------------------\n");
             mprintf("   %s\n", %microdaq.model);
             mprintf("-----------------------------------\n");
@@ -68,8 +49,12 @@
             mprintf("\tCPU: %dMHz\n", cpu);
             mprintf("\tStorage: %dGB\n", storage);
 
-            mprintf("\tAnalog inputs (AI): %s\n", ai_config(hwid(2)));
-            mprintf("\tAnalog outputs (AO): %s\n", ao_config(hwid(3)));
+            adc_info = get_adc_info(hwid);
+            mprintf("\tAnalog inputs (AI): %s channel, %s, %s, %s range\n", adc_info.channel, adc_info.rate, adc_info.resolution, adc_info.range_desc);
+            dac_info = get_dac_info(hwid);
+            mprintf("\tAnalog outputs (AO):  %s channel, %s, %s range\n", dac_info.channel, dac_info.resolution, dac_info.range_desc);
+ 
+            
             mprintf("\tDigital input/output (DIO): %d channels, 5V/TTL\n", mdaq_get_dio_config());
 
             mprintf("IP settings:\n");
