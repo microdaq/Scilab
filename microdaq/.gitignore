@@ -12,6 +12,7 @@ macros/microdaq_macros/lib
 macros/microdaq_macros/names
 macros/user_blocks/
 etc/sysbios/cpu0/src/
+etc/userlib/
 etc/sysbios/cpu0/configPkg/
 etc/sysbios/cpu1/src/
 etc/sysbios/cpu1/configPkg/

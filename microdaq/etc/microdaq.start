@@ -166,7 +166,12 @@ function [microdaqlib, microdaqBlocks, microdaqMacros, microdaqUserBlocks] = sta
     if check_mdaq_compiler() == %F then
         mprintf("\nRun microdaq_setup to configure MicroDAQ toolbox.\n\nFor more help on MicroDAQ toolbox, DSP managment functions,\nC code integration tools and other MicroDAQ toolbox \nfeatures see help (help microdaq).\n");
     end
-
+    
+     userdll_loader = root_tlbx + filesep() + "etc" + filesep() + "userlib" + filesep() + "dll" + filesep() + "userdll_loader.sce"; 
+     if isfile(userdll_loader) then
+              mprintf("\tLoad userdll\n");
+              exec(userdll_loader);
+     end
 endfunction
 
 if with_module('xcos') then

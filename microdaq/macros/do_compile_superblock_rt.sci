@@ -839,12 +839,17 @@ function  [ok,XX,alreadyran,flgcdgen,szclkINTemp,freof] = do_compile_superblock_
     func_count = length(zptr) -1;
     for i=1:func_count
         if strindex(cpr.sim.funs(i), 'mdaq_') == 1 then
-            if cpr.sim.funs(i) == 'mdaq_signal_sim' & standalone == %t then
-                cpr.sim.funs(i) = 'mdaq_signal_stub';
-            else
-                cpr.sim.funs(i) = part(cpr.sim.funs(i), 1:length(cpr.sim.funs(i))-4);
-                cpr.sim.funtyp(i) = 4;
-            end
+
+
+                if cpr.sim.funs(i) == 'mdaq_signal_sim' & standalone == %t then
+                    cpr.sim.funs(i) = 'mdaq_signal_stub';
+                else
+                    if strindex(cpr.sim.funs(i), "_sim") <> [] then 
+                        cpr.sim.funs(i) = part(cpr.sim.funs(i), 1:length(cpr.sim.funs(i))-4);
+                    end
+                    cpr.sim.funtyp(i) = 4;
+                end
+            
         end
     end
 
