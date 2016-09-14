@@ -18,7 +18,7 @@ function mdaq_block_build(debug_build)
 
     cd(mdaq_toolbox_path());
     tbx_build_blocks(mdaq_toolbox_path(), blocks, "macros" + filesep() + "user_blocks");
-    // TODO: load newly created block upon creation - avoid Scilab restart 
+    // TODO: load newly created block upon creation - avoid Scilab restart
     //    root_tlbx = mdaq_toolbox_path();
     //    if isfile(root_tlbx + filesep() + "macros" + filesep() + "user_blocks" + filesep() + "names")  == %T then
     //        errcatch(999,"continue");
@@ -44,12 +44,12 @@ function mdaq_block_build(debug_build)
     //        if ~xcosPalAdd(pal,"MicroDAQ User") then
     //            error(msprintf(gettext("%s: Unable to export %s.\n"), "microdaq.start", "pal"));
     //        end
-    //    end 
+    //    end
 
     root_path = mdaq_toolbox_path();
     userlib_src_path = root_path + filesep() + "src" + filesep() + "c"+ filesep() + "userlib" + filesep();
     userlib_path = root_path + filesep() + "etc" + filesep() + "userlib" + filesep() + "lib" + filesep();
-    userdll_path = root_path + filesep() + "etc" + filesep() + "userlib" + filesep() + "dll" + filesep();
+    userhostlib_path = root_path + filesep() + "etc" + filesep() + "userlib" + filesep() + "hostlib" + filesep();
 
     chdir(userlib_src_path);
     GMAKE = root_path + "\etc\bin\gmake.exe";
@@ -85,30 +85,40 @@ function mdaq_block_build(debug_build)
 
 
 
-    //Building userdll for host 
+    //Building userdll for host
     if haveacompiler() then
-        mprintf(" ### Building userdll...\n")
+        mprintf(" ### Building user host library...\n")
 
         c_files = ls("*.c");
 
-        ldflags=['-lpthread -lstdc++ -lm '];
-        cflags    = '-I scilab';
+        c_flags = "";
+        os = getos();
+        if os == 'Windows' then
+            cflags = "-I scilab";
+        elseif os == 'Linux' then
+            cflags    = '-I '+pwd()+filesep()+'scilab';
+        else
+            error("This platform is not supported!");
+        end
+        
+        ldflags=['-lpthread -lstdc++ -lm '];  
         scicos_libpath = SCI + filesep() + "bin" + filesep() + "scicos"
         libs=[scicos_libpath];
 
-        tbx_build_src(blocks, c_files', 'c', userlib_src_path ,libs , "", cflags, "", "", "userdll", "userdll_loader.sce");
+        tbx_build_src(blocks, c_files', 'c', userlib_src_path ,libs , "", cflags, "", "", "userhost", "loader.sce");
 
-        if isfile("libuserdll.dll") then
-            if isdir(userdll_path) == %F then
-                mkdir(userdll_path);
+        if isfile("libuserhost"+getdynlibext()) then
+            if isdir(userhostlib_path) == %F then
+                mkdir(userhostlib_path);
             end
 
-            copyfile("libuserdll.dll", userdll_path);
-            copyfile("userdll_loader.sce", userdll_path);
-            exec(userdll_path+"userdll_loader.sce");
+            copyfile("libuserhost"+getdynlibext(), userhostlib_path);
+            copyfile("loader.sce", userhostlib_path);
+            exec("cleaner.sce");
+            exec(userhostlib_path+"loader.sce");
         end
     else
-        mprintf("Warning: No compiler detected, cannot build userdll.\n") 
+        mprintf("Warning: No compiler detected, cannot build user host library.\n")
     end
 
     chdir(p_dir);
