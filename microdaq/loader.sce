@@ -7,4 +7,4 @@ catch
  error("Scilab 5.0 or more is required.");
 end;
 
-exec(get_absolute_file_path("loader.sce")+"etc\"+"microdaq.start");
+exec(get_absolute_file_path("loader.sce")+"etc"+filesep()+"microdaq.start");
