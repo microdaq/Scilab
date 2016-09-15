@@ -64,6 +64,7 @@ pal_handle(2) = xcosPalAddBlock(pal_handle(2), 'CONST_m');
 pal_handle(2) = xcosPalAddBlock(pal_handle(2), 'MUX');
 pal_handle(2) = xcosPalAddBlock(pal_handle(2), 'DEMUX');
 pal_handle(2) = xcosPalAddBlock(pal_handle(2), 'CLOCK_c');
+pal_handle(2) = xcosPalAddBlock(pal_handle(2), 'IFTHEL_f');
 pal_handle(2) = xcosPalAddBlock(pal_handle(2), 'CSCOPE');
 pal_handle(2) = xcosPalAddBlock(pal_handle(2), 'TOWS_c');
 
@@ -117,11 +118,13 @@ pal_handle(18) = xcosPalAddBlock(pal_handle(18), 'CONST_m');
 pal_handle(18) = xcosPalAddBlock(pal_handle(18), 'CONST');
 pal_handle(18) = xcosPalAddBlock(pal_handle(18), 'mdaq_sinus');
 pal_handle(18) = xcosPalAddBlock(pal_handle(18), 'mdaq_square');
+pal_handle(18) = xcosPalAddBlock(pal_handle(18), 'mdaq_step');
 
 //User-Defined Functions
 pal_handle(19) = xcosPalAddBlock(pal_handle(19), 'SUPER_f');
 
 //---- GENERATED BLOCKS ----
+pal_handle(5) = xcosPalAddBlock(pal_handle(5), 'mdaq_pid_z');
 pal_handle(5) = xcosPalAddBlock(pal_handle(5), 'DLR');
 pal_handle(5) = xcosPalAddBlock(pal_handle(5), 'DLSS');
 pal_handle(5) = xcosPalAddBlock(pal_handle(5), 'DOLLAR');

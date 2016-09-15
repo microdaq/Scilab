@@ -214,8 +214,12 @@ function mdaq_block_add(block_def)
     end
     block_script = [block_script; '   case ''define'' then';
     params_string6;
-    '       model=scicos_model();'
-    '       model.sim=list('''+name_converted+'_sim'',5);';
+    '       model=scicos_model();';
+    '       if haveacompiler() then';
+    '           model.sim=list('''+name_converted+''',4);';
+    '       else';
+    '           model.sim=list('''+name_converted+'_sim'',5);';
+    '       end';
     '       model.in=['+in_string+'];';
     '       model.in2=1;';
     '       model.out=['+out_string+'];';
@@ -225,6 +229,7 @@ function mdaq_block_add(block_def)
     '       model.evtin=1;';
     '       model.rpar=['+params_string5+'];';
     '       model.ipar=[];';
+
 
     '       model.dstate=[];';
     '       model.blocktype=''d'';';

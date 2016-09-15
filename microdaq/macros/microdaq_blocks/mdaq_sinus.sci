@@ -82,6 +82,6 @@ function [x,y,typ] = mdaq_sinus(job,arg1,arg2)
     model.dep_ut=[%t %f]
     exprs=[sci2exp(A);sci2exp(bias);sci2exp(frq);sci2exp(phase);sci2exp(delay)]
     gr_i=['xstringb(orig(1),orig(2),[''Sine''],sz(1),sz(2),''fill'');']
-    x=standard_define([4 3],model,exprs,gr_i)
+    x=standard_define([3 2],model,exprs,gr_i)
   end
 endfunction

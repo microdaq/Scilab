@@ -108,8 +108,12 @@ function [microdaqlib, microdaqBlocks, microdaqMacros, microdaqUserBlocks] = sta
         end
     end
 
+
+    // Load shared libraries
     mprintf("\tLoad MLink library\n");
     exec(root_tlbx + filesep()+"etc"+filesep()+"mlink"+filesep()+"MLink.sce",-1);
+    
+    
 
     // Add blocks to the Xcos palette
     // =============================================================================
@@ -166,7 +170,12 @@ function [microdaqlib, microdaqBlocks, microdaqMacros, microdaqUserBlocks] = sta
     if check_mdaq_compiler() == %F then
         mprintf("\nRun microdaq_setup to configure MicroDAQ toolbox.\n\nFor more help on MicroDAQ toolbox, DSP managment functions,\nC code integration tools and other MicroDAQ toolbox \nfeatures see help (help microdaq).\n");
     end
-
+    
+     userhostlib_loader = root_tlbx + filesep() + "etc" + filesep() + "userlib" + filesep() + "hostlib" + filesep() + "loader.sce"; 
+     if isfile(userhostlib_loader) then
+              mprintf("\tLoad user host library\n");
+              exec(userhostlib_loader);
+     end
 endfunction
 
 if with_module('xcos') then
