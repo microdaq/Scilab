@@ -16,6 +16,7 @@ etc/userlib/
 etc/sysbios/cpu0/configPkg/
 etc/sysbios/cpu1/src/
 etc/sysbios/cpu1/configPkg/
+etc/tmp/
 src/c/mdaq_ccs/mdaq/Debug/
 src/c/mdaq_ccs/mdaq/Release/
 images/h5/*.h5
