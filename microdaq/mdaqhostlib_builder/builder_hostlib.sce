@@ -17,15 +17,18 @@ if haveacompiler() then
     cflags = "";
     
     os = getos();
+    scicos_libpath = "";
     if os == 'Windows' then 
         cflags = "-I .."+filesep()+"includes";
+        scicos_libpath = SCI + filesep() + "bin" + filesep() + "scicos";
     elseif os == 'Linux' then 
         cflags    = '-I '+pwd()+'..'+filesep()+'includes -I'+pwd();
+        scicos_libpath = SCI+"/../../lib/scilab/libsciscicos";
     else
         error("This platform is not supported!");
     end
     
-    scicos_libpath = SCI + filesep() + "bin" + filesep() + "scicos"
+    
     libs=[scicos_libpath];
 
     disp(c_files); 

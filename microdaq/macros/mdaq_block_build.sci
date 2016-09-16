@@ -92,17 +92,19 @@ function mdaq_block_build(debug_build)
         c_files = ls("*.c");
 
         c_flags = "";
+        scicos_libpath = "";
         os = getos();
         if os == 'Windows' then
             cflags = "-I scilab";
+            scicos_libpath = SCI + filesep() + "bin" + filesep() + "scicos"
         elseif os == 'Linux' then
             cflags    = '-I '+pwd()+filesep()+'scilab';
+            scicos_libpath = SCI+"/../../lib/scilab/libsciscicos";
         else
             error("This platform is not supported!");
         end
         
         ldflags=['-lpthread -lstdc++ -lm '];  
-        scicos_libpath = SCI + filesep() + "bin" + filesep() + "scicos"
         libs=[scicos_libpath];
 
         tbx_build_src(blocks, c_files', 'c', userlib_src_path ,libs , "", cflags, "", "", "userhost", "loader.sce");
