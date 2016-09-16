@@ -13,6 +13,7 @@ function [microdaqlib, microdaqBlocks, microdaqMacros, microdaqUserBlocks] = sta
                        "dsp_debug_mode", %F,..
                        "private", struct(..
                            "mlink_link_id", -1000,..
+                           "userhostlib_link_id", -1000,..
                            "connection_id", -1,..
                            "has_mdaq_block", %F,..
                            "has_mdaq_param_sim", %F,..
@@ -111,9 +112,11 @@ function [microdaqlib, microdaqBlocks, microdaqMacros, microdaqUserBlocks] = sta
 
     // Load shared libraries
     mprintf("\tLoad MLink library\n");
-    exec(root_tlbx + filesep()+"etc"+filesep()+"mlink"+filesep()+"MLink.sce",-1);
+    exec(pathconvert(root_tlbx + "/etc/mlink/MLink.sce", %f),-1);
+    exec(pathconvert(root_tlbx + "/etc/mdaqlib/loader.sce", %f),-1);
     
     
+   
 
     // Add blocks to the Xcos palette
     // =============================================================================
@@ -139,11 +142,11 @@ function [microdaqlib, microdaqBlocks, microdaqMacros, microdaqUserBlocks] = sta
     load_mdaq_palette();
 
     // Build MicroDAQ User blocks
-    if isfile(root_tlbx + filesep() + "macros" + filesep() + "user_blocks" + filesep() + "names")  == %T then
+    if isfile(root_tlbx + pathconvert("/macros/user_blocks/names", %f))  == %T then
 
         mprintf("\tLoad MicroDAQ User blocks\n");
         pal = xcosPal("MicroDAQ User");
-        microdaq_blocks = mgetl( root_tlbx + filesep() + "macros" + filesep() + "user_blocks" + filesep() + "names");
+        microdaq_blocks = mgetl( root_tlbx + pathconvert("/macros/user_blocks/names", %f));
         microdaq_blocks = microdaq_blocks';
 
         blocks = [];
@@ -171,7 +174,7 @@ function [microdaqlib, microdaqBlocks, microdaqMacros, microdaqUserBlocks] = sta
         mprintf("\nRun microdaq_setup to configure MicroDAQ toolbox.\n\nFor more help on MicroDAQ toolbox, DSP managment functions,\nC code integration tools and other MicroDAQ toolbox \nfeatures see help (help microdaq).\n");
     end
     
-     userhostlib_loader = root_tlbx + filesep() + "etc" + filesep() + "userlib" + filesep() + "hostlib" + filesep() + "loader.sce"; 
+     userhostlib_loader = root_tlbx + pathconvert("/etc/userlib/hostlib/loader.sce", %f); 
      if isfile(userhostlib_loader) then
               mprintf("\tLoad user host library\n");
               exec(userhostlib_loader);
