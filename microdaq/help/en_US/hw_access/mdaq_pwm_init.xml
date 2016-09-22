@@ -26,7 +26,7 @@
 		<itemizedlist>
 			<listitem><para><emphasis role="bold">link_id: </emphasis> Valid connection link ID (optional) </para></listitem>
 			<listitem><para><emphasis role="bold">module: </emphasis> PWM module number (1, 2, or 3) </para></listitem>
-			<listitem><para><emphasis role="bold">period: </emphasis> PWM module period in microseconds (1-1000000)</para></listitem>
+			<listitem><para><emphasis role="bold">period: </emphasis> PWM module period in microseconds (2-500000)</para></listitem>
 			<listitem><para><emphasis role="bold">active_low: </emphasis> Generate inverted PWM waveform (%T/%F to enable or disable) </para></listitem>
 
 		</itemizedlist>

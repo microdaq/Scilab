@@ -24,8 +24,6 @@ function block=mdaq_pwm_sim(block,flag)
 
         case 5 // Ending
             if %microdaq.private.connection_id > -1 then
-                disp("connection id in ending:");
-                disp(string(%microdaq.private.connection_id));
                 mdaq_pwm_write(%microdaq.private.connection_id,..
                                block.ipar(1), 0, 0);
             end

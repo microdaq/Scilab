@@ -19,16 +19,6 @@ function mdaq_pru_set(arg1, arg2, arg3, arg4)
         end
     end
 
-    if pru_core > 1 | pru_core < 0 then
-        disp("Wrong PRU core!")
-        return;
-    end
-
-    if pru_reg > 15 | pru_reg < 0 then
-        disp("Wrong PRU core!")
-        return;
-    end
-
     if argn(2) > 4 | argn(2) < 3 | pru_core > 1 | pru_core < 0 | pru_reg > 15 | pru_reg < 0 then
         mprintf("Description:\n");
         mprintf("\tSets PRU register\n");

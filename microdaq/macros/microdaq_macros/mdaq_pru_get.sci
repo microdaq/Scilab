@@ -1,5 +1,7 @@
 function value = mdaq_pru_get(arg1, arg2, arg3)
     link_id = -1;
+    value = 0;
+    
     if argn(2) == 2 then
         pru_core = arg1; 
         pru_reg = arg2; 

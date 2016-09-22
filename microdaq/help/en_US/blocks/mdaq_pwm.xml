@@ -29,7 +29,7 @@ xml:id="mdaq_pwm">
         <title>Description</title>
         <para>
 		
-		This block controls MicroDAQ PWM modules. One of three PWM modules can be selected (PWM1, PWM2, PWM3), PWM period is defined with 1us resolution, 
+		This block controls MicroDAQ PWM modules. One of three PWM modules can be selected (PWM1, PWM2, PWM3), PWM period is defined with 1us resolution (range 2-500000), 
 		'Polarity' parameters allows generate inverted PWM waveform. Block inputs range is 0-100 (duty in %). 
 		
 		</para>
