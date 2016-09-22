@@ -5,5 +5,10 @@ function error_desc = mdaq_error(error_id)
         "out",..
             [1, 64], 2, 'c',..
             [1,1], 3, 'i');
-     disp(error_desc);
+     
+     if error_id == -1 then
+         error(error_desc);
+     else
+         disp(error_desc);
+     end
 endfunction

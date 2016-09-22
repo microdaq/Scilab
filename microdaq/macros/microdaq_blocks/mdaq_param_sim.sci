@@ -21,6 +21,9 @@ function block=mdaq_param_sim(block,flag)
             else
                 disp("Unable to write data");
             end
+        else
+            // Simply copy input to output
+            block.outptr(1) = block.inptr(1);
         end
     case 2 // State Update
 
