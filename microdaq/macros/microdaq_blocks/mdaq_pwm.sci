@@ -9,6 +9,8 @@ function [x,y,typ] = mdaq_pwm(job,arg1,arg2)
     "";
     "PWM module: PWM1...PWM3";
     "";
+    "Period: 2-500000 microseconds"
+    "";
     "Polarity:";
     "  0 - Active HIGH";
     "  1 - Active LOW";
@@ -56,9 +58,9 @@ function [x,y,typ] = mdaq_pwm(job,arg1,arg2)
                 message("Select module 1,2 or 3");
             end
 
-            if pwm_period < 1 then
+            if pwm_period < 2 | pwm_period > 500000 then
                 ok = %f;
-                message("Wrong PWM period value!");
+                message("Wrong PWM period value! (2-500000)");
             end
 
             if pwm_polarity > 1 | pwm_polarity < 0 then

@@ -20,14 +20,14 @@ function mdaq_pwm_init(arg1, arg2, arg3, arg4)
         end
     end
 
-    if argn(2) > 4 | argn(2) < 3 | module > 3 | module < 1 | period > 1000000 | period < 1 then
+    if argn(2) > 4 | argn(2) < 3 | module > 3 | module < 1 | period > 500000 | period < 2 then
         mprintf("Description:\n");
         mprintf("\tSetup MicroDAQ PWM outputs\n");
         mprintf("Usage:\n");
         mprintf("\tmdaq_pwm_init(link_id, module, period, active_low);\n")
         mprintf("\tlink_id - connection id returned by mdaq_open() (OPTIONAL)\n");
         mprintf("\tmodule - PWM module (1, 2 or 3)\n");
-        mprintf("\tperiod - PWM module period in microseconds(1-1000000)\n");
+        mprintf("\tperiod - PWM module period in microseconds(2-500000)\n");
         mprintf("\tactive_low - PWM waveform polarity (%%F or %%T)\n");
         return;
     end
