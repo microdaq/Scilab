@@ -26,7 +26,7 @@ function [x,y,typ] = mdaq_mem_read(job,arg1,arg2)
     "3 - circular read, ignore init value";
     "";
     "Trigger input:";
-    "0 - disbaled";
+    "0 - disabled";
     "1 - enabled";
     "";
     "Set block parameters:"];
