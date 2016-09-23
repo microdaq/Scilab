@@ -31,20 +31,60 @@ xml:id="mdaq_mem_write">
 		
 		This block writes data to MicroDAQ volatile memory. Block can be used 
 		to pass data from Standalone or Ext application to Scilab or external application. 
-		
-		
-		User has to provide 'Start index' which points to 
-		beginning or memory area. The 'Size' block parameter defines 
-		overall size of the memory which block reads data from. 
-		'Vector size' defines size of signal read by block. The 'Overwrite' 
-		parameter determines if memory data will be overwritten when end of the 
-		buffer is reached. If 'Overwrite' parameters is enabled block works as a 
-		circular buffer. 
 		</para>
 		
 		<para>
 		In order to read data written by this block mdaq_mem_get() toolbox function can be used.
 		</para>
+    </refsection>
+	
+	<refsection id="Dialogbox_mdaq_mem_read">
+        <title>Dialog box</title>
+        <para>
+            <inlinemediaobject>
+                <imageobject>
+                    <imagedata align="center" fileref="../../../help/en_US/images/mem_write_params.png" valign="middle"/>
+                </imageobject>
+            </inlinemediaobject>
+        </para>
+        <itemizedlist>
+            <listitem>
+                <para>
+                    <emphasis role="bold">Start index</emphasis>
+                </para>
+                <para>Points to beginning of memory area.</para>
+                <para>Properties : Type int, range 1-4000000.</para>
+            </listitem>
+            <listitem>
+                <para>
+                    <emphasis role="bold">Size</emphasis>
+                </para>
+                <para>
+                    Defines overall size of the memory which block reads data from. Value must be a multiple of <emphasis role="bold">Vector size.</emphasis>
+                </para>
+                <para>Properties : Type int, range 1-4000000.</para>
+            </listitem>
+            <listitem>
+                <para>
+                    <emphasis role="bold">Vector size</emphasis>
+                </para>
+                <para>
+                     Defines size of signal read by block.
+                </para>
+                <para>Properties : Type int, range 1-4000000.</para>
+            </listitem>
+			<listitem>
+                <para>
+                    <emphasis role="bold">FIFO</emphasis>
+                </para>
+                <para>
+                      Determines if memory data will be stored like FIFO queue.  
+					  If 'FIFO' parameters is disabled block writes data until the end of the 
+					  buffer is reached.
+                </para>
+                <para>Properties : Type int, 0 or 1.</para>
+            </listitem>
+        </itemizedlist>
     </refsection>
 	
 	<refsection id="InputOutput_mdaq_mem_write">
@@ -59,7 +99,8 @@ xml:id="mdaq_mem_write">
     <refsection id="SeeAlso_mdaq_mem_write">
         <title>See Also</title>
         <simplelist type="inline">
-<member> <link linkend="mdaq_mem_read">mdaq_mem_read</link> : Reads data from MicroDAQ memory</member>
+			<member> <link linkend="mdaq_mem_read">mdaq_mem_read</link> : Reads data from MicroDAQ memory</member>
+			<member> <link linkend="mdaq_mem_get">mdaq_mem_get</link> :  Reads data from MicroDAQ memory</member>
         </simplelist>
     </refsection>
 </refentry>

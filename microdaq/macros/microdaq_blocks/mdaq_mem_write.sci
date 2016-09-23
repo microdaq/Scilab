@@ -3,6 +3,19 @@ function [x,y,typ] = mdaq_mem_write(job,arg1,arg2)
     "Block with mdaq_mem_get function can be used ";
     "to get data from Standalone and Ext model.";
     "";
+    "Start index:";
+    "points to beginning of memory area, range 0-4000000";
+    "";
+    "Size:";
+    "size of memory area, range 0-4000000";
+    "";
+    "Vector size:";
+    "size of input vector.";
+    "";
+    "FIFO:";
+    "0 - disabled";
+    "1 - enabled";
+    "";
     "Set block parameters:"];
 
     x=[];y=[];typ=[];
@@ -19,7 +32,7 @@ function [x,y,typ] = mdaq_mem_write(job,arg1,arg2)
                 ['Start index:';
                 'Size';
                 'Vector size:';
-                'Overwrite:'],..
+                'FIFO:'],..
                 list('vec',1,'vec',1,'vec',1,'vec',1),exprs)
             catch
                 [ok,start_idx,data_size,vec_size,overwrite,exprs]=..
@@ -27,7 +40,7 @@ function [x,y,typ] = mdaq_mem_write(job,arg1,arg2)
                 ['Start index:';
                 'Size:';
                 'Vector size:';
-                'Overwrite:'],..
+                'FIFO:'],..
                 list('vec',1,'vec',1,'vec',1,'vec',1),exprs)
             end;
 
@@ -52,6 +65,13 @@ function [x,y,typ] = mdaq_mem_write(job,arg1,arg2)
                 ok = %f;
                 message("Incorrect size (max "+string(max_index-start_idx)+")");
             end
+            
+            size_mod = modulo(data_size, vec_size)
+            if size_mod <> 0  then
+                ok = %f;
+                message("Incorrect size. Size is not multiple of array size!");
+            end
+
 
             if overwrite > 1 | overwrite < 0 then
                 ok = %f;

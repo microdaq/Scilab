@@ -35,7 +35,8 @@
         <title>Examples</title>
         <programlisting role="example"><![CDATA[
 // mdaq_mem_set usage example
-// write 10 values to MicroDAQ memory at the index 5
+// write 10 values to MicroDAQ memory at beginning index 5
+// those values will be stored under 5-15 indexes 
 data = ones(1, 10);
 mdaq_mem_set(5, data);
  ]]></programlisting>
