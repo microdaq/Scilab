@@ -106,6 +106,18 @@ function [x,y,typ] = mdaq_mem_read(job,arg1,arg2)
                 end
             end
 
+            if size(init_value, '*') > 1 then
+                if read_mode <> 1 then
+                    ok = %f;
+                    message("To use Init Value as a vec type change mode paramter to 1.");
+                end
+                
+                if data_size <> vec_size then
+                    ok = %f;
+                    message("Size and Vector size have to be equal to use Init Value as a vec type.");
+                end
+            end 
+            
             trigger_input_size = 1;
             if trigger_input <> 1 then
                 trigger_input_size = []; 
