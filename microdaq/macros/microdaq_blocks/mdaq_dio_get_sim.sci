@@ -6,8 +6,16 @@ function block=mdaq_dio_get_sim(block,flag)
         case 0 // Derivative State Update
         case 1 // Output Update
             if %microdaq.private.connection_id > -1 then
-                block.outptr(1) = mdaq_dio_read(%microdaq.private.connection_id,..
+                
+                distate = mdaq_dio_read(%microdaq.private.connection_id,..
                                                 block.ipar(1));
+                                                
+                if distate then 
+                    block.outptr(1) = 1;
+                else
+                    block.outptr(1) = 0;
+                end
+                
             end
         case 2 // State Update
         case 3 // OutputEventTiming
