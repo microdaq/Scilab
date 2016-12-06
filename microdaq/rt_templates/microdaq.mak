@@ -6,9 +6,11 @@ ON_TARGET_WAIT_FOR_STARTM   = 1
 STRIP_BUILD         	= $$STRIP$$
 
 MODEL                   = $$MODEL$$
-MDAQLIB			= $$MDAQLIB$$
-USERLIB			= $$USERLIB$$
-SCILABLIB		= $$SCILABLIB$$
+MDAQLIB					= $$MDAQLIB$$
+USERLIB					= $$USERLIB$$
+SCILABLIB				= $$SCILABLIB$$
+DSPLIB					= $$DSPLIB$$
+MATHLIB					= $$MATHLIB$$
 MODULES                 = $$MICRODAQ_MAIN$$ common.c $$MODEL$$.c $$FILES$$ $$SMCUBE_FILES$$
 MAKEFILE                = Makefile
 NUMST                   = 1
@@ -49,6 +51,8 @@ else
 endif 
 
 LDFLAGS += -l$(USERLIB)\lib\userlib.lib
+LDFLAGS += -l$(DSPLIB)\dsplib.ae674
+LDFLAGS += -l$(MATHLIB)\mathlib.ae674
 LDFLAGS += -l$(SCILABLIB)\lib\libsciscicos_blocks.lib
 LDFLAGS += -l$(SCILABLIB)\lib\liblapack.lib
 LDFLAGS := $(subst \,/,$(LDFLAGS))

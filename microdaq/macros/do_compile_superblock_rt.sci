@@ -2773,6 +2773,8 @@ function Makename=rt_gen_make(name,files,libs,standalone,debug_build,SMCube_file
     MDAQLIB = MICRODAQ_ROOT + "etc\mdaqlib";
     USERLIB = MICRODAQ_ROOT + "etc\userlib";
     SCILABLIB = MICRODAQ_ROOT + "etc\scilablib";
+    DSPLIB = MICRODAQ_ROOT + "etc\dsplib";
+    MATHLIB = MICRODAQ_ROOT + "etc\mathlib";
     MICRODAQ_MAIN_PATH = MICRODAQ_ROOT + "rt_templates\";
 
     if getos() == "Linux" then
@@ -2781,6 +2783,8 @@ function Makename=rt_gen_make(name,files,libs,standalone,debug_build,SMCube_file
         MDAQLIB = strsubst(MDAQLIB, '\', '/');
         USERLIB = strsubst(USERLIB, '\', '/');
         SCILABLIB = strsubst(SCILABLIB, '\', '/');
+        DSPLIB = strsubst(DSPLIB, '\', '/');
+        MATHLIB = strsubst(MATHLIB, '\', '/');
         MICRODAQ_MAIN_PATH = strsubst(MICRODAQ_MAIN_PATH, '\', '/');
     end
 
@@ -2794,9 +2798,12 @@ function Makename=rt_gen_make(name,files,libs,standalone,debug_build,SMCube_file
     T=strsubst(T,'$$MDAQLIB$$',MDAQLIB);
     T=strsubst(T,'$$USERLIB$$',USERLIB);
     T=strsubst(T,'$$SCILABLIB$$',SCILABLIB);
+    T=strsubst(T,'$$DSPLIB$$',DSPLIB);
+    T=strsubst(T,'$$MATHLIB$$',MATHLIB);
     T=strsubst(T,'$$SMCUBE_FILES$$',SMCube_mk_files(SMCube_filelist));
 	T=strsubst(T,'$$CPUOPT$$','cpu' + string(%microdaq.private.mdaq_hwid(4)));
     
+
     if( debug_build == %T)
         T=strsubst(T,'$$BUILD_MODE%%','-g');
     else

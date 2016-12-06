@@ -11,10 +11,14 @@ endif
 PRODUCT = userlib.lib
 
 USER_INCLUDES = -Iscilab -I../../../etc/mdaqlib/
+DSPLIB_INCLUDES = -Iscilab -I../../../etc/dsplib/
+MATHLIB_INCLUDES = -Iscilab -I../../../etc/mathlib/
 
 INCLUDES = -I. -DMODEL=userlib
 
 INCLUDES += $(USER_INCLUDES) 
+INCLUDES += $(DSPLIB_INCLUDES) 
+INCLUDES += $(MATHLIB_INCLUDES) 
 
 CFLAGS += $(subst \,/,$(INCLUDES))
 CXXFLAGS += $(subst \,/,$(INCLUDES))
