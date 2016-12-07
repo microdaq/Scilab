@@ -2,11 +2,10 @@ function [data, result] = mdaq_ai_scan(arg1, arg2, arg3)
     link_id = -1; 
     data = [];
     result = [];
-       
+
     ch_count = call("sci_mlink_ai_scan_get_ch_count", "out", [1, 1], 1, "i");
     if ch_count < 0 | ch_count > 16 then
-        disp("ch_count ERROR");
-        disp(ch_count);
+        disp("Error: Unable to read AI scann channel configuration!");
         return; 
     end
     if argn(2) == 2 then;  
@@ -28,7 +27,7 @@ function [data, result] = mdaq_ai_scan(arg1, arg2, arg3)
 
     if argn(2) > 3 | argn(2) < 2 then
         mprintf("Description:\n");
-        mprintf("\tStarts and reads scan data\n");
+        mprintf("\tStarts scanning and reads scan data\n");
         mprintf("Usage:\n");
         mprintf("\tmdaq_ai_scan(link_id, scan_count, blocking);\n")
         mprintf("\tlink_id - connection id returned by mdaq_open() (OPTIONAL)\n");
