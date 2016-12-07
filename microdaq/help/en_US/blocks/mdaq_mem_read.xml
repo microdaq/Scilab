@@ -81,10 +81,11 @@ xml:id="mdaq_mem_read">
                 </para>
                 <para>
                    Allows user to initialize memory with provided value. If single number is provided then whole memory will be initialized with that number. 
-				   When vector of numbers is provided then only first indexes of memory are initialized. 
+				   When vector of numbers is provided then only first indexes of memory are initialized. Vector type is only allowed with <emphasis role="bold">Mode 1</emphasis>
+				   (circular read, use init value) and <emphasis role="bold">Size</emphasis> equal to <emphasis role="bold">Vector Size</emphasis> parameter, it could be used in order to set PID regulator settings through single mdaq_mem_read block. 
 				   <para>Example usage:</para>
 				   <para>Size: 6, Vector size: 3, Init value: 3.14    - result: memory = [3.14 3.14 3.14 3.14 3.14 3.14]</para>
-				   <para>Size: 6, Vector size: 3, Init value: [1 2 3] - result: memory = [1 2 3 ? ? ?]</para>
+				   <para>Size: 3, Vector size: 3, Init value: [1 2 3] - result: memory = [1 2 3]</para>
                 </para>
                 <para>Properties : Type float or vector.</para>
             </listitem>

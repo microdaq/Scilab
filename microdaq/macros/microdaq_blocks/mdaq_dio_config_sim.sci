@@ -9,38 +9,40 @@ function block=mdaq_dio_config_sim(block,flag)
         case 3 // OutputEventTiming
         case 4 // Initialization
             if %microdaq.private.connection_id > -1 then
-                if block.ipar(7) == 0 then
-                    mdaq_dio_dir(%microdaq.private.connection_id, 1, 1);    
-                end
+                // This option is not available on MicroDaq E2000
+                if %microdaq.private.mdaq_hwid(1) <> 2000 then
+                    if block.ipar(7) == 0 then
+                        mdaq_dio_dir(%microdaq.private.connection_id, 1, 1);
+                    end
 
-                if block.ipar(7) <> 0 then
-                    mdaq_dio_dir(%microdaq.private.connection_id, 1, 0);    
-                end
-                
-                if block.ipar(8) == 0 then
-                    mdaq_dio_dir(%microdaq.private.connection_id, 2, 1);    
-                end
+                    if block.ipar(7) <> 0 then
+                        mdaq_dio_dir(%microdaq.private.connection_id, 1, 0);
+                    end
 
-                if block.ipar(8) <> 0 then
-                    mdaq_dio_dir(%microdaq.private.connection_id, 2, 0);    
-                end
-                
-                if block.ipar(9) == 0 then
-                    mdaq_dio_dir(%microdaq.private.connection_id, 3, 1);    
-                end
+                    if block.ipar(8) == 0 then
+                        mdaq_dio_dir(%microdaq.private.connection_id, 2, 1);
+                    end
 
-                if block.ipar(9) <> 0 then
-                    mdaq_dio_dir(%microdaq.private.connection_id, 3, 0);    
-                end
-                
-                if block.ipar(10) == 0 then
-                    mdaq_dio_dir(%microdaq.private.connection_id, 4, 1);    
-                end
+                    if block.ipar(8) <> 0 then
+                        mdaq_dio_dir(%microdaq.private.connection_id, 2, 0);
+                    end
 
-                if block.ipar(10) <> 0 then
-                    mdaq_dio_dir(%microdaq.private.connection_id, 4, 0);    
+                    if block.ipar(9) == 0 then
+                        mdaq_dio_dir(%microdaq.private.connection_id, 3, 1);
+                    end
+
+                    if block.ipar(9) <> 0 then
+                        mdaq_dio_dir(%microdaq.private.connection_id, 3, 0);
+                    end
+
+                    if block.ipar(10) == 0 then
+                        mdaq_dio_dir(%microdaq.private.connection_id, 4, 1);
+                    end
+
+                    if block.ipar(10) <> 0 then
+                        mdaq_dio_dir(%microdaq.private.connection_id, 4, 0);
+                    end
                 end
-                
                 mdaq_dio_func(%microdaq.private.connection_id, 1, block.ipar(1));
                 mdaq_dio_func(%microdaq.private.connection_id, 2, block.ipar(2));
                 mdaq_dio_func(%microdaq.private.connection_id, 3, block.ipar(3));

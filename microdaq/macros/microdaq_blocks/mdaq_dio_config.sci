@@ -11,6 +11,10 @@ function [x,y,typ] = mdaq_dio_config(job,arg1,arg2)
     '0 - configure DIO bank as an OUTPUT';
     '1 - configure DIO bank as an INPUT';
     '';
+    'Warning: This block has limitations due to hardware.';
+    'In case of MicroDaq E2000 bank direction is fixed. These'
+    'parameters will be omitted.'
+    '';
     "Set block parameters:"];
 
     x=[];y=[];typ=[];
