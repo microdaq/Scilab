@@ -1,12 +1,15 @@
 function  mdaq_ai_scan_init(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
-
+    global %microdaq;
+    
+    adc_channel_count_lut = [8,8,16,8,16];
+    adc_polarity_e2000_lut = [%t,%f,%f,%f,%f];
+    
     link_id = -1;
-
     if argn(2) == 6 then
         channels = arg1;
         ai_range = arg2;
         bipolar = arg3;
-        adc_mode = arg4;
+        differential = arg4;
         scan_freq = arg5;
         scan_time = arg6;
     end
@@ -16,7 +19,7 @@ function  mdaq_ai_scan_init(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
         channels = arg2;
         ai_range = arg3;
         bipolar = arg4;
-        adc_mode = arg5;
+        differential = arg5;
         scan_freq = arg6;
         scan_time = arg7;
 
@@ -25,8 +28,27 @@ function  mdaq_ai_scan_init(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
             return;
         end
     end
-
-    if argn(2) > 7 | argn(2) < 6 then
+    
+    mdaq_model = %microdaq.private.mdaq_hwid(1);
+    mdaq_ai = %microdaq.private.mdaq_hwid(2);
+    ch_config_ok = %t; 
+    
+    ch_count = max(size(channels));
+    if ch_count < 1 |... 
+       ch_count > adc_channel_count_lut(mdaq_ai) |...
+       max(channels) > adc_channel_count_lut(mdaq_ai) then
+        disp("ERROR: Wrong AI channel selected!")
+        ch_config_ok = %f; 
+    end
+    
+    if bipolar == %f then
+        if mdaq_model == 2000 & adc_polarity_e2000_lut(mdaq_ai) == %f then
+            disp("ERROR: ADC doesn''t support unipolar mode!")  
+            ch_config_ok = %f; 
+        end
+    end
+    
+    if argn(2) > 7 | argn(2) < 6 | ch_config_ok == %f then
         mprintf("Description:\n");
         mprintf("\tInit AI scan\n");
         mprintf("Usage:\n");
@@ -45,17 +67,6 @@ function  mdaq_ai_scan_init(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
         scan_time = -1;
     end
 
-    ch_count = max(size(channels));
-    if ch_count < 1 | ch_count > 16 then
-        disp("ERROR: Wrong AI channel selected!")
-        return;
-    end
-
-    if max(channels) > 16 then
-        disp("ERROR: Wrong AI channel selected!")
-        return;
-    end
-
     s = size(channels);    
     if s(1) > 1 then
         disp("ERROR: Wrong AI channel input parameter!")
@@ -69,41 +80,61 @@ function  mdaq_ai_scan_init(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
         end
     end
 
+
     if bipolar == %T then
-        bipolar = 0;
-    else
-        bipolar = 1;
+        bipolar = 24; 
+    else 
+        bipolar = 25; 
     end
 
-    if ai_range <> 5 then
-        ai_range = 10;
+    if ai_range == 5 then
+        ai_range = 1; 
+    else 
+        ai_range = 0; 
     end
 
-    if adc_mode == %T then
-        adc_mode = 1;
+    if differential == %T then
+        differential = 29; 
     else
-        adc_mode = 0;
+        differential = 28; 
     end
+
     result = [];
-
     result = call("sci_mlink_ai_scan_init",..
             link_id, 1, "i",..
             channels, 2, "i",..
             ch_count, 3, "i",..
             ai_range, 4, "i",..
             bipolar, 5, "i",..
-            adc_mode, 6, "i",..
+            differential, 6, "i",..
             scan_freq, 7, "d",..
             scan_time, 8, "d",..
         "out",..
             [1, 1], 9, "i");
 
-    if result < 0 then
-        mdaq_error(result);
+    if result < 0 & result <> -88 then
+            error(mdaq_error(result), 10000 + abs(result))            
     else
-        global %microdaq;
-        mdaq_model = %microdaq.private.mdaq_hwid(1);
-        mdaq_ai = %microdaq.private.mdaq_hwid(2);
+        if result == -88 then
+            disp("Warninng: AI scanning interrupted!")
+            mdaq_ai_scan_stop()
+
+            // time to terminate TCP connection
+            sleep(200);
+
+            result = call("sci_mlink_ai_scan_init",..
+                    link_id, 1, "i",..
+                    channels, 2, "i",..
+                    ch_count, 3, "i",..
+                    ai_range, 4, "i",..
+                    bipolar, 5, "i",..
+                    differential, 6, "i",..
+                    scan_freq, 7, "d",..
+                    scan_time, 8, "d",..
+                "out",..
+                    [1, 1], 9, "i");
+        end
+        
         mprintf("Data acquisition session settings:\n");
 
         str = [];
@@ -117,7 +148,7 @@ function  mdaq_ai_scan_init(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
         mprintf("\tChannles:\t%s\n", str);
 
         mprintf("\tInput Type:\t");
-        if adc_mode == 0 then
+        if differential == 0 then
             mprintf("Single Ended\n");
         else
             mprintf("Differential\n");
@@ -141,15 +172,12 @@ function  mdaq_ai_scan_init(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
             mprintf("\tScan count:\tInf");
         else
             mprintf("\tDuration:\t%.2fsec\n", scan_time);
-            mprintf("\tScan count:\t%d", scan_time * scan_freq);
+            mprintf("\tScan count:\t%d\n", scan_time * scan_freq);
         end
     end
 
     if argn(2) == 6 then
         mdaq_close(link_id);
     end
-
-
-
 
 endfunction
