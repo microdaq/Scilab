@@ -54,17 +54,24 @@ function data = mdaq_ai_read(arg1, arg2, arg3, arg4, arg5)
         end
     end
     
-    if bipolar == %T then
-        bipolar = 0; 
+    if ai_range == 5 then
+        ai_range = 1; 
     else 
-        bipolar = 1; 
+        ai_range = 0; 
+    end
+
+    if bipolar == %T then
+        bipolar = 24; 
+    else 
+        bipolar = 25; 
     end
 
     if differential == %T then
-        differential = 1; 
+        differential = 29; 
     else
-        differential = 0; 
+        differential = 28; 
     end
+    
     result = [];
     [data result] = call("sci_mlink_ai_read",..
             link_id, 1, "i",..

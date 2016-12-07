@@ -18,9 +18,15 @@ function block=mdaq_adc_sim(block,flag)
                     differential = %F
                 end
                 
-                block.outptr(2) = mdaq_ai_read(%microdaq.private.connection_id,..
-                                                block.ipar(6:size(block.ipar,'r')),..
-                                                block.ipar(2),..
+                if block.ipar(2) == 1 then
+                    adc_range = 10;
+                else
+                    adc_range = 5;
+                end
+                
+                block.outptr(1) = mdaq_ai_read(%microdaq.private.connection_id,..
+                                                block.ipar(7:size(block.ipar,'r')),..
+                                                adc_range,..
                                                 bipolar,..
                                                 differential);
             end
