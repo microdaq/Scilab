@@ -1,30 +1,15 @@
-﻿function [x,y,typ] = mdaq_dac(job,arg1,arg2)
+function [x,y,typ] = mdaq_dac(job,arg1,arg2)
     global %microdaq;
-    range_validation = [];
-
     if %microdaq.private.mdaq_hwid <> [] then
         dac_info = get_dac_info(%microdaq.private.mdaq_hwid);
-        range_base_opt = [" 0: 0-5V"; " 1: 0-10V"; " 2: ±5V"; " 3: ±10V";" 4: ±2.5V";];
-        range_spec_opt = [];
-        n = 1;
-
-        for i=1:max(size(dac_info.range))
-            for j=1:max(size(range_base_opt))
-                if strindex(range_base_opt(j), dac_info.range(i)) <> [] then
-                    range_spec_opt(n) = range_base_opt(j);
-                    valid_num = range_base_opt(j);
-                    valid_num = part(valid_num, 1:strindex(valid_num, ":"));
-                    valid_num = strtod(valid_num);
-                    range_validation(n) = valid_num;
-                    n = n + 1;
-                end
-            end
-        end
-
         dac_converter = dac_info.id;
         channel_desc = dac_info.channel;
         resolution_desc = dac_info.resolution;
-        range_desc = dac_info.range_desc;
+        range_desc = dac_info.c_params.c_range_desc;
+        range_spec_opt = [];
+        for i = 1:size(dac_info.c_params.c_range_desc, "r")
+            range_spec_opt = [range_spec_opt; string(i) + ": " + dac_info.c_params.c_range_desc(i)];
+        end
     else
         dac_converter = 1;
         channel_desc = "Unknown";
@@ -33,23 +18,20 @@
         range_spec_opt = "Unknown";
     end
 
-    dac_desc = ["This block sets MicroDAQ analog outputs (AO).";
-    "DAC block allows to set terminate voltage which will be set at";
-    "the end of simulation in Ext mode.";
+    dac_desc = ["This block writes data to MicroDAQ analog output module (AO).";
+    "Block detects MicroDAQ analog output type and allows";
+    "setting output range and termination voltage.";
+    "Single termination value will be used for all channels.";
+    "If different termination values for selected channels needs ";
+    "to be used a vector with termination values has to be provided.";
     "";
-    "User can use option Terminate all DACs with voltage to set";
-    "same voltage at all DAC channels. Without selecting this option";
-    "user can define different terminate voltages for DAC channel.";
+    "input - value in volts"
     "";
-    "input - input value in volts"
+    "Analog outputs parameters:";
+    "Channels: "+channel_desc;
+    "Resolution: "+resolution_desc;
     "";
-    "Detected DAC parameters:";
-    "channels: "+channel_desc;
-    "resolution: "+resolution_desc;
-    "range: "+range_desc;
-    "";
-    "DAC settings:"
-    "Range:";
+    "Output rage:";
     range_spec_opt;
     "";
     "Set block parameters:"];
@@ -64,17 +46,17 @@
         while %t do
             try
                 getversion('scilab');
-                [ok,channel,dac_mode,term_value,exprs]=..
+                [ok,channel,dac_range,term_value,exprs]=..
                 scicos_getvalue(dac_desc,..
                 ['Channels:';
-                'Range:';
+                'Output range:';
                 'Termination value:'],..
                 list('vec',-1,'vec',1,'vec',-1),exprs)
             catch
-                [ok,channel,dac_mode,term_value,exprs]=..
+                [ok,channel,dac_range,term_value,exprs]=..
                 scicos_getvalue(dac_desc,..
                 ['Channels:';
-                'Range:';
+                'Output range:';
                 'Termination value:'],..
                 list('vec',-1,'vec',1,'vec',-1),exprs)
             end;
@@ -82,66 +64,59 @@
             if ~ok then
                 break
             end
-            
-            ch_count = 8;
-            
-            //when hardware is detected check if parameters meet the requirements 
+
             if %microdaq.private.mdaq_hwid <> [] then
                 if dac_info.id > 5 | dac_info.id < 1 then
                     ok = %f;
-                    message("DAC not detected, run mdaq_hwinfo and try again!");
+                    message("Configuration not detected - run mdaq_hwinfo and try again!");
                 end
-
                 
-                if dac_info.id > 3 then
-                    ch_count = 16;
-                end
+                dac_ch_count = strtod(dac_info.channel);
 
                 n_channels = size(channel);
-                if n_channels(2) > ch_count then
+                if n_channels(2) > dac_ch_count then
                     ok = %f;
-                    error_msg = 'Too many channels selected for DAC0' + string(dac_info.id) + '!';
+                    error_msg = 'Too many channels selected!';
                     message(error_msg);
                 end
 
-                if max(channel) > ch_count | min(channel) < 1 then
+                if max(channel) > dac_ch_count | min(channel) < 1 then
                     ok = %f;
-                    error_msg = 'Wrong channel number selected for DAC0' + string(dac_info.id) + '!';
+                    error_msg = 'Wrong channel number selected!';
                     message(error_msg);
                 end
 
-                if dac_mode > 4 | dac_mode < 0 then
+                if dac_range > size(dac_info.c_params.c_range) | dac_range < 1 then
                     ok = %f;
-                    message("Wrong range selected, use 0,1,2,3 or 4!");
+                    error_msg = 'Wrong range selected!';
+                    message(error_msg);
                 end
-
-                if range_validation <> [] then
-                    if find(range_validation == dac_mode) == [] then
-                        ok = %f;
-                        message("Wrong range selected!");
-                    end
-                end
+            else
+                ok = %f;
+                error_msg = 'Unable to detect MicroDAQ analog outputs - run mdaq_hwinfo and try again!';
+                message(error_msg);
             end
 
             if ok then
+                dac_range = dac_info.c_params.c_range(dac_range);
                 n_channels = size(channel);
                 n_term_value = size(term_value);
                 if  n_term_value(2) > 1 then
                     if  n_term_value(2) <> n_channels(2) then
-                        message('Set termination value for selected channels or set one value which will be used for all channels!')
+                        message('Wrong termination value - scalar or vector for selected channels expected!')
                         ok = %f;
                     end
                     term_value = term_value';
                 else
-                    term_value(1:ch_count) = term_value;
+                    term_value(1:dac_ch_count) = term_value;
                 end
             end
 
             if ok then
                 [model,graphics,ok] = check_io(model,graphics, n_channels(2), [], 1, []);
                 graphics.exprs = exprs;
-                model.rpar = [8; term_value];
-                model.ipar = [dac_converter;dac_mode;n_channels(2);channel'];
+                model.rpar = [dac_ch_count; term_value];
+                model.ipar = [dac_converter;dac_range;n_channels(2);channel'];
                 model.dstate = [];
                 x.graphics = graphics;
                 x.model = model;
@@ -151,8 +126,8 @@
     case 'define' then
         channel=1
         term_value=0
-        dac_mode = 3;//±10V
-        dac_converter = 1;//DAC01
+        dac_range = 1;
+        dac_converter = 1;  // TODO: to be removed
         model=scicos_model()
         model.sim=list('mdaq_dac_sim',5)
         model.in =1
@@ -161,11 +136,11 @@
         model.out=[]
         model.evtin=1
         model.rpar = [1; term_value];
-        model.ipar = [dac_converter;dac_mode;1;channel'];
+        model.ipar = [dac_converter;dac_range;1;channel'];
         model.dstate=[];
         model.blocktype='d'
         model.dep_ut=[%t %f]
-        exprs=[sci2exp(channel);sci2exp(dac_mode);sci2exp(term_value)]
+        exprs=[sci2exp(channel);sci2exp(dac_range);sci2exp(term_value)]
         gr_i=['xstringb(orig(1),orig(2),[''CH:'' ; string(channel)],sz(1),sz(2),''fill'');']
         x=standard_define([4 3],model,exprs,gr_i)
         x.graphics.in_implicit=[];
