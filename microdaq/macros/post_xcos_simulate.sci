@@ -16,12 +16,13 @@ function []=post_xcos_simulate(%cpr, scs_m, needcompile)
                 if connection_id > -1 then
                     mlink_set_obj(connection_id, 'model_stop_flag', 1 );
                     mlink_set_obj(connection_id, 'terminate_signal_task', 1 );
-
+                    disp('### Model execution terminated');
                     // save dsp profiling data
                     if curObj.model.ipar(3) == 1 then
                         //get number of records
                         [nr_records, result] = mlink_profile_data_get(connection_id, 1);
                         if nr_records > 0 & nr_records < 250000 & result > -1 then
+                            disp('### Downloading profiling data...');
                             [profile_data, result] = mlink_profile_data_get(connection_id, nr_records + 1);
                             if result > -1 then
                                 if %microdaq.private.mdaq_hwid(4) == 0 then
