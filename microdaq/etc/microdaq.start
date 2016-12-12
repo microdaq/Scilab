@@ -113,7 +113,9 @@ function [microdaqlib, microdaqBlocks, microdaqMacros, microdaqUserBlocks] = sta
     // Load shared libraries
     mprintf("\tLoad MLink library\n");
     exec(pathconvert(root_tlbx + "/etc/mlink/MLink.sce", %f),-1);
-    exec(pathconvert(root_tlbx + "/etc/mdaqlib/loader.sce", %f),-1);
+    
+    // TODO: rebuild host libs with VC2010
+    //exec(pathconvert(root_tlbx + "/etc/mdaqlib/loader.sce", %f),-1);
     
     
    
