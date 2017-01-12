@@ -22,11 +22,6 @@ function data = mdaq_ai_read(arg1, arg2, arg3, arg4)
     global %microdaq;
     if %microdaq.private.mdaq_hwid <> [] then
         adc_info = get_adc_info(%microdaq.private.mdaq_hwid);
-        adc_ch_count = strtod(adc_info.channel);
-        if differential then
-            adc_ch_count = adc_ch_count / 2; 
-        end
-
         if argn(2) > 4 | argn(2) < 3 then
             mprintf("Description:\n");
             mprintf("\tReads MicroDAQ analog inputs\n");
@@ -46,6 +41,11 @@ function data = mdaq_ai_read(arg1, arg2, arg3, arg4)
         return;
     end
 
+    adc_ch_count = strtod(adc_info.channel);
+    if differential then
+        adc_ch_count = adc_ch_count / 2;
+    end
+            
     ch_count = max(size(channels));
     if ch_count < 1 | ch_count > adc_ch_count then
         disp("ERROR: Wrong AI channel selected!")
