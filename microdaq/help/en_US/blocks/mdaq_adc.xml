@@ -28,10 +28,20 @@ xml:id="mdaq_adc">
     <refsection id="Description_mdaq_adc">
         <title>Description</title>
         <para>
-		This block reads MicroDAQ analog inputs. Block supports different types of MicroDAQ analog inputs, 
-		select analog input type by providing 'Converter' parameter accordingly to MicroDAQ hardware configuration.
-		In order to read more then one AI channel provide array of channels to read in block 'Channels' parameter. 
-		The 'Range', 'Polarity' and 'Mode' ADC block parameters are used to setup converter measurement type. 
+		
+		This block reads MicroDAQ analog inputs (AI).
+		Block detects MicroDAQ analog inputs type and allows
+		channel, input range and measurement type selection.
+		Single or multiply channels can be selected by providing
+		vector with channel numbers. Input range can be selected
+		and will be applied for all selected channels.
+		Single-ended or differential measurement type can be selected.
+		In order to select differential mode 'Differential' parameter
+		has to be set to 1.
+		
+		</para>
+		<para>
+		Only one block is allowed in the Xcos diagram. 
 		</para>
 
 		<para>This block can be used in host simulation mode and for code generation.</para>
@@ -40,31 +50,18 @@ xml:id="mdaq_adc">
 		Analog input channel selection in differential mode: 
 		<simplelist type="inline">
             <member><para>Channel 1 - AI1(+), AI2(-)</para></member>
-			<member><para>Channel 2 - AI1(-), AI2(+)</para></member>
-            <member><para>Channel 3 - AI3(+), AI4(-)</para></member>
-			<member><para>Channel 4 - AI3(-), AI4(+)</para></member>
-            <member><para>Channel 5 - AI5(+), AI6(-)</para></member>
-			<member><para>Channel 6 - AI5(-), AI6(+)</para></member>
-            <member><para>Channel 7 - AI7(+), AI8(-)</para></member>
-			<member><para>Channel 8 - AI7(-), AI8(+)</para></member>
+            <member><para>Channel 2 - AI3(+), AI4(-)</para></member>
+            <member><para>Channel 3 - AI5(+), AI6(-)</para></member>
+            <member><para>Channel 4 - AI7(+), AI8(-)</para></member>
         </simplelist>
 		</para>
-
-		<para> Analog inputs input range settings: </para>
-		<simplelist type="inline">
-            <member><para>0-5V - range: 5, polarity: 1</para></member>
-			<member><para>0-10V - range: 10, polarity: 1</para></member>
-			<member><para>-/+5V - range: 5, polarity: 2</para></member>
-			<member><para>-/+10V - range: 10, polarity: 2</para></member>
-        </simplelist>
     </refsection>
 	
 	<refsection id="InputOutput_mdaq_adc">
         <title>Block Input/Output ports</title>
 		<para>
 			<simplelist type="inline">
-				<member><para>output(1) - raw ADC value (int16)</para></member>
-				<member><para>output(2) - ADC value in volts</para></member>
+				<member><para>output(1) - value in volts</para></member>
 			</simplelist>
 		</para>
 	</refsection>
