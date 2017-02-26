@@ -16,11 +16,11 @@ function state = mdaq_dio_read(arg1, arg2)
     
     if argn(2) > 2 | argn(2) < 1 then
         mprintf("Description:\n");
-        mprintf("\tRead DIO state\n");
+        mprintf("\tReads DIO state\n");
         mprintf("Usage:\n");
         mprintf("\tmdaq_dio_read(link_id, dio);\n")
         mprintf("\tlink_id - connection id returned by mdaq_open() (OPTIONAL)\n");
-        mprintf("\tfunc - DIO number\n");
+        mprintf("\tdio - DIO number\n");
         return;
     end
 
