@@ -80,17 +80,19 @@ function [microdaqlib, microdaqBlocks, microdaqMacros, microdaqUserBlocks] = sta
         + '-' + string(mdaq_hwid(4)) + string(mdaq_hwid(5));
         clear mdaq_hwid;
     end
-
-    // Add MicroDAQ toolbox options to XCos menu
-    xcosAddToolsMenu("MicroDAQ web panel", "mdaq_webpanel()");
-    xcosAddToolsMenu("MicroDAQ user disk", "mdaq_userdisk()");
-    xcosAddToolsMenu("MicroDAQ WebScope", "mdaq_open_webscope()");
-    xcosAddToolsMenu("MicroDAQ execution profile", "mdaq_exec_profile_show()");
-    xcosAddToolsMenu("MicroDAQ upload model", "mdaq_dsp_upload()");
-    xcosAddToolsMenu("MicroDAQ build model", "mdaq_code_gen(%F)");
-    xcosAddToolsMenu("MicroDAQ load model", "load_last_dsp_image()");
-    xcosAddToolsMenu("MicroDAQ build and load model", "mdaq_code_gen(%T)");
-
+    if getversion() == "scilab-6.0.0" then
+        loadXcosLibs();
+    end
+        // Add MicroDAQ toolbox options to XCos menu
+        xcosAddToolsMenu("MicroDAQ web panel", "mdaq_webpanel()");
+        xcosAddToolsMenu("MicroDAQ user disk", "mdaq_userdisk()");
+        xcosAddToolsMenu("MicroDAQ WebScope", "mdaq_open_webscope()");
+        xcosAddToolsMenu("MicroDAQ execution profile", "mdaq_exec_profile_show()");
+        xcosAddToolsMenu("MicroDAQ upload model", "mdaq_dsp_upload()");
+        xcosAddToolsMenu("MicroDAQ build model", "mdaq_code_gen(%F)");
+        xcosAddToolsMenu("MicroDAQ load model", "load_last_dsp_image()");
+        xcosAddToolsMenu("MicroDAQ build and load model", "mdaq_code_gen(%T)");
+    
     // Load demos
     // =============================================================================
     if or(getscilabmode() == ["NW";"STD"]) then
