@@ -41,5 +41,5 @@ This package is support by Embedded Solutions. Issues and problems with software
 
 Required software (dependencies)
 ================================
-* [Scilab 5.4](http://www.scilab.org) or newer (free)
+* [Scilab 5.4](http://www.scilab.org) or Scilab 6.0 (free)
 * [Texas Instruments Code Composer Studio 5.5](http://processors.wiki.ti.com/index.php/Download_CCS#Code_Composer_Studio_Version_5_Downloads) with SYS/BIOS and C6000 compiler installed (free with XDX100 emulator license)
