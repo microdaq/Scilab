@@ -25,14 +25,14 @@ function MLink()
     if (getos() == "Linux") then
        MLink_path = strcat([MLink_path, ".so"])
     end
-
-    // NOT SUPPORTED
+    if (getos() == "Darwin") then
+       MLink_path = strcat([MLink_path, ".dylib"])
+    end
+    
     if (getos() == "SunOS") then
        disp("Solaris is not supported!");
     end
-    if (getos() == "Darwin") then
-       disp("MacOS is not supported!");
-    end
+
 
     // Link library
     %microdaq.private.mlink_link_id = link(MLink_path, ["sci_mlink_error"..
