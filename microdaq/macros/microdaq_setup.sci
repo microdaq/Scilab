@@ -1,7 +1,12 @@
 function [] = microdaq_setup(CompilerRoot, XDCRoot, BIOSRoot, IPAddress)
     if getversion() == "scilab-6.0.0" then
         if argn(2) == 0 then
-           mprintf("Usage:\n\tmicrodaq_setup(compilerPath, XdcPath, BIOSPath, IPaddress);");
+           mprintf("Usage:\n\tmicrodaq_setup(compilerPath, XdcPath, BIOSPath, IPaddress);\n");
+           mprintf("Example paths:\n")
+           mprintf('\tcompilerPath → C:\\ti\ccsv5\\tools\compiler\c6000_7.4.4\n');
+           mprintf('\tXdcPath → C:\\ti\xdctools_3_25_03_72\n');
+           mprintf('\tBIOSPath → C:\\ti\bios_6_35_04_50\n');
+           mprintf("\tIPaddress → (default:10.10.1.1)\n")
            return;
         end
         dir_temp = pwd();
@@ -19,9 +24,8 @@ function [] = microdaq_setup(CompilerRoot, XDCRoot, BIOSRoot, IPAddress)
         clear p;
 
         //build system
-        TARGET_ROOT = dirname(get_function_path('mdaqSetup'))+"\..\etc";
-        FILE_ROOT = dirname(get_function_path('mdaqSetup'))+"\..\rt_templates\target_paths.mk"
-
+        TARGET_ROOT = dirname(get_function_path('microdaq_setup'))+'\..\etc';
+        FILE_ROOT = dirname(get_function_path('microdaq_setup'))+"\..\rt_templates\target_paths.mk"
         sysbios_build_cmd = "SET PATH=" + XDCRoot + filesep() + "jre" + filesep() + "bin" + filesep() +";%PATH% & ";
         sysbios_build_cmd = sysbios_build_cmd + XDCRoot + filesep() + 'xs --xdcpath=""' + BIOSRoot + '/packages;""' + ' xdc.tools.configuro -o configPkg -t ti.targets.elf.C674 -p ti.platforms.evmOMAPL137 -r release -c ' + CompilerRoot + ' --compileOptions ""-g --optimize_with_debug""  sysbios.cfg'
 
