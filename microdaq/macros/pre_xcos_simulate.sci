@@ -4,6 +4,11 @@ function continueSimulation=pre_xcos_simulate(scs_m, needcompile)
     continueSimulation = %T;
     look_for_mdaq_blocks = %T; 
 
+    if typeof(scs_m) == "Block" then
+        message("Error: Simulation can be started from top model only!")
+        return; 
+    end
+
     for i = 1:size(scs_m.objs)
         curObj= scs_m.objs(i);
         if (typeof(curObj) == "Block" & curObj.gui == "mdaq_setup")
