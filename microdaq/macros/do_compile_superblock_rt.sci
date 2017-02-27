@@ -481,6 +481,7 @@ endfunction
 function s=SMCube_getdir()
 	// this function tries to guess the location of SMCube.
 	s = '';
+    p = '';
 	try
 		[n,p]=libraryinfo("e4coder_lib");
 	catch
@@ -1753,6 +1754,7 @@ function [Code,Code_common]=make_standalone42(sample_time)
             for k=1:nout
                 lprt=outlnk(outptr(kf)-1+k);
                 Code2=[Code2
+
                 '  block_'+rdnom+'['+string(kf-1)+'].outptr['+string(k-1)+...
                 '] = '+rdnom+'_block_outtbptr['+string(lprt-1)+'];']
             end
@@ -2356,7 +2358,7 @@ function txt=make_static_standalone42()
     ''];
 
     //*** Real parameters ***//
-    nbrpa=0;strRCode='';lenRCode=[];ntot_r=0;
+    nbrpa=0;strRCode='';lenRCode=[''];ntot_r=0;
     if size(rpar,1) <> 0 then
         txt=[txt;
         '/* def real parameters */'
@@ -2434,7 +2436,7 @@ function txt=make_static_standalone42()
     //***********************//
 
     //*** Integer parameters ***//
-    nbipa=0;strICode='';lenICode=[];ntot_i=0;
+    nbipa=0;strICode='';lenICode=[''];ntot_i=0;
     if size(ipar,1) <> 0 then
         txt=[txt;
         '/* def integer parameters */'
