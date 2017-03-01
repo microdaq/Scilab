@@ -1,4 +1,11 @@
 function result = mdaq_ping()
+     // Check version compatibility 
+    [is_supp vers] = mdaq_is_working('mdaq_ping');
+    if is_supp == %F then
+        error('ERROR: ' + vers)
+        return;
+    end
+    
     [mdaq_ip_addr, res] = mdaq_get_ip();
     if res < 0 then
         disp("Unable to get MicroDAQ IP address - run microdaq_setup!");

@@ -1,6 +1,11 @@
-
 function mdaq_block_add(block_def)
-
+    // Check version compatibility 
+    [is_supp vers] = mdaq_is_working('mdaq_block_add');
+    if is_supp == %F then
+        error('ERROR: ' + vers)
+        return;
+    end
+    
     if type(block_def) <> 17 then
         disp("ERROR: Wrong type of input argument!");
         if type(block_def) == 13 then
@@ -82,23 +87,23 @@ function mdaq_block_add(block_def)
 
     // =============================GENERATE STRINGS=====================================
     // converted params
-    params_converted = [];
+    params_converted = '';
 
     // script file
-    params_string1 = [];
-    params_string2 = [];
-    params_string3 = [];
-    params_string4 = [];
-    params_string5 = [];
+    params_string1 = '';
+    params_string2 = '';
+    params_string3 = '';
+    params_string4 = '';
+    params_string5 = '';
 
     //default values string
-    params_string6 = [];
+    params_string6 = '';
 
     // C file
-    in_ports_string = [];
-    out_ports_string = [];
-    params_c_string = [];
-    params_sci_string = [];
+    in_ports_string = '';
+    out_ports_string = '';
+    params_c_string = '';
+    params_sci_string = '';
 
     name_converted = convstr(block_def.name,'l');
     name_converted = strsubst(name_converted, ' ', '_');
@@ -115,12 +120,13 @@ function mdaq_block_add(block_def)
 
         params_string1 = params_string1 + params_converted(i)+',';
         params_string2 = params_string2 + ''''+block_def.param_name(i)+':'';';
+        disp(params_string2)
         params_string3 = params_string3 + '''vec'','+ string(block_def.param_size(i)) + ',';
         params_string4 = params_string4 + 'sci2exp(' + params_converted(i) + ');';
         params_string5 = params_string5 + params_converted(i)+';';
 
         i_def_param_size = max(size(block_def.param_def_val(i)));
-        i_param_def_string = [];
+        i_param_def_string = '';
 
         for j = 1:block_def.param_size(i)
             i_param_def_string = i_param_def_string + string(block_def.param_def_val(i)(j))+';';
@@ -175,6 +181,9 @@ function mdaq_block_add(block_def)
     '   select job';
     '   case ''set'' then';
     '       x=arg1;';];
+    
+    disp("DEBUG params_string2:")
+    disp(params_string2)
     if params_size > 0 then
         block_script = [block_script; 
         '       model=arg1.model;';
@@ -215,7 +224,7 @@ function mdaq_block_add(block_def)
     block_script = [block_script; '   case ''define'' then';
     params_string6;
     '       model=scicos_model();';
-    '       if haveacompiler() then';
+    '       if c_link('''+name_converted+''') then';
     '           model.sim=list('''+name_converted+''',4);';
     '       else';
     '           model.sim=list('''+name_converted+'_sim'',5);';

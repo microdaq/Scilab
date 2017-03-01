@@ -1,4 +1,10 @@
 function mdaq_dsp_build(diagram_file)
+    // Check version compatibility 
+    [is_supp vers] = mdaq_is_working('mdaq_dsp_build');
+    if is_supp == %F then
+        error('ERROR: ' + vers)
+        return;
+    end
 
     if isfile(diagram_file) == %F then
         disp("ERROR: Xcos model file not found!");

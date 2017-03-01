@@ -1,4 +1,11 @@
 ﻿function mdaq_hwinfo()
+     // Check version compatibility 
+    [is_supp vers] = mdaq_is_working('mdaq_hwinfo');
+    if is_supp == %F then
+        error('ERROR: ' + vers)
+        return;
+    end
+    
     hwid = [];
     connection_id = mdaq_open();
     if connection_id > -1 then
