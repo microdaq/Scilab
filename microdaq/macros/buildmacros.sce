@@ -59,9 +59,9 @@ function buildmacros()
     cd(tmp_path);
     for b=1:size(macros, "r")
         macros(b) = part(macros(b), 1:length(macros(b)) - 4);
-        disp(macros)
-        if strstr(macros(i), "_sim") == ""
-            if isfile(script_path + filesep() + "user_blocks" + filesep() + macros(i) + '.sci')  == %T then
+//        disp(macros)
+        if strstr(macros(b), "_sim") == ""
+            if isfile(script_path + filesep() + "user_blocks" + filesep() + macros(b) + '.sci')  == %T then
                 blocks = [blocks, macros(b)];
             end
         end
