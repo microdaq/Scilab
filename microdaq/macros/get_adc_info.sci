@@ -16,6 +16,13 @@ c_params_e1xxx(1) = struct(..
         "c_range", [0;1;0;1],..
         "c_bipolar", [24;24;25;25],..
         "c_diff", [1;1;1;1]); 
+        
+c_params_e1xxx(2) = struct(..
+        "c_number", [2],..
+        "c_range_desc", ["±10V"; "±5V"; "0-10V"; "0-5V"],..
+        "c_range", [0;1;0;1],..
+        "c_bipolar", [24;24;25;25],..
+        "c_diff", [1;1;1;1]); 
 
 
 c_params_e2000(1) = struct(..
