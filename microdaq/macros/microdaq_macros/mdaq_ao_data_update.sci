@@ -12,14 +12,14 @@ function mdaq_ao_data_update(arg1, arg2, arg3)
         data = arg3; 
         
         if link_id < 0 then
-            disp("ERROR: Invalid link ID!")
+            error("ERROR: Invalid link ID!")
             return;
         end
     end
 
     if argn(2) > 3 | argn(2) < 2 then
         mprintf("Description:\n");
-        mprintf("\tUpdate AO channel in scanning single mode.\n");
+        mprintf("\tUpdate AO channel data in scanning single mode.\n");
         mprintf("Usage:\n");
         mprintf("\tmdaq_ao_data_update(link_id, channel, data);\n")
         mprintf("\tlink_id - connection id returned by mdaq_open() (OPTIONAL)\n");
@@ -31,13 +31,13 @@ function mdaq_ao_data_update(arg1, arg2, arg3)
     if argn(2) == 2 then
         link_id = mdaq_open();
         if link_id < 0 then
-            disp("ERROR: Unable to connect to MicroDAQ device!");
+            error("ERROR: Unable to connect to MicroDAQ device!");
             return; 
         end
     end
     
     if size(data, "c") > 1 & size(data, "r") > 1 then
-        disp("ERROR: Wrong AO scan data size"); 
+        error("ERROR: Wrong AO scan data size"); 
         return
     end
     data_size = size(data, "*"); 

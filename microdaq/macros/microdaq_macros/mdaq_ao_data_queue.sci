@@ -14,14 +14,14 @@ function mdaq_ao_data_queue(arg1, arg2, arg3, arg4)
         blocking = arg4;
         
         if link_id < 0 then
-            disp("ERROR: Invalid link ID!")
+            error("ERROR: Invalid link ID!")
             return;
         end
     end
 
     if argn(2) > 4 | argn(2) < 3 then
         mprintf("Description:\n");
-        mprintf("\tQueues AO channel in scanning continuous mode.\n");
+        mprintf("\tQueues AO channel data in scanning continuous mode.\n");
         mprintf("Usage:\n");
         mprintf("\tmdaq_ao_data_queue(link_id, channel, data, blocking);\n")
         mprintf("\tlink_id - connection id returned by mdaq_open() (OPTIONAL)\n");
@@ -34,13 +34,13 @@ function mdaq_ao_data_queue(arg1, arg2, arg3, arg4)
     if argn(2) == 3 then
         link_id = mdaq_open();
         if link_id < 0 then
-            disp("ERROR: Unable to connect to MicroDAQ device!");
+            error("ERROR: Unable to connect to MicroDAQ device!");
             return; 
         end
     end
     
     if size(data, "c") > 1 & size(data, "r") > 1 then
-        disp("ERROR: Wrong AO scan data size"); 
+        error("ERROR: Wrong AO scan data size"); 
         return
     end
     data_size = size(data, "*"); 

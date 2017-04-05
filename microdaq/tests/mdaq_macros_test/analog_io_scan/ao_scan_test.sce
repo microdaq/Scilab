@@ -10,7 +10,7 @@ continuous = 0
 
 mdaq_ao_scan_init(channels, ch_range, continuous, trigger, scan_freq, duration);
     mdaq_ao_data_update(1, [0.0 0.0 3.3 3.3]);
-    mdaq_ao_data_update(1, [0.0 3.3 0.0 3.3]);
+    mdaq_ao_data_update(2, [0.0 3.3 0.0 3.3]);
 mdaq_ao_scan();
 sleep(500);
     mdaq_ao_data_update(2, [0.0 0.0 3.3 3.3]);
