@@ -25,7 +25,8 @@ function [microdaqlib, microdaqBlocks, microdaqMacros, microdaqUserBlocks] = sta
                            "webscope_idx", 0,..
                            "udpsend_idx", 0,..
                            "mdaq_signal_id", 0,..
-                           "mdaq_hwid", [])..
+                           "mdaq_hwid", [], ..
+                           "ao_scan_ch_count", 0)..
                        );
     // check minimal version (xcosPal required)
     // =============================================================================

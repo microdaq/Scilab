@@ -1,5 +1,6 @@
 function  mdaq_ao_scan_init(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
-
+    global %microdaq;
+    
     link_id = -1;
     if argn(2) == 6 then
         channels = arg1;
@@ -93,6 +94,8 @@ function  mdaq_ao_scan_init(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
         ao_trigger = 0; 
     end
     
+    %microdaq.private.ao_scan_ch_count = ch_count;
+        
     result = [];
     
 //MDAQ_API void  sci_mlink_ao_scan_init(
@@ -105,15 +108,6 @@ function  mdaq_ao_scan_init(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
 //		IN		double 		*freq,
 //		IN		double 		*scan_time, 
 //		OUT		int			*result)
-    mprintf("scan_init\n")
-    mprintf("link_id: %d\n", link_id);
-    disp(channels);
-    mprintf("ch_count: %d\n", ch_count);
-     disp(ao_range);
-    mprintf("continuous: %d\n", continuous);
-    mprintf("ao_trigger: %d\n", ao_trigger);
-    mprintf("scan_freq: %d\n", scan_freq);
-    mprintf("scan_time: %f\n", scan_time);
        
     result = call("sci_mlink_ao_scan_init",..
             link_id, 1, "i",..
