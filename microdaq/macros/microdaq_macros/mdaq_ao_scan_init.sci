@@ -28,7 +28,7 @@ function  mdaq_ao_scan_init(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
     
     if argn(2) > 6 | argn(2) < 5 then
         mprintf("Description:\n");
-        mprintf("\tInit AO scan\n");
+        mprintf("\Initiates AO scan\n");
         mprintf("Usage:\n");
         mprintf("\tmdaq_ao_scan_init(link_id, channels, range, continuous, trigger, frequency, duration);\n")
         mprintf("\tlink_id - connection id returned by mdaq_open() (OPTIONAL)\n");

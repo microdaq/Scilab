@@ -19,7 +19,7 @@ function mdaq_ao_data_update(arg1, arg2, arg3)
 
     if argn(2) > 3 | argn(2) < 2 then
         mprintf("Description:\n");
-        mprintf("\tUpdate AO channel data in scanning single mode.\n");
+        mprintf("\tUpdates AO channel data in scanning single mode.\n");
         mprintf("Usage:\n");
         mprintf("\tmdaq_ao_data_update(link_id, channel, data);\n")
         mprintf("\tlink_id - connection id returned by mdaq_open() (OPTIONAL)\n");
