@@ -26,7 +26,7 @@ function [microdaqlib, microdaqBlocks, microdaqMacros, microdaqUserBlocks] = sta
                            "udpsend_idx", 0,..
                            "mdaq_signal_id", 0,..
                            "mdaq_hwid", [], ..
-                           "ao_scan_ch_count", 0)..
+                           "ao_scan_ch_count", -1)..
                        );
     // check minimal version (xcosPal required)
     // =============================================================================

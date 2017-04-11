@@ -58,7 +58,7 @@ function MLink()
                                "sci_mlink_ai_scan_init"..
                                "sci_mlink_ai_scan_get_ch_count"..
                                "sci_mlink_ai_scan"..
-                               "mlink_ai_scan_stop"..
+                               "sci_mlink_ai_scan_stop"..
                                "sci_mlink_hs_ai_init"..
                                "sci_mlink_hs_ai_read"..
                                "sci_mlink_dio_set"..

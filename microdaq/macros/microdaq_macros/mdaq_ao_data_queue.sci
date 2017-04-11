@@ -22,7 +22,7 @@ function mdaq_ao_data_queue(arg1, arg2, arg3)
         mprintf("Description:\n");
         mprintf("\tQueues AO channel data in scanning continuous mode.\n");
         mprintf("Usage:\n");
-        mprintf("\tmdaq_ao_data_queue(link_id, channel, data, blocking);\n")
+        mprintf("\tmdaq_ao_data_queue(link_id, data, blocking);\n")
         mprintf("\tlink_id - connection id returned by mdaq_open() (OPTIONAL)\n");
         mprintf("\tdata - AO scan data\n");
         mprintf("\tblocking - blocking mode (1-enable, 0-disable)\n");
@@ -42,7 +42,9 @@ function mdaq_ao_data_queue(arg1, arg2, arg3)
 //        return
 //    end
     data_size = size(data, "*"); 
-    if %microdaq.private.ao_scan_ch_count <> size(data, "c") then
+    if %microdaq.private.ao_scan_ch_count <> size(data, "c")..
+        and %microdaq.private.ao_scan_ch_count <> -1 then
+        
         if link_id > -1 then
             mdaq_close(link_id);
         end
