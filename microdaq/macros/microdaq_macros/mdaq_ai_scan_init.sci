@@ -1,4 +1,4 @@
-function  mdaq_ai_scan_init2(arg1, arg2, arg3, arg4, arg5, arg6)
+function  mdaq_ai_scan_init(arg1, arg2, arg3, arg4, arg5, arg6)
     link_id = -1;
 
     if argn(2) == 5 then
@@ -22,6 +22,8 @@ function  mdaq_ai_scan_init2(arg1, arg2, arg3, arg4, arg5, arg6)
             return;
         end
     end
+    
+    
 
     global %microdaq;
     if %microdaq.private.mdaq_hwid <> [] then
