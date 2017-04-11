@@ -42,8 +42,8 @@ function mdaq_ao_data_queue(arg1, arg2, arg3)
 //        return
 //    end
     data_size = size(data, "*"); 
-    if %microdaq.private.ao_scan_ch_count <> size(data, "c")..
-        and %microdaq.private.ao_scan_ch_count <> -1 then
+    if %microdaq.private.ao_scan_ch_count <> size(data, "c") &..
+       %microdaq.private.ao_scan_ch_count <> -1 then
         
         if link_id > -1 then
             mdaq_close(link_id);
