@@ -29,7 +29,7 @@ function mdaq_dio_dir(arg1, arg2, arg3)
         mprintf("\tmdaq_dio_dir(link_id, bank, direction);\n")
         mprintf("\tlink_id - connection id returned by mdaq_open() (OPTIONAL)\n");
         mprintf("\tbank - bank number (1-4)\n");
-        mprintf("\tdirection - bank direction (0 - input, 1 - output)\n");
+        mprintf("\tdirection - bank direction (1 - input, 0 - output)\n");
         return;
     end
 
