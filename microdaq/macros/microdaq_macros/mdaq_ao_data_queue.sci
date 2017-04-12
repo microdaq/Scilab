@@ -42,13 +42,12 @@ function mdaq_ao_data_queue(arg1, arg2, arg3)
 //        return
 //    end
     data_size = size(data, "*"); 
-    if %microdaq.private.ao_scan_ch_count <> size(data, "c") &..
-       %microdaq.private.ao_scan_ch_count <> -1 then
-        
+    ch_count = %microdaq.private.ao_scan_ch_count;
+    if ch_count <> size(data, "c") | ch_count <> -1 then
         if link_id > -1 then
             mdaq_close(link_id);
         end
-        error("ERROR: Wrong AO scan data size"); 
+        error("ERROR: Wrong AO scan data size or function is called before mdaq_ao_scan_init"); 
         return
     end
     
@@ -72,7 +71,10 @@ function mdaq_ao_data_queue(arg1, arg2, arg3)
                 [1, 1], 5, "i");
 
     if result < 0  then
-        mdaq_error(result)
+        if argn(2) == 2 then
+            mdaq_close(link_id);
+        end
+        mdaq_error(result);
     end
 
     if argn(2) == 2 then
