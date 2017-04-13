@@ -26,7 +26,11 @@ function  mdaq_ao_scan_init(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
         end
     end
     
-    if argn(2) > 6 | argn(2) < 5 then
+    
+    global %microdaq;
+    if %microdaq.private.mdaq_hwid <> [] then
+        dac_info = get_dac_info(%microdaq.private.mdaq_hwid);
+        if argn(2) > 6 | argn(2) < 5 then
         mprintf("Description:\n");
         mprintf("\Initiates AO scan\n");
         mprintf("Usage:\n");
@@ -34,50 +38,55 @@ function  mdaq_ao_scan_init(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
         mprintf("\tlink_id - connection id returned by mdaq_open() (OPTIONAL)\n");
         mprintf("\tchannels - analog output channels to write\n");
         mprintf("\trange - analog output range\n");
-        mprintf("\tcontinuous - scanning mode (0-single, 1-continuous)\n");
-        mprintf("\t\tAvaliable output ranges: \n");
-        mprintf("\t\t  0: 0-5V\n");
-        mprintf("\t\t  1: 0-10V\n");
-        mprintf("\t\t  2: ±5V\n");
-        mprintf("\t\t  3: ±10V\n");
-        mprintf("\t\t  4: ±2.5V\n");
+            for i = 1:size(dac_info.c_params.c_range_desc, "r")
+                mprintf("\t    %s\n", string(i) + ": " + dac_info.c_params.c_range_desc(i));
+            end
+           
+        mprintf("\tcontinuous - scanning mode (%%T/%%F)\n");
         mprintf("\ttrigger - DIO number (DIO1-8), high state triggers scanning\n"); 
         mprintf("\tfrequency - analog output scan frequency\n");
         mprintf("\tduration - analog output scan duration in seconds\n");
+            return;
+        end
+    else
+        error('Unable to detect MicroDAQ confituration - run mdaq_hwinfo and try again!');
         return;
     end
 
     if scan_time < 0 then
         scan_time = -1;
     end
-
+    
+    dac_ch_count = strtod(dac_info.channel);
+            
     ch_count = max(size(channels));
-    if ch_count < 1 | ch_count > 16 then
-        disp("ERROR: Wrong AO channel selected!")
+    if ch_count < 1 | ch_count > dac_ch_count then
+        disp("Error: Wrong AO channel selected!")
         return;
+    end
+
+    if max(channels) > dac_ch_count | min(channels) < 1 then
+        disp("Error: Wrong AO channel selected!")
+        return;
+    end
+
+    ao_range_desc_index = ao_range;
+    try
+        ao_range = dac_info.c_params.c_range(ao_range);
+    catch
+        error("Error: wrong AO range selected!");
     end
 
     if size(ao_range, "*") == 1 then
         tmp = ones(1, ch_count);
         ao_range = tmp * ao_range; 
     else 
-        if size(ao_range, "*") <> ch_count then
+        //if size(ao_range, "*") <> ch_count then
             disp("ERROR: Wrong AO range selected!"); 
             return; 
-        end
+       // end
     end
     
-    if max(channels) > 16 then
-        disp("ERROR: Wrong AO channel selected!")
-        return;
-    end
-
-    s = size(channels);    
-    if s(1) > 1 then
-        disp("ERROR: Wrong AO channel input parameter!")
-        return 
-    end
-
     if argn(2) == 6 then
         link_id = mdaq_open();
         if link_id < 0 then
@@ -94,21 +103,17 @@ function  mdaq_ao_scan_init(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
         ao_trigger = 0; 
     end
     
+    
+    if continuous == %T | continuous == 1 then
+        continuous = 1;
+    else
+        continuous = 0;
+    end
+    
     %microdaq.private.ao_scan_ch_count = ch_count;
         
     result = [];
     
-//MDAQ_API void  sci_mlink_ao_scan_init(
-//		IO		int 		*link_fd, 
-//		IN		int		 	*ch,
-//		IN		int 		*ch_count,
-//		IN		int		 	*range,
-//		IN		int		    *continuous,
-//		IN		int			*trigger, 
-//		IN		double 		*freq,
-//		IN		double 		*scan_time, 
-//		OUT		int			*result)
-       
     result = call("sci_mlink_ao_scan_init",..
             link_id, 1, "i",..
             channels, 2, "i",..
@@ -135,7 +140,7 @@ function  mdaq_ao_scan_init(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
             if j > 1
               str = str + ", ";
             end
-            str = str + string(channels(1,j)) + "(" +range_table(ao_range(j)+1) +")";
+            str = str + string(channels(1,j)) + "(" + dac_info.c_params.c_range_desc(ao_range_desc_index) +")";
         end 
         mprintf("\tChannles:\t%s\n", str);
 
