@@ -34,7 +34,7 @@ function  mdaq_ao_scan_init(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
         mprintf("\tlink_id - connection id returned by mdaq_open() (OPTIONAL)\n");
         mprintf("\tchannels - analog output channels to write\n");
         mprintf("\trange - analog output range\n");
-        mprintf("\tcontinuous - scaning mode (0-single, 1-continuous)\n");
+        mprintf("\tcontinuous - scanning mode (0-single, 1-continuous)\n");
         mprintf("\t\tAvaliable output ranges: \n");
         mprintf("\t\t  0: 0-5V\n");
         mprintf("\t\t  1: 0-10V\n");
@@ -42,7 +42,7 @@ function  mdaq_ao_scan_init(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
         mprintf("\t\t  3: ±10V\n");
         mprintf("\t\t  4: ±2.5V\n");
         mprintf("\ttrigger - DIO number (DIO1-8), high state triggers scanning\n"); 
-        mprintf("\tfrequency - analog input scan frequency\n");
+        mprintf("\tfrequency - analog output scan frequency\n");
         mprintf("\tduration - analog output scan duration in seconds\n");
         return;
     end
@@ -129,7 +129,7 @@ function  mdaq_ao_scan_init(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
         mprintf("Data acquisition session settings:\n");
 
         range_table = [ "0-5V" "0-10V" "±5V" "±10V" "±2.5V" ];
-        str = [];
+        str = "";
         s = size(channels);
         for j=1:s(2)
             if j > 1
