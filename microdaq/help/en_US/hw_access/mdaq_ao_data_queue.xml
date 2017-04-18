@@ -16,8 +16,9 @@
 	<refsection id="Description_mdaq_ao_data_queue">
 		<title>Description</title>
 		<para>
-			Loads data to AO buffer in continuous mode. This step have to be done before start scanning. If blocking option is enabled function will watis until buffer AO is free, otherwise an error will be returned.
-			In case if you do not provide data in 1 sec (AO timeout in continuous), an error will also occrus.
+			Loads data to AO buffer in continuous mode. This step have to be done before start scanning. 
+			If blocking option is enabled function will watis for 1 sec (AO timeout in continuous) until buffer AO is free, 
+			otherwise an error will be returned.
         </para> 
 		
 		<orderedlist>
@@ -57,6 +58,7 @@ mdaq_ao_data_queue
  ]]></programlisting>
         <para> 
 		This example generates changing (during scan process) sine waveform on AO channel 1 and triangle waveform on AO channel 2 for 5 sec. 
+		Note that all data is uploaded throuth one function call and have to be organised in column order (column per channel).
 		Functions are called without link_id.
 		</para>
         <programlisting role="example"><![CDATA[

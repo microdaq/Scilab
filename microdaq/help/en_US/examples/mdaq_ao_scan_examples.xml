@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaq_ao_scan_examples">
+	<refnamediv>
+		<refname>mdaq_ao_scan_examples</refname>
+		<refpurpose>Examples for analog input scan functions.</refpurpose>
+	</refnamediv>
+	
+	<refsection id="Examples_mdaq_ao_scan_examples">
+		<title>Example 1: Single mode</title>
+		 <para> 
+		This example generates sine waveform on AO channel 1 and triangle waveform on AO channel 2 for 5 sec.  
+		Output signal ferquency is 1 Hz. Functions are called without link_id.
+		</para>
+        <programlisting role="example"><![CDATA[
+			//generate dataset
+			sinus_data = sin(linspace(0, 2*%pi, 1000)) + 1.0;
+			triangle_data = linspace(0, 5, 1000);
+
+			//init scan and load first dataset for each channel
+			//in single mode
+			mdaq_ao_scan_init([1:2], 1, %F, 1, 1000, 5);
+				mdaq_ao_data_update(1, sinus_data);
+				mdaq_ao_data_update(2, triangle_data);
+				
+			//run scan 
+			mdaq_ao_scan();
+			]]>
+		</programlisting>
+ 
+		<title>Example 2: Continuous mode</title>
+		<para> 
+		This example generates changing (during scan process) sine waveform on AO channel 1 and triangle waveform on AO channel 2 for 5 sec. 
+		Note that all data is uploaded throuth one function call and have to be organised in column order (column per channel).
+		
+		Functions are called without link_id.
+		</para>
+        <programlisting role="example"><![CDATA[
+				//scan params 
+				frequency = 1000; // 1 kHz
+				time = 5;         // 5 sec 
+
+				//generate dataset 
+				ch_data_size = 1000;
+				ref_triangle = linspace(0, 1, ch_data_size);
+				ref_sinus = sin(linspace(0, 2*%pi, ch_data_size));
+				sinus_bias = 2.5;
+				exp_val = -3.0;
+
+				//count of dataset to provide 
+				n = (frequency*time)/ch_data_size;
+
+				//init scan and load first dataset in column order for 
+				//each channel in countinuous mode
+				mdaq_ao_scan_init([1:2], 1, %T, 0, frequency, time);
+					exp_wave = exp(linspace(exp_val, exp_val+0.8, ch_data_size));
+					sine_wave = ref_sinus. * exp_wave  + sinus_bias;
+					trianlge_wave = ref_triangle. * exp_wave;
+					
+					mdaq_ao_data_queue([sine_wave; trianlge_wave]', %T);
+					
+				//run scan 
+				mdaq_ao_scan();
+
+				//load next dataset on the fly
+				for i=1:n-1   
+					exp_val = exp_val+0.8;
+					exp_wave = exp(linspace(exp_val, exp_val+0.8, ch_data_size));
+					sine_wave = ref_sinus. * exp_wave + sinus_bias;
+					trianlge_wave = ref_triangle. * exp_wave;
+					
+					mdaq_ao_data_queue([sine_wave; trianlge_wave]', %T);
+				end
+			]]>
+		</programlisting>
+ 
+ 
+		<title>Example 3: AO and AI simultaneously</title>
+		<para> 
+		This example is not available on MicroDAQ with ADC01/DAC01 configuration. 
+		</para>
+	</refsection>  
+</refentry>
