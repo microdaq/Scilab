@@ -41,6 +41,12 @@ function mdaq_ao_data_queue(arg1, arg2, arg3)
 //        error("ERROR: Wrong AO scan data size"); 
 //        return
 //    end
+    if blocking == %T then
+        blocking = 1;
+    else 
+        blocking = 0; 
+    end
+
     data_size = size(data, "*"); 
     ch_count = %microdaq.private.ao_scan_ch_count;
     if ch_count <> size(data, "c") then

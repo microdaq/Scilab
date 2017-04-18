@@ -52,6 +52,12 @@ function  mdaq_ao_scan_init(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
         error('Unable to detect MicroDAQ confituration - run mdaq_hwinfo and try again!');
         return;
     end
+    
+    if continuous == %T then
+        continuous = 1;
+    else 
+        continuous = 0; 
+    end
 
     if scan_time < 0 then
         scan_time = -1;
