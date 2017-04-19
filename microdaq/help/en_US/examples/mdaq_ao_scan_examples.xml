@@ -2,7 +2,7 @@
 <refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaq_ao_scan_examples">
 	<refnamediv>
 		<refname>mdaq_ao_scan_examples</refname>
-		<refpurpose>Examples for analog input scan functions.</refpurpose>
+		<refpurpose>Examples for analog output scan functions.</refpurpose>
 	</refnamediv>
 	
 	<refsection id="Examples_mdaq_ao_scan_examples">
@@ -78,5 +78,19 @@
 		<para> 
 		This example is not available on MicroDAQ with ADC01/DAC01 configuration. 
 		</para>
+		<programlisting role="example"><![CDATA[
+			//coming soon...
+			]]>
+		</programlisting>
 	</refsection>  
+	
+	<refsection id="SeeAlso_mdaq_ao_scan_examples">
+		<title>See Also</title>
+		<simplelist type="inline">
+			<member><link linkend="mdaq_ao_data_update">mdaq_ao_data_update</link></member>
+			<member><link linkend="mdaq_ao_data_queue">mdaq_ao_data_queue</link></member>
+			<member><link linkend="mdaq_ao_scan_stop">mdaq_ao_scan_stop</link></member>
+			<member><link linkend="mdaq_ao_scan">mdaq_ao_scan</link></member>
+		</simplelist>
+  </refsection>
 </refentry>
