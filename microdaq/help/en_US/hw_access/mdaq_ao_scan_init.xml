@@ -101,7 +101,7 @@ triangle_data = linspace(0, 5, 1000);
 
 //init scan and load first dataset for each channel
 //in single mode
-mdaq_ao_scan_init([1:2], 1, %F, 1, 1000, 5);
+mdaq_ao_scan_init([1:2], 1, %F, 0, 1000, 5);
     mdaq_ao_data_update(1, sinus_data);
     mdaq_ao_data_update(2, triangle_data);
     
