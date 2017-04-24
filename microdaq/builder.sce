@@ -40,8 +40,15 @@ function main_builder()
 
   tbx_builder_macros(toolbox_dir);
   tbx_builder_help(toolbox_dir);
-  tbx_build_loader(TOOLBOX_NAME, toolbox_dir);
-  tbx_build_cleaner(TOOLBOX_NAME, toolbox_dir);
+  tbx_build_loader(toolbox_dir);
+  tbx_build_cleaner(toolbox_dir);
+  
+  sci_ver_str = getversion('scilab', 'string_info');
+  help_path = pathconvert(toolbox_dir+'jar/'+sci_ver_str);
+  if isdir(toolbox_dir+'/jar/'+sci_ver_str) == %F then
+      mkdir(help_path);
+  end
+  movefile(pathconvert(toolbox_dir+'jar/scilab_en_US_help.jar', %F), pathconvert(help_path+'scilab_en_US_help.jar', %F));
   
   //delete mblockstmpdir file to force loader to rebuild mdaq palette 
   deletefile(toolbox_dir+filesep()+"etc"+filesep()+"mblockstmpdir");

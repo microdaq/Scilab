@@ -4,6 +4,7 @@
 
 //check compatibility 
 sci_ver = getversion('scilab');
+sci_ver_str = getversion('scilab', 'string_info');
 if (sci_ver(1) <> 5) | (sci_ver(2) <> 5) | (sci_ver(3) < 2)  then
     if sci_ver(1) <> 6 then 
         error(gettext('Scilab 5.5.2 or 6.x.x is required.'));
@@ -84,19 +85,21 @@ if isfile(mdaq_toolbox_path() + "etc"+filesep()+"mlink"+filesep()+"hwid") then
     clear mdaq_hwid;
 end
 
-// Load demos
-// =============================================================================
-if or(getscilabmode() == ["NW";"STD"]) then
-    mprintf("\tLoad demos\n");
-    pathdemos = pathconvert(root_tlbx+filesep()+"demos"+filesep()+"microdaq.dem.gateway.sce", %F, %T);
-    add_demo("MicroDAQ", pathdemos);
-end
+if sci_ver_str == 'scilab-5.5.2' then
+    // Load demos
+    // =============================================================================
+    if or(getscilabmode() == ["NW";"STD"]) then
+        mprintf("\tLoad demos\n");
+        pathdemos = pathconvert(root_tlbx+filesep()+"demos"+filesep()+"microdaq.dem.gateway.sce", %F, %T);
+        add_demo("MicroDAQ", pathdemos);
+    end
+end 
 
 // Load and add help chapter
 // =============================================================================
 if or(getscilabmode() == ["NW";"STD"]) then
     mprintf("\tLoad help\n");
-    path_addchapter = pathconvert(root_tlbx+"/jar");
+    path_addchapter = pathconvert(root_tlbx+'/jar/'+sci_ver_str, %F);
     if ( isdir(path_addchapter) <> [] ) then
         add_help_chapter("MicroDAQ", path_addchapter, %F);
     end
@@ -110,8 +113,7 @@ exec(pathconvert(root_tlbx + "/etc/mlink/MLink.sce", %f),-1);
 // TODO: rebuild host libs with VC2010
 //exec(pathconvert(root_tlbx + "/etc/mdaqlib/loader.sce", %f),-1);
 
-//check major version
-if sci_ver(1) == 5 then
+if sci_ver_str == 'scilab-5.5.2' then
     loadXcosLibs();
     sleep(1000)
 
