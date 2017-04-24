@@ -16,22 +16,6 @@ function [is_working, versions] = mdaq_is_working(func_name)
     uglyfuncs($+1) = list('mdaq_dsp_stop',              '5.5.2');
     uglyfuncs($+1) = list('mdaq_dsp_terminate',         '5.5.2');
     
-     // HW ACCSESS - HAVE TO WORK 
-    uglyfuncs($+1) = list('mdaq_ai_read',               '5.5.2', '6.x.x');
-    uglyfuncs($+1) = list('mdaq_ao_write',              '5.5.2', '6.x.x');
-    uglyfuncs($+1) = list('mdaq_dio_read',              '5.5.2', '6.x.x');
-    uglyfuncs($+1) = list('mdaq_dio_func',              '5.5.2', '6.x.x');
-    uglyfuncs($+1) = list('mdaq_dio_write',             '5.5.2', '6.x.x');    
-    uglyfuncs($+1) = list('mdaq_enc_init',              '5.5.2', '6.x.x');
-    uglyfuncs($+1) = list('mdaq_enc_read',              '5.5.2', '6.x.x');
-    uglyfuncs($+1) = list('mdaq_hs_ai_init',            '5.5.2', '6.x.x');
-    uglyfuncs($+1) = list('mdaq_hs_ai_read',            '5.5.2', '6.x.x');
-    uglyfuncs($+1) = list('mdaq_key_read',              '5.5.2', '6.x.x');
-    uglyfuncs($+1) = list('mdaq_led_write',             '5.5.2', '6.x.x');
-    uglyfuncs($+1) = list('mdaq_mem_get',               '5.5.2', '6.x.x');
-    uglyfuncs($+1) = list('mdaq_mem_set',               '5.5.2', '6.x.x');
-    uglyfuncs($+1) = list('mdaq_pwm_init',              '5.5.2', '6.x.x');
-    uglyfuncs($+1) = list('mdaq_pwm_write',             '5.5.2', '6.x.x');
        
     versions = 'This function is not supported in Scilab '+string(sci_ver(1))+'.'+string(sci_ver(2))+'.'+string(sci_ver(3))+..
     '. Currently is only compatible with version: '; 
@@ -74,5 +58,6 @@ function [is_working, versions] = mdaq_is_working(func_name)
         end
     end
     
-    versions = 'Function ' + func_name + ' not exists.';
+    is_working = %T;
+    versions = 'Function ' + func_name + ' works on scilab 5.5.2 and 6.x.x versions.';
 endfunction 
