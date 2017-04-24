@@ -1,4 +1,11 @@
 function mdaq_dsp_terminate(arg1)
+    // Check version compatibility 
+    [is_supp vers] = mdaq_is_working('mdaq_dsp_terminate');
+    if is_supp == %F then
+        error('ERROR: ' + vers)
+        return;
+    end
+    
     global %microdaq;
 
     if argn(2) == 1 then
