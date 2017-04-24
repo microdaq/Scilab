@@ -13,10 +13,6 @@ function link_id = mdaq_open(ipAddr)
     end
 
     [link_id, hwid] = mlink_connect(ip_address, 4343);
-    if link_id < 0 then
-        link_id = -1; 
-        error("Unable to connect to MicroDAQ device!"); 
-    end
 
     if hwid(1) == 0 then
         mdaq_close(link_id);

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaq_ai_scan_examples">
+	<refnamediv>
+		<refname>mdaq_ai_scan_examples</refname>
+		<refpurpose>Examples for analog input scan functions.</refpurpose>
+	</refnamediv>
+	
+	<refsection id="Examples_mdaq_ai_scan_examples">
+		<title>Example 1: Read with blocking mode</title>
+		 <para> 
+		This example shows how to acquire data from analog input channels 1-8, sample rate 10 kHz, duration 1 sec. 
+		Blocking mode is enabled, functions are called without link_id.
+		</para>
+         <programlisting role="example"><![CDATA[
+			data = [];
+			//init AI scan for 8 channels, 10 kHz sampling, 1 sec 
+			mdaq_ai_scan_init([1:8], 1, %F, 10000, 1)
+			for i=1:10
+				[newdata res] = mdaq_ai_scan(1000, %T);
+				data = [data; newdata];
+				mprintf('read %d samples...\n', res);
+			end
+			mdaq_ai_scan_stop();
+			
+			//show data
+			plot(data);
+			 ]]>
+		</programlisting>
+		
+		<title>Example 2: Read with non-blocking mode</title>
+		 <para> 
+		This example shows how to acquire data from analog input channels 1-8, sample rate 10 kHz, duration 1 sec. 
+		Non-blocking mode is enabled, functions are called without link_id.
+		</para>
+         <programlisting role="example"><![CDATA[
+			data = [];
+			res = 0;
+			
+			//init AI scan for 8 channels, 10 kHz sampling, 1 sec 
+			mdaq_ai_scan_init([1:8], 1, %F, 10000, 1)
+			
+			while res > -1 then  
+				[newdata res] = mdaq_ai_scan(1000, %F); 
+				if( res > 0 ) then 
+					mprintf('read %d samples...\n', res)
+					data = [data; newdata]; 
+				end
+			end
+
+			mdaq_ai_scan_stop();
+
+			//show data
+			plot(data);
+			 ]]>
+		</programlisting>
+ 	
+ 	
+	</refsection>  
+	
+	<refsection id="SeeAlso_mdaq_ai_scan_examples">
+		<title>See Also</title>
+		<simplelist type="inline">
+			<member><link linkend="mdaq_ai_scan_init">mdaq_ai_scan_init</link></member>
+			<member><link linkend="mdaq_ai_scan">mdaq_ai_scan</link></member>
+			<member><link linkend="mdaq_ai_scan_stop">mdaq_ai_scan_stop</link></member>
+			<member><link linkend="mdaq_ai_scan_examples">AI scan - examples</link></member>
+		</simplelist>
+  </refsection>
+</refentry>
