@@ -11,17 +11,5 @@ function [] = microdaq_setup()
                 sleep(500)
             end
         end
-    else
-       ip = input("Set MicroDAQ IP address (eg. ''10.10.1.1''): ", "string");
-       mdaq_set_ip(ip);
-       
-        result = mdaq_open();
-        if result < 0  then
-            warning('Unable to connect to MicroDAQ device!');
-        else
-            global %microdaq;
-            mprintf('%s connected!', %microdaq.model);
-            mdaq_close(result);
-        end
     end
 endfunction
