@@ -102,6 +102,8 @@ if or(getscilabmode() == ["NW";"STD"]) then
     path_addchapter = pathconvert(root_tlbx+'/jar/'+sci_ver_str, %F);
     if ( isdir(path_addchapter) <> [] ) then
         add_help_chapter("MicroDAQ", path_addchapter, %F);
+    else
+        warning("Cannot load help file.")
     end
 end
 
@@ -209,15 +211,4 @@ else
         warning("Unable to get MicroDAQ IP address - run mdaq_set_ip(''10.10.1.1'')!");
     end
 end
-//endfunction
-//
-//if with_module('xcos') then
-//    [microdaqlib, microdaqBlocks, microdaqMacros, microdaqUserBlocks] = startModule();
-//    if microdaqUserBlocks == [] then
-//        clear microdaqUserBlocks;
-//    end
-//
-//    clear startModule;
-//end
-//
-//
+
