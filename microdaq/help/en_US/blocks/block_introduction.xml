@@ -11,7 +11,7 @@
 			MicroDAQ toolbox for Scilab provides set of Xcos blocks which can be used for creating Xcos diagrams. After MicroDAQ toolbox for 
 			Scilab installation new block 'MicroDAQ' category appears in Xcos palete browser (View->Palette browser).
 		</para>
-		<para><imagedata align="center" fileref="..\images\blocks1.png" valign="middle"/></para>
+		<para><imagedata align="center" fileref="../images/blocks1.png" valign="middle"/></para>
 		
 		<para>
 			The 'MicroDAQ' category contains palettes which contains blocks provided by toolbox. MicroDAQ palette (MicroDAQ->MicroDAQ)

@@ -51,7 +51,7 @@ mdaq_ao_scan_stop();
  ]]></programlisting>
 	<para>
 	Results:
-	<imagedata align="center" fileref="..\images\single_result.png" valign="middle"/>
+	<imagedata align="center" fileref="../images/single_result.png" valign="middle"/>
 </para>
   <refsection id="SeeAlso_mdaq_ao_scan_stop">
 		<title>See Also</title>

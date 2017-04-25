@@ -122,8 +122,8 @@ MicroDAQ module simplifies development of real-time control measurements applica
 		It is recommended to use 5.5.0.00077 CCS5 build and user off-line installer. Download and install CCS5. During installation select support
 		for OMAPL13x processors, install C6000 compiler and SYS/BIOS RTOS. By selecting this components user will install all component needed by MicroDAQ toolbox for Scilab. This selection
 		also allows using CCS5 as a IDE for DSP code development and debugging Xcos generated DSP applications.
-				<para><imagedata align="center" fileref="images\processor_support.png" valign="middle"/></para>
-				<para><imagedata align="center" fileref="images\components_selection.png" valign="middle"/></para>
+				<para><imagedata align="center" fileref="images/processor_support.png" valign="middle"/></para>
+				<para><imagedata align="center" fileref="images/components_selection.png" valign="middle"/></para>
 			</para>
 
 			<para>
@@ -140,7 +140,7 @@ MicroDAQ module simplifies development of real-time control measurements applica
 		MicroDAQ toolbox for Scilab provides function which configures toolbox to work with installed software components (compiler, RTOS). The 'microdaq_setup' script
 		configures installed components to work with toolbox, detects MicroDAQ device, compiles SYS/BIOS RTOS for toolbox usage.
 		</para>
-		<para><imagedata align="center" fileref="images\microdaq_setup.png" valign="middle"/></para>
+		<para><imagedata align="center" fileref="images/microdaq_setup.png" valign="middle"/></para>
 		<para>
 			<emphasis role="bold">Configuring toolbox with 'microdaq_setup' setup wizard</emphasis>
 			<simplelist type="inline">
@@ -159,7 +159,7 @@ MicroDAQ module simplifies development of real-time control measurements applica
 				<member>Enter MicroDAQ device IP address - this address will be used by toolbox to communicate with the device</member>
 				<member>Press 'Detect MicroDAQ' button to detect connected MicroDAQ device</member>
 				<member>Device should be detected - detected MicroDAQ device model should be presented</member>
-				<para><imagedata align="center" fileref="images\microdaq_detect.png" valign="middle"/></para>
+				<para><imagedata align="center" fileref="images/microdaq_detect.png" valign="middle"/></para>
 				<member>If MicroDAQ device is detected by 'microdaq_setup' press 'OK' button to confirm and build SYS/BIOS RTOS.</member>
 				<member>If compilation of SYS/BIOS went without problems MicroDAQ toolbox for Scilab is ready to use.</member>
 			</simplelist>
@@ -200,11 +200,11 @@ MicroDAQ module simplifies development of real-time control measurements applica
 			<member>From MicroDAQ palette SQUARE (mdaq_square) and LED (mdaq_led) blocks on Xcos diagram</member>
 			<member>In order to setup model sample time place CLOCK_c block (from MicroDAQ-&gt;Commonly Used Blocks) on Xcos diagram</member>
 			<member>Connect blocks on Xcos diagram</member>
-			<para><imagedata align="center" fileref="images\intro_scheme1.png" valign="middle"/></para>
+			<para><imagedata align="center" fileref="images/intro_scheme1.png" valign="middle"/></para>
 			<member>By using mouse select part of diagram for Superblock creation. Superblock will contain part of the Xcos diagram which will be used for code generation. After selecting blocks for code generation create superblock with 'Edit-&gt;Section to superblock' option from Xcos menu. Xcos diagram structure for MicroDAQ code generation must consists three block SETUP, CLOCK and Superblock containing diagram for code generation. </member>
-			<para><imagedata align="center" fileref="images\intro_scheme2.png" valign="middle"/></para>
+			<para><imagedata align="center" fileref="images/intro_scheme2.png" valign="middle"/></para>
 			<member>Save Xcos diagram - diagram name will be used for name of generated DSP application</member>
-			<para><imagedata align="center" fileref="images\intro_scheme3.png" valign="middle"/></para>
+			<para><imagedata align="center" fileref="images/intro_scheme3.png" valign="middle"/></para>
 		</simplelist>
 		<emphasis role="bold">Code generation from Xcos model</emphasis>
 		<para> 
@@ -319,12 +319,12 @@ MicroDAQ module simplifies development of real-time control measurements applica
 			<member>Connect blocks on Xcos diagram</member>
 			<member>Change amplitude of sine waveform generator (Sin block) to 14</member>
 			<member>Change duration of model simulation to 30 seconds by editing 'Duration' parameter in SETUP block</member>
-			<para><imagedata align="center" fileref="images\intro_scheme4.png" valign="middle"/></para>
+			<para><imagedata align="center" fileref="images/intro_scheme4.png" valign="middle"/></para>
 			<member>By using mouse select part of diagram for Superblock creation. Superblock will contain part of the Xcos diagram which will be used for code generation. After selecting blocks for code generation create superblock with 'Edit-&gt;Section to superblock' option from Xcos menu. Xcos diagram structure for MicroDAQ code generation must consists three block SETUP, CLOCK and Superblock containing diagram for code generation. </member>
 			<member>Save Xcos diagram - diagram name will be used for name of generated DSP application</member>
 			<member>Use Tools-&gt;MicroDAQ build and load model option to build and load DSP application on MicroDAQ device</member>
 			<member>Start model with Xcos 'Start' button</member>
-			<para><imagedata align="center" fileref="images\data_exchange1.png" valign="middle"/></para>
+			<para><imagedata align="center" fileref="images/data_exchange1.png" valign="middle"/></para>
 		</simplelist>
 	</refsection>
 
