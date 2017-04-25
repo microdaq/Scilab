@@ -205,6 +205,7 @@ if sci_ver_str == 'scilab-5.5.2' then
     end
 else
     [mdaq_ip_addr, res] = mdaq_get_ip();
+    if mdaq_ip_addr == [] then
         warning("Unable to get MicroDAQ IP address - run mdaq_set_ip(''10.10.1.1'')!");
     end
 end
