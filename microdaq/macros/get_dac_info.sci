@@ -41,7 +41,7 @@ c_params_e2000(3) = struct(..
     dac_lookup = list();
     dac_info = dac_unknown;
     
-    if hwid(1) == 2000 then
+    if hwid(1) == 2000 | hwid(1) == 1000 then
         //MDAQ E2000   
         dac_lookup(1) = struct(..
             "id", 1,..
@@ -126,17 +126,15 @@ c_params_e2000(3) = struct(..
             disp('Cannot find MDAQ-E1100 DAC info.')
             dac_info = dac_unknown;
         end    
-    elseif hwid(1) == 1000 then 
-        //MDADQ E1000
     end 
 
-    if hwid(1) == 1100 | hwid(1) == 1000 then
+    if hwid(1) == 1100 then
         for i = 1:size(c_params_e1xxx)
             if find(c_params_e1xxx(i).c_number == hwid(3)) <> [] then
                 dac_info.c_params = c_params_e1xxx(i)  
             end
         end
-    elseif hwid(1) == 2000
+    elseif hwid(1) == 2000 | hwid(1) == 1000
         for i = 1:size(c_params_e2000)
             if find(c_params_e2000(i).c_number == hwid(3)) <> [] then
                 dac_info.c_params = c_params_e2000(i)    
