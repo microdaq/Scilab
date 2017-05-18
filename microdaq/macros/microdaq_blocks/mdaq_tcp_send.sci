@@ -7,7 +7,6 @@ function [x,y,typ] = mdaq_tcp_send(job,arg1,arg2)
     "Blocking mode:";
     "   0 - non-blocking";
     "   1 - blocking";
-    "Timeout: amount of time that the model will wait for the data";
     "";
     "Set TCP/IP Send block parameters:";
     ];
@@ -28,7 +27,7 @@ function [x,y,typ] = mdaq_tcp_send(job,arg1,arg2)
                 'Port:';
                 'Data size:';
                 'Blocking mode:';
-                'Timeout'],..
+                'Timeout [ms]'],..
                 list('str',1,'vec',1,'vec',1,'vec',1,'vec',1),exprs)
             catch
                 [ok,ip_addr, tcp_port, data_size,blocking_mode,tcp_timeout,exprs]=..
@@ -37,7 +36,7 @@ function [x,y,typ] = mdaq_tcp_send(job,arg1,arg2)
                 'Port:';
                 'Data size:';
                 'Blocking mode:';
-                'Timeout'],..
+                'Timeout [ms]'],..
                 list('str',1,'vec',1,'vec',1,'vec',1,'vec',1),exprs)
             end;
 
