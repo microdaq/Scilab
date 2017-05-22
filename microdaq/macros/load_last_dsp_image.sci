@@ -23,7 +23,7 @@ function load_last_dsp_image()
                 end
                 res = mlink_dsp_load(connection_id, dsp_app_path, '');
                 if res < 0 then
-                    message('Unable to load DSP firmware!');
+                    message('Unable to load DSP firmware! (' + mdaq_error2(res) + ').');
                     mdaq_close(connection_id);
                     %microdaq.dsp_loaded = %F
                     return;
