@@ -61,16 +61,10 @@ function []=post_xcos_simulate(%cpr, scs_m, needcompile)
     end
 end
 
-if %microdaq.private.connection_id > -1 & %microdaq.private.has_mdaq_param_sim then
+if %microdaq.private.connection_id > -1 & (%microdaq.private.has_mdaq_param_sim | %microdaq.private.has_mdaq_block) then
     mdaq_close(%microdaq.private.connection_id);
     %microdaq.private.connection_id = -1;
     %microdaq.private.has_mdaq_param_sim = %F;
-end
-
-if %microdaq.private.connection_id > -1 & %microdaq.private.has_mdaq_block then
-    mdaq_close(%microdaq.private.connection_id);
-    %microdaq.private.connection_id = -1;
-    %microdaq.private.has_mdaq_block = %f
 end
 
 endfunction

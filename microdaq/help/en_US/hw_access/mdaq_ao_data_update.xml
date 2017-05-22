@@ -77,7 +77,7 @@ mdaq_ao_scan();
  
 <para>
 	Results:
-	<imagedata align="center" fileref="..\images\single_result.png" valign="middle"/>
+	<imagedata align="center" fileref="../images/single_result.png" valign="middle"/>
 </para>
     </refsection>
 	

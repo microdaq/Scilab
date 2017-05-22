@@ -7,7 +7,6 @@ function [x,y,typ] = mdaq_tcp_recv(job,arg1,arg2)
     "Blocking mode:";
     "   0 - non-blocking";
     "   1 - blocking";
-    "Timeout: amount of time that the model will wait for the data";
     "";
     "Set TCP/IP Receive block parameters:";
     ];
@@ -22,25 +21,23 @@ function [x,y,typ] = mdaq_tcp_recv(job,arg1,arg2)
         while %t do
             try
                 getversion('scilab');
-                [ok,ip_addr, tcp_port, data_size,data_type,blocking_mode,tcp_timeout,exprs]=..
+                [ok,ip_addr, tcp_port, data_size, blocking_mode,tcp_timeout,exprs]=..
                 scicos_getvalue(tcp_recv_desc,..
                 ['Remote address:';
                 'Port:';
                 'Data size:';
-                'Data type:';
                 'Blocking mode:';
-                'Timeout'],..
-                list('str',1,'vec',1,'vec',1,'vec',1,'vec',1,'vec',1),exprs)
+                'Timeout [ms]'],..
+                list('str',1,'vec',1,'vec',1,'vec',1,'vec',1),exprs)
             catch
-                [ok,ip_addr, tcp_port, data_size,data_type,blocking_mode,tcp_timeout,exprs]=..
+                [ok,ip_addr, tcp_port, data_size, blocking_mode,tcp_timeout,exprs]=..
                 getvalue(tcp_recv_desc,..
                 ['Remote address:';
                 'Port:';
                 'Data size:';
-                'Data type:';
                 'Blocking mode:';
-                'Timeout'],..
-                list('str',1,'vec',1,'vec',1,'vec',1,'vec',1,'vec',1),exprs)
+                'Timeout [ms]'],..
+                list('str',1,'vec',1,'vec',1,'vec',1,'vec',1),exprs)
             end;
 
             if ~ok then
@@ -84,7 +81,6 @@ function [x,y,typ] = mdaq_tcp_recv(job,arg1,arg2)
         ip_addr = '192.168.1.1';
         tcp_port = 80;
         data_size = 1;
-        data_type = 1;
         blocking_mode = 1;
         tcp_timeout = 10;
         model=scicos_model()
@@ -92,14 +88,14 @@ function [x,y,typ] = mdaq_tcp_recv(job,arg1,arg2)
         model.in =[]
         model.out=data_size;
         model.out2=1;
-        model.outtyp=data_type;
+        model.outtyp=1;
         model.evtin=1
         model.rpar=[];
         model.ipar=[blocking_mode;tcp_timeout;data_size;tcp_port;ascii(ip_addr)']
         model.dstate=[];
         model.blocktype='d'
         model.dep_ut=[%t %f]
-        exprs=[sci2exp(ip_addr);sci2exp(tcp_port);sci2exp(data_size);sci2exp(data_type);sci2exp(blocking_mode);sci2exp(tcp_timeout)]
+        exprs=[sci2exp(ip_addr);sci2exp(tcp_port);sci2exp(data_size);sci2exp(blocking_mode);sci2exp(tcp_timeout)]
         gr_i=['xstringb(orig(1),orig(2),['''' ; ],sz(1),sz(2),''fill'');']
         x=standard_define([4 3],model,exprs,gr_i)
         x.graphics.in_implicit=[];

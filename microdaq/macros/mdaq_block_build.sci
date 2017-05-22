@@ -1,4 +1,12 @@
 function mdaq_block_build(debug_build)
+    // Check version compatibility 
+    [is_supp vers] = mdaq_is_working('mdaq_block_build');
+    if is_supp == %F then
+        error('ERROR: ' + vers)
+        return;
+    end
+    
+    
     if  check_mdaq_compiler() == %F then
         disp("ERROR: Compiler not found - run microdaq_setup! ");
         return;

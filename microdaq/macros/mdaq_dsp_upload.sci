@@ -1,4 +1,11 @@
 function mdaq_dsp_upload( dsp_firmware )
+    // Check version compatibility 
+    [is_supp vers] = mdaq_is_working('mdaq_dsp_upload');
+    if is_supp == %F then
+        error('ERROR: ' + vers)
+        return;
+    end
+    
     // Load and upload DSP application
     if argn(2) == 1 then
         if isfile(dsp_firmware) <> %t then

@@ -62,7 +62,7 @@ c_params_e2000(3) = struct(..
     adc_lookup = list(),
     adc_info = adc_unknown,
 
-    if hwid(1) == 2000 then
+    if hwid(1) == 2000 | hwid(1) == 1000 then
         //MDAQ E2000   
         adc_lookup(1) = struct(..
             "id", 1,..
@@ -262,19 +262,17 @@ c_params_e2000(3) = struct(..
             disp('Cannot find ADC info.');
             adc_info = adc_unknown;
         end    
-    elseif hwid(1) == 1000 then 
-        //MDADQ E1000
     end 
     
     // assing c_params 
 
-    if hwid(1) == 1100 | hwid(1) == 1000 then
+    if hwid(1) == 1100 then
         for i = 1:size(c_params_e1xxx)
             if find(c_params_e1xxx(i).c_number == hwid(2)) <> [] then
                 adc_info.c_params = c_params_e1xxx(i)    
             end
         end
-    elseif hwid(1) == 2000
+    elseif hwid(1) == 2000 | hwid(1) == 1000
         for i = 1:size(c_params_e2000)
             if find(c_params_e2000(i).c_number == hwid(2)) <> [] then
                 adc_info.c_params = c_params_e2000(i)    
