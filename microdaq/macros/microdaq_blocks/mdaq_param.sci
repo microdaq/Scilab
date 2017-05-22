@@ -9,25 +9,30 @@ function [x,y,typ]=mdaq_param(job,arg1,arg2)
         exprs=graphics.exprs;
         while %t do
             try
-                getversion('scilab');
-                [ok,signal_id,exprs]=..
-                scicos_getvalue('Set Signal block parameters',..
-                ['Signal ID:'],..
+                getversion('scilab'); 
+                [ok,param_id,exprs]=..
+                scicos_getvalue('Set Param block parameters',..
+                ['Param id (1-16):'],..
                 list('vec',-1),exprs)
             catch
-                [ok,signal_id,exprs]=..
-                scicos_getvalue('Set Signal block parameters',..
-                ['Signal ID:'],..
+                [ok,param_id,exprs]=..
+                scicos_getvalue('Set Param block parameters',..
+                ['Param id (1-16):'],..
                 list('vec',-1),exprs)
             end;
 
             err_message = [];
 
             if ~ok then break,end
-
+            
+            if param_id > 16 | param_id < 1 then
+                ok = %f;
+                message("Wrong param id, use value from 1 to 16!");
+            end
+           
             if ok then
                 graphics.exprs=exprs;
-                model.ipar=[signal_id];
+                model.ipar=[param_id-1];
                 model.dstate=[];
                 x.graphics=graphics;x.model=model
                 break
@@ -37,7 +42,7 @@ function [x,y,typ]=mdaq_param(job,arg1,arg2)
         end
 
     case "define" then
-        signal_id = 1;
+        param_id = 1;
         model=scicos_model()
         model.sim=list("mdaq_param_sim",5)
         model.in=-1
@@ -46,10 +51,10 @@ function [x,y,typ]=mdaq_param(job,arg1,arg2)
         model.out2=-2
         model.intyp=1;
         model.outtyp=1;
-        model.ipar = [(100-1);5;1;1];
+        model.ipar = [param_id-1];
         model.blocktype="c"
         model.dep_ut=[%t %f]
-        exprs=[sci2exp(signal_id)];
+        exprs=[sci2exp(param_id)];
         gr_i=[]
         x=standard_define([2.5 1],model,exprs,gr_i);
         x.graphics.style=["blockWithLabel;verticalLabelPosition=center;displayedLabel=PARAM;fontColor=#0000CD"]
