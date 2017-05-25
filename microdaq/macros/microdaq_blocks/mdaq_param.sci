@@ -13,22 +13,22 @@ function [x,y,typ]=mdaq_param(job,arg1,arg2)
                 [ok,param_id,exprs]=..
                 scicos_getvalue('Set Param block parameters',..
                 ['Param id (1-16):'],..
-                list('vec',-1),exprs)
+                list('vec',1),exprs)
             catch
                 [ok,param_id,exprs]=..
                 scicos_getvalue('Set Param block parameters',..
                 ['Param id (1-16):'],..
-                list('vec',-1),exprs)
+                list('vec',1),exprs)
             end;
 
             err_message = [];
 
             if ~ok then break,end
             
-            if param_id > 16 | param_id < 1 then
+            if ((param_id - int(param_id)) <> 0.0) | (param_id > 16) | (param_id < 1) then
                 ok = %f;
-                message("Wrong param id, use value from 1 to 16!");
-            end
+                message("Wrong param id, use integer value from 1 to 16!");
+            end 
            
             if ok then
                 graphics.exprs=exprs;

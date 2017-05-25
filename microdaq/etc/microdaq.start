@@ -33,6 +33,7 @@ global %microdaq;
 "webscope_idx", 0,..
 "udpsend_idx", 0,..
 "mdaq_signal_id", 0,..
+"mdaq_param_id", 0,..
 "ao_scan_ch_count", -1,..
 "mdaq_hwid", [])..
 );
