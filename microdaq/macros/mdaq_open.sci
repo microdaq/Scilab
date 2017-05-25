@@ -19,7 +19,4 @@ function link_id = mdaq_open(ipAddr)
         link_id = -1; 
         error("Unrecodnized MicroDAQ device - contact support!"); 
     end
-
-    global %microdaq
-    %microdaq.private.mdaq_hwid = hwid; 
 endfunction
