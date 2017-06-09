@@ -6,16 +6,20 @@
   </refnamediv>
   <refsynopsisdiv>
 	<title>Description</title>
-	<para>This function reads data from file created with MicroDAQ 'To File' block. In order to read data from MicroDAQ device user has to provide file name (same as in 'To file' block). This function only works if data is written as a text, binary format isn't supported.</para>
+	<para>This function reads data from file created with MicroDAQ 'To File' block. In order to read data from MicroDAQ device user has to provide file name (same as in 'To file' block).</para>
     <title>Calling Sequence</title>
     <synopsis>
-      data = mdaq_get_file_data(file);
+      data = mdaq_get_file_data(name, type);
+      data = mdaq_get_file_data(name, type, rows, cols);
     </synopsis>
   </refsynopsisdiv>
   <refsection id="Parameters_mdaq_get_file_data">
     <title>Arguments</title>
     <itemizedlist>
       <listitem><para><emphasis role="bold">file: </emphasis> File name created with 'To File' block</para></listitem>
+      <listitem><para><emphasis role="bold">type: </emphasis> type of file ( 1 - text | 2 - binary )</para></listitem>
+      <listitem><para><emphasis role="bold">rows: </emphasis> number of rows to read (optional for text filetype)</para></listitem>
+      <listitem><para><emphasis role="bold">rows: </emphasis> number of columns to read (optional for text filetype)</para></listitem>
       <listitem><para><emphasis role="bold">data: </emphasis> File data</para></listitem>
     </itemizedlist>
   </refsection>
@@ -23,12 +27,18 @@
   <refsection>
         <title>Examples</title>
         <programlisting role="example"><![CDATA[
-// mdaq_mdaq_get_file_data usage example
-data = mdaq_get_file_data("data.txt")
+// read entire text file 
+data = mdaq_get_file_data("data.txt", 1)
+
+//read 100 rows / 1 column from text file 
+data1 = mdaq_get_file_data("data.txt", 1, 100, 1)
+
+//read 100 rows / 1 column from binary file 
+data2 = mdaq_get_file_data("data.bin", 2, 100, 1)
  ]]></programlisting>
     </refsection>
 
-  <refsection id="SeeAlso_mdaq_ping">
+  <refsection id="SeeAlso_mdaq_get_file_data">
     <title>See Also</title>
     <simplelist type="inline">
 			<member><link linkend="mdaq_open">mdaq_open</link></member>
