@@ -11,7 +11,6 @@ function load_last_dsp_image()
                 return;
             end
 
-            disp('### Loading model to MicroDAQ...');
             res = mlink_dsp_load(connection_id, dsp_app_path, '');
             if res < 0 then
                 // try again to load application
@@ -28,12 +27,13 @@ function load_last_dsp_image()
                     %microdaq.dsp_loaded = %F
                     return;
                 end
-            end
+            end     
+            disp('### Model has been loaded to MicroDAQ.');
 
             res = mlink_set_obj(connection_id, "ext_mode", 1);
-            if res == -25 then
-                disp('### Starting model in Standalone mode...');    
-            end
+//            if res == -25 then
+//               disp('### Starting model in Standalone mode...');    
+//           end
 
             res = mlink_dsp_start(connection_id,-1);
             if res < 0 then
@@ -42,6 +42,7 @@ function load_last_dsp_image()
                 %microdaq.dsp_loaded = %F;
                 return;
             end
+            disp('### Model has been started in Standalone mode.');   
             %microdaq.dsp_loaded = %T;
             mdaq_close(connection_id);
         else
