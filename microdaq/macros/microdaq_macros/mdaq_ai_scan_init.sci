@@ -136,7 +136,7 @@ function  mdaq_ai_scan_init(arg1, arg2, arg3, arg4, arg5, arg6)
         
         mprintf("Data acquisition session settings:\n");
 
-        str = [];
+        str = "";
         s = size(channels);
         for j=1:s(2)
             if j > 1

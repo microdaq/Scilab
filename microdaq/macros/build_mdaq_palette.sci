@@ -31,8 +31,6 @@ function [res] = build_mdaq_palette(palette_path)
     "mdaq_led"
     "mdaq_mem_read"
     "mdaq_mem_write"
-    "mdaq_pru_reg_get"
-    "mdaq_pru_reg_set"
     "mdaq_pwm"
     "mdaq_signal"
     "mdaq_param"
@@ -44,7 +42,6 @@ function [res] = build_mdaq_palette(palette_path)
     "mdaq_uart_config"
     "mdaq_uart_read"
     "mdaq_uart_write"
-    "mdaq_webscope"
     "mdaq_time"
     "mdaq_stop"
     "mdaq_setup"
@@ -103,9 +100,12 @@ function [res] = build_mdaq_palette(palette_path)
     xpal($+1) = tbx_compose_pal('Discrete time systems', blocks);
 
     //Lookup Tables
-    //    blocks = [];
-    //    xpal($+1) = tbx_compose_pal('Lookup Tables', blocks);
-    //   
+//    blocks = ["INTRP2BLK_f"
+//    "INTRPLBLK_f"
+//    "LOOKUP_f"
+//    ];
+//    xpal($+1) = tbx_compose_pal('Lookup Tables', blocks);
+//       
 
     //Event handling
     blocks = ["CLOCK_c"
@@ -219,7 +219,8 @@ function [res] = build_mdaq_palette(palette_path)
     "CONST"
     "mdaq_sinus"
     "mdaq_square"
-    "mdaq_step"];
+    "mdaq_step"
+    "TKSCALE"];
     xpal($+1) = tbx_compose_pal('Sources', blocks);    
 
     //User-Defined Functions

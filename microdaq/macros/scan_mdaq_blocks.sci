@@ -34,6 +34,7 @@ function obj=scan_mdaq_blocks(scs_m)
                 end                
                 if scs_m.objs(i).model.sim(1) == "mdaq_param_sim"
                     %microdaq.private.has_mdaq_param_sim = %T;
+                    %microdaq.private.mdaq_param_id = [%microdaq.private.mdaq_param_id, scs_m.objs(i).model.ipar(1)];
                 end
 
                 //-------------------------Blocks quantity restriction check--------------------------------

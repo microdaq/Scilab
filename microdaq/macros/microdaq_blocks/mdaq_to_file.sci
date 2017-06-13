@@ -16,11 +16,6 @@ function [x,y,typ] = mdaq_to_file(job,arg1,arg2)
     "To avoid time time consuming wirte operation during every";
     "simulation step block can buffer data.";
     "";
-    "Block parameter ''Vector buffer size'' indicates how many vectors will";
-    "e buffered. For example sample rate of block is 0.001sec, when";
-    "user sets buffer size to 100, efective write to file will be performed";
-    "every 0.1sec.";
-    "";
     "Rising edge on Trigger input(2) will create new file. To define sequential file";
     "name use ''%d'' e.g. data_%d.txt will produce files data_0.txt, data_1.txt,...";
     "If ''%d'' isn''t included in file name data will be written to one file.";
@@ -46,24 +41,22 @@ function [x,y,typ] = mdaq_to_file(job,arg1,arg2)
         while %t do
             try
                 getversion('scilab');
-                [ok,file_name, filt_type, file_mode, vec_buff_size, vec_size,exprs]=..
+                [ok,file_name, filt_type, file_mode, vec_size,exprs]=..
                 scicos_getvalue(to_file_desc,..
                 ['File name:';
                 'File type:';
                 'Mode:';
-                'Vector buffer size:';
                 'Vector size:'],..
-                list('str',1,'vec',1,'vec',1,'vec',1,'vec',1),exprs)
+                list('str',1,'vec',1,'vec',1,'vec',1),exprs)
             catch
                 getversion('scilab');
-                [ok,file_name, filt_type, file_mode, vec_buff_size, vec_size,exprs]=..
+                [ok,file_name, filt_type, file_mode, vec_size,exprs]=..
                 scicos_getvalue(to_file_desc,..
                 ['File name:';
                 'File type:';
                 'Mode:';
-                'Vector buffer size:';
                 'Vector size:'],..
-                list('str',1,'vec',1,'vec',1,'vec',1,'vec',1),exprs)
+                list('str',1,'vec',1,'vec',1,'vec',1),exprs)
             end;
 
             if ~ok then break,end
@@ -83,10 +76,10 @@ function [x,y,typ] = mdaq_to_file(job,arg1,arg2)
                 message("File name too long - 64 character max!");
             end
 
-            if vec_buff_size > 500 then
-                ok = %f;
-                message("Wrong vector buffer size - 500 max!");
-            end
+//            if vec_buff_size > 500 then
+//                ok = %f;
+//                message("Wrong vector buffer size - 500 max!");
+//            end
 
             if vec_size > 8 then
                 ok = %f;
@@ -97,7 +90,7 @@ function [x,y,typ] = mdaq_to_file(job,arg1,arg2)
                 [model,graphics,ok]=check_io(model,graphics,[vec_size 1],[],1,[])
                 graphics.exprs=exprs;
                 model.rpar=[]
-                model.ipar=[filt_type;file_mode;vec_buff_size;vec_size;0;ascii(file_name)';0];
+                model.ipar=[filt_type;file_mode;0;vec_size;0;ascii(file_name)';0];
                 model.dstate=[];
                 x.graphics=graphics;x.model=model
                 break
@@ -118,11 +111,11 @@ function [x,y,typ] = mdaq_to_file(job,arg1,arg2)
         model.out=[]
         model.evtin=1
         model.rpar=[]
-        model.ipar=[filt_type;file_mode;vec_buff_size;vec_size;0;ascii(file_name)';0]
+        model.ipar=[filt_type;file_mode;0;vec_size;0;ascii(file_name)';0]
         model.dstate=[];
         model.blocktype='d'
         model.dep_ut=[%t %f]
-        exprs=[sci2exp(file_name);sci2exp(filt_type);sci2exp(file_mode);sci2exp(vec_buff_size);sci2exp(vec_size)]
+        exprs=[sci2exp(file_name);sci2exp(filt_type);sci2exp(file_mode);sci2exp(vec_size)]
         gr_i=['xstringb(orig(1),orig(2),['''';file_name],sz(1),sz(2),''fill'');']
         x=standard_define([4 3],model,exprs,gr_i)
         x.graphics.in_implicit=[];
