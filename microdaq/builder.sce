@@ -50,12 +50,11 @@ function main_builder()
     tbx_build_cleaner(toolbox_dir);
   end
   
- 
-  help_path = pathconvert(toolbox_dir+'jar/'+sci_ver_str);
-  if isdir(toolbox_dir+'/jar/'+sci_ver_str) == %F then
-      mkdir(help_path);
-  end
-  movefile(pathconvert(toolbox_dir+'jar/scilab_en_US_help.jar', %F), pathconvert(help_path+'scilab_en_US_help.jar', %F));
+//  help_path = pathconvert(toolbox_dir+'jar/'+sci_ver_str);
+//  if isdir(toolbox_dir+'/jar/'+sci_ver_str) == %F then
+//      mkdir(help_path);
+//  end
+//  movefile(pathconvert(toolbox_dir+'jar/scilab_en_US_help.jar', %F), pathconvert(help_path+'scilab_en_US_help.jar', %F));
   
   //delete mblockstmpdir file to force loader to rebuild mdaq palette 
   deletefile(toolbox_dir+filesep()+"etc"+filesep()+"mblockstmpdir");
