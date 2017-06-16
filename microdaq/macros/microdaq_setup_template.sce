@@ -9,74 +9,82 @@ STATE = 1
 
 titbx_path = "";
 if getos() == 'Linux' then 
-    titbx_path = "/opt/ti";
+    titbx_path = pathconvert("/opt/");
 elseif getos() == 'Windows' then 
-    titbx_path = "C:\ti";
+    titbx_path = pathconvert("C:\");
 end
 
 
 //DIRECTORY BROWSER FUNCTIONS
-function browse_dir_callback1()
-    if isdir(titbx_path) then
-        directory = uigetdir(titbx_path)
-    else
-        directory = uigetdir()
-    end
-    set(h(8),'String',directory)
-    set(h(11),'Enable','on')
-    set(h(12),'Enable','on')
-endfunction
-
 function [] = browse_dir_callback2()
-    if isdir(titbx_path) then
-        directory = uigetdir(titbx_path)
-    else
-        directory = uigetdir()
+    global titbx_path;
+    directory = uigetdir(titbx_path)
+    titbx_path = directory;
+    
+    if directory <> "" then
+        set(h(11),'String', directory);
+        set(h(14),'Enable','on')
+        set(h(15),'Enable','on')
     end
-    set(h(11),'String',directory)
-    set(h(14),'Enable','on')
-    set(h(15),'Enable','on')
 endfunction
 
 function [] = browse_dir_callback3()
-    if isdir(titbx_path) then
-        directory = uigetdir(titbx_path)
-    else
-        directory = uigetdir()
+    global titbx_path;
+    disp(titbx_path);
+    directory = uigetdir(titbx_path)
+    titbx_path = directory;
+    
+    if directory <> "" then
+        set(h(14),'String',directory)
+        set(h(17),'Enable','on')
+        set(h(18),'Enable','on')
     end
-    set(h(14),'String',directory)
-    set(h(17),'Enable','on')
-    set(h(18),'Enable','on')
 endfunction
 
 function [] = browse_dir_callback4()
-    if isdir(titbx_path) then
-        directory = uigetdir(titbx_path)
-    else
-        directory = uigetdir()
+    global titbx_path;
+    directory = uigetdir(titbx_path)
+    titbx_path = directory;
+   
+    if directory <> "" then
+        set(h(17),'String',directory)
+        set(h(22),'Enable','on')
     end
-    set(h(17),'String',directory)
-    set(h(22),'Enable','on')
 endfunction
 
 //EDIT BOX CALLBACK
-function [] = edit_callback1()
-    set(h(11),'Enable','on')
-    set(h(12),'Enable','on')
-endfunction
+//function [] = edit_callback1()
+//    set(h(11),'Enable','on')
+//    set(h(12),'Enable','on')
+//endfunction
 
 function [] = edit_callback2()
-    set(h(14),'Enable','on')
-    set(h(15),'Enable','on')
+    directory  = get(h(11),'String')
+    if isdir(directory) then
+        set(h(14),'Enable','on')
+        set(h(15),'Enable','on')
+    else
+        warning("C6000 compiler install path: Specified folder could not be found.");
+    end
 endfunction
 
 function [] = edit_callback3()
-    set(h(17),'Enable','on')
-    set(h(18),'Enable','on')
+    directory  = get(h(14),'String')
+    if isdir(directory) then
+        set(h(17),'Enable','on')
+        set(h(18),'Enable','on')
+    else
+        warning("XDCTools install path: Specified folder could not be found.");
+    end
 endfunction
 
 function [] = edit_callback4()
-     set(h(22),'Enable','on')
+    directory  = get(h(17),'String')
+    if isdir(directory) then
+        set(h(22),'Enable','on')
+    else
+        warning("SYS/BIOS RTOS install path: Specified folder could not be found.");
+    end
 endfunction
 
 //CHECK CONNECTION FUNCTION
@@ -113,10 +121,9 @@ endfunction
 //FINAL SETUP FUNCTION
 function [] = setup_callback ()
     //get paths from edit boxes
-    CCSRoot = get(h(8),'String');
-    CompilerRoot = get(h(11),'String');
-    XDCRoot = get(h(14),'String');
-    BIOSRoot = get(h(17),'String');
+    CompilerRoot = getshortpathname(pathconvert(get(h(11),'String'), %F));
+    XDCRoot = getshortpathname(pathconvert(get(h(14),'String'), %F));
+    BIOSRoot = getshortpathname(pathconvert(get(h(17),'String'), %F));
 
     //Lock setup button
     set(h(22),'Enable','off');
@@ -125,11 +132,16 @@ function [] = setup_callback ()
     dir_temp = pwd(); 
 
     //build system
-    TARGET_ROOT = dirname(get_function_path('microdaq_setup'))+"\..\etc";
-    FILE_ROOT = dirname(get_function_path('microdaq_setup'))+"\..\rt_templates\target_paths.mk"
+    TARGET_ROOT = pathconvert(dirname(get_function_path('microdaq_setup'))+"\..\etc", %F);
+    FILE_ROOT = pathconvert(dirname(get_function_path('microdaq_setup'))+"\..\rt_templates\target_paths.mk", %F);
 
-    sysbios_build_cmd = "SET PATH=" + XDCRoot + filesep() + "jre" + filesep() + "bin" + filesep() +";%PATH% & ";
-    sysbios_build_cmd = sysbios_build_cmd + XDCRoot + filesep() + 'xs --xdcpath=""' + BIOSRoot + '/packages;' + CCSRoot + '/ccs_base;""' + ' xdc.tools.configuro -o configPkg -t ti.targets.elf.C674 -p ti.platforms.evmOMAPL137 -r release -c ' + CompilerRoot + ' --compileOptions ""-g --optimize_with_debug""  sysbios.cfg'
+    sysbios_build_cmd = 'SET PATH=' + pathconvert(XDCRoot + "/jre/bin/") + ';%PATH% & ';
+    sysbios_build_cmd = sysbios_build_cmd + XDCRoot + filesep() + 'xs --xdcpath=""' + BIOSRoot + filesep() +'packages' + '""; xdc.tools.configuro -o configPkg -t ti.targets.elf.C674 -p ti.platforms.evmOMAPL137 -r release -c ' + CompilerRoot + ' --compileOptions ""-g --optimize_with_debug""  sysbios.cfg'
+    
+    sysbios_build_cmd = strsubst(sysbios_build_cmd, filesep()+filesep(), filesep());
+    
+    disp('--------------- DEBUG ----------------')
+    disp(sysbios_build_cmd);
 
     disp("Building TI SYS/BIOS real-time operating system for MicroDAQ");
     cd( TARGET_ROOT+ filesep() + 'sysbios' + filesep() + 'cpu0' + filesep());
@@ -138,8 +150,8 @@ function [] = setup_callback ()
     unix_w(sysbios_build_cmd);
 
     //path to /configPkg/linker.cmd
-    LINKER0_PATH = TARGET_ROOT + '\sysbios\cpu0\configPkg\linker.cmd';
-    LINKER1_PATH = TARGET_ROOT + '\sysbios\cpu1\configPkg\linker.cmd';
+    LINKER0_PATH = pathconvert(TARGET_ROOT + '\sysbios\cpu0\configPkg\linker.cmd', %F);
+    LINKER1_PATH = pathconvert(TARGET_ROOT + '\sysbios\cpu1\configPkg\linker.cmd', %F);
 
     if isfile(LINKER0_PATH) then
         [linker0,err] = mopen(LINKER0_PATH,'a')
@@ -149,7 +161,7 @@ function [] = setup_callback ()
             set(h(22),'callback','close_callback','String','Close','Enable','on');
         else
             //Append 'sysbios_linker.cmd' to /configPkg/linker.cmd
-            SYSBIOS_LINKER_PATH = TARGET_ROOT + '\sysbios\sysbios_linker.cmd';
+            SYSBIOS_LINKER_PATH = pathconvert(TARGET_ROOT + '\sysbios\sysbios_linker.cmd', %F);
             [sysbios_linker,err] = mopen(SYSBIOS_LINKER_PATH, 'r');
             content = mgetl(sysbios_linker);
             mclose(sysbios_linker)
@@ -159,6 +171,8 @@ function [] = setup_callback ()
             mclose(linker1);
 
             //Generate 'target_path.mk'
+            disp("DEBUG2")
+            disp(FILE_ROOT);
             [f,result0] = mopen(FILE_ROOT,'w');
             if result0 < 0 then
                 messagebox('Building failed. Cannot create file ''target_path.mk'' ','Building sys','error');
@@ -169,7 +183,6 @@ function [] = setup_callback ()
                 mputl('',f)
                 mputl('CompilerRoot  = '+CompilerRoot,f)
                 mputl('TargetRoot    = '+TARGET_ROOT,f)
-                mputl('CCSRoot       = '+CCSRoot,f)
                 mputl('XDCRoot       = '+XDCRoot,f)
                 mputl('BIOSRoot      = '+BIOSRoot,f)
                 mclose(f)
@@ -223,7 +236,6 @@ line2 = 'with Scilab. Install TI Code Composer Studio 4/5 and connect your'
 line3 = 'MicroDAQ device. Select Help button for more info.';
 
 help_paths = [
-'Code Composer Studio 4/5 install path → \ti\ccsv5';
 'C6000 compiler install path → ti\ccsv5\tools\compiler\c6000_7.4.4';
 'XDCTools install path → ti\xdctools_3_25_03_72';
 'SYS/BIOS RTOS install path → ti\bios_6_35_04_50';
@@ -232,14 +244,12 @@ help_paths = [
 
 if getos() == 'Linux' then 
     help_paths = [
-    'Code Composer Studio 4/5 install path → /opt/ti/ccsv5';
     'C6000 compiler install path → /opt/ti/ccsv5/tools/compiler/c6000_7.4.4';
     'XDCTools install path → /opt/ti/xdctools_3_25_03_72';
     'SYS/BIOS RTOS install path → /opt/ti/bios_6_35_04_50';
     ];
 elseif getos() == 'Windows' then 
     help_paths = [
-    'Code Composer Studio 4/5 install path → C:\ti\ccsv5';
     'C6000 compiler install path → C:\ti\ccsv5\tools\compiler\c6000_7.4.4';
     'XDCTools install path → C:\ti\xdctools_3_25_03_72';
     'SYS/BIOS RTOS install path → C:\ti\bios_6_35_04_50';
@@ -251,7 +261,6 @@ help_desc = ['Check your IP settings and verify connection with MicroDAQ';
 'device with system ''ping'' command.';
 'During installation point where Code Composer Studio';
 'components are located. User has to provide directories with:';
-'- Code Composer Studio 4/5 root directory';
 '- C6000 compiler';
 '- XDCTools';
 '- SYS/BIOS';
@@ -276,11 +285,7 @@ line7 = 'SYS/BIOS RTOS install path:';
 //ip setting
 line8 = 'MicroDAQ IP address:';
 
-if (getos() == "Linux") then
-    default_path = "/opt/ti/"
-else
-    default_path = "C:\ti\"    
-end
+default_path = titbx_path;
 
 fig=figure(1,'figure_name','MicroDAQ Setup','position',[400 200 window_w window_h],'Backgroundcolor',[0.900000 0.900000 0.900000],"infobar_visible", "off", "toolbar_visible", "off", "dockable", "off", "menubar", "none");
 
@@ -291,30 +296,30 @@ h(6)=uicontrol(fig,"Position",[t_margin window_h-90 window_w-t_margin-10 font_si
 
 
 //step 1 info
-h(7)=uicontrol(fig,"Position",[t_margin window_h-130 window_w-t_margin-10 font_size+4],"Style","text","string",line4,"Horizontalalignment","left","Fontsize",font_size,"Backgroundcolor",[0.900000 0.900000 0.900000 ]);
+//h(7)=uicontrol(fig,"Position",[t_margin window_h-130 window_w-t_margin-10 font_size+4],"Style","text","string",line4,"Horizontalalignment","left","Fontsize",font_size,"Backgroundcolor",[0.900000 0.900000 0.900000 ]);
 //gui elements
-h(8)=uicontrol(fig,"Position",[edit_x window_h-160 edit_x+edit_w 24],"callback","edit_callback1","Style","edit","string",default_path,"Tag","edit1","Horizontalalignment","left","Fontsize",12,"Backgroundcolor",[1.000000 1.000000 1.000000 ]);
-h(9)=uicontrol(fig,"Position",[edit_w+x_offset window_h-160 50 24],"Style","pushbutton","string","...","callback","browse_dir_callback1","Horizontalalignment","center","Fontsize",12);
-
+//h(8)=uicontrol(fig,"Position",[edit_x window_h-160 edit_x+edit_w 24],"callback","edit_callback1","Style","edit","string",default_path,"Tag","edit1","Horizontalalignment","left","Fontsize",12,"Backgroundcolor",[1.000000 1.000000 1.000000 ]);
+//h(9)=uicontrol(fig,"Position",[edit_w+x_offset window_h-160 50 24],"Style","pushbutton","string","...","callback","browse_dir_callback1","Horizontalalignment","center","Fontsize",12);
+//
 //y offset between steps = 50
 
 //step 2 info
-h(10)=uicontrol(fig,"Position",[t_margin window_h-190 window_w-t_margin-10 font_size+2],"Style","text","string",line5,"Horizontalalignment","left","Fontsize",font_size,"Backgroundcolor",[0.900000 0.900000 0.900000 ]);
+h(10)=uicontrol(fig,"Position",[t_margin window_h-130 window_w-t_margin-10 font_size+2],"Style","text","string",line5,"Horizontalalignment","left","Fontsize",font_size,"Backgroundcolor",[0.900000 0.900000 0.900000 ]);
 //step 2 elements
-h(11)=uicontrol(fig,"Position",[edit_x window_h-220 edit_x+edit_w 24],"callback","edit_callback2",'Enable','off',"Style","edit","string",default_path,"Tag","edit2","Horizontalalignment","left","Fontsize",12,"Backgroundcolor",[1.000000 1.000000 1.000000 ]);
-h(12)=uicontrol(fig,"Position",[edit_w+x_offset window_h-220 50 24],'Enable','off',"Style","pushbutton","string","...","callback","browse_dir_callback2","Horizontalalignment","center","Fontsize",12);
+h(11)=uicontrol(fig,"Position",[edit_x window_h-160 edit_x+edit_w 24],"callback","edit_callback2",'Enable','on',"Style","edit","string",default_path,"Tag","edit2","Horizontalalignment","left","Fontsize",12,"Backgroundcolor",[1.000000 1.000000 1.000000 ]);
+h(12)=uicontrol(fig,"Position",[edit_w+x_offset window_h-160 50 24],'Enable','on',"Style","pushbutton","string","...","callback","browse_dir_callback2","Horizontalalignment","center","Fontsize",12);
 
 //step 3 info
-h(13)=uicontrol(fig,"Position",[t_margin window_h-250 window_w-t_margin-10 font_size+4],"Style","text","string",line6,"Horizontalalignment","left","Fontsize",font_size,"Backgroundcolor",[0.900000 0.900000 0.900000 ]);
+h(13)=uicontrol(fig,"Position",[t_margin window_h-190 window_w-t_margin-10 font_size+4],"Style","text","string",line6,"Horizontalalignment","left","Fontsize",font_size,"Backgroundcolor",[0.900000 0.900000 0.900000 ]);
 //step 3 elements
-h(14)=uicontrol(fig,"Position",[edit_x window_h-280 edit_x+edit_w 24],"callback","edit_callback3",'Enable','off',"Style","edit","string",default_path,"Tag","edit3","Horizontalalignment","left","Fontsize",12,"Backgroundcolor",[1.000000 1.000000 1.000000 ]);
-h(15)=uicontrol(fig,"Position",[edit_w+x_offset window_h-280 50 24],'Enable','off',"Style","pushbutton","string","...","callback","browse_dir_callback3","Horizontalalignment","center","Fontsize",12);
+h(14)=uicontrol(fig,"Position",[edit_x window_h-220 edit_x+edit_w 24],"callback","edit_callback3",'Enable','off',"Style","edit","string",default_path,"Tag","edit3","Horizontalalignment","left","Fontsize",12,"Backgroundcolor",[1.000000 1.000000 1.000000 ]);
+h(15)=uicontrol(fig,"Position",[edit_w+x_offset window_h-220 50 24],'Enable','off',"Style","pushbutton","string","...","callback","browse_dir_callback3","Horizontalalignment","center","Fontsize",12);
 
 //step 4 info
-h(16)=uicontrol(fig,"Position",[t_margin window_h-310 window_w-t_margin-10 font_size+4],"Style","text","string",line7,"Horizontalalignment","left","Fontsize",font_size,"Backgroundcolor",[0.900000 0.900000 0.900000 ]);
+h(16)=uicontrol(fig,"Position",[t_margin window_h-250 window_w-t_margin-10 font_size+4],"Style","text","string",line7,"Horizontalalignment","left","Fontsize",font_size,"Backgroundcolor",[0.900000 0.900000 0.900000 ]);
 //step 4 elements
-h(17)=uicontrol(fig,"Position",[edit_x window_h-340 edit_x+edit_w 24],"callback","edit_callback4",'Enable','off',"Style","edit","string",default_path,"Tag","edit4","Horizontalalignment","left","Fontsize",12,"Backgroundcolor",[1.000000 1.000000 1.000000 ]);
-h(18)=uicontrol(fig,"Position",[edit_w+x_offset window_h-340 50 24],'Enable','off',"Style","pushbutton","string","...","callback","browse_dir_callback4","Horizontalalignment","center","Fontsize",12);
+h(17)=uicontrol(fig,"Position",[edit_x window_h-280 edit_x+edit_w 24],"callback","edit_callback4",'Enable','off',"Style","edit","string",default_path,"Tag","edit4","Horizontalalignment","left","Fontsize",12,"Backgroundcolor",[1.000000 1.000000 1.000000 ]);
+h(18)=uicontrol(fig,"Position",[edit_w+x_offset window_h-280 50 24],'Enable','off',"Style","pushbutton","string","...","callback","browse_dir_callback4","Horizontalalignment","center","Fontsize",12);
 
 
 //ip info
