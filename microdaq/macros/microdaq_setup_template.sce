@@ -14,12 +14,11 @@ elseif getos() == 'Windows' then
     titbx_path = pathconvert("C:\");
 end
 
+disp(titbx_path);
 
 //DIRECTORY BROWSER FUNCTIONS
 function [] = browse_dir_callback2()
-    global titbx_path;
     directory = uigetdir(titbx_path)
-    titbx_path = directory;
     
     if directory <> "" then
         set(h(11),'String', directory);
@@ -29,10 +28,7 @@ function [] = browse_dir_callback2()
 endfunction
 
 function [] = browse_dir_callback3()
-    global titbx_path;
-    disp(titbx_path);
     directory = uigetdir(titbx_path)
-    titbx_path = directory;
     
     if directory <> "" then
         set(h(14),'String',directory)
@@ -42,9 +38,7 @@ function [] = browse_dir_callback3()
 endfunction
 
 function [] = browse_dir_callback4()
-    global titbx_path;
     directory = uigetdir(titbx_path)
-    titbx_path = directory;
    
     if directory <> "" then
         set(h(17),'String',directory)
@@ -139,9 +133,6 @@ function [] = setup_callback ()
     sysbios_build_cmd = sysbios_build_cmd + XDCRoot + filesep() + 'xs --xdcpath=""' + BIOSRoot + filesep() +'packages' + '""; xdc.tools.configuro -o configPkg -t ti.targets.elf.C674 -p ti.platforms.evmOMAPL137 -r release -c ' + CompilerRoot + ' --compileOptions ""-g --optimize_with_debug""  sysbios.cfg'
     
     sysbios_build_cmd = strsubst(sysbios_build_cmd, filesep()+filesep(), filesep());
-    
-    disp('--------------- DEBUG ----------------')
-    disp(sysbios_build_cmd);
 
     disp("Building TI SYS/BIOS real-time operating system for MicroDAQ");
     cd( TARGET_ROOT+ filesep() + 'sysbios' + filesep() + 'cpu0' + filesep());
@@ -171,8 +162,6 @@ function [] = setup_callback ()
             mclose(linker1);
 
             //Generate 'target_path.mk'
-            disp("DEBUG2")
-            disp(FILE_ROOT);
             [f,result0] = mopen(FILE_ROOT,'w');
             if result0 < 0 then
                 messagebox('Building failed. Cannot create file ''target_path.mk'' ','Building sys','error');
@@ -268,10 +257,8 @@ help_desc = ['Check your IP settings and verify connection with MicroDAQ';
 'Example directory structure with standard Code Composer Studio installation:';
 help_paths;
 '';
-'In order to start setup procedure MicroDAQ device has to be detected.';
-'Use ''Detect MicroDAQ'' button to detect your MicroDAQ device.';
-'If MicroDAQ is detected, continue by clicking ''OK'' button';
-'to start setup procedure.';
+'More info is available on website: ';
+'https://github.com/microdaq/Scilab';
 ]
 
 //First step
