@@ -108,7 +108,7 @@ MicroDAQ module simplifies development of real-time control measurements applica
 			</para>
             <simplelist type="inline">
 				<member><ulink url="http://software-dl.ti.com/codegen/non-esd/downloads/download.htm#C6000">C6000 compiler (ver. 7.4.21)</ulink></member>
-                <member><ulink url="http://software-dl.ti.com/dsps/dsps_public_sw/sdo_sb/targetcontent/sysbios/">SYS/BIOS (var. 6.50.01.12)</ulink></member>
+                <member><ulink url="http://software-dl.ti.com/dsps/dsps_public_sw/sdo_sb/targetcontent/sysbios/">SYS/BIOS (ver. 6.50.01.12)</ulink></member>
 				<member><ulink url="http://software-dl.ti.com/dsps/dsps_public_sw/sdo_sb/targetcontent/rtsc/">XDCTools (ver. 3.50.00.10)</ulink></member>
 			</simplelist>
 		</para>

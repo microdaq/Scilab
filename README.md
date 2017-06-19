@@ -43,5 +43,5 @@ Required software (dependencies)
 ================================
 * [Scilab 5.4](http://www.scilab.org) or Scilab 6.0 (free)
 * [C6000 compiler (ver. 7.4.21)](http://software-dl.ti.com/codegen/non-esd/downloads/download.htm#C6000") 
-* [SYS/BIOS (var. 6.50.01.12)](http://software-dl.ti.com/dsps/dsps_public_sw/sdo_sb/targetcontent/sysbios/) 
+* [SYS/BIOS (ver. 6.50.01.12)](http://software-dl.ti.com/dsps/dsps_public_sw/sdo_sb/targetcontent/sysbios/) 
 * [XDCTools (ver. 3.50.00.10)](http://software-dl.ti.com/dsps/dsps_public_sw/sdo_sb/targetcontent/rtsc/) 
