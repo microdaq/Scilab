@@ -12,9 +12,9 @@ if getos() == 'Linux' then
     titbx_path = pathconvert("/opt/");
 elseif getos() == 'Windows' then 
     titbx_path = pathconvert("C:\");
-end
-
-disp(titbx_path);
+elseif (getos() == "Darwin") then 
+    titbx_path = pathconvert("/Users/");
+end 
 
 //DIRECTORY BROWSER FUNCTIONS
 function [] = browse_dir_callback2()
@@ -109,7 +109,7 @@ endfunction
 
 //HELP FUNCTION
 function [] = help_callback()
-    messagebox(help_desc,'MircDAQ setup help');
+    messagebox(help_desc,'MicroDAQ setup help');
 endfunction
 
 //FINAL SETUP FUNCTION
@@ -206,7 +206,7 @@ edit_x = 12;
 //window width
 window_w = 400;
 //window height
-window_h = 460;
+window_h = 560;
 //object offset in x axis
 x_offset = 30;
 //object offset in y axis
@@ -219,50 +219,51 @@ font_size = 12;
 //frame label
 lab1 = 'MicroDAQ Setup';
 
+line = list();
 //General installation description
-line1 = 'The microdaq_setup wizard will configure MicorDAQ device to work';
-line2 = 'with Scilab. Install TI Code Composer Studio 4/5 and connect your'
-line3 = 'MicroDAQ device. Select Help button for more info.';
+line($+1) = 'The microdaq_setup wizard will configure MicroDAQ device to work';
+line($+1) = 'with Scilab. To perform toolbox setup, install and provide paths';
+line($+1) = 'to following components: ';
+line($+1) = '- C6000 compiler      (ver. 7.4.21)';
+line($+1) = '- XDCTools              (ver. 3.50.00.10)';
+line($+1) = '- SYS/BIOS             (ver. 6.50.01.12)';
+line($+1) = '';
+line($+1) = 'Detailed installation instructions can be found in MicroDAQ toolbox";
+line($+1) = 'help > Toolbox start guide.";
 
 help_paths = [
-'C6000 compiler install path → ti\ccsv5\tools\compiler\c6000_7.4.4';
-'XDCTools install path → ti\xdctools_3_25_03_72';
-'SYS/BIOS RTOS install path → ti\bios_6_35_04_50';
+'C6000 compiler install path → ti\c6000_7.4.21';
+'XDCTools install path → ti\xdctools_3_50_00_10';
+'SYS/BIOS RTOS install path → ti\bios_6_50_01_12';
 ];
-
-
-if getos() == 'Linux' then 
-    help_paths = [
-    'C6000 compiler install path → /opt/ti/ccsv5/tools/compiler/c6000_7.4.4';
-    'XDCTools install path → /opt/ti/xdctools_3_25_03_72';
-    'SYS/BIOS RTOS install path → /opt/ti/bios_6_35_04_50';
-    ];
-elseif getos() == 'Windows' then 
-    help_paths = [
-    'C6000 compiler install path → C:\ti\ccsv5\tools\compiler\c6000_7.4.4';
-    'XDCTools install path → C:\ti\xdctools_3_25_03_72';
-    'SYS/BIOS RTOS install path → C:\ti\bios_6_35_04_50';
-    ];
-end
-
 
 help_desc = ['Check your IP settings and verify connection with MicroDAQ'; 
 'device with system ''ping'' command.';
-'During installation point where Code Composer Studio';
-'components are located. User has to provide directories with:';
-'- C6000 compiler';
-'- XDCTools';
-'- SYS/BIOS';
 '';
-'Example directory structure with standard Code Composer Studio installation:';
+'During installation point where required components are located.';
+'They can be downloaded from Texas Instruments website:';
+'';
+'- C6000 compiler, ver. 7.4.21:';
+'http://software-dl.ti.com/codegen/non-esd/downloads/download.htm#C6000';
+'';
+'- XDCTools, ver. 3.50.00.10:';
+'http://software-dl.ti.com/dsps/dsps_public_sw/sdo_sb/targetcontent/rtsc/';
+'';
+'- SYS/BIOS, ver. 6.50.01.12:';
+'http://software-dl.ti.com/dsps/dsps_public_sw/sdo_sb/targetcontent/sysbios/';
+'';
+'';
+'Example directory structure:';
 help_paths;
+'';
+'Make sure that correct version of component is installed.'
 '';
 'More info is available on website: ';
 'https://github.com/microdaq/Scilab';
-]
+];
 
 //First step
-line4 = 'Code Composer Studio 4/5 install path:';
+//line4 = 'Code Composer Studio 4/5 install path:';
 //Second step
 line5 = 'C6000 compiler install path:';
 //third step
@@ -277,11 +278,15 @@ default_path = titbx_path;
 fig=figure(1,'figure_name','MicroDAQ Setup','position',[400 200 window_w window_h],'Backgroundcolor',[0.900000 0.900000 0.900000],"infobar_visible", "off", "toolbar_visible", "off", "dockable", "off", "menubar", "none");
 
 //General Description
-h(4)=uicontrol(fig,"Position",[t_margin window_h-50 window_w-t_margin-10 font_size+4],"Style","text","string",line1,"Horizontalalignment","left","Fontsize",font_size,"Backgroundcolor",[0.900000 0.900000 0.900000 ]);
-h(5)=uicontrol(fig,"Position",[t_margin window_h-70 window_w-t_margin-10 font_size+4],"Style","text","string",line2,"Horizontalalignment","left","Fontsize",font_size,"Backgroundcolor",[0.900000 0.900000 0.900000 ]);
-h(6)=uicontrol(fig,"Position",[t_margin window_h-90 window_w-t_margin-10 font_size+4],"Style","text","string",line3,"Horizontalalignment","left","Fontsize",font_size,"Backgroundcolor",[0.900000 0.900000 0.900000 ]);
-
-
+h(4)=uicontrol(fig,"Position",[t_margin window_h-30 window_w-t_margin-10 font_size+4],"Style","text","string",line(1),"Horizontalalignment","left","Fontsize",font_size,"Backgroundcolor",[0.900000 0.900000 0.900000 ]);
+h(5)=uicontrol(fig,"Position",[t_margin window_h-50 window_w-t_margin-10 font_size+4],"Style","text","string",line(2),"Horizontalalignment","left","Fontsize",font_size,"Backgroundcolor",[0.900000 0.900000 0.900000 ]);
+h(6)=uicontrol(fig,"Position",[t_margin window_h-70 window_w-t_margin-10 font_size+4],"Style","text","string",line(3),"Horizontalalignment","left","Fontsize",font_size,"Backgroundcolor",[0.900000 0.900000 0.900000 ]);
+h(6)=uicontrol(fig,"Position",[t_margin window_h-90 window_w-t_margin-10 font_size+4],"Style","text","string",line(4),"Horizontalalignment","left","Fontsize",font_size,"Backgroundcolor",[0.900000 0.900000 0.900000 ]);
+h(6)=uicontrol(fig,"Position",[t_margin window_h-110 window_w-t_margin-10 font_size+4],"Style","text","string",line(5),"Horizontalalignment","left","Fontsize",font_size,"Backgroundcolor",[0.900000 0.900000 0.900000 ]);
+h(6)=uicontrol(fig,"Position",[t_margin window_h-130 window_w-t_margin-10 font_size+4],"Style","text","string",line(6),"Horizontalalignment","left","Fontsize",font_size,"Backgroundcolor",[0.900000 0.900000 0.900000 ]);
+h(6)=uicontrol(fig,"Position",[t_margin window_h-150 window_w-t_margin-10 font_size+4],"Style","text","string",line(7),"Horizontalalignment","left","Fontsize",font_size,"Backgroundcolor",[0.900000 0.900000 0.900000 ]);
+h(6)=uicontrol(fig,"Position",[t_margin window_h-170 window_w-t_margin-10 font_size+4],"Style","text","string",line(8),"Horizontalalignment","left","Fontsize",font_size,"Backgroundcolor",[0.900000 0.900000 0.900000 ]);
+h(6)=uicontrol(fig,"Position",[t_margin window_h-190 window_w-t_margin-10 font_size+4],"Style","text","string",line(9),"Horizontalalignment","left","Fontsize",font_size,"Backgroundcolor",[0.900000 0.900000 0.900000 ]);
 //step 1 info
 //h(7)=uicontrol(fig,"Position",[t_margin window_h-130 window_w-t_margin-10 font_size+4],"Style","text","string",line4,"Horizontalalignment","left","Fontsize",font_size,"Backgroundcolor",[0.900000 0.900000 0.900000 ]);
 //gui elements
@@ -289,6 +294,7 @@ h(6)=uicontrol(fig,"Position",[t_margin window_h-90 window_w-t_margin-10 font_si
 //h(9)=uicontrol(fig,"Position",[edit_w+x_offset window_h-160 50 24],"Style","pushbutton","string","...","callback","browse_dir_callback1","Horizontalalignment","center","Fontsize",12);
 //
 //y offset between steps = 50
+window_h = window_h - 100; 
 
 //step 2 info
 h(10)=uicontrol(fig,"Position",[t_margin window_h-130 window_w-t_margin-10 font_size+2],"Style","text","string",line5,"Horizontalalignment","left","Fontsize",font_size,"Backgroundcolor",[0.900000 0.900000 0.900000 ]);
