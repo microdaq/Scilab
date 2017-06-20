@@ -67,8 +67,8 @@ c_params_e2000(3) = struct(..
         adc_lookup(1) = struct(..
             "id", 1,..
             "channel", "8",..
-            "rate", "166ksps",..
-            "resolution", "16-bit",..
+            "rate", "100ksps",..
+            "resolution", "12-bit",..
             "range", ["0-5V";" 0-10V"; "±5V";"±10V"],..
             "c_params", struct(..
                     "c_number", [],..
@@ -131,10 +131,10 @@ c_params_e2000(3) = struct(..
         
          adc_lookup(6) = struct(..
             "id", 6,..
-            "channel", "2",..
-            "rate", "4000ksps",..
+            "channel", "8",..
+            "rate", "500ksps",..
             "resolution", "16-bit",..
-            "range", ["±5V"; "±10V"],..
+            "range", ["±10.24V"; "±5.12V"; "±2.56V"; "±1.24V"; "±0.64V"],..
             "c_params", struct(..
                     "c_number", [],..
                     "c_range_desc", [],..
@@ -147,7 +147,7 @@ c_params_e2000(3) = struct(..
             "channel", "8",..
             "rate", "1000ksps",..
             "resolution", "16-bit",..
-            "range", ["±0.6V"; "±1.2V"; "±2.5V"; "±5V"; "±10V"],..
+            "range", ["±10.24V"; "±5.12V"; "±2.56V"; "±1.24V"; "±0.64V"],..
             "c_params", struct(..
                     "c_number", [],..
                     "c_range_desc", [],..
@@ -157,10 +157,10 @@ c_params_e2000(3) = struct(..
                     
          adc_lookup(8) = struct(..
             "id", 8,..
-            "channel", "8",..
-            "rate", "1000ksps",..
+            "channel", "16",..
+            "rate", "500ksps",..
             "resolution", "16-bit",..
-            "range", ["±1.2V"; "±2.5V"; "±5V"; "±10V"],..
+            "range", ["±10.24V"; "±5.12V"; "±2.56V"; "±1.24V"; "±0.64V"],..
             "c_params", struct(..
                     "c_number", [],..
                     "c_range_desc", [],..
@@ -173,7 +173,7 @@ c_params_e2000(3) = struct(..
             "channel", "16",..
             "rate", "1000ksps",..
             "resolution", "16-bit",..
-            "range", ["±0.6V"; "±1.2V"; "±2.5V"; "±5V"; "±10V"],..
+            "range", ["±10.24V"; "±5.12V"; "±2.56V"; "±1.24V"; "±0.64V"],..
             "c_params", struct(..
                     "c_number", [],..
                     "c_range_desc", [],..
