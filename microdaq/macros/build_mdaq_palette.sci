@@ -220,7 +220,8 @@ function [res] = build_mdaq_palette(palette_path)
     "mdaq_sinus"
     "mdaq_square"
     "mdaq_step"
-    "TKSCALE"];
+    "TKSCALE"
+    "RAND_m"];
     xpal($+1) = tbx_compose_pal('Sources', blocks);    
 
     //User-Defined Functions
