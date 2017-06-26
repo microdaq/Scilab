@@ -100,7 +100,7 @@ end
 // =============================================================================
 if or(getscilabmode() == ["NW";"STD"]) then
     mprintf("\tLoad help\n");
-    path_addchapter = pathconvert(root_tlbx+'/jar/'+sci_ver_str, %F);
+    path_addchapter = pathconvert(root_tlbx+'/jar/', %F);
     if ( isdir(path_addchapter) <> [] ) then
         add_help_chapter("MicroDAQ", path_addchapter, %F);
     else

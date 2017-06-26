@@ -26,7 +26,7 @@ function result = mdaq_get_file_data(filename, filetype, rows, cols)
             if argn(2) == 4 then 
                 nrows = rows;
                 if nrows > size(result, 1) then 
-                    nrwos = size(result, 1);
+                    nrows = size(result, 1);
                 end
                 ncols = cols;
                 if ncols > size(result, 2) then 

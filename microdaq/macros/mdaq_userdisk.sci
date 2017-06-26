@@ -5,8 +5,8 @@ function mdaq_userdisk()
         return;
     end
     if getos() == 'Windows' then
-        unix_s("start http://" + ip_address + "/user-disk/dsp/data/");
+        unix_s("start http://" + ip_address + "/index.php?page=mdaq_storage");
     else
-        unix_s("xdg-open http://" + ip_address + "/user-disk/dsp/data/");
+        unix_s("xdg-open http://" + ip_address + "/index.php?page=mdaq_storage");
     end
 endfunction

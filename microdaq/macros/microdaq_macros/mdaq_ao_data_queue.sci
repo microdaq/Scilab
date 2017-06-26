@@ -25,7 +25,7 @@ function mdaq_ao_data_queue(arg1, arg2, arg3)
         mprintf("\tmdaq_ao_data_queue(link_id, data, blocking);\n")
         mprintf("\tlink_id - connection id returned by mdaq_open() (OPTIONAL)\n");
         mprintf("\tdata - AO scan data\n");
-        mprintf("\tblocking - blocking mode (1-enable, 0-disable)\n");
+        mprintf("\tblocking - blocking mode (%T-enable, %F-disable)\n");
         return;
     end
 
@@ -42,9 +42,13 @@ function mdaq_ao_data_queue(arg1, arg2, arg3)
 //        return
 //    end
     if blocking == %T then
-        blocking = 1;
+            blocking = 1;
+    elseif blocking == %F then
+            blocking = 0;
+    elseif blocking > 0 then 
+            blocking = 1;
     else 
-        blocking = 0; 
+            blocking = 0;
     end
 
     data_size = size(data, "*"); 
