@@ -44,10 +44,7 @@ enum mdaq_adc_ids
     ADC06,
     ADC07,
     ADC08,
-    ADC09,
-    ADC10,
-    ADC11,
-    ADC12
+    ADC09
 };
 
 

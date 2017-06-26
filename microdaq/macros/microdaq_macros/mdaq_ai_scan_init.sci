@@ -109,10 +109,8 @@ function  mdaq_ai_scan_init(arg1, arg2, arg3, arg4, arg5, arg6)
         "out",..
             [1, 1], 9, "i");
 
-    disp("result: "); 
-    disp(result);
     if result < 0 & result <> -88 then
-            error(mdaq_error(result), 10000 + abs(result))            
+            error(mdaq_error(result), 10000 + abs(result));           
     else
         if result == -88 then
             disp("Warninng: AI scanning interrupted!")
@@ -134,7 +132,7 @@ function  mdaq_ai_scan_init(arg1, arg2, arg3, arg4, arg5, arg6)
                     [1, 1], 9, "i");
         end
         
-        mprintf("Data acquisition session settings:\n");
+        mprintf("\nData acquisition session settings:\n");
 
         str = "";
         s = size(channels);

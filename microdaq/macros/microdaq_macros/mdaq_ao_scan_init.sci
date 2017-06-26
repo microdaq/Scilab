@@ -131,13 +131,11 @@ function  mdaq_ao_scan_init(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
             scan_time, 8, "d",..
         "out",..
             [1, 1], 9, "i");
-            
-    mprintf("result: %d\n", result);
 
     if result < 0 then
         mdaq_error(result);
     else
-        mprintf("Data acquisition session settings:\n");
+        mprintf("\nData acquisition session settings:\n");
 
         range_table = [ "0-5V" "0-10V" "±5V" "±10V" "±2.5V" ];
         str = "";
