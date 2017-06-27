@@ -69,7 +69,7 @@ function continueSimulation=pre_xcos_simulate(scs_m, needcompile)
     end
     
     if runFromMainScheme == %F then
-        disp("Please start model from root diagram (the one which contains mdaq_setup block).");
+        messagebox("Please start model from root diagram (the one which contains mdaq_setup block).");
         continueSimulation = %F;
         return;
     end
