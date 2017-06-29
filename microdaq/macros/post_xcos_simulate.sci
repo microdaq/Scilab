@@ -23,7 +23,8 @@ function []=post_xcos_simulate(%cpr, scs_m, needcompile)
                         [nr_records, result] = mlink_profile_data_get(connection_id, 1);
                         if nr_records > 0 & nr_records < 250000 & result > -1 then
                             [profile_data, result] = mlink_profile_data_get(connection_id, nr_records + 1);
-                            if result > -1 then
+                            // TODO: Fix result number, change if statement to  result > -1
+                            if result > -3 then
                                 if %microdaq.private.mdaq_hwid(4) == 0 then
                                     cpu_clock = 300000000;
                                 else
