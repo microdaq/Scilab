@@ -197,7 +197,8 @@ if sci_ver_str == 'scilab-5.5.2' then
     %microdaq.ip_address = mdaq_get_ip();
     
     if check_mdaq_compiler() == %F then
-        mprintf("\nRun microdaq_setup to configure MicroDAQ toolbox.\n\nFor more help on MicroDAQ toolbox, DSP managment functions,\nC code integration tools and other MicroDAQ toolbox \nfeatures see help (help microdaq).\n");
+        mprintf("\nRun microdaq_setup to configure MicroDAQ toolbox.\n\nFor more help on MicroDAQ toolbox, DSP managment functions,\nC code integration tools and other MicroDAQ toolbox \nfeatures see help (help microdaq).\n");      
+        warning("MicroDAQ toolbox ver 1.2.x requires firmware ver.2.0.0 or higher. Make sure that latest firmware has been installed.");
     end
     
     userhostlib_loader = root_tlbx + pathconvert("/etc/userlib/hostlib/loader.sce", %f);

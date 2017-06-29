@@ -222,11 +222,12 @@ lab1 = 'MicroDAQ Setup';
 line = list();
 //General installation description
 line($+1) = 'The microdaq_setup wizard will configure MicroDAQ device to work';
-line($+1) = 'with Scilab. To perform toolbox setup, install and provide paths';
-line($+1) = 'to following components: ';
-line($+1) = '- C6000 compiler      (ver. 7.4.21)';
-line($+1) = '- XDCTools              (ver. 3.50.00.10)';
-line($+1) = '- SYS/BIOS             (ver. 6.50.01.12)';
+line($+1) = 'with Scilab.  MicroDAQ firmware ver. 2.0.0 or higher is required.';
+line($+1) = 'To perform toolbox setup, install and provide paths to following';
+line($+1) = 'components: ';
+line($+1) = '- C6000 compiler        (ver. 7.4.21)';
+line($+1) = '- XDCTools                (ver. 3.50.00.10)';
+line($+1) = '- SYS/BIOS               (ver. 6.50.01.12)';
 line($+1) = '';
 line($+1) = 'Detailed installation instructions can be found in MicroDAQ toolbox";
 line($+1) = 'help > Toolbox start guide.";
@@ -237,8 +238,11 @@ help_paths = [
 'SYS/BIOS RTOS install path → ti\bios_6_50_01_12';
 ];
 
-help_desc = ['Check your IP settings and verify connection with MicroDAQ'; 
-'device with system ''ping'' command.';
+help_desc = [
+'Check your IP settings and verify connection with MicroDAQ device '; 
+'with system ''ping'' command.  Make sure that latest firmware has';
+'been installed (ver.2.0.0 or higher). Firmware version can be checked';
+'in MicroDAQ logs that are available at web interface.';
 '';
 'During installation point where required components are located.';
 'They can be downloaded from Texas Instruments website:';
@@ -287,6 +291,7 @@ h(6)=uicontrol(fig,"Position",[t_margin window_h-130 window_w-t_margin-10 font_s
 h(6)=uicontrol(fig,"Position",[t_margin window_h-150 window_w-t_margin-10 font_size+4],"Style","text","string",line(7),"Horizontalalignment","left","Fontsize",font_size,"Backgroundcolor",[0.900000 0.900000 0.900000 ]);
 h(6)=uicontrol(fig,"Position",[t_margin window_h-170 window_w-t_margin-10 font_size+4],"Style","text","string",line(8),"Horizontalalignment","left","Fontsize",font_size,"Backgroundcolor",[0.900000 0.900000 0.900000 ]);
 h(6)=uicontrol(fig,"Position",[t_margin window_h-190 window_w-t_margin-10 font_size+4],"Style","text","string",line(9),"Horizontalalignment","left","Fontsize",font_size,"Backgroundcolor",[0.900000 0.900000 0.900000 ]);
+h(6)=uicontrol(fig,"Position",[t_margin window_h-210 window_w-t_margin-10 font_size+4],"Style","text","string",line(10),"Horizontalalignment","left","Fontsize",font_size,"Backgroundcolor",[0.900000 0.900000 0.900000 ]);
 //step 1 info
 //h(7)=uicontrol(fig,"Position",[t_margin window_h-130 window_w-t_margin-10 font_size+4],"Style","text","string",line4,"Horizontalalignment","left","Fontsize",font_size,"Backgroundcolor",[0.900000 0.900000 0.900000 ]);
 //gui elements
@@ -294,7 +299,7 @@ h(6)=uicontrol(fig,"Position",[t_margin window_h-190 window_w-t_margin-10 font_s
 //h(9)=uicontrol(fig,"Position",[edit_w+x_offset window_h-160 50 24],"Style","pushbutton","string","...","callback","browse_dir_callback1","Horizontalalignment","center","Fontsize",12);
 //
 //y offset between steps = 50
-window_h = window_h - 100; 
+window_h = window_h - 120; 
 
 //step 2 info
 h(10)=uicontrol(fig,"Position",[t_margin window_h-130 window_w-t_margin-10 font_size+2],"Style","text","string",line5,"Horizontalalignment","left","Fontsize",font_size,"Backgroundcolor",[0.900000 0.900000 0.900000 ]);
@@ -314,7 +319,7 @@ h(16)=uicontrol(fig,"Position",[t_margin window_h-250 window_w-t_margin-10 font_
 h(17)=uicontrol(fig,"Position",[edit_x window_h-280 edit_x+edit_w 24],"callback","edit_callback4",'Enable','off',"Style","edit","string",default_path,"Tag","edit4","Horizontalalignment","left","Fontsize",12,"Backgroundcolor",[1.000000 1.000000 1.000000 ]);
 h(18)=uicontrol(fig,"Position",[edit_w+x_offset window_h-280 50 24],'Enable','off',"Style","pushbutton","string","...","callback","browse_dir_callback4","Horizontalalignment","center","Fontsize",12);
 
-
+window_h = window_h + 30; 
 //ip info
 h(19)=uicontrol(fig,"Position",[t_margin window_h-370 window_w-t_margin-10 font_size+4],"Style","text","string",line8,"Horizontalalignment","left","Fontsize",font_size,"Backgroundcolor",[0.900000 0.900000 0.900000 ]);
 //ip edit box
