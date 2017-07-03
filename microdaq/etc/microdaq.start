@@ -117,8 +117,10 @@ exec(pathconvert(root_tlbx + "/etc/mlink/MLink.sce", %f),-1);
 //exec(pathconvert(root_tlbx + "/etc/mdaqlib/loader.sce", %f),-1);
 
 if sci_ver_str == 'scilab-5.5.2' then
-    loadXcosLibs();
-    sleep(1000)
+    if isdef("xcosAddToolsMenu") == %F then
+        loadXcosLibs();
+        sleep(1000)
+    end
 
     // Add MicroDAQ toolbox options to XCos menu
     xcosAddToolsMenu("MicroDAQ web panel", "mdaq_webpanel()");
@@ -212,4 +214,5 @@ else
         warning("Unable to get MicroDAQ IP address - run mdaq_set_ip(''10.10.1.1'')!");
     end
 end
+
 
