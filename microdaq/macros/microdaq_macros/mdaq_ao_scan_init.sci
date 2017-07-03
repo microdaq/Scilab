@@ -135,6 +135,10 @@ function  mdaq_ao_scan_init(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
     if result < 0 then
         mdaq_error(result);
     else
+        if result == 1 then
+            mprintf("\nWARNING: Your MicroDAQ device does not allow running AI and AO scanning session simultaneously.\n")
+        end
+        
         mprintf("\nData acquisition session settings:\n");
 
         range_table = [ "0-5V" "0-10V" "±5V" "±10V" "±2.5V" ];
