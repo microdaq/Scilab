@@ -15,6 +15,7 @@ function [res] = build_mdaq_palette(palette_path)
     "mdaq_sinus"
     "mdaq_square"
     "mdaq_step"
+    "mdaq_pid_z"
     ];
     xpal_temp = tbx_build_pal(toolbox_dir, "temp_blocks", blocks);
     xcosPalAdd( xpal_temp, ['temp']);
@@ -48,6 +49,20 @@ function [res] = build_mdaq_palette(palette_path)
     ];
     xpal($+1) = tbx_build_pal(toolbox_dir, "MicroDAQ", blocks);
 
+ // MicroDAQ Simulation 
+    blocks = ["mdaq_adc"
+    "mdaq_dac"
+    "mdaq_dio_config"
+    "mdaq_dio_get"
+    "mdaq_dio_set"
+    "mdaq_encoder"
+    "mdaq_func_key"
+    "mdaq_led"
+    "mdaq_pwm"
+    "mdaq_setup"
+    ];
+    xpal($+1) = tbx_build_pal(toolbox_dir, "MicroDAQ sim", blocks);
+    
     // Commonly Used Blocks
     blocks = ["mdaq_setup"
     "mdaq_signal"
@@ -59,6 +74,7 @@ function [res] = build_mdaq_palette(palette_path)
     "SUMMATION"
     "mdaq_step"
     "mdaq_sinus"
+    "mdaq_square"
     "DOLLAR"
     "CLOCK_c"
     "IFTHEL_f"
