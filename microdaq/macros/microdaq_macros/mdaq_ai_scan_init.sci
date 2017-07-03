@@ -131,7 +131,9 @@ function  mdaq_ai_scan_init(arg1, arg2, arg3, arg4, arg5, arg6)
                 "out",..
                     [1, 1], 9, "i");
         end
-        
+        if result == 1 then
+            mprintf("\nWARNING: Your MicroDAQ device does not allow running AI and AO scanning session simultaneously.\n")
+        end
         mprintf("\nData acquisition session settings:\n");
 
         str = "";
