@@ -18,9 +18,9 @@ function result = mdaq_get_file_data(filename, filetype, rows, cols)
         disp("ERROR: Unable to get IP address!")
         return;
     end
-    tmp_file = getURL('http://' + mdaq_ip_address + '/user-disk/dsp/data/' + filename, TMPDIR);
+    [tmp_file res] = getURL('http://' + mdaq_ip_address + '/user-disk/dsp/data/' + filename, TMPDIR);
 
-    if isfile(tmp_file) then
+    if isfile(tmp_file) & (strindex(res,'404 - Not Found') == []) then
         if filetype == 1 then 
             result = fscanfMat(tmp_file);
             if argn(2) == 4 then 
