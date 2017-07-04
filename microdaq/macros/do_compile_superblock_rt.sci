@@ -1126,6 +1126,11 @@ function  [ok,XX,alreadyran,flgcdgen,szclkINTemp,freof] = do_compile_superblock_
 
     if load_dsp_app == %t then
         disp('### Connecting to MicroDAQ...');
+        if %microdaq.private.connection_id <> -1 then 
+            mdaq_close(%microdaq.private.connection_id);
+            %microdaq.private.connection_id = -1;
+        end 
+    
         connection_id = mdaq_open();
         if connection_id < 0 then
             message('Unable to connect to MicroDAQ device - check cable and IP settings!');
