@@ -30,7 +30,7 @@ CPU_OPTION				= $$CPUOPT$$
 
 #------------------------------ Includes -------------------------------------
 # Place -I options here
-USER_INCLUDES = -I$(MDAQLIB)\ -I$(SCILABLIB)\include 
+USER_INCLUDES = -I$(MDAQLIB)\ -I$(SCILABLIB)\include -I$(DSPLIB)\ -I$(MATHLIB)\
 
 INCLUDES = -I. -DMODEL=$(MODEL)
 
