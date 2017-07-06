@@ -9,7 +9,7 @@ STATE = 1
 
 titbx_path = "";
 if getos() == 'Linux' then 
-    titbx_path = pathconvert("/opt/");
+    titbx_path = pathconvert("/home/");
 elseif getos() == 'Windows' then 
     titbx_path = pathconvert("C:\");
 elseif (getos() == "Darwin") then 
@@ -99,7 +99,7 @@ function [] = connect_callback()
     end
     
     if firmVer(1) < 2 then
-        messagebox(['Frimware version '+rawFrimVer+' is not supported.' 'Please update MicroDAQ firmware.'],'Error','error')
+        messagebox(['Firmware version '+rawFrimVer+' is not supported.' 'Please upgrade MicroDAQ firmware.'],'Error','error')
     else
         result = mdaq_open();
         if result < 0  then
@@ -107,7 +107,7 @@ function [] = connect_callback()
             set(h(21),'Enable','on')
         else
             global %microdaq;
-            messagebox([%microdaq.model + ' connected!' 'Frimware version: '+rawFrimVer+' (supported)'],'MicroDAQ info','info');
+            messagebox([%microdaq.model + ' connected!' 'Firmware version: '+rawFrimVer],'MicroDAQ info','info');
             set(h(21),'Enable','on')
             mdaq_close(result);
         end
@@ -248,7 +248,7 @@ line($+1) = '(Toolbox start guide) to find out more information.";
 
 help_paths = [
 'C6000 compiler install path → ti\c6000_7.4.21';
-'XDCTools install path → ti\xdctools_3_50_00_10';
+'XDCTools install path → ti\xdctools_3_50_00_10_core';
 'SYS/BIOS RTOS install path → ti\bios_6_50_01_12';
 ];
 
