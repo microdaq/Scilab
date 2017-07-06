@@ -1,5 +1,17 @@
 function mdaq_upgrade(firmware)
-        
+    [fw fwString res] = mdaq_fw_version_url();
+    if res == %F then
+        mprintf("Unable to connect to MicroDAQ device!\n"); 
+        return; 
+    elseif fw(1) < 2 then 
+        mprintf("Your firmware version (%s) is not supported by this function.\n", fwString);
+        mprintf("Please make an upgrade manually by doing the following steps:\n");
+        mprintf("\t1. Download latest upgrade package from: https://github.com/microdaq\n");
+        mprintf("\t2. Connect USB cable and copy package to ''upgrade'' folder on MicroDAQ storage.\n");
+        mprintf("\t3. Click ''upgrade'' button on web interface.\n");
+        return;
+    end 
+            
     if argn(2) == 1 then
         fw_file = firmware;
         if isfile(fw_file) <> %T then
@@ -11,7 +23,7 @@ function mdaq_upgrade(firmware)
         mprintf("Checking www.github.com/microdaq for latest MicroDAQ firmware...\n");
         latest_fw_ver = mdaq_latest_fw(); 
         if latest_fw_ver == [] then
-            disp("Unable connect to www.github.com/microdaq"); 
+            disp("Unable to connect to www.github.com/microdaq"); 
             return;
         end
         

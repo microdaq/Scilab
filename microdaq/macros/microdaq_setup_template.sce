@@ -86,17 +86,31 @@ function [] = connect_callback()
     set(h(21),'Enable','off')
     ip = get(h(20),'String')
     mdaq_set_ip(ip);
-
-    result = mdaq_open();
-    if result < 0  then
-        messagebox('Unable to connect to MicroDAQ device!','Error','error')
-        set(h(21),'Enable','on')
+    
+    set(h(21),'Enable','off')
+    set(h(21),'String','Checking...')
+    [firmVer rawFrimVer res] = mdaq_fw_version_url();
+    set(h(21),'String','Check firmware')
+    set(h(21),'Enable','on')
+    
+    if res == %F then
+         messagebox('Unable to connect to MicroDAQ device!','Error','error');
+         return;
+    end
+    
+    if firmVer(1) < 2 then
+        messagebox(['Frimware version '+rawFrimVer+' is not supported.' 'Please update MicroDAQ firmware.'],'Error','error')
     else
-        global %microdaq;
-        messagebox(%microdaq.model + ' connected!','MicroDAQ info','info');
-        set(h(21),'Enable','on')
-      
-        mdaq_close(result);
+        result = mdaq_open();
+        if result < 0  then
+            messagebox('Unable to connect to MicroDAQ device!','Error','error')
+            set(h(21),'Enable','on')
+        else
+            global %microdaq;
+            messagebox([%microdaq.model + ' connected!' 'Frimware version: '+rawFrimVer+' (supported)'],'MicroDAQ info','info');
+            set(h(21),'Enable','on')
+            mdaq_close(result);
+        end
     end
 endfunction
 
@@ -130,7 +144,7 @@ function [] = setup_callback ()
     FILE_ROOT = pathconvert(dirname(get_function_path('microdaq_setup'))+"\..\rt_templates\target_paths.mk", %F);
 
     sysbios_build_cmd = 'SET PATH=' + pathconvert(XDCRoot + "/jre/bin/") + ';%PATH% & ';
-    sysbios_build_cmd = sysbios_build_cmd + XDCRoot + filesep() + 'xs --xdcpath=""' + BIOSRoot + filesep() +'packages' + '""; xdc.tools.configuro -o configPkg -t ti.targets.elf.C674 -p ti.platforms.evmOMAPL137 -r release -c ' + CompilerRoot + ' --compileOptions ""-g --optimize_with_debug""  sysbios.cfg'
+    sysbios_build_cmd = XDCRoot + filesep() + 'xs --xdcpath=""' + BIOSRoot + filesep() +'packages' + '"" xdc.tools.configuro -o configPkg -t ti.targets.elf.C674 -p ti.platforms.evmOMAPL137 -r release -c ' + CompilerRoot + ' --compileOptions ""-g --optimize_with_debug""  sysbios.cfg';
     
     sysbios_build_cmd = strsubst(sysbios_build_cmd, filesep()+filesep(), filesep());
 
@@ -226,11 +240,11 @@ line($+1) = 'with Scilab.  MicroDAQ firmware ver. 2.0.0 or higher is required.';
 line($+1) = 'To perform toolbox setup, install and provide paths to following';
 line($+1) = 'components: ';
 line($+1) = '- C6000 compiler        (ver. 7.4.21)';
-line($+1) = '- XDCTools                (ver. 3.50.00.10)';
+line($+1) = '- XDCTools                (ver. 3.50.00.10, with a JRE)';
 line($+1) = '- SYS/BIOS               (ver. 6.50.01.12)';
 line($+1) = '';
-line($+1) = 'Detailed installation instructions can be found in MicroDAQ toolbox";
-line($+1) = 'help > Toolbox start guide.";
+line($+1) = 'Click help button to get download links. Check MicroDAQ  help ";
+line($+1) = '(Toolbox start guide) to find out more information.";
 
 help_paths = [
 'C6000 compiler install path → ti\c6000_7.4.21';
@@ -241,8 +255,14 @@ help_paths = [
 help_desc = [
 'Check your IP settings and verify connection with MicroDAQ device '; 
 'with system ''ping'' command.  Make sure that latest firmware has';
-'been installed (ver.2.0.0 or higher). Firmware version can be checked';
-'in MicroDAQ logs that are available at web interface.';
+'been installed (ver.2.0.0 or higher). Firmware compatibility can be ';
+'checked by cliking '"Check firmware'" button.';
+'If your firmware version is obsolete, please make an upgrade by doing';
+'the following steps:'
+'1. Download latest upgrade package from: https://github.com/microdaq';
+'2. Connect USB cable and copy package to ''upgrade'' folder on MicroDAQ';
+'storage.';
+'3. Click ''upgrade'' button on web interface.';
 '';
 'During installation point where required components are located.';
 'They can be downloaded from Texas Instruments website:';
@@ -250,7 +270,7 @@ help_desc = [
 '- C6000 compiler, ver. 7.4.21:';
 'http://software-dl.ti.com/codegen/non-esd/downloads/download.htm#C6000';
 '';
-'- XDCTools, ver. 3.50.00.10:';
+'- XDCTools, ver. 3.50.00.10 (with a JRE):';
 'http://software-dl.ti.com/dsps/dsps_public_sw/sdo_sb/targetcontent/rtsc/';
 '';
 '- SYS/BIOS, ver. 6.50.01.12:';
@@ -325,7 +345,7 @@ h(19)=uicontrol(fig,"Position",[t_margin window_h-370 window_w-t_margin-10 font_
 //ip edit box
 h(20)=uicontrol(fig,"Position",[edit_x window_h-400 edit_x+100 24],"Style","edit","string","10.10.1.1","Tag","edit1","Horizontalalignment","left","Fontsize",12,"Backgroundcolor",[1.000000 1.000000 1.000000 ]);
 //connect button
-h(21)=uicontrol(fig,"Position",[ edit_x+x_offset+100 window_h-400  130 24],"Style","pushbutton","string","Test connection","callback","connect_callback","Horizontalalignment","center","Fontsize",12);
+h(21)=uicontrol(fig,"Position",[ edit_x+x_offset+100 window_h-400  130 24],"Style","pushbutton","string","Check firmware","callback","connect_callback","Horizontalalignment","center","Fontsize",12);
 
 //final buton
 

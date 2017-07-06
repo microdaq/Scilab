@@ -10,6 +10,7 @@ function [] = microdaq_setup()
                 STATE = 0
                 sleep(500)
             end
+            xpause(300);
         end
     end
 endfunction
