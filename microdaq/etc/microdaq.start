@@ -4,12 +4,18 @@
 
 //check compatibility 
 sci_ver = getversion('scilab');
-sci_ver_str = getversion('scilab', 'string_info');
+[sci_ver_str opts] = getversion();
 if (sci_ver(1) <> 5) | (sci_ver(2) <> 5) | (sci_ver(3) < 2)  then
     if sci_ver(1) <> 6 then 
         error(gettext('Scilab 5.5.2 or 6.x.x is required.'));
     end
 end
+
+//LINUX: ONLY X64 ARCHITECTURE SUPPORT 
+if getos() == "Linux" & opts(2) == 'x86' then 
+    error("Linux x86 platform is no longer supported. List of supported platforms can be found here: http://atoms.scilab.org/toolboxes/microdaq");
+end
+
 
 //function [microdaqlib, microdaqBlocks, microdaqMacros, microdaqUserBlocks] = startModule()
 // create global microdaq settings struct

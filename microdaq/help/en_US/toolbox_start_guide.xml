@@ -107,9 +107,9 @@ MicroDAQ module simplifies development of real-time control measurements applica
             Use the following links to download necessary components:
 			</para>
             <simplelist type="inline">
-				<member><ulink url="http://software-dl.ti.com/codegen/non-esd/downloads/download.htm#C6000">C6000 compiler (ver. 7.4.21)</ulink></member>
-                <member><ulink url="http://software-dl.ti.com/dsps/dsps_public_sw/sdo_sb/targetcontent/sysbios/">SYS/BIOS (ver. 6.50.01.12)</ulink></member>
-				<member><ulink url="http://software-dl.ti.com/dsps/dsps_public_sw/sdo_sb/targetcontent/rtsc/">XDCTools (ver. 3.50.00.10)</ulink></member>
+				<member><ulink url="http://software-dl.ti.com/codegen/non-esd/downloads/download.htm#C6000">C6000 compiler (ver. 7.4.21)</ulink> - http://software-dl.ti.com/codegen/non-esd/downloads/download.htm#C6000</member>
+                <member><ulink url="http://software-dl.ti.com/dsps/dsps_public_sw/sdo_sb/targetcontent/sysbios/">SYS/BIOS (ver. 6.50.01.12)</ulink> - http://software-dl.ti.com/dsps/dsps_public_sw/sdo_sb/targetcontent/sysbios/</member>
+				<member><ulink url="http://software-dl.ti.com/dsps/dsps_public_sw/sdo_sb/targetcontent/rtsc/">XDCTools (ver. 3.50.00.10)</ulink> - http://software-dl.ti.com/dsps/dsps_public_sw/sdo_sb/targetcontent/rtsc/</member>
 			</simplelist>
 		</para>
 	</refsection>
@@ -119,7 +119,8 @@ MicroDAQ module simplifies development of real-time control measurements applica
 		<para>
 		Installed required components and MicroDAQ device configured to work in IP network steps has to be performed to perform this configuration step.
 		MicroDAQ toolbox for Scilab provides function which configures toolbox to work with installed software components (compiler, RTOS). The 'microdaq_setup' script
-		configures installed components to work with toolbox, detects MicroDAQ device, compiles SYS/BIOS RTOS for toolbox usage.
+		configures installed components to work with toolbox, detects MicroDAQ device, compiles SYS/BIOS RTOS for toolbox usage. Toolbox version 1.2 and higher is not compatible with
+        MicroDAQ firmware below 2.0.0 release.
 		</para>
 		<para><imagedata align="center" fileref="images/microdaq_setup.png" valign="middle"/></para>
 		<para>
@@ -129,7 +130,7 @@ MicroDAQ module simplifies development of real-time control measurements applica
 				<member>Execute 'microdaq_setup' command from Scilab</member>
 				<member>Provide external components (compiler, XDCTools, SYS/BIOS) install paths</member>
 				<member>Enter MicroDAQ device IP address - this address will be used by toolbox to communicate with the device</member>
-				<member>Press 'Test connection' button to detect connected MicroDAQ device</member>
+				<member>Press 'Check firmware' button to detect connected MicroDAQ device and check firmware compatibility</member>
 				<member>Device should be detected - detected MicroDAQ device model should be presented</member>
 				<para><imagedata align="center" fileref="images/microdaq_detect.png" valign="middle"/></para>
 				<member>If MicroDAQ device is detected by 'microdaq_setup' press 'OK' button to confirm and build SYS/BIOS RTOS.</member>
