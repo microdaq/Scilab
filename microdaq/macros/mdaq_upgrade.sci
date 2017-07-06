@@ -4,11 +4,11 @@ function mdaq_upgrade(firmware)
         mprintf("Unable to connect to MicroDAQ device!\n"); 
         return; 
     elseif fw(1) < 2 then 
-        mprintf("Your firmware version (%s) is not supported by this function.\n", fwString);
+        mprintf("\nAutomatic upgrade from current version (%s) is impossible.\n", fwString);
         mprintf("Please make an upgrade manually by doing the following steps:\n");
         mprintf("\t1. Download latest upgrade package from: https://github.com/microdaq\n");
         mprintf("\t2. Connect USB cable and copy package to ''upgrade'' folder on MicroDAQ storage.\n");
-        mprintf("\t3. Click ''upgrade'' button on web interface.\n");
+        mprintf("\t3. Click ''upgrade'' button on web interface. (http://%s)\n", mdaq_get_ip());
         return;
     end 
             
