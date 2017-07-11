@@ -4,12 +4,18 @@
 
 //check compatibility 
 sci_ver = getversion('scilab');
-sci_ver_str = getversion('scilab', 'string_info');
+[sci_ver_str opts] = getversion();
 if (sci_ver(1) <> 5) | (sci_ver(2) <> 5) | (sci_ver(3) < 2)  then
     if sci_ver(1) <> 6 then 
         error(gettext('Scilab 5.5.2 or 6.x.x is required.'));
     end
 end
+
+//LINUX: ONLY X64 ARCHITECTURE SUPPORT 
+if getos() == "Linux" & opts(2) == 'x86' then 
+    error("Linux x86 platform is no longer supported. List of supported platforms can be found here: http://atoms.scilab.org/toolboxes/microdaq");
+end
+
 
 //function [microdaqlib, microdaqBlocks, microdaqMacros, microdaqUserBlocks] = startModule()
 // create global microdaq settings struct
@@ -199,8 +205,8 @@ if sci_ver_str == 'scilab-5.5.2' then
     %microdaq.ip_address = mdaq_get_ip();
     
     if check_mdaq_compiler() == %F then
-        mprintf("\nRun microdaq_setup to configure MicroDAQ toolbox.\n\nFor more help on MicroDAQ toolbox, DSP managment functions,\nC code integration tools and other MicroDAQ toolbox \nfeatures see help (help microdaq).\n");      
-        warning("MicroDAQ toolbox ver 1.2.x requires firmware ver.2.0.0 or higher. Make sure that latest firmware has been installed.");
+        mprintf("\nFor more help on MicroDAQ toolbox, DSP managment functions, C code integration\ntools and other MicroDAQ toolbox features see help (help microdaq).\n\n");      
+        mprintf("WARNING: MicroDAQ toolbox ver 1.2.x requires firmware ver.2.0.0 or higher.\nMake sure that latest firmware has been installed.\n\nRun microdaq_setup to configure MicroDAQ toolbox.\n");
     end
     
     userhostlib_loader = root_tlbx + pathconvert("/etc/userlib/hostlib/loader.sce", %f);
