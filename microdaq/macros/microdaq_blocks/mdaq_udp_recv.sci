@@ -8,6 +8,8 @@ function [x,y,typ] = mdaq_udp_recv(job,arg1,arg2)
     "   0 - non-blocking";
     "   1 - blocking";
     "";
+    "NOTE: Only one UDP recv block can be used on Xcos scheme";
+    "";
     "Set UDP Receive block parameters:";
     ];
 

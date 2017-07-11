@@ -8,6 +8,8 @@ function [x,y,typ] = mdaq_tcp_recv(job,arg1,arg2)
     "   0 - non-blocking";
     "   1 - blocking";
     "";
+    "NOTE: Only one TCP recv block can be used on Xcos scheme";
+    "";
     "Set TCP/IP Receive block parameters:";
     ];
 

@@ -38,6 +38,9 @@ global %microdaq;
 "adc_idx", 0,..
 "webscope_idx", 0,..
 "udpsend_idx", 0,..
+"udprecv_idx", 0,..
+"tcpsend_idx", 0,..
+"tcprecv_idx", 0,..
 "mdaq_signal_id", 0,..
 "mdaq_param_id", 0,..
 "ao_scan_ch_count", -1,..
