@@ -56,6 +56,14 @@ function data = mdaq_ai_read(arg1, arg2, arg3, arg4)
         disp("ERROR: Wrong AI channel selected!")
         return;
     end
+    
+    if ai_range > size(adc_info.c_params.c_range_desc, "r") | ai_range < 1 then 
+        disp("ERROR: Wrong range selected! Use one of these:");
+          for i = 1:size(adc_info.c_params.c_range_desc, "r")
+                mprintf("\t    %s\n", string(i) + ": " + adc_info.c_params.c_range_desc(i));
+          end
+        return; 
+    end 
 
     if argn(2) == 3 then
         link_id = mdaq_open();
@@ -64,6 +72,8 @@ function data = mdaq_ai_read(arg1, arg2, arg3, arg4)
             return;
         end
     end
+   
+    
     bipolar = adc_info.c_params.c_bipolar(ai_range);
     ai_range = adc_info.c_params.c_range(ai_range);
 
