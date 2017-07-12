@@ -13,7 +13,8 @@ end
 
 //LINUX: ONLY X64 ARCHITECTURE SUPPORT 
 if getos() == "Linux" & opts(2) == 'x86' then 
-    error("Linux x86 platform is no longer supported. List of supported platforms can be found here: http://atoms.scilab.org/toolboxes/microdaq");
+    mprintf("\nERROR:  Linux x86 platform is no longer supported.\n\tList of supported platforms can be found here: http://atoms.scilab.org/toolboxes/microdaq");
+    return;
 end
 
 
@@ -51,7 +52,7 @@ global %microdaq;
 // =============================================================================
 if ~isdef('xcosPal') then
     // and xcos features required
-    error(gettext('Scilab 5.3.2 or more is required.'));
+    error(gettext('Scilab 5.5.2 or more is required.'));
 end
 
 // =============================================================================
@@ -123,7 +124,9 @@ mprintf("\tLoad MLink library\n");
 exec(pathconvert(root_tlbx + "/etc/mlink/MLink.sce", %f),-1);
 
 // TODO: rebuild host libs with VC2010
-//exec(pathconvert(root_tlbx + "/etc/mdaqlib/loader.sce", %f),-1);
+// Load libmdaqblocks
+exec(pathconvert(root_tlbx + "/etc/mdaqlib/loader.sce", %f),-1);
+
 
 if sci_ver_str == 'scilab-5.5.2' then
     if isdef("xcosAddToolsMenu") == %F then
