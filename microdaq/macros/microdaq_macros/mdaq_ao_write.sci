@@ -21,12 +21,12 @@ function mdaq_ao_write(arg1, arg2, arg3, arg4)
 
     global %microdaq;
     if %microdaq.private.mdaq_hwid <> [] then
-        dac_info = get_dac_info(%microdaq.private.mdaq_hwid);
+        dac_info = %microdaq.private.dac_info;
         if argn(2) > 4 | argn(2) < 3 then
             mprintf("Description:\n");
             mprintf("\tWrites data to MicroDAQ analog outputs\n");
             mprintf("Usage:\n");
-            mprintf("\tmdaq_ao_write(link_id, channels, data);\n")
+            mprintf("\tmdaq_ao_write(link_id, channels, range, data);\n")
             mprintf("\tlink_id - connection id returned by mdaq_open() (OPTIONAL)\n");
             mprintf("\tchannels - analog output channels \n");
             mprintf("\trange - analog output range:\n");
@@ -48,7 +48,7 @@ function mdaq_ao_write(arg1, arg2, arg3, arg4)
     end
     
     if ao_range > size(dac_info.c_params.c_range_desc, "r") | ao_range < 1 then 
-        disp("ERROR: Wrong AO range selected! Use one of these:");
+        mprintf("ERROR: Wrong AO range selected.\nSupported ranges:\n");
           for i = 1:size(dac_info.c_params.c_range_desc, "r")
                 mprintf("\t    %s\n", string(i) + ": " + dac_info.c_params.c_range_desc(i));
             end
