@@ -9,8 +9,8 @@
 		<title>Calling Sequence</title>
 		<synopsis>
 			data = mdaq_ai_read();
-			data = mdaq_ai_read(channels, ai_range, differential);
-			data = mdaq_ai_read(link_id, channels, ai_range, differential);
+			data = mdaq_ai_read(channels, range, differential);
+			data = mdaq_ai_read(link_id, channels, range, differential);
 		</synopsis>
 	</refsynopsisdiv>
 	
@@ -31,7 +31,7 @@
 		<itemizedlist>
 			<listitem><para><emphasis role="bold">link_id: </emphasis> Valid connection link ID (optional)</para></listitem>
 			<listitem><para><emphasis role="bold">channels: </emphasis> Single channel of array of channels number to read</para></listitem>
-            <listitem><para><emphasis role="bold">ai_range: </emphasis> Analog input range, integer number according to MDAQ device version - check usage description.</para></listitem>
+            <listitem><para><emphasis role="bold">range: </emphasis> Analog input range, integer number according to MDAQ device version - check usage description.</para></listitem>
 			<listitem><para><emphasis role="bold">differential: </emphasis> Analog input mode: %T - differential, %F - single ended mode</para></listitem>
 			<listitem><para><emphasis role="bold">data:  </emphasis> Single value or array with AI voltage values</para></listitem>
 		</itemizedlist>

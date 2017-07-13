@@ -58,7 +58,7 @@ function data = mdaq_ai_read(arg1, arg2, arg3, arg4)
     end
     
     if ai_range > size(adc_info.c_params.c_range_desc, "r") | ai_range < 1 then 
-        disp("ERROR: Wrong range selected! Use one of these:");
+        disp("ERROR: Wrong AI range selected! Use one of these:");
           for i = 1:size(adc_info.c_params.c_range_desc, "r")
                 mprintf("\t    %s\n", string(i) + ": " + adc_info.c_params.c_range_desc(i));
           end
