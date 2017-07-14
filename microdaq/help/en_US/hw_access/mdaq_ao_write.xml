@@ -9,15 +9,17 @@
 		<title>Calling Sequence</title>
 		<synopsis>
 			mdaq_ao_write();
-			mdaq_ao_write(channels, data);
-			mdaq_ao_write(link_id, channels, data);
+			mdaq_ao_write(channels, range, data);
+			mdaq_ao_write(link_id, channels, range, data);
 		</synopsis>
 	</refsynopsisdiv>
 	
 	<refsection id="Description_mdaq_ao_write">
 		<title>Description</title>
 		<para>
-			This function sets MicroDAQ AO outputs. An array or single channel number has to be provided as a 'channels' parameter. The 'data' parameter contais AO voltage values.
+			This function sets MicroDAQ AO outputs. An array or single channel number has to be provided as a 'channels' parameter. 
+            To find out what analog output ranges support your device, type 'mdaq_ao_write' in Scilab console. Usage description contains valid 
+            information about connected MicroDAQ device. The 'data' parameter contais AO voltage values.
 		</para>
 	</refsection>  
   
@@ -26,17 +28,30 @@
 		<itemizedlist>
 			<listitem><para><emphasis role="bold">link_id: </emphasis> Valid connection link ID</para></listitem>
 			<listitem><para><emphasis role="bold">channels: </emphasis> Single channel or array of channels numbers to read</para></listitem>
+            <listitem><para><emphasis role="bold">range: </emphasis> Analog output range, integer number according to MDAQ device version - check usage description.</para></listitem>
 			<listitem><para><emphasis role="bold">data :</emphasis> Array or single voltage Analog Output (AO) value</para></listitem>
 		</itemizedlist>
 	</refsection>
 	
 	<refsection>
         <title>Examples</title>
+                <para> Getting function usage description </para>
+
         <programlisting role="example"><![CDATA[
-// mdaq_ao_write usage example
+// show mdaq_ao_write usage description
+mdaq_ao_write
+ ]]></programlisting>
+ <para> Calling function without link_id </para>
+         <programlisting role="example"><![CDATA[
+// write 2, 4, 6 , 8 AI channel with 1, 2, 3, 4 voltage value
+mdaq_ao_write([2, 4, 6, 8], 1, [1, 2, 3, 4]);
+ ]]></programlisting>
+ 
+ <para> Calling function with link_id for better performance </para>
+        <programlisting role="example"><![CDATA[
 link_id = mdaq_open();
 // write 2, 4, 6 , 8 AI channel with 1, 2, 3, 4 voltage value
-mdaq_ao_write(link_id, [2, 4, 6, 8], [1, 2, 3, 4]);
+mdaq_ao_write(link_id, [2, 4, 6, 8], 1, [1, 2, 3, 4]);
 mdaq_close(link_id);
  ]]></programlisting>
     </refsection>

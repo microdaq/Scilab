@@ -45,7 +45,9 @@ global %microdaq;
 "mdaq_signal_id", 0,..
 "mdaq_param_id", 0,..
 "ao_scan_ch_count", -1,..
-"mdaq_hwid", [])..
+"mdaq_hwid",..
+"adc_info",..
+"dac_info", [])..
 );
 
 // check minimal version (xcosPal required)
@@ -89,6 +91,9 @@ userblock_path = root_tlbx + pathconvert("/macros/user_blocks/");
 if isfile(mdaq_toolbox_path() + "etc"+filesep()+"mlink"+filesep()+"hwid") then
     load(mdaq_toolbox_path() + "etc"+filesep()+"mlink"+filesep()+"hwid");
     %microdaq.private.mdaq_hwid = mdaq_hwid;
+    %microdaq.private.adc_info = adc_info;
+    %microdaq.private.dac_info = dac_info;
+    
     %microdaq.model = 'MicroDAQ E' + string(mdaq_hwid(1))..
     + '-ADC0' + string(mdaq_hwid(2))..
     + '-DAC0' + string(mdaq_hwid(3))..
@@ -216,6 +221,7 @@ if sci_ver_str == 'scilab-5.5.2' then
     end
     
     userhostlib_loader = root_tlbx + pathconvert("/etc/userlib/hostlib/loader.sce", %f);
+
     if isfile(userhostlib_loader) then
         mprintf("\tLoad user host library\n");
         exec(userhostlib_loader);

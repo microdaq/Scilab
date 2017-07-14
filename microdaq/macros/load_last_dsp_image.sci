@@ -5,11 +5,7 @@ function load_last_dsp_image()
     if isfile(TMPDIR + filesep() + "last_mdaq_dsp_image") == %t then
         dsp_app_path = mgetl(TMPDIR + filesep() + "last_mdaq_dsp_image");
         if isfile(dsp_app_path) == %t then
-            if %microdaq.private.connection_id <> -1 then 
-                mdaq_close(%microdaq.private.connection_id);
-                %microdaq.private.connection_id = -1;
-            end 
-        
+            close_last_connection();
             connection_id = mdaq_open();
             if connection_id < 0 then
                 message('Unable to locate MicroDAQ device - check your setup!');
