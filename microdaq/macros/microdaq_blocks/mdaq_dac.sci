@@ -98,6 +98,7 @@ function [x,y,typ] = mdaq_dac(job,arg1,arg2)
             end
 
             if ok then
+                dac_range_raw = dac_range;
                 dac_range = dac_info.c_params.c_range(dac_range);
                 n_channels = size(channel);
                 n_term_value = size(term_value);
@@ -108,15 +109,15 @@ function [x,y,typ] = mdaq_dac(job,arg1,arg2)
                     end
                     term_value = term_value';
                 else
-                    term_value(1:dac_ch_count) = term_value;
+                    term_value(1:n_channels(2)) = term_value;
                 end
             end
 
             if ok then
                 [model,graphics,ok] = check_io(model,graphics, n_channels(2), [], 1, []);
                 graphics.exprs = exprs;
-                model.rpar = [dac_ch_count; term_value];
-                model.ipar = [dac_converter;dac_range;n_channels(2);channel'];
+                model.rpar = [size(term_value, '*'); term_value;];
+                model.ipar = [dac_converter;dac_range;n_channels(2);channel';dac_range_raw];
                 model.dstate = [];
                 x.graphics = graphics;
                 x.model = model;
@@ -127,6 +128,7 @@ function [x,y,typ] = mdaq_dac(job,arg1,arg2)
         channel=1
         term_value=0
         dac_range = 1;
+        dac_range_raw = 1;
         dac_converter = 1;  // TODO: to be removed
         model=scicos_model()
         model.sim=list('mdaq_dac_sim',5)
@@ -135,8 +137,8 @@ function [x,y,typ] = mdaq_dac(job,arg1,arg2)
         model.intyp=1
         model.out=[]
         model.evtin=1
-        model.rpar = [1; term_value];
-        model.ipar = [dac_converter;dac_range;1;channel'];
+        model.rpar = [1; term_value;];
+        model.ipar = [dac_converter;dac_range;1;channel';dac_range_raw];
         model.dstate=[];
         model.blocktype='d'
         model.dep_ut=[%t %f]
