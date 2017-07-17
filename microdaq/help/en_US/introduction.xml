@@ -47,14 +47,19 @@ When Standalone mode is selected (with SETUP block) generated application contai
 	<para>
 	Not every application requires real-time processing, some applications can be created with Scilab script and perform data acquisition or corntrol tasks. For users which preferes scripting MicroDAQ tooblox for Scilab provides functions which allow easy access to MicroDAQ hardware and resources. User can use functions to access analog input and outputs, read/write digital IO lines, configure PWM of read Quadrature encder from Scilab script. Toolbox also features functions which allows DSP execution managment, generated DSP application can be started and managed from Scilab script. The DSP application data can be read during its execution. For more information about DSP managment functions and real-time processing capabilities see Real-time processing with Scilab script article. </para>
 <programlisting role="example"><![CDATA[
-// mdaq_led_write usage example 
+// mdaq_led_write, mdaq_key_read example
+ledState = %T;
 link_id = mdaq_open(); 
-while mdaq_key_read(link_id, 1) == 0 
-  // keep led on until F1 isn't pressed 
-  mdaq_led_write(link_id, 1, 1) 
-  sleep(100); 
-end 
-mdaq_led_write(link_id, 1, 0) 
+
+while mdaq_key_read(link_id, 1) == %F
+	// keep led blinking until F1 isn't pressed
+	mdaq_led_write(link_id, 1, ~ledState);
+    
+	sleep(100); 
+    ledState = ~ledState;
+end
+
+mdaq_led_write(link_id, 1, 0)
 mdaq_close(link_id)
  ]]></programlisting>
 

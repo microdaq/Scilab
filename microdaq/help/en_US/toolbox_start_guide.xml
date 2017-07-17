@@ -18,11 +18,8 @@ MicroDAQ module simplifies development of real-time control measurements applica
 	<title>MicroDAQ resources</title>
 		<para> MicroDAQ useful links: 
 			<simplelist type="inline">
-			<para><ulink url="https://github.com/microdaq">MicroDAQ software on GitHub</ulink></para>
-			<para><ulink url="https://github.com/microdaq/MLink">MicroDAQ firmware and host software</ulink></para>
-			<para><ulink url="https://github.com/microdaq/LabVIEW">LabVIEW support package</ulink></para>
-			<para><ulink url="https://github.com/microdaq/Matlab">Matlab support package</ulink></para>
-			<para><ulink url="https://www.youtube.com/channel/UCpfNdP1JK0mM0zr2pJkuYIA">MicroDAQ YouTube channel</ulink></para>
+			<para><ulink url="https://github.com/microdaq">MicroDAQ software on GitHub</ulink> - https://github.com/microdaq</para>
+			<para><ulink url="https://www.youtube.com/channel/UCpfNdP1JK0mM0zr2pJkuYIA">MicroDAQ YouTube channel</ulink> - https://www.youtube.com/channel/UCpfNdP1JK0mM0zr2pJkuYIA</para>
 			</simplelist>
 		</para>
 		<para> MicroDAQ toolbox combines Scilab/XCos environment with Embedded Solutions MicroDAQ real-time control measurement system equipped with TI C6000 DSP. Module extends Scilab by allowing user to automatically generate DSP applications directly from XCos scheme. User can use custom XCos blocks which gives access to MicroDAQ hardware (ADC, DAC, DIO, PWM, UART, Quadrature Encoder). Generated DSP application utilizes SYS/BIOS real-time operating system combined with code generated from XCos scheme. </para>
@@ -55,8 +52,6 @@ MicroDAQ module simplifies development of real-time control measurements applica
 		<simplelist type="inline">
 			<member>Ethernet IP address range: 10.10.1.2 - 10.10.1.254 </member>
 			<member>Ethernet network mask:     255.255.255.0 </member>
-			<member>Wi-Fi IP address range:    10.10.2.1 - 10.10.2.254</member>
-			<member>Wi-Fi network mask:        255.255.255.0 </member>
 		</simplelist>
 		<para>
 			<emphasis role="bold">Setting MicroDAQ IP address</emphasis>
@@ -147,7 +142,6 @@ MicroDAQ module simplifies development of real-time control measurements applica
 				<member>mdaq_set_ip - sets IP address used for communication with MicroDAQ device (doesn't change MicroDAQ IP address)</member>
 				<member>mdaq_get_ip - gets IP address used for communication with MicroDAQ device </member>
 				<member>mdaq_webpanel - opens MicroDAQ Web Panel in web browser </member>
-				<member>mdaq_open_webscope - opens MicroDAQ Web Scope in web browser </member>
 				<member>mdaq_userdisk - opens MicroDAQ User Disk content in web browser </member>
 			</simplelist>
 		</para>
