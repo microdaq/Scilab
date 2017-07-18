@@ -33,15 +33,13 @@
 	<refsection>
         <title>Examples</title>
         <programlisting role="example"><![CDATA[
-// mdaq_led_write usage example
-link_id = mdaq_open(); 
-while mdaq_key_read(link_id, 1) == 0
-	// keep led on until F1 isn't pressed
-	mdaq_led_write(link_id, 1, 1)
-	sleep(100);
-end
-mdaq_led_write(link_id, 1, 0)
-mdaq_close(link_id)
+mdaq_led_write(1, 1);
+sleep(500);
+mdaq_led_write(2, 1);
+sleep(500);
+mdaq_led_write(1, 0);
+sleep(500);
+mdaq_led_write(2, 0);
  ]]></programlisting>
     </refsection>
 	

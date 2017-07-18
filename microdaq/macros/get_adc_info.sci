@@ -62,13 +62,13 @@ c_params_e2000(3) = struct(..
     adc_lookup = list(),
     adc_info = adc_unknown,
 
-    if hwid(1) == 2000 then
+    if hwid(1) == 2000 | hwid(1) == 1000 then
         //MDAQ E2000   
         adc_lookup(1) = struct(..
             "id", 1,..
             "channel", "8",..
-            "rate", "166ksps",..
-            "resolution", "16-bit",..
+            "rate", "100ksps",..
+            "resolution", "12-bit",..
             "range", ["0-5V";" 0-10V"; "±5V";"±10V"],..
             "c_params", struct(..
                     "c_number", [],..
@@ -131,10 +131,10 @@ c_params_e2000(3) = struct(..
         
          adc_lookup(6) = struct(..
             "id", 6,..
-            "channel", "2",..
-            "rate", "4000ksps",..
+            "channel", "8",..
+            "rate", "500ksps",..
             "resolution", "16-bit",..
-            "range", ["±5V"; "±10V"],..
+            "range", ["±10.24V"; "±5.12V"; "±2.56V"; "±1.24V"; "±0.64V"],..
             "c_params", struct(..
                     "c_number", [],..
                     "c_range_desc", [],..
@@ -147,7 +147,7 @@ c_params_e2000(3) = struct(..
             "channel", "8",..
             "rate", "1000ksps",..
             "resolution", "16-bit",..
-            "range", ["±0.6V"; "±1.2V"; "±2.5V"; "±5V"; "±10V"],..
+            "range", ["±10.24V"; "±5.12V"; "±2.56V"; "±1.24V"; "±0.64V"],..
             "c_params", struct(..
                     "c_number", [],..
                     "c_range_desc", [],..
@@ -157,10 +157,10 @@ c_params_e2000(3) = struct(..
                     
          adc_lookup(8) = struct(..
             "id", 8,..
-            "channel", "8",..
-            "rate", "1000ksps",..
+            "channel", "16",..
+            "rate", "500ksps",..
             "resolution", "16-bit",..
-            "range", ["±1.2V"; "±2.5V"; "±5V"; "±10V"],..
+            "range", ["±10.24V"; "±5.12V"; "±2.56V"; "±1.24V"; "±0.64V"],..
             "c_params", struct(..
                     "c_number", [],..
                     "c_range_desc", [],..
@@ -173,7 +173,7 @@ c_params_e2000(3) = struct(..
             "channel", "16",..
             "rate", "1000ksps",..
             "resolution", "16-bit",..
-            "range", ["±0.6V"; "±1.2V"; "±2.5V"; "±5V"; "±10V"],..
+            "range", ["±10.24V"; "±5.12V"; "±2.56V"; "±1.24V"; "±0.64V"],..
             "c_params", struct(..
                     "c_number", [],..
                     "c_range_desc", [],..
@@ -262,19 +262,17 @@ c_params_e2000(3) = struct(..
             disp('Cannot find ADC info.');
             adc_info = adc_unknown;
         end    
-    elseif hwid(1) == 1000 then 
-        //MDADQ E1000
     end 
     
     // assing c_params 
 
-    if hwid(1) == 1100 | hwid(1) == 1000 then
+    if hwid(1) == 1100 then
         for i = 1:size(c_params_e1xxx)
             if find(c_params_e1xxx(i).c_number == hwid(2)) <> [] then
                 adc_info.c_params = c_params_e1xxx(i)    
             end
         end
-    elseif hwid(1) == 2000
+    elseif hwid(1) == 2000 | hwid(1) == 1000
         for i = 1:size(c_params_e2000)
             if find(c_params_e2000(i).c_number == hwid(2)) <> [] then
                 adc_info.c_params = c_params_e2000(i)    

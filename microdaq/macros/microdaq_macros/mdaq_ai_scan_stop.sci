@@ -1,3 +1,6 @@
 function mdaq_ai_scan_stop()
-    call("mlink_ai_scan_stop", "out");
+    result = call("sci_mlink_ai_scan_stop", "out", [1, 1], 1, "i");
+    if  result < 0  then
+        mdaq_error(result) 
+    end
 endfunction

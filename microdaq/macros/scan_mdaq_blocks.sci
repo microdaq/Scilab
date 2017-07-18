@@ -34,6 +34,7 @@ function obj=scan_mdaq_blocks(scs_m)
                 end                
                 if scs_m.objs(i).model.sim(1) == "mdaq_param_sim"
                     %microdaq.private.has_mdaq_param_sim = %T;
+                    %microdaq.private.mdaq_param_id = [%microdaq.private.mdaq_param_id, scs_m.objs(i).model.ipar(1)];
                 end
 
                 //-------------------------Blocks quantity restriction check--------------------------------
@@ -99,6 +100,31 @@ function obj=scan_mdaq_blocks(scs_m)
                         error('Error: There is more than one mdaq_udp_send block. Check your xcos model.', 1);
                     end
                 end
+                
+                if scs_m.objs(i).model.sim(1) == "mdaq_udp_recv_sim"
+                    %microdaq.private.udprecv_idx = %microdaq.private.udprecv_idx + 1;
+                    if %microdaq.private.udprecv_idx > 1 
+                        messagebox('Error: There is more than one mdaq_udp_recv block.');
+                        error('Error: There is more than one mdaq_udp_recv block. Check your xcos model.', 1);
+                    end
+                end
+                
+                if scs_m.objs(i).model.sim(1) == "mdaq_tcp_send_sim"
+                    %microdaq.private.tcpsend_idx = %microdaq.private.tcpsend_idx + 1;
+                    if %microdaq.private.tcpsend_idx > 1 
+                        messagebox('Error: There is more than one mdaq_tcp_send block.');
+                        error('Error: There is more than one mdaq_tcp_send block. Check your xcos model.', 1);
+                    end
+                end
+                
+                if scs_m.objs(i).model.sim(1) == "mdaq_tcp_recv_sim"
+                    %microdaq.private.tcprecv_idx = %microdaq.private.tcprecv_idx + 1;
+                    if %microdaq.private.tcprecv_idx > 1 
+                        messagebox('Error: There is more than one mdaq_tcp_recv block.');
+                        error('Error: There is more than one mdaq_tcp_recv block. Check your xcos model.', 1);
+                    end
+                end
+                
                 
                 // Clear opar for code generation
                 if scs_m.objs(i).model.sim(1) == "e4codergui_block"

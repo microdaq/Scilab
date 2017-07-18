@@ -18,6 +18,7 @@
 				<member>parameter default value - default values of block parameters</member>
 				<member>inputs - definition of block inputs</member>
 				<member>outputs - definition of block outputs</member>
+                <member>use_sim_script - defines how simulation mode will be performed (from C source or Scilab _sim.sci script)</member>
 			</simplelist>
 
 			<para> Our custom block will be named 'My_step', it has three parameters 'Step time', 'Initial value', 'Final value' and 'Terminate value'. All block parameters are scalars, and has default values: 
@@ -30,7 +31,6 @@
 				<programlisting role="example">
 					<![CDATA[ block = mdaq_block() 
    // block  =
-   // 
    //    name: "new_block"
    //    desc: "Set new_block parameters"
    //    param_name: [2x1 string]
@@ -38,6 +38,7 @@
    //    param_def_val: list
    //    in: 1
    //    out: 1
+   //    use_sim_script: %f
    ]]>
 				</programlisting>
 				<member>
@@ -50,6 +51,9 @@
 						<member>param_def_val - default block parameters values are organized as a list and have to be defined in the same order as 'param_name' </member>
 						<member>in - in case of our block we should provide an empty array - block doesn't have input ports</member>
 						<member>out - our block will have one output port and its size will be 1 - scalar</member>
+                        <member>use_sim_script - if false (%F - by default), our block will use compiled C source in simulation mode. It guarantees the same code on host (simulation mode) and target (code generation) side.
+                        If parameter is set to true (%T) then (block.name)_sim.sci script will be executed during simulation mode. 
+                        </member>
 						<programlisting role="example">
 							<![CDATA[ 
 	block.name = "My_step";
@@ -61,8 +65,7 @@
 	block.param_def_val(4) = 0; // 'Terminate value' default value 
 	block.in = []; // block doesnt'have input port
 	block.out = [ 1 ]; // one output port - size 1
-	
-   
+    block.use_sim_script = %F; // Use compiled C source instead of Scilab script                        	   
    ]]>
 						</programlisting>
 
@@ -113,12 +116,12 @@
 				<member>Restart Scilab - in order to reload 'MicroDAQ User' palette MicroDAQ toolbox for Scilab has to be reloaded.</member>
 				<member>Start Xcos and open palette browser and locate 'MicroDAQ User' block category.
 					<para></para>
-					<imagedata align="center" fileref="..\images\my_step.png" valign="middle"/>
+					<imagedata align="center" fileref="../images/my_step.png" valign="middle"/>
 					<para/>
 				</member>
 				<member>Create Xcos diagram containing newly created 'My_step' Xcos block
 					<para></para>
-					<imagedata align="center" fileref="..\images\my_step_test.png" valign="middle"/>
+					<imagedata align="center" fileref="../images/my_step_test.png" valign="middle"/>
 					<para/>
 				</member>
 
@@ -128,7 +131,7 @@
 
 				<member> 
 							Start model with Xcos 'Start' simulation button
-					<imagedata align="center" fileref="..\images\my_step_test_result.png" valign="middle"/>
+					<imagedata align="center" fileref="../images/my_step_test_result.png" valign="middle"/>
 					<para/>
 				</member>
 
@@ -145,6 +148,13 @@
 		</para>
 
 		<emphasis role="bold">'My_step' block in simulation mode</emphasis>
+        <para>
+        If block.use_sim_script is set to false (%F - by default) then C source will be compiled to shared library which will be used in simulation mode. It guarantees the same code on host (simulation mode) and target (code generation) side. 
+        In order to use this option the external C compiler is required. List of supported compilers can be found at: 
+        <ulink url="https://help.scilab.org/doc/5.5.2/en_US/supported_compilers.html">https://help.scilab.org/doc/5.5.2/en_US/supported_compilers.html. </ulink>
+        If compiler cannot be provided or user want to have different behaviour in simulation mode, the _sim.sci script can be used instead. 
+        </para>
+        
 		<para>
 		Generated block files can be used to implement block code for standard simulation mode. 
 		In order to add code for simulation mode generated mdaq_my_step_sim.sci file needs to be edited. The mdaq_my_step_sim.sci

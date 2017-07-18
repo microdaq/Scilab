@@ -3,10 +3,12 @@ function continueSimulation=pre_xcos_simulate(scs_m, needcompile)
     %microdaq.private.has_mdaq_block = %F;
     continueSimulation = %T;
     look_for_mdaq_blocks = %T; 
+    runFromMainScheme = %F;
 
     for i = 1:size(scs_m.objs)
         curObj= scs_m.objs(i);
         if (typeof(curObj) == "Block" & curObj.gui == "mdaq_setup")
+            runFromMainScheme = %T;
 
             if scs_m.objs(i).model.rpar(1) == (-1) then
                 scs_m.props.tf= 1.000D+12;
@@ -62,8 +64,14 @@ function continueSimulation=pre_xcos_simulate(scs_m, needcompile)
                         %microdaq.private.connection_id = -1; 
                     end
                 end
-            end
+            end        
         end
+    end
+    
+    if runFromMainScheme == %F then
+        messagebox("Please start model from root diagram (the one which contains mdaq_setup block).");
+        continueSimulation = %F;
+        return;
     end
 
     if look_for_mdaq_blocks then
@@ -71,6 +79,7 @@ function continueSimulation=pre_xcos_simulate(scs_m, needcompile)
         perform_scan(tmp);
         if %microdaq.private.has_mdaq_block then
             disp("### Running model in simulation mode... ")
+            close_last_connection();       
             result = mdaq_open();
             if result > -1 then
                 %microdaq.private.connection_id = result; 

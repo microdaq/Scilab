@@ -37,52 +37,70 @@ xml:id="mdaq_dsp_signal">
 // Script execution duration in seconds
 TIME = 20;
 
-// build DSP binary from Xcos model 
+// Model execution frequency in Hertz
+FREQ = 5000;
+
+// Build DSP binary from Xcos model
 mdaq_dsp_build(mdaq_toolbox_path() + filesep() + "examples" + filesep() +"fft_demo.zcos");
 
 // Start DSP application
-result = mdaq_dsp_start('fft_demo_scig\fft_demo.out'); 
+result = mdaq_dsp_start('fft_demo_scig\fft_demo.out', 1.0/FREQ);
 if result < 0 then
     abort;
 end
 
 // Register signal ID and signal size
-result = mdaq_dsp_signal(123, 1); 
+result = mdaq_dsp_signal(1, 1);
 if result < 0 then
-    disp("ERROR: unable to register signal"); 
+    disp("ERROR: unable to register signal");
     abort;
 end
 
-first_time = 1; 
+first_time = 1;
 a = [];
-// Process data from DSP 
-sample_count = 500;
-for i=1:(10 * TIME)
+
+// Process data from DSP
+sample_count = FREQ/10;
+fig = figure("Figure_name","MicroDAQ FFT demo");
+
+for i=1:(TIME*10)
     [result, s] = mdaq_dsp_signal_read(sample_count);
     if result < 0 then
-        disp("ERROR: unable to read signal data!"); 
+        disp("ERROR: unable to read signal data!");
         abort;
     end
-
-    t = 0:1/sample_count:1;
-    N=size(t,'*'); //number of samples
+    
+    N=size(s,'*');  //number of samples
+    s = s - mean(s);//cut DC
     y=fft(s');
 
-    f=sample_count*(0:(N/2))/N; //associated frequency vector
+    f= FREQ*(0:(N/10))/N; //associated frequency vector
     n=size(f,'*');
-    if first_time == 1 then
-        clf()
-        plot(f,abs(y(1:n)))
-        first_time = 0;
-        a = gca();
+
+    if is_handle_valid(fig) then
+        if first_time == 1 then
+            clf();
+            plot(f,abs(y(1:n)));
+            title("FFT", "fontsize", 3);
+            xlabel("frequency [Hz]","fontsize", 3);
+            first_time = 0;
+            a = gca();
+        else
+            a.children.children.data(:,2) = abs(y(1:n))';
+        end
     else
-        a.children.children.data(:,2) = abs(y(1:n))';
+        break;
     end
 end
 
 // Stop DSP execution
-mdaq_dsp_stop(); 
+mdaq_dsp_stop();
 
+// Close plot
+mprintf("\nFFT demo has been stopped.");
+if is_handle_valid(fig) then
+    close(fig);
+end
  ]]></programlisting>
  </refsection>
   <refsection id="SeeAlso___FUNC_NAME__">

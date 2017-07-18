@@ -4,18 +4,11 @@ function [x,y,typ] = mdaq_udp_recv(job,arg1,arg2)
     "Remote address: ip address of remote machine";
     "Port:  port of the remote machine. Valid port values are 1 to 65535";
     "Data size: up to 1024 bytes";
-    "Data type: not supported (default uint8)";
-    "   1 - real";
-    "   3 - int32";
-    "   4 - int16";
-    "   5 - int8";
-    "   6 - uint32";
-    "   7 - uint16";
-    "   8 - uint8";
     "Blocking mode:";
     "   0 - non-blocking";
     "   1 - blocking";
-    "Timeout: amount of time that the model will wait for the data";
+    "";
+    "NOTE: Only one UDP recv block can be used on Xcos scheme";
     "";
     "Set UDP Receive block parameters:";
     ];
@@ -30,25 +23,23 @@ function [x,y,typ] = mdaq_udp_recv(job,arg1,arg2)
         while %t do
             try
                 getversion('scilab');
-                [ok,ip_addr, tcp_port, data_size,data_type,blocking_mode,tcp_timeout,exprs]=..
+                [ok,ip_addr, tcp_port, data_size, blocking_mode,tcp_timeout,exprs]=..
                 scicos_getvalue(tcp_recv_desc,..
                 ['Remote address:';
                 'Port:';
                 'Data size:';
-                'Data type:';
                 'Blocking mode:';
-                'Timeout'],..
-                list('str',1,'vec',1,'vec',1,'vec',1,'vec',1,'vec',1),exprs)
+                'Timeout [ms]'],..
+                list('str',1,'vec',1,'vec',1,'vec',1,'vec',1),exprs)
             catch
-                [ok,ip_addr, tcp_port, data_size,data_type,blocking_mode,tcp_timeout,exprs]=..
+                [ok,ip_addr, tcp_port, data_size, blocking_mode,tcp_timeout,exprs]=..
                 getvalue(tcp_recv_desc,..
                 ['Remote address:';
                 'Port:';
                 'Data size:';
-                'Data type:';
                 'Blocking mode:';
-                'Timeout'],..
-                list('str',1,'vec',1,'vec',1,'vec',1,'vec',1,'vec',1),exprs)
+                'Timeout [ms]'],..
+                list('str',1,'vec',1,'vec',1,'vec',1,'vec',1),exprs)
             end;
 
             if ~ok then
@@ -89,10 +80,9 @@ function [x,y,typ] = mdaq_udp_recv(job,arg1,arg2)
         end
 
     case 'define' then
-        ip_addr = '192.168.1.1';
+        ip_addr = '10.10.1.1';
         tcp_port = 80;
         data_size = 1;
-        data_type = 8;
         blocking_mode = 1;
         tcp_timeout = 10;
         model=scicos_model()
@@ -100,14 +90,14 @@ function [x,y,typ] = mdaq_udp_recv(job,arg1,arg2)
         model.in =[]
         model.out=data_size;
         model.out2=1;
-        model.outtyp=data_type;
+        model.outtyp=1;
         model.evtin=1
         model.rpar=[];
         model.ipar=[blocking_mode;tcp_timeout;data_size;tcp_port;ascii(ip_addr)']
         model.dstate=[];
         model.blocktype='d'
         model.dep_ut=[%t %f]
-        exprs=[sci2exp(ip_addr);sci2exp(tcp_port);sci2exp(data_size);sci2exp(data_type);sci2exp(blocking_mode);sci2exp(tcp_timeout)]
+        exprs=[sci2exp(ip_addr);sci2exp(tcp_port);sci2exp(data_size);sci2exp(blocking_mode);sci2exp(tcp_timeout)]
         gr_i=['xstringb(orig(1),orig(2),['''' ; ],sz(1),sz(2),''fill'');']
         x=standard_define([4 3],model,exprs,gr_i)
         x.graphics.in_implicit=[];

@@ -22,9 +22,9 @@ function []=post_xcos_simulate(%cpr, scs_m, needcompile)
                         //get number of records
                         [nr_records, result] = mlink_profile_data_get(connection_id, 1);
                         if nr_records > 0 & nr_records < 250000 & result > -1 then
-                            disp('### Downloading profiling data...');
                             [profile_data, result] = mlink_profile_data_get(connection_id, nr_records + 1);
-                            if result > -1 then
+                            // TODO: Fix result number, change if statement to  result > -1
+                            if result > -3 then
                                 if %microdaq.private.mdaq_hwid(4) == 0 then
                                     cpu_clock = 300000000;
                                 else
@@ -37,6 +37,7 @@ function []=post_xcos_simulate(%cpr, scs_m, needcompile)
                             dsp_exec_profile.end = profile_data(2);
                             save(TMPDIR + filesep() + "profiling_data", "dsp_exec_profile");
                             clear dsp_exec_profile;
+                            disp('### Profiling data have been downloaded.');
                         end
                     end
                     
@@ -61,16 +62,10 @@ function []=post_xcos_simulate(%cpr, scs_m, needcompile)
     end
 end
 
-if %microdaq.private.connection_id > -1 & %microdaq.private.has_mdaq_param_sim then
+if %microdaq.private.connection_id > -1 & (%microdaq.private.has_mdaq_param_sim | %microdaq.private.has_mdaq_block) then
     mdaq_close(%microdaq.private.connection_id);
     %microdaq.private.connection_id = -1;
     %microdaq.private.has_mdaq_param_sim = %F;
-end
-
-if %microdaq.private.connection_id > -1 & %microdaq.private.has_mdaq_block then
-    mdaq_close(%microdaq.private.connection_id);
-    %microdaq.private.connection_id = -1;
-    %microdaq.private.has_mdaq_block = %f
 end
 
 endfunction

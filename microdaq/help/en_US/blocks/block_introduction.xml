@@ -11,7 +11,7 @@
 			MicroDAQ toolbox for Scilab provides set of Xcos blocks which can be used for creating Xcos diagrams. After MicroDAQ toolbox for 
 			Scilab installation new block 'MicroDAQ' category appears in Xcos palete browser (View->Palette browser).
 		</para>
-		<para><imagedata align="center" fileref="..\images\blocks1.png" valign="middle"/></para>
+		<para><imagedata align="center" fileref="../images/blocks1.png" valign="middle"/></para>
 		
 		<para>
 			The 'MicroDAQ' category contains palettes which contains blocks provided by toolbox. MicroDAQ palette (MicroDAQ->MicroDAQ)
@@ -32,21 +32,16 @@
 				<member>Func key - read F1, F2 MicroDAQ function key</member>
 				<member>LED - sets MicroDAQ D1, D2 LEDs </member>
 				<member>MEM read, MEM write - access MicroDAQ memory, allow user to change DSP executable parameters on fly</member>
-				<member>PRU reg set, PRU reg get - access to PRU (MicroDAQ additional processing units) registers </member>
 				<member>PWM - sets MicroDAQ PWM</member>
-				<member>RC controller - access to MicroDAQ RC controller </member>
 				<member>SETUP - configure model parameters (duration, build type, model execution mode, solver) </member>
 				<member>SIGNAL - read data from model running on MicroDAQ DSP processor </member>
-				<member>Sin - generate sine waveform</member>
-				<member>Square - generate square waveform</member>
-				<member>Step - generate step signal</member>
+                <member>PARAM - sets data to model running on MicroDAQ DSP processor </member>
 				<member>STOP - end model execution </member>
 				<member>TCP recv, TCP send - access network data with TCP protocol (client mode) </member>
 				<member>Time - return current model execution time </member>
 				<member>To file - write data to file on MicroDAQ User Disk </member>
 				<member>UART config, UART read, UART write - access to MicroDAQ UART </member>
 				<member>UDP recv, UDP send - access network data with UDP protocol </member>
-				<member>Web Scope - present data on MicroDAQ Web Scope </member>
 			</simplelist>
 		</para>
 		
