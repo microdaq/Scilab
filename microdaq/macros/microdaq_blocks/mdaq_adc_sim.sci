@@ -14,7 +14,7 @@ function block=mdaq_adc_sim(block,flag)
                 
                 block.outptr(1) = mdaq_ai_read(%microdaq.private.connection_id,..
                                                 block.ipar(7:size(block.ipar,'r')),..
-                                                block.ipar(5),..
+                                                block.ipar(3),..
                                                 differential);
             end
         case 2 // State Update

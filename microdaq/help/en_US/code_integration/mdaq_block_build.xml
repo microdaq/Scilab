@@ -18,6 +18,11 @@ from userlib directory (mdaq_toolbox_path() + "src\c\userlib")	</para>
 <para>
 Function compiles every C source file from userlib directory. In order to compile external user C source code e.g. used in custom block, C source needs to be placed in userlib directory or Makefile (from userlib directory) needs to be modified to compile external code.
 </para>
+<para>
+If block.use_sim_script is set to false then C source will be compiled to shared library which will be used in simulation mode. It guarantees the same code on host (simulation mode) and target (code generation) side. 
+In order to use this option the external C compiler is required. List of supported compilers can be found at: 
+<ulink url="https://help.scilab.org/doc/5.5.2/en_US/supported_compilers.html">https://help.scilab.org/doc/5.5.2/en_US/supported_compilers.html</ulink>
+</para>
     <title>Calling Sequence</title>
     <synopsis>
       mdaq_block_build(debug);
@@ -44,6 +49,7 @@ block.param_size = [ 1 2 4 ]; // set block parameters sizes
 block.param_def_val(1) = 1;  // assign default values to defined block parameters according to block.param_size
 block.param_def_val(2) = [ 2; 3 ]; 
 block.param_def_val(3) = [ 4; 5; 6; 7 ]; 
+block.use_sim_script = %F;
 
 // define block inputs (four inputs: input 1 - vec size 1, input 2 - vec size 2, input 3 - vec size 4, input 4 - vec size 1)
 block.in = [ 1 2 4 1];
@@ -66,9 +72,7 @@ mdaq_block_build();
     <simplelist type="inline">
   <member><link linkend="mdaq_block">mdaq_block</link> : Initialize MicroDAQ block structure</member>
 	  <member><link linkend="mdaq_block_add">mdaq_block_add</link> : Generate MicroDAQ block from provided block structure </member>
-      <member>
-        <link type="scilab" linkend="scilab.help/sum">Link to the Scilab help page</link>
-      </member>
+      <member><link linkend="mdaq_block_delete">mdaq_block_delete</link> : Deletes MicroDAQ user block</member>
     </simplelist>
   </refsection>
 </refentry>

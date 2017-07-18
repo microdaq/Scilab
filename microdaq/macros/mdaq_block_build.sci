@@ -151,14 +151,19 @@ function mdaq_block_build(debug_build)
             if isdir(userhostlib_path) == %F then
                 mkdir(userhostlib_path);
             end
-
+             
+            if %microdaq.private.userhostlib_link_id <> -1000 then
+                ulink(%microdaq.private.userhostlib_link_id);
+            end
             copyfile("libuserhost"+getdynlibext(), userhostlib_path);
             copyfile("loader.sce", userhostlib_path);
             exec("cleaner.sce");
             exec(userhostlib_path+"loader.sce");
         end
     else
-        mprintf("Warning: No compiler detected, cannot build user host library.\n")
+        mprintf("WARNING: No compiler detected, cannot build user host library. Make sure that the valid\n")
+        mprintf("\t compiler is installed. More information about supported compilers is available at:\n');
+        mprintf("\t https://help.scilab.org/doc/5.5.2/en_US/supported_compilers.html');
     end
 
     chdir(p_dir);
