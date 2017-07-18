@@ -21,6 +21,11 @@ function mdaq_ao_write(arg1, arg2, arg3, arg4)
 
     global %microdaq;
     if %microdaq.private.mdaq_hwid <> [] then
+        dac = %microdaq.private.mdaq_hwid(3);
+        if  dac == 0 then
+            disp("ERROR: Unable to detect DAC configuration!");
+            return;
+        end
         dac_info = %microdaq.private.dac_info;
         if argn(2) > 4 | argn(2) < 3 then
             mprintf("Description:\n");
@@ -37,35 +42,37 @@ function mdaq_ao_write(arg1, arg2, arg3, arg4)
             return;
         end
     else
-        error('Unable to detect MicroDAQ confituration - run mdaq_hwinfo and try again!');
-        return;
-    end
-
-    ch_count = size(channels, '*');
-    max_ch = 8;
-    if %microdaq.private.mdaq_hwid(3) > 3 then
-        max_ch = 16;
-    end
-    
-    if ao_range > size(dac_info.c_params.c_range_desc, "r") | ao_range < 1 then 
-        mprintf("ERROR: Wrong AO range selected.\nSupported ranges:\n");
-          for i = 1:size(dac_info.c_params.c_range_desc, "r")
-                mprintf("\t    %s\n", string(i) + ": " + dac_info.c_params.c_range_desc(i));
-            end
-        return; 
-    end 
-    
-
-    if ch_count < 1 | ch_count > max_ch then
-        disp("ERROR: Wrong AO channel selected!")
+        error('ERROR: Unable to detect MicroDAQ configuration - run mdaq_hwinfo and try again!');
         return;
     end
 
     data_size = size(data, '*');
+    ch_count = size(channels, '*');
+    dac_ch_count = strtod(dac_info.channel);
+
+    if ch_count > dac_ch_count then
+        disp("ERROR: Too many channels selected!")
+        return;
+    end
+
+    if max(channels) > dac_ch_count | min(channels) < 1 then
+        disp("ERROR: Wrong channel number selected!")
+        return;
+    end
+
     if data_size <> ch_count then
         disp("ERROR: Wrong data for selected AO channels!");
         return;
     end
+
+    if ao_range > size(dac_info.c_params.c_range_desc, "r") | ao_range < 1 then
+        mprintf("ERROR: Wrong AO range selected.\nSupported ranges:\n");
+        for i = 1:size(dac_info.c_params.c_range_desc, "r")
+            mprintf("\t    %s\n", string(i) + ": " + dac_info.c_params.c_range_desc(i));
+        end
+        return;
+    end
+
     if argn(2) == 3 then
         link_id = mdaq_open();
         if link_id < 0 then
@@ -74,24 +81,25 @@ function mdaq_ao_write(arg1, arg2, arg3, arg4)
         end
     end
 
-    global %microdaq;
-    dac = %microdaq.private.mdaq_hwid(3);
-    if  dac == 0 then
-        disp("ERROR: Unable to read DAC configuration!");
-        return;
+    range_size = size(ao_range, 'c');
+    if range_size == 1 then
+        ao_range = ones(ch_count, 1) * ao_range;
+    else
+        for i = 1:ch_count
+            ao_range(i) = dac_info.c_params.c_range(ao_range(i));
+        end
     end
-    
+
     result = call("sci_mlink_ao_write",..
-    link_id, 1, "i",..
-    dac, 2, "i",..
-    channels, 3, "i",..
-    ch_count, 4, "i",..
-    ao_range, 5, "i",..
-    data, 6, "d",..
-    "out",..
-    [1, 1], 7, "i");
-    
-    
+                    link_id, 1, "i",..
+                    dac, 2, "i",..
+                    channels, 3, "i",..
+                    ch_count, 4, "i",..
+                    ao_range, 5, "i",..
+                    data, 6, "d",..
+                "out",..
+                    [1, 1], 7, "i");
+
     if result < 0 then
         mdaq_error(result)
     end
@@ -99,4 +107,8 @@ function mdaq_ao_write(arg1, arg2, arg3, arg4)
     if argn(2) == 3 then
         mdaq_close(link_id);
     end
+
+    clear data_size;
+    clear ch_count;
+    clear dac_ch_count;
 endfunction

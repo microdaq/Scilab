@@ -20,10 +20,21 @@ function [x,y,typ] = mdaq_dac(job,arg1,arg2)
 
     dac_desc = ["This block writes data to MicroDAQ analog output module (AO).";
     "Block detects MicroDAQ analog output type and allows";
-    "setting output range and termination voltage.";
-    "Single termination value will be used for all channels.";
-    "If different termination values for selected channels needs ";
-    "to be used a vector with termination values has to be provided.";
+    "setting output range, initial and termination voltage.";
+    "The Range value can be a scalar or a vector that must ";
+    "be the same length as the channel vector. If scalar value";
+    "is specified, that setting is replicated over the channel vector."; 
+    "Different ranges can be set for each channel if ADC supports ";
+    "more then one output range.";
+    "The Initial and Termination property can be a scalar or a vector"; 
+    "";
+    "Use Init/Term parameter allows to enable or disable setting";
+    "initial or/and termination voltage values. User can provide";
+    "scalar or vector with following values:";
+    "0 - Initial and termination voltage value is ignored";
+    "1 - Initial voltage value is used";
+    "2 - Termination voltage value is used";
+    "3 - Initial and termination voltage value is used";
     "";
     "input - value in volts"
     "";
@@ -46,19 +57,23 @@ function [x,y,typ] = mdaq_dac(job,arg1,arg2)
         while %t do
             try
                 getversion('scilab');
-                [ok,channel,dac_range,term_value,exprs]=..
+                [ok,channel,dac_range,init_value,term_value,use_init_term,exprs]=..
                 scicos_getvalue(dac_desc,..
                 ['Channels:';
-                'Output range:';
-                'Termination value:'],..
-                list('vec',-1,'vec',1,'vec',-1),exprs)
+                'Range:';
+                'Initial value:';
+                'Termination value:';
+                'Use Init/Term:'],..
+                list('vec',-1,'vec',-1,'vec',-1,'vec',-1,'vec',-1),exprs)
             catch
-                [ok,channel,dac_range,term_value,exprs]=..
+                [ok,channel,dac_range,init_value,term_value,use_init_term,exprs]=..
                 scicos_getvalue(dac_desc,..
                 ['Channels:';
-                'Output range:';
-                'Termination value:'],..
-                list('vec',-1,'vec',1,'vec',-1),exprs)
+                'Range:';
+                'Initial value:';
+                'Termination value:';
+                'Use Init/Term:'],..
+                list('vec',-1,'vec',-1,'vec',-1,'vec',-1,'vec',-1),exprs)
             end;
 
             if ~ok then
@@ -66,15 +81,22 @@ function [x,y,typ] = mdaq_dac(job,arg1,arg2)
             end
 
             if %microdaq.private.mdaq_hwid <> [] then
-                if dac_info.id > 5 | dac_info.id < 1 then
+                if find(dac_info.id == get_dac_list()) == [] then
                     ok = %f;
                     message("Configuration not detected - run mdaq_hwinfo and try again!");
                 end
-                
+
                 dac_ch_count = strtod(dac_info.channel);
 
-                n_channels = size(channel);
-                if n_channels(2) > dac_ch_count then
+                // check Channel parameter
+                if size(channel, 'r') > 1 then
+                    ok = %f;
+                    error_msg = 'Wrong channel vector - single row vector expected!';
+                    message(error_msg);
+                end
+
+                n_channels = size(channel, 'c');
+                if n_channels > dac_ch_count then
                     ok = %f;
                     error_msg = 'Too many channels selected!';
                     message(error_msg);
@@ -86,9 +108,73 @@ function [x,y,typ] = mdaq_dac(job,arg1,arg2)
                     message(error_msg);
                 end
 
-                if dac_range > size(dac_info.c_params.c_range) | dac_range < 1 then
+                // check Range parameter
+                if size(dac_range, 'r') > 1 then
                     ok = %f;
-                    error_msg = 'Wrong range selected!';
+                    error_msg = 'Wrong range vector - single row vector expected!';
+                    message(error_msg);
+                end
+
+                dac_range_size = size(dac_range, 'c');
+                if dac_range_size > 1 & dac_range_size <> n_channels then
+                    ok = %f;
+                    error_msg = 'Wrong range vector - size should be same as Channel vector!';
+                    message(error_msg);
+                end
+
+                for i = 1:dac_range_size
+                    if dac_range(i) > size(dac_info.c_params.c_range, 'c') | dac_range(i) < 1 then
+                        ok = %f;
+                        error_msg = 'Wrong range value!';
+                        message(error_msg);
+                    end
+                end
+
+                // check Init value parameter
+                if size(init_value, 'r') > 1 then
+                    ok = %f;
+                    error_msg = 'Wrong Init value vector - single row vector expected!';
+                    message(error_msg);
+                end
+
+                init_value_size = size(init_value, 'c');
+                if init_value_size > 1 & init_value_size <> n_channels then
+                    ok = %f;
+                    error_msg = 'Wrong init value vector - scalar or vector for selected channels expected!';
+                    message(error_msg);
+                end
+
+                // check Termination value parameter
+                if size(term_value, 'r') > 1 then
+                    ok = %f;
+                    error_msg = 'Wrong termination value vector - single row vector expected!';
+                    message(error_msg);
+                end
+
+                term_value_size = size(term_value, 'c');
+                if term_value_size > 1 & term_value_size <> n_channels then
+                    ok = %f;
+                    error_msg = 'Wrong termination value vector - scalar or vector for selected channels expected!';
+                    message(error_msg);
+                end
+                
+                // check init term enable
+                if find(use_init_term > 3) <> [] | find(use_init_term < 0) <> [] then
+                    ok = %f;
+                    error_msg = 'Wrong Use init/term paremeter value!';
+                    message(error_msg);
+                end
+                    
+                if size(use_init_term, 'r') > 1 then
+                    ok = %f;
+                    error_msg = 'Wrong Use init/term paremeter vector - single row vector expected!';
+                    message(error_msg);
+                end
+
+                use_init_term_size = size(use_init_term, 'c');
+                if use_init_term_size > 1 & use_init_term_size <> n_channels then
+                    ok = %f;
+                    error_msg = 'Wrong Use init/term paremeter vector - scalar or vector for selected channels expected!';
                     message(error_msg);
                 end
             else
@@ -98,53 +184,76 @@ function [x,y,typ] = mdaq_dac(job,arg1,arg2)
             end
 
             if ok then
-                dac_range_raw = dac_range;
-                dac_range = dac_info.c_params.c_range(dac_range);
-                n_channels = size(channel);
-                n_term_value = size(term_value);
-                if  n_term_value(2) > 1 then
-                    if  n_term_value(2) <> n_channels(2) then
-                        message('Wrong termination value - scalar or vector for selected channels expected!')
-                        ok = %f;
-                    end
-                    term_value = term_value';
-                else
-                    term_value(1:n_channels(2)) = term_value;
-                end
-            end
-
-            if ok then
-                [model,graphics,ok] = check_io(model,graphics, n_channels(2), [], 1, []);
+                [model,graphics,ok] = check_io(model,graphics, n_channels, [], 1, []);
                 graphics.exprs = exprs;
-                model.rpar = [size(term_value, '*'); term_value;];
-                model.ipar = [dac_converter;dac_range;n_channels(2);channel';dac_range_raw];
+
+                // prepare block IPAR/RPAR data
+                if dac_range_size == 1 then
+                    dac_range_p = ones(n_channels, 1) * dac_info.c_params.c_range(dac_range);
+                    dac_range_raw_p = ones(n_channels, 1) * dac_range;
+                else
+                    dac_range_p = ones(n_channels, 1);
+                    dac_range_raw_p = ones(n_channels, 1);
+                    for i = 1:n_channels
+                        dac_range_p(i) = dac_info.c_params.c_range(dac_range(i));
+                        dac_range_raw_p(i) = dac_range(i);
+                    end
+                end
+
+                // init value
+                if init_value_size == 1 then
+                    init_value = ones(n_channels, 1) * init_value;
+                else
+                    init_value = init_value';
+                end
+
+                // termination value
+                if term_value_size == 1 then
+                    term_value = ones(n_channels, 1) * term_value;
+                else 
+                    term_value = term_value';
+                end
+
+                // init term enable value
+                if use_init_term_size == 1 then
+                    use_init_term = ones(n_channels, 1) * use_init_term;
+                else 
+                    use_init_term = use_init_term';
+                end
+                
+                // set IPAR and RPAR
+                model.ipar = [n_channels; channel'; dac_range_p; dac_range_raw_p; use_init_term];
+                model.rpar = [init_value; term_value];
+
                 model.dstate = [];
                 x.graphics = graphics;
                 x.model = model;
                 break
             end
         end
-    case 'define' then
+    case 'define' then 
         channel=1
-        term_value=0
         dac_range = 1;
         dac_range_raw = 1;
-        dac_converter = 1;  // TODO: to be removed
-        model=scicos_model()
-        model.sim=list('mdaq_dac_sim',5)
-        model.in =1
-        model.in2=1
-        model.intyp=1
-        model.out=[]
-        model.evtin=1
-        model.rpar = [1; term_value;];
-        model.ipar = [dac_converter;dac_range;1;channel';dac_range_raw];
+        init_value = 0;
+        term_value = 0;
+        use_init_term = 2;
+        n_channels = 1;
+        model=scicos_model();
+        model.sim=list('mdaq_dac_sim',5);
+        model.in =1;
+        model.in2=1;
+        model.intyp=1;
+        model.out=[];
+        model.evtin=1;
+        model.rpar = [init_value; term_value];
+        model.ipar = [n_channels; channel'; dac_range; dac_range_raw; use_init_term];
         model.dstate=[];
-        model.blocktype='d'
-        model.dep_ut=[%t %f]
-        exprs=[sci2exp(channel);sci2exp(dac_range);sci2exp(term_value)]
-        gr_i=['xstringb(orig(1),orig(2),[''CH:'' ; string(channel)],sz(1),sz(2),''fill'');']
-        x=standard_define([4 3],model,exprs,gr_i)
+        model.blocktype='d';
+        model.dep_ut=[%t %f];
+        exprs=[sci2exp(channel);sci2exp(dac_range);sci2exp(init_value);sci2exp(term_value);sci2exp(use_init_term)];
+        gr_i=['xstringb(orig(1),orig(2),[''CH:'' ; string(channel)],sz(1),sz(2),''fill'');'];
+        x=standard_define([4 3],model,exprs,gr_i);
         x.graphics.in_implicit=[];
         x.graphics.exprs=exprs;
         x.graphics.style=["blockWithLabel;verticalLabelPosition=center;displayedLabel=CH:%1$s;fontColor=#5f5f5f"]
