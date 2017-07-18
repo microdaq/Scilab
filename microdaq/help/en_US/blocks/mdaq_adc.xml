@@ -46,15 +46,58 @@ xml:id="mdaq_adc">
 
 		<para>This block can be used in host simulation mode and for code generation.</para>
 
-		<para>
-		Analog input channel selection in differential mode: 
-		<simplelist type="inline">
-            <member><para>Channel 1 - AI1(+), AI2(-)</para></member>
-            <member><para>Channel 2 - AI3(+), AI4(-)</para></member>
-            <member><para>Channel 3 - AI5(+), AI6(-)</para></member>
-            <member><para>Channel 4 - AI7(+), AI8(-)</para></member>
-        </simplelist>
-		</para>
+
+    </refsection>
+	
+		<refsection id="Dialogbox_mdaq_adc">
+        <title>Dialog box</title>
+        <para>
+            <inlinemediaobject>
+                <imageobject>
+                    <imagedata align="center" fileref="../../../help/en_US/images/adc_params.png" valign="middle"/>
+                </imageobject>
+            </inlinemediaobject>
+        </para>
+        <itemizedlist>
+            <listitem>
+                <para>
+                    <emphasis role="bold">Channels</emphasis>
+                </para>
+                <para>Scalar or vector containing channel numbers. </para>
+
+                <para>Properties : Type int, range - depending on ADC converter 1..8 or 1..16.</para>
+            </listitem>
+            <listitem>
+                <para>
+                    <emphasis role="bold">Range</emphasis>
+                </para>
+                <para>
+                    Range parameter defines ADC voltage range. The specified scalar value is replicated over the channel vector.
+                </para>
+				<emphasis role="bold">Differential</emphasis>
+				<para>
+					Differential parameter determines ADC measurement mode - is set to 1 differential measurement mode is used, if set to 0 (default) single-ended measurement is used.
+				</para>
+				<para>When differential mode is used, the following channel numbering scheme shall be used: </para>
+					<para>Channel 1 - AI1(+), AI2(-)</para>
+					<para>Channel 2 - AI3(+), AI4(-)</para>
+					<para>Channel 3 - AI5(+), AI6(-)</para>
+					<para>Channel 4 - AI7(+), AI8(-)</para>
+					<para>Channel 5 - AI9(+), AI10(-)</para>
+					<para>Channel 6 - AI11(+), AI12(-)</para>
+					<para>Channel 7 - AI13(+), AI14(-)</para>
+					<para>Channel 8 - AI15(+), AI16(-)</para>
+            </listitem>
+            <listitem>
+                <para>
+                    <emphasis role="bold">Oversampling</emphasis>
+                </para>
+                <para>
+                     Oversampling allows to increase measurement resolution, it requires a higher amount of samples. These extra samples can be achieved by oversampling the signal. This will affect ADC block execution time. In order to increase ADC measurement accuracy four For each additional bit of resolution, the signal must be oversampled four times.  
+                </para>
+            </listitem>
+
+        </itemizedlist>
     </refsection>
 	
 	<refsection id="InputOutput_mdaq_adc">
