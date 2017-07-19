@@ -63,10 +63,12 @@ enum mdaq_adc_ids
 #define AI_SINGLE  	(1 << 28)
 #define AI_DIFF    	(1 << 29)
 
-int mdaq_ai_init( uint8_t converter, uint32_t range, uint32_t polarity, uint32_t mode );
+int mdaq_ai_init(uint32_t range, uint32_t polarity, uint32_t mode );
 int mdaq_ai_config_ch( uint8_t ch[], uint8_t ch_count );
 int mdaq_ai_read( uint8_t ch[], uint8_t ch_count, uint16_t *adc_value, float *value );
+int mdaq_ai_read2(uint8_t ch[], uint8_t ch_count, uint32_t oversampling, uint16_t *adc_value, float *value);
 int mdaq_ai_scan_init(uint8_t ch[], uint8_t ch_count, uint32_t mode, uint32_t scan_count, float freq);
 int mdaq_ai_scan(uint32_t scan_count, uint16_t *adc_value);
+int mdaq_ai_id(void);
 
 #endif /* MDAQ_AI_H */

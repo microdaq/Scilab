@@ -57,14 +57,8 @@ typedef struct mdaq_uart_config_
 	int stop_bits;
 }mdaq_uart_config_t;
 
-int mdaq_uart_open(int port_num, mdaq_uart_config_t *c);
-int mdaq_uart_write(int port, void *data, int len);
-int mdaq_uart_read(int port, void *data, int len, int timeout);
-int mdaq_uart_setspeed(int speed);
-int mdaq_uart_config(int port, mdaq_uart_config_t *c );
-int mdaq_uart_close(int port);
-int mdaq_uart_init(void);
-
-
+int mdaq_uart_open(mdaq_uart_config_t *c);
+int mdaq_uart_write( void *data, int len);
+int mdaq_uart_read( void *data, int len, int timeout/* in microseconds */);
 
 #endif /* MDAQ_FILE_H_ */
