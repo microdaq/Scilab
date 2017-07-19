@@ -73,14 +73,6 @@ function mdaq_ao_write(arg1, arg2, arg3, arg4)
         return;
     end
 
-    if argn(2) == 3 then
-        link_id = mdaq_open();
-        if link_id < 0 then
-            disp("ERROR: Unable to connect to MicroDAQ device!");
-            return;
-        end
-    end
-
     range_size = size(ao_range, 'c');
     if range_size == 1 then
         ao_range = ones(ch_count, 1) * dac_info.c_params.c_range(ao_range);
@@ -90,6 +82,15 @@ function mdaq_ao_write(arg1, arg2, arg3, arg4)
         end
     end
 
+    if argn(2) == 3 then
+        link_id = mdaq_open();
+        if link_id < 0 then
+            disp("ERROR: Unable to connect to MicroDAQ device!");
+            return;
+        end
+    end
+    
+    result = [];
     result = call("sci_mlink_ao_write",..
                     link_id, 1, "i",..
                     dac, 2, "i",..
@@ -100,14 +101,14 @@ function mdaq_ao_write(arg1, arg2, arg3, arg4)
                 "out",..
                     [1, 1], 7, "i");
 
-    if result < 0 then
-        mdaq_error(result)
-    end
-
     if argn(2) == 3 then
         mdaq_close(link_id);
     end
-
+    
+    if result < 0  then
+        error(mdaq_error2(result), 10000 + abs(result)); 
+    end
+    
     clear data_size;
     clear ch_count;
     clear dac_ch_count;

@@ -64,14 +64,6 @@ function data = mdaq_ai_read(arg1, arg2, arg3, arg4)
           end
         return; 
     end 
-
-    if argn(2) == 3 then
-        link_id = mdaq_open();
-        if link_id < 0 then
-            disp("ERROR: Unable to connect to MicroDAQ device!");
-            return;
-        end
-    end
        
     bipolar = adc_info.c_params.c_bipolar(ai_range);
     ai_range = adc_info.c_params.c_range(ai_range);
@@ -82,6 +74,14 @@ function data = mdaq_ai_read(arg1, arg2, arg3, arg4)
         differential = 28;
     end
 
+    if argn(2) == 3 then
+        link_id = mdaq_open();
+        if link_id < 0 then
+            disp("ERROR: Unable to connect to MicroDAQ device!");
+            return;
+        end
+    end
+    
     result = [];
     [data result] = call("sci_mlink_ai_read",..
                         link_id, 1, "i",..

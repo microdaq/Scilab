@@ -19,15 +19,16 @@ function mdaq_ao_scan_stop(arg1)
             link_id, 1, "i",..
         "out",..
             [1, 1], 2, "i");
-
-    if  result < 0  then
-        mdaq_error(result) 
+    
+    if argn(2) == 0 then
+        mdaq_close(link_id);
     end
     
     global %microdaq;
     %microdaq.private.ao_scan_ch_count = -1;
     
-    if argn(2) == 0 then
-        mdaq_close(link_id);
+    if result < 0  then
+        error(mdaq_error2(result), 10000 + abs(result)); 
     end
+
 endfunction

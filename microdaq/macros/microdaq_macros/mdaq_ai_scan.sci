@@ -54,7 +54,7 @@ function [data, result] = mdaq_ai_scan(arg1, arg2, arg3)
         if result == -91  then
             mdaq_error(result)
         else 
-            error(mdaq_error(result), 10000 + abs(result))
+            error(mdaq_error2(result), 10000 + abs(result))
         end
         data = [];            
     end

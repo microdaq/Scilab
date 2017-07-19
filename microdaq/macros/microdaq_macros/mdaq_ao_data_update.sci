@@ -27,6 +27,12 @@ function mdaq_ao_data_update(arg1, arg2, arg3)
         mprintf("\tdata - AO scan data\n");
         return;
     end
+    
+    if size(data, "c") > 1 & size(data, "r") > 1 then
+        error("ERROR: Wrong AO scan data size"); 
+        return
+    end
+    data_size = size(data, "*"); 
 
     if argn(2) == 2 then
         link_id = mdaq_open();
@@ -35,19 +41,6 @@ function mdaq_ao_data_update(arg1, arg2, arg3)
             return; 
         end
     end
-    
-    if size(data, "c") > 1 & size(data, "r") > 1 then
-        error("ERROR: Wrong AO scan data size"); 
-        return
-    end
-    data_size = size(data, "*"); 
-    
-//MDAQ_API void sci_mlink_ao_data_update(
-//		IO		int 		*link_fd, 
-//		IN		int 		*ch,
-//		IN		double      *data,
-//		IN		int			*data_size,
-//		OUT		int			*result)
 
     result = [];
     result = call("sci_mlink_ao_data_update",..
@@ -58,11 +51,11 @@ function mdaq_ao_data_update(arg1, arg2, arg3)
                 "out",..
                 [1, 1], 5, "i");
 
-    if result < 0  then
-        mdaq_error(result)
-    end
-
     if argn(2) == 2 then
         mdaq_close(link_id);
+    end
+
+    if result < 0  then
+        error(mdaq_error2(result), 10000 + abs(result)); 
     end
 endfunction

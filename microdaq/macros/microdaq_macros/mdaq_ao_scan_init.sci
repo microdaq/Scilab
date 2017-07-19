@@ -64,6 +64,7 @@ function  mdaq_ao_scan_init(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
     end
 
     if scan_time < 0 then
+        mprintf("Warning: wrong duration value, -1 will be used\n"); 
         scan_time = -1;
     end
     
@@ -96,14 +97,6 @@ function  mdaq_ao_scan_init(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
             return; 
        // end
     end
-    
-    if argn(2) == 6 then
-        link_id = mdaq_open();
-        if link_id < 0 then
-            disp("ERROR: Unable to connect to MicroDAQ device!");
-            return;
-        end
-    end
 
     if ao_range > 4 | ao_range < 0 then
         disp("ERROR: Wrong AO output range!")
@@ -113,7 +106,6 @@ function  mdaq_ao_scan_init(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
         ao_trigger = 0; 
     end
     
-    
     if continuous == %T | continuous == 1 then
         continuous = 1;
     else
@@ -121,9 +113,16 @@ function  mdaq_ao_scan_init(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
     end
     
     %microdaq.private.ao_scan_ch_count = ch_count;
+
+    if argn(2) == 6 then
+        link_id = mdaq_open();
+        if link_id < 0 then
+            disp("ERROR: Unable to connect to MicroDAQ device!");
+            return;
+        end
+    end
         
     result = [];
-    
     result = call("sci_mlink_ao_scan_init",..
             link_id, 1, "i",..
             channels, 2, "i",..
@@ -136,8 +135,12 @@ function  mdaq_ao_scan_init(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
         "out",..
             [1, 1], 9, "i");
 
+    if argn(2) == 6 then
+        mdaq_close(link_id);
+    end
+    
     if result < 0 then
-        mdaq_error(result);
+        error(mdaq_error2(result), 10000 + abs(result)); 
     else
         if result == 1 then
             mprintf("\nWARNING: Your MicroDAQ device does not allow running AI and AO scanning session simultaneously.\n")
@@ -175,9 +178,5 @@ function  mdaq_ao_scan_init(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
             mprintf("\tDuration:\t%.2fsec\n", scan_time);
             mprintf("\tScan count:\t%d", scan_time * scan_freq);
         end
-    end
-
-    if argn(2) == 6 then
-        mdaq_close(link_id);
     end
 endfunction
