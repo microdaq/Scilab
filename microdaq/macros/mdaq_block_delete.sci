@@ -1,4 +1,18 @@
 function mdaq_block_delete(block_name)
+    if argn(2) < 1 then
+        mprintf("Description:\n");
+        mprintf("\tDeletes MicroDAQ user block\n");
+        mprintf("Usage:\n");
+        mprintf("\tmdaq_block_delete(block_name);\n")
+        return;
+    end
+    
+    mprintf("WARNING: This function will remove all files related to ''%s'' block (including C source).\n", block_name); 
+    opt = input("         Are you sure? [y/n]: ", "string");
+    if opt <> 'y' & opt <> 'Y' then
+        return;
+    end
+    
     //Convert name 
     name_converted = convstr(block_name,'l');
     name_converted = strsubst(name_converted, ' ', '_');
@@ -19,6 +33,16 @@ function mdaq_block_delete(block_name)
     
     // Delete code 
     srcPath = pathconvert(mdaq_toolbox_path()+'src/c/userlib/');
+    backUpPath = mdaq_toolbox_path()+pathconvert("src\c\userlib\.removed_code");
+    try
+        if isdir(backUpPath) == %F then
+                mkdir(backUpPath);
+        end
+        copyfile(srcPath+name_converted+'.c', backUpPath);
+    catch
+    end
     mdelete(srcPath+name_converted+'.c');
     mdelete(srcPath+name_converted+'.o');
+    
+    mprintf("Block has been deleted.\n");
 endfunction
