@@ -33,8 +33,12 @@ function mdaq_block_delete(block_name)
     
     // Delete code 
     srcPath = pathconvert(mdaq_toolbox_path()+'src/c/userlib/');
+    backUpPath = mdaq_toolbox_path()+pathconvert("src\c\userlib\.removed_code");
     try
-        copyfile(srcPath+name_converted+'.c', mdaq_toolbox_path()+pathconvert("etc/tmp"));
+        if isdir(backUpPath) == %F then
+                mkdir(backUpPath);
+        end
+        copyfile(srcPath+name_converted+'.c', backUpPath);
     catch
     end
     mdelete(srcPath+name_converted+'.c');
