@@ -26,7 +26,6 @@ function  mdaq_ao_scan_init(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
         end
     end
     
-    
     global %microdaq;
     if %microdaq.private.mdaq_hwid <> [] then
         if  %microdaq.private.mdaq_hwid(3) == 0 then
@@ -63,8 +62,8 @@ function  mdaq_ao_scan_init(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
         continuous = 0; 
     end
 
-    if scan_time < 0 then
-        mprintf("Warning: wrong duration value, -1 will be used\n"); 
+    if scan_time < 0 & scan_time <> -1 then
+        mprintf("Warning: For infinite scan session as a duration parameter use -1 value instead!\n"); 
         scan_time = -1;
     end
     
