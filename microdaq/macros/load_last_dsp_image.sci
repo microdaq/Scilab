@@ -8,7 +8,7 @@ function load_last_dsp_image()
             close_last_connection();
             connection_id = mdaq_open();
             if connection_id < 0 then
-                message('Unable to locate MicroDAQ device - check your setup!');
+                message("ERROR: Unable to connect to MicroDAQ device!");
                 return;
             end
 
@@ -18,7 +18,7 @@ function load_last_dsp_image()
                 mdaq_close(connection_id);
                 connection_id = mdaq_open();
                 if connection_id < 0 then
-                    message('ERROR: Unable to connect to MicroDAQ device - check your setup!');
+                    message("ERROR: Unable to connect to MicroDAQ device!");
                     return;
                 end
                 res = mlink_dsp_load(connection_id, dsp_app_path, '');

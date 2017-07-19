@@ -45,7 +45,7 @@ function continueSimulation=pre_xcos_simulate(scs_m, needcompile)
                     if result == -25 then
                         message("ERROR: Unable to connect - your are running model in Standalone mode!");
                     else
-                        message("ERROR: Unable to connect to MicroDAQ - reboot device!")
+                        message("ERROR: Unable to connect to MicroDAQ device!")
                         %microdaq.dsp_loaded = %F;
                     end
                     continueSimulation = %F;

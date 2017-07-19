@@ -1129,7 +1129,7 @@ function  [ok,XX,alreadyran,flgcdgen,szclkINTemp,freof] = do_compile_superblock_
         close_last_connection();
         connection_id = mdaq_open();
         if connection_id < 0 then
-            message('Unable to connect to MicroDAQ device - check cable and IP settings!');
+            message("ERROR: Unable to connect to MicroDAQ device!");
             return;
         end
     
