@@ -29,7 +29,11 @@ function  mdaq_ao_scan_init(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
     
     global %microdaq;
     if %microdaq.private.mdaq_hwid <> [] then
-        dac_info = get_dac_info(%microdaq.private.mdaq_hwid);
+        if  %microdaq.private.mdaq_hwid(3) == 0 then
+            disp("ERROR: Unable to detect DAC configuration!");
+            return;
+        end
+        dac_info = %microdaq.private.dac_info;
         if argn(2) > 6 | argn(2) < 5 then
         mprintf("Description:\n");
         mprintf("\Initiates AO scan\n");
