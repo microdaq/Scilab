@@ -31,7 +31,5 @@ function [link_fd, hwid] = mlink_connect(ip, port)
                 %microdaq.private.dac_info = dac_info;
             end
         end
-    else
-        mdaq_error(result);
     end
 endfunction
