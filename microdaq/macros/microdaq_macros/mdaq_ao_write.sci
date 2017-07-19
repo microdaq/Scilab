@@ -83,7 +83,7 @@ function mdaq_ao_write(arg1, arg2, arg3, arg4)
 
     range_size = size(ao_range, 'c');
     if range_size == 1 then
-        ao_range = ones(ch_count, 1) * ao_range;
+        ao_range = ones(ch_count, 1) * dac_info.c_params.c_range(ao_range);
     else
         for i = 1:ch_count
             ao_range(i) = dac_info.c_params.c_range(ao_range(i));
