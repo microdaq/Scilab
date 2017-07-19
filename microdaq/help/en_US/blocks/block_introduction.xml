@@ -40,7 +40,6 @@
 				<member>TCP recv, TCP send - access network data with TCP protocol (client mode) </member>
 				<member>Time - return current model execution time </member>
 				<member>To file - write data to file on MicroDAQ User Disk </member>
-				<member>UART config, UART read, UART write - access to MicroDAQ UART </member>
 				<member>UDP recv, UDP send - access network data with UDP protocol </member>
 			</simplelist>
 		</para>

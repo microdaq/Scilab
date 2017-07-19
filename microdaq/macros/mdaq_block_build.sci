@@ -1,4 +1,4 @@
-function mdaq_block_build(debug_build)
+function mdaq_block_build(host_build, debug_build)
     // Check version compatibility 
     [is_supp vers] = mdaq_is_working('mdaq_block_build');
     if is_supp == %F then
@@ -6,64 +6,27 @@ function mdaq_block_build(debug_build)
         return;
     end
     
-    
     if  check_mdaq_compiler() == %F then
         disp("ERROR: Compiler not found - run microdaq_setup! ");
         return;
     end
-
-    p_dir = pwd();
-    mprintf(" ### Building user block macros...\n")
-    macros_path = mdaq_toolbox_path() + "macros" + filesep() + "user_blocks" + filesep();
-    tbx_build_macros("microdaq", macros_path);
-
-    blocks = [];
-    cd(macros_path);
-    macros = ls("*_sim.sci")
-    for i=1:size(macros,'*')
-        blocks(i) = part(macros(i), 1:length(macros(i)) - 8);
-    end
-
-    cd(mdaq_toolbox_path());
-    tbx_build_blocks(mdaq_toolbox_path(), blocks, "macros" + filesep() + "user_blocks");
-    // TODO: load newly created block upon creation - avoid Scilab restart
-    //    root_tlbx = mdaq_toolbox_path();
-    //    if isfile(root_tlbx + filesep() + "macros" + filesep() + "user_blocks" + filesep() + "names")  == %T then
-    //        errcatch(999,"continue");
-    //        xcosPalDelete("MicroDAQ User");
-    //        pal = xcosPal("MicroDAQ User");
-    //        microdaq_blocks = mgetl( root_tlbx + filesep() + "macros" + filesep() + "user_blocks" + filesep() + "names");
-    //        microdaq_blocks = microdaq_blocks';
-    //
-    //        blocks = [];
-    //        for i=1:size(microdaq_blocks, "*")
-    //            if strstr(microdaq_blocks(i), "_sim") == ""
-    //                blocks = [blocks, microdaq_blocks(i)];
-    //            end
-    //        end
-    //
-    //        for i=1:size(blocks, "*")
-    //            h5  = ls(root_tlbx + "/images/h5/"  + blocks(i) + "." + ["sod" "h5"]);
-    //            gif = ls(root_tlbx + "/images/gif/" + blocks(i) + "." + ["png" "jpg" "gif"]);
-    //            svg = ls(root_tlbx + "/images/svg/" + blocks(i) + "." + ["png" "jpg" "gif" "svg"]);
-    //            pal = xcosPalAddBlock(pal, h5(1), gif(1), svg(1));
-    //        end
-    //
-    //        if ~xcosPalAdd(pal,"MicroDAQ User") then
-    //            error(msprintf(gettext("%s: Unable to export %s.\n"), "microdaq.start", "pal"));
-    //        end
-    //    end
+    
+    if argn(2) < 1 then
+        host_build = %T;
+    end 
 
     root_path = mdaq_toolbox_path();
     userlib_src_path = root_path + filesep() + "src" + filesep() + "c"+ filesep() + "userlib" + filesep();
     userlib_path = root_path + filesep() + "etc" + filesep() + "userlib" + filesep() + "lib" + filesep();
     userhostlib_path = root_path + filesep() + "etc" + filesep() + "userlib" + filesep() + "hostlib" + filesep();
-
+    macros_path = mdaq_toolbox_path() + "macros" + filesep() + "user_blocks" + filesep();
+      
+    p_dir = pwd();
     chdir(userlib_src_path);
     GMAKE = root_path + "\etc\bin\gmake.exe";
-    mprintf(" ### Building userlib...\n")
+    mprintf(" ### Building DSP library...\n")
     if getenv('WIN32','NO')=='OK' then
-        if argn(2) > 0 & argn(2) < 2 then
+        if argn(2) > 1 & argn(2) < 3 then
             if debug_build then
                 unix_w(GMAKE + ' -f Makefile' + ' OPT_FLAG=-g');
             else
@@ -86,19 +49,49 @@ function mdaq_block_build(debug_build)
         end
 
     end
-
+    
+    //delete old one 
+    mdelete(userlib_path+'userlib');
+    
     if isfile("userlib.lib") then
         copyfile("userlib.lib", userlib_path);
     end
 
-
-
     //Building userdll for host
-    if haveacompiler() then
-        mprintf(" ### Building user host library...\n")
-
-        c_files = ls("*.c");
-
+    if haveacompiler() & (host_build == %T) then
+        if %microdaq.private.userhostlib_link_id <> -1000 then
+                ulink(%microdaq.private.userhostlib_link_id);
+        end
+        //delete files related to user blocks  
+        mdelete(userhostlib_path+'loader.sce');
+        mdelete(userhostlib_path+'libuserhost'+getdynlibext());
+        mdelete(macros_path+'lib');
+        mdelete(macros_path+'names');
+        mdelete(macros_path+'*.bin');
+        try 
+            xcosPalDelete("MicroDAQ User");
+        catch
+          
+        end
+        
+        
+        c_files = ls("*.c");    
+        if c_files == [] then
+            chdir(p_dir); 
+            return;
+        end
+        
+        mprintf(" ### Building host library...\n")
+        //get list of existing blocks 
+        blocks = [];
+        cd(macros_path);
+        macros = ls("*_sim.sci")
+        for i=1:size(macros,'*')
+            blocks(i) = part(macros(i), 1:length(macros(i)) - 8);
+        end
+        chdir(userlib_src_path);
+        
+        
         c_flags = "";
         scicos_libpath = "";
         os = getos();
@@ -151,22 +144,66 @@ function mdaq_block_build(debug_build)
             if isdir(userhostlib_path) == %F then
                 mkdir(userhostlib_path);
             end
-             
-            if %microdaq.private.userhostlib_link_id <> -1000 then
-                ulink(%microdaq.private.userhostlib_link_id);
-            end
+            
             copyfile("libuserhost"+getdynlibext(), userhostlib_path);
             copyfile("loader.sce", userhostlib_path);
             exec("cleaner.sce");
             exec(userhostlib_path+"loader.sce");
         end
-    else
+    elseif haveacompiler() == %F then 
         mprintf("WARNING: No compiler detected, cannot build user host library. Make sure that the valid\n")
         mprintf("\t compiler is installed. More information about supported compilers is available at:\n');
         mprintf("\t https://help.scilab.org/doc/5.5.2/en_US/supported_compilers.html');
     end
-
+    
+    userhostlib_loader = mdaq_toolbox_path() + pathconvert("/etc/userlib/hostlib/loader.sce", %f);
+    if isfile(userhostlib_loader) then
+        mprintf("\tLoad user host library\n");
+        exec(userhostlib_loader);
+    end
+    
+    mprintf(" ### Building user block macros...\n")
+    
+    tbx_build_macros("microdaq", macros_path);
+    cd(mdaq_toolbox_path());
+    tbx_build_blocks(mdaq_toolbox_path(), blocks, "macros" + filesep() + "user_blocks");  
     chdir(p_dir);
+    
+    
+    root_tlbx = mdaq_toolbox_path();
+    //Reload user block palette   
+    if isfile(macros_path+'lib') == %T 
+        //microdaqUserBlocks = lib(macros_path);
+        getd(macros_path);
+        mprintf("\tReload MicroDAQ User blocks\n");
+        blocks = [];
+        
+        tmp_path = pwd();
+        cd(macros_path);
+        macros = ls("mdaq_*.bin");
+        cd(tmp_path);
+        
+        for b=1:size(macros, "r")
+            macros(b) = part(macros(b), 1:length(macros(b)) - 4);
+            if strstr(macros(b), "_sim") == ""
+                if isfile(macros_path + macros(b) + '.sci')  == %T then
+                    blocks = [blocks, macros(b)];
+                end
+            end
+        end
+        pal = xcosPal("MicroDAQ User");
+        
+        for i=1:size(blocks, "*")
+            h5  = ls(root_tlbx + "/images/h5/"  + blocks(i) + "." + ["sod" "h5"]);
+            gif = ls(root_tlbx + "/images/gif/" + blocks(i) + "." + ["png" "jpg" "gif"]);
+            svg = ls(root_tlbx + "/images/svg/" + blocks(i) + "." + ["png" "jpg" "gif" "svg"]);
+            pal = xcosPalAddBlock(pal, h5(1), gif(1), svg(1));
+        end
+        
+        if ~xcosPalAdd(pal,"MicroDAQ User") then
+            error(msprintf(gettext("%s: Unable to export %s.\n"), "microdaq.start", "pal"));
+        end
+    end
 endfunction
 
 

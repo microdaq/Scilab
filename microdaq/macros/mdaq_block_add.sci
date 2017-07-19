@@ -188,9 +188,7 @@ function mdaq_block_add(block_def)
     '   select job';
     '   case ''set'' then';
     '       x=arg1;';];
-    
-    disp("DEBUG params_string2:")
-    disp(params_string2)
+  
     if params_size > 0 then
         block_script = [block_script; 
         '       model=arg1.model;';
