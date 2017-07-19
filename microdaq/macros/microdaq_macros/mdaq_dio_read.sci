@@ -7,7 +7,6 @@ function state = mdaq_dio_read(arg1, arg2)
     if argn(2) == 2 then
         link_id = arg1;   
         dio = arg2; 
-
         if link_id < 0 then
             disp("ERROR: Invalid link ID!")
             return;
@@ -51,12 +50,12 @@ function state = mdaq_dio_read(arg1, arg2)
     else
         state = %F;
     end
-
-    if result < 0  then
-        mdaq_error(result)
-    end
     
     if argn(2) == 1 then
         mdaq_close(link_id);
+    end
+    
+    if result < 0  then
+        error(mdaq_error2(result), 10000 + abs(result)); 
     end
 endfunction

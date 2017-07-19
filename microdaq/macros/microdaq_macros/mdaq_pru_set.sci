@@ -47,12 +47,12 @@ function mdaq_pru_set(arg1, arg2, arg3, arg4)
                 int(value), 4, "i",..
             "out",..
                 [1, 1], 5, "i");
-
-    if result < 0  then
-        mdaq_error(result)
-    end
-    
+                
     if argn(2) == 3 then
         mdaq_close(link_id);
+    end
+    
+    if result < 0  then
+        error(mdaq_error2(result), 10000 + abs(result)); 
     end
 endfunction

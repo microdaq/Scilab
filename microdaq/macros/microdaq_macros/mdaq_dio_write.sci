@@ -54,18 +54,17 @@ function mdaq_dio_write(arg1, arg2, arg3)
     end
 
     result = call("sci_mlink_dio_set",..
-    link_id, 1, "i",..
-    dio, 2, "i",..
-    state, 3, "i",..
-    "out",..
-    [1, 1], 4, "i");
-
-    if  result < 0  then
-        mdaq_error(result);
-    end
+                    link_id, 1, "i",..
+                    dio, 2, "i",..
+                    state, 3, "i",..
+                "out",..
+                    [1, 1], 4, "i");
 
     if argn(2) == 2 then
         mdaq_close(link_id);
     end
-
+    
+    if result < 0  then
+        error(mdaq_error2(result), 10000 + abs(result)); 
+    end
 endfunction

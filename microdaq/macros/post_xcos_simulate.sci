@@ -16,7 +16,7 @@ function []=post_xcos_simulate(%cpr, scs_m, needcompile)
                 if connection_id > -1 then
                     mlink_set_obj(connection_id, 'model_stop_flag', 1 );
                     mlink_set_obj(connection_id, 'terminate_signal_task', 1 );
-                    disp('### Model execution terminated');
+                    disp('### Model execution has been finished');
                     // save dsp profiling data
                     if curObj.model.ipar(3) == 1 then
                         //get number of records

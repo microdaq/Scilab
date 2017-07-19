@@ -5,7 +5,7 @@ function result = mdaq_dsp_start( arg1, arg2, arg3 )
         error('ERROR: ' + vers)
         return;
     end
-    
+
     global %microdaq;
     result = -1;
 
@@ -28,9 +28,10 @@ function result = mdaq_dsp_start( arg1, arg2, arg3 )
         mprintf("Description:\n");
         mprintf("\tStarts DSP execution\n");
         mprintf("Usage:\n");
-        mprintf("\tmdaq_dsp_start(link_id, dsp_firmware);\n")
-        mprintf("\tlink_id - connection id returned by mdaq_open() (OPTIONAL)\n");
-        mprintf("\tdsp_firmware - XCos generated DSP application path\n");
+        mprintf("\tmdaq_dsp_start(linkId, dspFirmware, stepTime);\n")
+        mprintf("\tlinkId - connection id returned by mdaq_open() (OPTIONAL)\n");
+        mprintf("\tdspFirmware - XCos generated DSP application\n");
+        mprintf("\stepTime - custom model mode step or -1 to keep Xcos settings\n");
         return;
     end
 
@@ -46,33 +47,27 @@ function result = mdaq_dsp_start( arg1, arg2, arg3 )
     if res < 0 then
         res = mlink_dsp_load(link_id, dsp_firmware, '');
         if res < 0 then
-            disp('ERROR: Unable to load DSP firmware - reboot MicroDAQ device!');
-            if argn(2) == 1 then
+            if argn(2) == 2 then
                 mdaq_close(link_id);
             end
-            return;
+            error(mdaq_error2(res), 10000 + abs(res)); 
         end
     end
 
     res = mlink_dsp_start(link_id, model_freq);
     if res < 0 then
-        disp("ERROR: Unable to start DSP application!");
-        if argn(2) == 1 then
+        if argn(2) == 2 then
             mdaq_close(link_id);
         end
-        return;
+        error(mdaq_error2(res), 10000 + abs(res));
     end
-
-    if res < 0  then
-        mdaq_error(res)
-    end    
 
     //Give time to start DSP firmware
     sleep(200);
 
     %microdaq.dsp_loaded = %T;
     res = mlink_set_obj(link_id, 'ext_mode', 1 );
-
+    
     if argn(2) == 2 then
         mdaq_close(link_id);
     end
@@ -80,7 +75,7 @@ function result = mdaq_dsp_start( arg1, arg2, arg3 )
     if res == 0 then
         result = client_connect(mdaq_get_ip(), 4344);
         if result < 0 then
-            disp("ERROR: Unable to connect to MicroDAQ - reboot MicroDAQ device!")
+            disp("ERROR: Unable to initialize TCP data stream for Ext mode!")
             %microdaq.dsp_loaded = %F;
             return;
         end

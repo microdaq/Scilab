@@ -46,12 +46,12 @@ function state = mdaq_key_read(arg1, arg2)
     else
         state = %F; 
     end
-
-    if result < 0  then
-        mdaq_error(result)
-    end
     
     if argn(2) == 1 then
         mdaq_close(link_id);
+    end
+    
+    if result < 0  then
+        error(mdaq_error2(result), 10000 + abs(result)); 
     end
 endfunction
