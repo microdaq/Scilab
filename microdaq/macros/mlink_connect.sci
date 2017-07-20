@@ -5,7 +5,6 @@ function [link_fd, hwid] = mlink_connect(ip, port)
                             "out",..
                                 [1, 1], 3, "i",..
                                 [1, 1], 4, "i");
-    mprintf("sci_mlink_connect: result: %d, link_fd: %d\n", result, link_fd)
     if result > -1 then
         [hwid, result] = call("sci_mlink_hwid",..
                                 link_fd, 1, "i",..
