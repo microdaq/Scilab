@@ -89,41 +89,41 @@ function [x,y,typ] = mdaq_dac(job,arg1,arg2)
                 dac_ch_count = strtod(dac_info.channel);
 
                 // check Channel parameter
-                if size(channel, 'r') > 1 then
+                if ok & (size(channel, 'r') > 1) then
                     ok = %f;
                     error_msg = 'Wrong channel vector - single row vector expected!';
                     message(error_msg);
                 end
 
                 n_channels = size(channel, 'c');
-                if n_channels > dac_ch_count then
+                if ok & (n_channels > dac_ch_count) then
                     ok = %f;
                     error_msg = 'Too many channels selected!';
                     message(error_msg);
                 end
 
-                if max(channel) > dac_ch_count | min(channel) < 1 then
+                if ok & (max(channel) > dac_ch_count) | (min(channel) < 1) then
                     ok = %f;
                     error_msg = 'Wrong channel number selected!';
                     message(error_msg);
                 end
 
                 // check Range parameter
-                if size(dac_range, 'r') > 1 then
+                if ok & (size(dac_range, 'r') > 1) then
                     ok = %f;
                     error_msg = 'Wrong range vector - single row vector expected!';
                     message(error_msg);
                 end
 
                 dac_range_size = size(dac_range, 'c');
-                if dac_range_size > 1 & dac_range_size <> n_channels then
+                if ok & (dac_range_size > 1) & (dac_range_size <> n_channels) then
                     ok = %f;
                     error_msg = 'Wrong range vector - size should be same as Channel vector!';
                     message(error_msg);
                 end
 
                 for i = 1:dac_range_size
-                    if dac_range(i) > size(dac_info.c_params.c_range, 'c') | dac_range(i) < 1 then
+                    if ok & (dac_range(i) > size(dac_info.c_params.c_range, 'c')) | (dac_range(i) < 1) then
                         ok = %f;
                         error_msg = 'Wrong range value!';
                         message(error_msg);
@@ -131,48 +131,48 @@ function [x,y,typ] = mdaq_dac(job,arg1,arg2)
                 end
 
                 // check Init value parameter
-                if size(init_value, 'r') > 1 then
+                if ok & (size(init_value, 'r') > 1) then
                     ok = %f;
                     error_msg = 'Wrong Init value vector - single row vector expected!';
                     message(error_msg);
                 end
 
                 init_value_size = size(init_value, 'c');
-                if init_value_size > 1 & init_value_size <> n_channels then
+                if ok & (init_value_size > 1) & (init_value_size <> n_channels) then
                     ok = %f;
                     error_msg = 'Wrong init value vector - scalar or vector for selected channels expected!';
                     message(error_msg);
                 end
 
                 // check Termination value parameter
-                if size(term_value, 'r') > 1 then
+                if ok & (size(term_value, 'r') > 1) then
                     ok = %f;
                     error_msg = 'Wrong termination value vector - single row vector expected!';
                     message(error_msg);
                 end
 
                 term_value_size = size(term_value, 'c');
-                if term_value_size > 1 & term_value_size <> n_channels then
+                if ok & (term_value_size > 1) & (term_value_size <> n_channels) then
                     ok = %f;
                     error_msg = 'Wrong termination value vector - scalar or vector for selected channels expected!';
                     message(error_msg);
                 end
                 
                 // check init term enable
-                if find(use_init_term > 3) <> [] | find(use_init_term < 0) <> [] then
+                if ok & (find(use_init_term > 3) <> []) | (find(use_init_term < 0) <> []) then
                     ok = %f;
                     error_msg = 'Wrong Use init/term paremeter value!';
                     message(error_msg);
                 end
                     
-                if size(use_init_term, 'r') > 1 then
+                if ok & (size(use_init_term, 'r') > 1) then
                     ok = %f;
                     error_msg = 'Wrong Use init/term paremeter vector - single row vector expected!';
                     message(error_msg);
                 end
 
                 use_init_term_size = size(use_init_term, 'c');
-                if use_init_term_size > 1 & use_init_term_size <> n_channels then
+                if ok & (use_init_term_size > 1) & (use_init_term_size <> n_channels) then
                     ok = %f;
                     error_msg = 'Wrong Use init/term paremeter vector - scalar or vector for selected channels expected!';
                     message(error_msg);
