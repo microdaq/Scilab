@@ -13,7 +13,7 @@ xml:id="mdaq_dsp_terminate">
   </refnamediv>
   <refsynopsisdiv>
 	<title>Description</title>
-	<para>This function forces termination of model execution on MicroDAQ DSP core.</para>
+	<para>This function forces termination of model execution on MicroDAQ DSP core. It allows Ext and Standalone model termination.</para>
     <title>Calling Sequence</title>
     <synopsis>
       mdaq_dsp_terminate();
@@ -26,8 +26,6 @@ xml:id="mdaq_dsp_terminate">
 	    <listitem><para><emphasis role="bold">connection_id : </emphasis> Connection ID returned by mdaq_open() (OPTIONAL)</para></listitem>
     </itemizedlist>
   </refsection>
-
-
   <refsection id="SeeAlso___FUNC_NAME__">
     <title>See Also</title>
     <simplelist type="inline">
