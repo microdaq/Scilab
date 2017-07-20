@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaq_ai_scan_init">
+	<refnamediv>
+		<refname>mdaq_ai_scan_init</refname>
+		<refpurpose>Initiates MicroDAQ analog inputs (AO) in scanning mode</refpurpose>
+	</refnamediv>
+	
+	<refsynopsisdiv>
+		<title>Calling Sequence</title>
+		<synopsis>
+			mdaq_ai_scan_init(link_id, channels, range, differential, frequency, time);
+			mdaq_ai_scan_init(channels, range, differential, frequency, time);
+		</synopsis>
+	</refsynopsisdiv>
+	
+	<refsection id="Description_mdaq_ai_scan_init">
+		<title>Description</title>
+		<para>
+			This function initaties analog inputs (AO) in scanning mode.
+		</para> 
+		
+		<para>
+		HARDWARE LIMITATIONS: On MicroDAQ version with ADC01/DAC01 there is no possibility to use AI and AO scan functions simultaneously.
+		</para>
+	</refsection>  
+  
+	<refsection id="Parameters_mdaq_ai_scan_init">
+		<title>Parameters</title>
+		<itemizedlist>
+			<listitem><para><emphasis role="bold">link_id: </emphasis> Valid connection link ID (optional)</para></listitem>
+			<listitem><para><emphasis role="bold">channels: </emphasis> Single channel or array of channels to use</para></listitem>
+			<listitem><para><emphasis role="bold">range: </emphasis> Analog input range, integer number according to MDAQ device version - check usage description.</para></listitem>
+			<listitem><para><emphasis role="bold">differential: </emphasis> measurement type (%T - differential, %F - single-ended)</para></listitem>
+			<listitem><para><emphasis role="bold">frequency:  </emphasis> Analog input scan frequency [Hz]</para></listitem>
+			<listitem><para><emphasis role="bold">duration:  </emphasis> Analog input scan duration [sec], (-1) - infinite duration</para></listitem>
+		</itemizedlist>
+	</refsection>
+	
+	<refsection>
+        <title>Examples</title>
+        
+		<para> Getting function usage description </para>
+			<programlisting role="example"><![CDATA[
+			mdaq_ai_scan_init
+			 ]]>
+			</programlisting>
+		
+		<para> 
+		This example acquire data from analog input channels 1-8, sample rate 10 kHz, duration 1 sec. 
+		Functions are called without link_id.
+		</para>
+        <programlisting role="example"><![CDATA[
+			data = [];
+			//init AI scan for 8 channels, 10 kHz sampling, 1 sec 
+			mdaq_ai_scan_init([1:8], 1, %F, 10000, 1)
+			for i=1:10
+				[newdata res] = mdaq_ai_scan(1000, %T);
+				data = [data; newdata];
+				mprintf('read %d samples...\n', res);
+			end
+			mdaq_ai_scan_stop();
+			
+			//show data
+			plot(data);
+			 ]]>
+		</programlisting>
+    </refsection>
+	
+  <refsection id="SeeAlso_mdaq_ai_scan_init">
+		<title>See Also</title>
+		<simplelist type="inline">
+			<member><link linkend="mdaq_ai_scan">mdaq_ai_scan</link></member>
+			<member><link linkend="mdaq_ai_scan_stop">mdaq_ai_scan_stop</link></member>
+			<member><link linkend="mdaq_ai_scan_examples">AI scan - examples</link></member>
+		</simplelist>
+  </refsection>
+</refentry>

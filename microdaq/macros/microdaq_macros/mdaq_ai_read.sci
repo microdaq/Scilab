@@ -21,7 +21,7 @@ function data = mdaq_ai_read(arg1, arg2, arg3, arg4)
 
     global %microdaq;
     if %microdaq.private.mdaq_hwid <> [] then
-        adc_info = get_adc_info(%microdaq.private.mdaq_hwid);
+        adc_info = %microdaq.private.adc_info;
         if argn(2) > 4 | argn(2) < 3 then
             mprintf("Description:\n");
             mprintf("\tReads MicroDAQ analog inputs\n");
@@ -56,14 +56,15 @@ function data = mdaq_ai_read(arg1, arg2, arg3, arg4)
         disp("ERROR: Wrong AI channel selected!")
         return;
     end
-
-    if argn(2) == 3 then
-        link_id = mdaq_open();
-        if link_id < 0 then
-            disp("ERROR: Unable to connect to MicroDAQ device!");
-            return;
-        end
-    end
+    
+    if ai_range > size(adc_info.c_params.c_range_desc, "r") | ai_range < 1 then 
+        mprintf("ERROR: Wrong AI range selected.\nSupported ranges:\n");
+          for i = 1:size(adc_info.c_params.c_range_desc, "r")
+                mprintf("\t    %s\n", string(i) + ": " + adc_info.c_params.c_range_desc(i));
+          end
+        return; 
+    end 
+       
     bipolar = adc_info.c_params.c_bipolar(ai_range);
     ai_range = adc_info.c_params.c_range(ai_range);
 
@@ -73,6 +74,14 @@ function data = mdaq_ai_read(arg1, arg2, arg3, arg4)
         differential = 28;
     end
 
+    if argn(2) == 3 then
+        link_id = mdaq_open();
+        if link_id < 0 then
+            disp("ERROR: Unable to connect to MicroDAQ device!");
+            return;
+        end
+    end
+    
     result = [];
     [data result] = call("sci_mlink_ai_read",..
                         link_id, 1, "i",..

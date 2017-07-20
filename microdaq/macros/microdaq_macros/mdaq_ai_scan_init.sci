@@ -1,4 +1,4 @@
-function  mdaq_ai_scan_init2(arg1, arg2, arg3, arg4, arg5, arg6)
+function  mdaq_ai_scan_init(arg1, arg2, arg3, arg4, arg5, arg6)
     link_id = -1;
 
     if argn(2) == 5 then
@@ -22,6 +22,8 @@ function  mdaq_ai_scan_init2(arg1, arg2, arg3, arg4, arg5, arg6)
             return;
         end
     end
+    
+    
 
     global %microdaq;
     if %microdaq.private.mdaq_hwid <> [] then
@@ -107,10 +109,11 @@ function  mdaq_ai_scan_init2(arg1, arg2, arg3, arg4, arg5, arg6)
         "out",..
             [1, 1], 9, "i");
 
-    disp("result: "); 
-    disp(result);
     if result < 0 & result <> -88 then
-            error(mdaq_error(result), 10000 + abs(result))            
+            if argn(2) == 5 then
+                mdaq_close(link_id);
+            end
+            error(mdaq_error2(result), 10000 + abs(result));           
     else
         if result == -88 then
             disp("Warninng: AI scanning interrupted!")
@@ -131,10 +134,21 @@ function  mdaq_ai_scan_init2(arg1, arg2, arg3, arg4, arg5, arg6)
                 "out",..
                     [1, 1], 9, "i");
         end
+    
+        if argn(2) == 5 then
+            mdaq_close(link_id);
+        end
         
-        mprintf("Data acquisition session settings:\n");
-
-        str = [];
+        if result < 0 then
+            error(mdaq_error2(result), 10000 + abs(result)); 
+        end
+        
+        if result == 1 then
+            mprintf("\nWARNING: Your MicroDAQ device does not allow running AI and AO scanning session simultaneously.\n")
+        end
+        
+        mprintf("\nData acquisition session settings:\n");
+        str = "";
         s = size(channels);
         for j=1:s(2)
             if j > 1
@@ -168,9 +182,4 @@ function  mdaq_ai_scan_init2(arg1, arg2, arg3, arg4, arg5, arg6)
             mprintf("\tScan count:\t%d\n", scan_time * scan_freq);
         end
     end
-
-    if argn(2) == 5 then
-        mdaq_close(link_id);
-    end
-
 endfunction

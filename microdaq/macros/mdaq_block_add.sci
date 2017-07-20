@@ -1,6 +1,11 @@
-
 function mdaq_block_add(block_def)
-
+    // Check version compatibility 
+    [is_supp vers] = mdaq_is_working('mdaq_block_add');
+    if is_supp == %F then
+        error('ERROR: ' + vers)
+        return;
+    end
+    
     if type(block_def) <> 17 then
         disp("ERROR: Wrong type of input argument!");
         if type(block_def) == 13 then
@@ -30,6 +35,13 @@ function mdaq_block_add(block_def)
     if length(block_def.name) > 20 then
         disp("ERROR: Block name too long!");
         return;
+    end
+    
+    FORCE_SIM = %F;
+    if haveacompiler() == %F & block_def.use_sim_script == %F then 
+        warning("Compiler not found.");
+        warning("This block will use simulation script instead of C code during simulation mode.');
+        FORCE_SIM = %T;
     end
 
     path = dirname(get_function_path('mdaq_block_add')) + filesep();
@@ -82,23 +94,23 @@ function mdaq_block_add(block_def)
 
     // =============================GENERATE STRINGS=====================================
     // converted params
-    params_converted = [];
+    params_converted = '';
 
     // script file
-    params_string1 = [];
-    params_string2 = [];
-    params_string3 = [];
-    params_string4 = [];
-    params_string5 = [];
+    params_string1 = '';
+    params_string2 = '';
+    params_string3 = '';
+    params_string4 = '';
+    params_string5 = '';
 
     //default values string
-    params_string6 = [];
+    params_string6 = '';
 
     // C file
-    in_ports_string = [];
-    out_ports_string = [];
-    params_c_string = [];
-    params_sci_string = [];
+    in_ports_string = '';
+    out_ports_string = '';
+    params_c_string = '';
+    params_sci_string = '';
 
     name_converted = convstr(block_def.name,'l');
     name_converted = strsubst(name_converted, ' ', '_');
@@ -115,12 +127,13 @@ function mdaq_block_add(block_def)
 
         params_string1 = params_string1 + params_converted(i)+',';
         params_string2 = params_string2 + ''''+block_def.param_name(i)+':'';';
+        disp(params_string2)
         params_string3 = params_string3 + '''vec'','+ string(block_def.param_size(i)) + ',';
         params_string4 = params_string4 + 'sci2exp(' + params_converted(i) + ');';
         params_string5 = params_string5 + params_converted(i)+';';
 
         i_def_param_size = max(size(block_def.param_def_val(i)));
-        i_param_def_string = [];
+        i_param_def_string = '';
 
         for j = 1:block_def.param_size(i)
             i_param_def_string = i_param_def_string + string(block_def.param_def_val(i)(j))+';';
@@ -175,6 +188,7 @@ function mdaq_block_add(block_def)
     '   select job';
     '   case ''set'' then';
     '       x=arg1;';];
+  
     if params_size > 0 then
         block_script = [block_script; 
         '       model=arg1.model;';
@@ -212,14 +226,24 @@ function mdaq_block_add(block_def)
         '';
         '   end'];
     end
+    
+     use_sim_string = [
+            '       if c_link('''+name_converted+''') then';
+            '           model.sim=list('''+name_converted+''',4);';
+            '       else';
+            '           model.sim=list('''+name_converted+'_sim'',5);';
+            '           warning(''Cannot link '''''+name_converted+''''' C function. Script '''''+name_converted+'_sim.sci'''' will be used instead.'');';
+            '       end';
+    ];
+    
+    if block_def.use_sim_script == %T then
+       use_sim_string = '       model.sim=list('''+name_converted+'_sim'',5);';  
+    end
+    
     block_script = [block_script; '   case ''define'' then';
     params_string6;
     '       model=scicos_model();';
-    '       if haveacompiler() then';
-    '           model.sim=list('''+name_converted+''',4);';
-    '       else';
-    '           model.sim=list('''+name_converted+'_sim'',5);';
-    '       end';
+    use_sim_string;
     '       model.in=['+in_string+'];';
     '       model.in2=1;';
     '       model.out=['+out_string+'];';
@@ -229,8 +253,6 @@ function mdaq_block_add(block_def)
     '       model.evtin=1;';
     '       model.rpar=['+params_string5+'];';
     '       model.ipar=[];';
-
-
     '       model.dstate=[];';
     '       model.blocktype=''d'';';
     '       model.dep_ut=[%t %f];';
@@ -255,6 +277,15 @@ function mdaq_block_add(block_def)
         l = l + 1;
     end
     //  (block_def.name)_sim.sci script generator
+    init_string = '';
+    if FORCE_SIM == %T then
+        init_string = [
+'           mprintf('"\nWARNING: The '''''+name_converted+''''' block uses '''''+name_converted+'_sim.sci'''' script instead of C code during\n\t simulation mode. '');';
+'           mprintf('"Make sure that the valid compiler is installed. More information is available at:\n'');';
+'           mprintf('"\t https://help.scilab.org/doc/5.5.2/en_US/supported_compilers.html'');';
+        ];
+    end
+    
     block_script_sim = [
     '// Generated with MicroDAQ toolbox ver: ' + mdaq_version() + '';
     'function block='+name_converted+'_sim(block,flag)';
@@ -269,6 +300,7 @@ function mdaq_block_add(block_def)
     '       case 2 // State Update';
     '       case 3 // OutputEventTiming';
     '       case 4 // Initialization';
+    init_string;
     '       case 5 // Ending';
     '       case 6 // Re-Initialisation';
     '       case 9 // ZeroCrossing';
@@ -399,7 +431,6 @@ function mdaq_block_add(block_def)
 
     // build macros and compile C code
     mdaq_block_build();
-
 endfunction
 
 function res = save_string(filename, content)

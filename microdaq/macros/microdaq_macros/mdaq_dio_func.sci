@@ -27,7 +27,7 @@ function mdaq_dio_func(arg1, arg2, arg3)
         mprintf("\t\t2 - ENC2: DIO3 - Channel A, DIO4 - Channel B (enabled by default)\n");
         mprintf("\t\t3 - PWM1: DIO10 - Channel A, DIO11 - Channel B (enabled by default)\n");
         mprintf("\t\t4 - PWM2: DIO12 - Channel A, DIO13 - Channel B (enabled by default)\n");
-        mprintf("\t\t5 - PWM3: DIO14 - Channel A, DIO14 - Channel B (enabled by default)\n");
+        mprintf("\t\t5 - PWM3: DIO14 - Channel A, DIO15 - Channel B (enabled by default)\n");
         mprintf("\t\t6 - UART: DIO8 - Rx, DIO9 - Tx (enabled by default)\n");
         mprintf("\tenable - function state (%%T/%%F to enable/disable function)\n");
         return;
@@ -59,12 +59,12 @@ function mdaq_dio_func(arg1, arg2, arg3)
             enable, 3, "i",..
         "out",..
             [1, 1], 4, "i");
-
-    if result < 0 then
-        mdaq_error(result);
-    end
-
+            
     if argn(2) == 2 then
         mdaq_close(link_id);
+    end
+    
+    if result < 0  then
+        error(mdaq_error2(result), 10000 + abs(result)); 
     end
 endfunction

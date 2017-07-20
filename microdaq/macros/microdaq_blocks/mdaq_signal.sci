@@ -12,19 +12,24 @@ function [x,y,typ]=mdaq_signal(job,arg1,arg2)
                 getversion('scilab');
                 [ok,signal_id,exprs]=..
                 scicos_getvalue('Set Signal block parameters',..
-                ['Signal ID:'],..
-                list('vec',-1),exprs)
+                ['Signal id (1-16):'],..
+                list('vec',1),exprs)
             catch
                 [ok,signal_id,exprs]=..
                 scicos_getvalue('Set Signal block parameters',..
-                ['Signal ID:'],..
-                list('vec',-1),exprs)
+                ['Signal id (1-16):'],..
+                list('vec',1),exprs)
             end;
 
             err_message = [];
 
             if ~ok then break,end
-
+            
+            if ((signal_id - int(signal_id)) <> 0.0) | (signal_id > 16) | (signal_id < 1) then
+                ok = %f;
+                message("Wrong signal id, use integer value from 1 to 16!");
+            end 
+            
             if ok then
                 graphics.exprs=exprs;
                 model.ipar=[signal_id];

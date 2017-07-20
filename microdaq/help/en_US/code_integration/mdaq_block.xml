@@ -22,7 +22,7 @@ xml:id="mdaq_block">
 			<member><para>block.param_size - defines block parameters sizes. This field and block.param_name must have the same number of elements.</para></member>
 			<member><para>block.param_def_val - defines default block parameters values. </para></member>
 			<member><para>block.in - defines block input port configuration. </para></member>
-			<member><para>block.out - defines block output port configuration. </para></member>
+			<member><para>block.use_sim_script - %T or %F, defines if block uses simulation script or C code in simulation mode (%F - by default)</para></member>          
         </simplelist>
 	<title>Calling Sequence</title>
     <synopsis>
@@ -50,6 +50,7 @@ block.param_size = [ 1 2 4 ]; // set block parameters sizes
 block.param_def_val(1) = 1;  // assign default values to defined block parameters according to block.param_size
 block.param_def_val(2) = [ 2; 3 ]; 
 block.param_def_val(3) = [ 4; 5; 6; 7 ]; 
+block.use_sim_script = %F; 
 
 // define block inputs (four inputs: input 1 - vec size 1, input 2 - vec size 2, input 3 - vec size 4, input 4 - vec size 1)
 block.in = [ 1 2 4 1];
@@ -65,11 +66,8 @@ mdaq_block_add(block);
   <refsection id="SeeAlso___FUNC_NAME__">
     <title>See Also</title>
     <simplelist type="inline">
-  <member><link linkend="mdaq_block">mdaq_block</link> : Initialize MicroDAQ block structure</member>
-	  <member><link linkend="mdaq_block_build">mdaq_block_build</link> : Build/Rebuild MicroDAQ custom block C/C++ source code</member>
-      <member>
-        <link type="scilab" linkend="scilab.help/sum">Link to the Scilab help page</link>
-		</member>
+        <member><link linkend="mdaq_block">mdaq_block</link> : Initialize MicroDAQ block structure</member>
+	    <member><link linkend="mdaq_block_build">mdaq_block_build</link> : Build/Rebuild MicroDAQ custom block C/C++ source code</member>
     </simplelist>
   </refsection>
 </refentry>

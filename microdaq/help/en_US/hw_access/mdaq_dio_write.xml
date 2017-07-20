@@ -36,13 +36,15 @@
 	<refsection>
         <title>Examples</title>
         <programlisting role="example"><![CDATA[
-// mdaq_dio_write usage example
-// mdaq_dio_set_func usage example
+mdaq_dio_func(1, %F); //Disable ENC1
+mdaq_dio_dir(1, 1);   //Set DIO1..8 to output direction 
+
 link_id = mdaq_open(); 
-// set DIO1 to HIGH
-mdaq_dio_write(link_id, 1, 1);
-// set DIO1 to LOW
-mdaq_dio_write(link_id, 1, 0);
+
+mdaq_dio_write(link_id, 1, 1); // set DIO1 to HIGH
+sleep(100);
+mdaq_dio_write(link_id, 1, 0); // set DIO1 to LOW
+
 mdaq_close(link_id);
  ]]></programlisting>
     </refsection>

@@ -12,7 +12,11 @@
 
 #include <stdint.h>
 
-/* AO channels */
+#define     LOW     (0)
+#define     HIGH    (1)
+
+
+/* DIO channels */
 enum mdaq_dio_ids
 {
 	DIO1 = 1,

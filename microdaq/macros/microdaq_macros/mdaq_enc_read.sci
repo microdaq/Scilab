@@ -42,11 +42,12 @@ function [position, direction] = mdaq_enc_read(arg1, arg2)
                 [1, 1], 3, "i",..
                 [1, 1], 4, "i",..
                 [1, 1], 5, "i");
-    if result < 0  then
-        mdaq_error(result)
-    end    
-    
+
     if argn(2) == 1 then
         mdaq_close(link_id);
+    end
+    
+    if result < 0  then
+        error(mdaq_error2(result), 10000 + abs(result)); 
     end
 endfunction

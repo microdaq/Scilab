@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<refentry xmlns="http://docbook.org/ns/docbook" 
+xmlns:xlink="http://www.w3.org/1999/xlink" 
+xmlns:svg="http://www.w3.org/2000/svg" 
+xmlns:ns5="http://www.w3.org/1999/xhtml" 
+xmlns:mml="http://www.w3.org/1998/Math/MathML" 
+xmlns:db="http://docbook.org/ns/docbook" 
+version="5.0-subset Scilab" 
+xml:id="mdaq_param">
+    <refnamediv>
+        <refname>mdaq_param</refname>
+        <refpurpose>
+		
+		Sets data to MicroDAQ DSP application
+		
+		</refpurpose>
+    </refnamediv>
+    <refsection>
+        <title>Block Screenshot</title>
+        <para>
+            <inlinemediaobject>
+                <imageobject>
+                    <imagedata align="center" fileref="../../../images/gif/mdaq_param.gif" valign="middle"/>
+                </imageobject>
+            </inlinemediaobject>
+        </para>
+    </refsection>
+    <refsection id="Description_mdaq_param">
+        <title>Description</title>
+        <para>
+		
+		This block sets data to DSP application generated from Xcos model. Block can be used for code generation and in 
+		simulation mode. In simulation mode block copies its input to output. In case of code generation mode block sets data 
+		to DSP application running on MicroDAQ. Block works only in Ext mode where data exchange between MicroDAQ and Scilab is 
+		done. In order to set param data to application running on MicroDAQ DSP 'PARAM' block has to be placed before 
+		block sink block e.g. dac block. User has to provide unique 'Param id' block parameter for every 'PARAM' block 
+		placed on Xcos diagram (max. 16). Maximum data size for this block is 8000 real values.
+		
+		</para>
+    </refsection>
+	
+	<refsection id="InputOutput_mdaq_param">
+        <title>Block Input/Output ports</title>
+		<para>
+		
+		<member><para>input(1) - param data input</para></member>
+		<member><para>output(1) - param data output</para></member>
+		
+		</para>
+    
+	</refsection>
+    
+    
+    
+    <refsection id="Example_mdaq_param">
+        <title>Example</title>
+        <para>
+            Simple DSP application running in external mode. Allows to control output voltage via TKSCALE block (GUI slider).
+             <programlisting role="example"><![CDATA[
+                    xcos(mdaq_toolbox_path()+'/examples/mdaq_param_demo.zcos');
+                     ]]>
+                </programlisting>
+        </para>
+    </refsection>
+    
+    <refsection id="SeeAlso_mdaq_param">
+        <title>See Also</title>
+        <simplelist type="inline">
+            <member>
+                <link linkend="mdaq_signal">mdaq_signal</link> : Reads signal data from MicroDAQ DSP application
+            </member>
+        </simplelist>
+    </refsection>
+</refentry>

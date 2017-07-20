@@ -1,0 +1,268 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="uart_custom_block">
+	<refnamediv>
+		<refname>Custom UART Xcos block</refname>
+		<refpurpose>This guide shows how to build custom UART communication block using MicroDAQ API.</refpurpose>
+	</refnamediv>
+	<refsection id="Description_uart_custom_block">
+		<para></para><emphasis role="bold">Defining block functionality</emphasis>
+            <para>       
+            Frist step is an initialize MicroDAQ block structure with mdaq_block() function. Blocks for receiving and transmitting will be created. 
+            'UART Receive', 'UART Transmit' blocks won't have any additional paramters, only output and input port respectively. In this case C code 
+            won't be used in simulation mode (use_sim_script = %T) since hardware acceess is used. If there is a need, compiled source can be also used in simulation 
+            mode (without MicroDAQ hardware access) but code for simulation (e.g fake data) have to be placed in special #ifdef section* and block have
+            to be generated with use_sim_script paramter set to false. 
+            </para> 
+            <para> 
+            When C source don't include any MicroDAQ API files, the same code can be compiled on target and host without additional preprocessor directives. 
+            </para>
+             <para>
+             * #define for traget/host 
+				<programlisting role="example">
+					<![CDATA[ 
+             #ifdef _TMS320C6X
+                //Code for DSP 
+                //e.g read analog input 
+             #else
+                //Code for host computer
+                //e.g imitate analog input 
+             #endif 
+                   ]]>
+                </programlisting>
+            </para>    
+            <para>
+                Block structure initialization.
+				<programlisting role="example">
+					<![CDATA[ 
+                // Make 'UART Receive' block definition 
+                uartRead = mdaq_block() 
+                uartRead.name = "UART Receive";
+                uartRead.param_name = [];
+                uartRead.in = [];
+                uartRead.out = [1]; 
+                uartRead.use_sim_script = %T;
+
+                // Make 'UART Transmit' block definition  
+                uartWrite = mdaq_block() 
+                uartWrite.name = "UART Transmit";
+                uartWrite.param_name = [];
+                uartWrite.in = [1];
+                uartWrite.out = []; 
+                uartWrite.use_sim_script = %T;
+
+                mdaq_block_add(uartRead);
+                mdaq_block_add(uartWrite);
+                   ]]>
+                </programlisting>
+            </para>    
+            
+            <para></para><emphasis role="bold">Edit source code</emphasis>
+            <para>
+                Next step is to edit generated C source files which are located in src/c/userlib/. Note, in this example MicroDAQ API is used (mdaq_uart.h) therefore 
+                code section that refers to it have to be under _TMS320C6X directive. This will allow to compile and run code on target device and host computer (without 
+                hardware capability on host).
+            </para>
+            <para>
+              MicroDAQ API headers are located in etc\mdaqlib\ folder. 
+            </para>
+            <para>
+                Copy following code to src/c/userlib/mdaq_uart_receive.c
+                <programlisting role="example">
+					<![CDATA[ 
+/* Generated with MicroDAQ toolbox ver: 1.2.0 */
+#include "scicos_block4.h"
+#include <stdio.h>
+#include <stdlib.h>
+
+#ifdef _TMS320C6X
+    #include "mdaq_uart.h"
+#endif 
+
+#define RECV_TIMEOUT    (100) // [us]
+
+extern double get_scicos_time( void );
+
+/* This function will executed once at the beginning of model execution */
+static void init(scicos_block *block)
+{
+    /* Block parameters */
+    double *params = GetRparPtrs(block);
+
+    /* Add block init code here */
+
+#ifdef _TMS320C6X
+    mdaq_uart_config_t uart;
+    uart.baud_rate = B115200;
+    uart.data_bits = 8;
+    uart.parity = PARITY_NONE;
+    uart.stop_bits = STOP_BITS_1;
+
+    mdaq_uart_open(1, &uart);
+#endif 
+}
+
+/* This function will be executed on every model step */
+static void inout(scicos_block *block)
+{  
+    /* Block parameters */
+    double *params = GetRparPtrs(block);
+
+    /* Block output ports */
+    double *y1 = GetRealOutPortPtrs(block,1);
+    int y1_size = GetOutPortRows(block,1);    /* y1_size = 1 */
+
+    /* Add block code here (executed every model step) */
+    char buffer;
+      
+#ifdef _TMS320C6X
+    mdaq_uart_read(1, (void*)&buffer, 1, RECV_TIMEOUT);
+#endif 
+
+    *y1 = (double)atoi(&buffer);
+}
+
+/* This function will be executed once at the end of model execution (only in Ext mode) */
+static void end(scicos_block *block)
+{
+    /* Prameters */
+    double *params = GetRparPtrs(block);
+
+    /* Add block end code here */
+}
+
+void mdaq_uart_receive(scicos_block *block,int flag)
+{
+    if (flag == 1){            /* set output */
+        inout(block);
+    }
+    else if (flag == 5){       /* termination */
+        end(block);
+    }
+    else if (flag == 4){       /* initialisation */
+        init(block);
+    }
+}
+                   ]]>
+                </programlisting>
+            </para>
+            <para>
+                 Copy following code to src/c/userlib/mdaq_uart_transmit.c
+                <programlisting role="example">
+					<![CDATA[ 
+/* Generated with MicroDAQ toolbox ver: 1.2.0 */
+#include "scicos_block4.h"
+#include <stdio.h>
+#include <stdlib.h>
+
+//#define _TMS320C6X
+#ifdef _TMS320C6X
+    #include "mdaq_uart.h"
+#endif 
+    
+
+extern double get_scicos_time( void );
+
+/* This function will executed once at the beginning of model execution */
+static void init(scicos_block *block)
+{
+    /* Block parameters */
+    double *params = GetRparPtrs(block);
+
+    /* param size = 1 */
+    double param1 = params[0];
+
+    /* Add block init code here */
+#ifdef _TMS320C6X
+    mdaq_uart_config_t uart;
+    uart.baud_rate = B115200;
+    uart.data_bits = 8;
+    uart.parity = PARITY_NONE;
+    uart.stop_bits = STOP_BITS_1;
+
+    mdaq_uart_open(1, &uart);
+#endif 
+
+}
+
+/* This function will be executed on every model step */
+static void inout(scicos_block *block)
+{
+    char buffer[64];
+    int n;
+    
+    /* Block parameters */
+    double *params = GetRparPtrs(block);
+    /* param size = 1 */
+    double param1 = params[0];
+
+    /* Block input ports */
+    double *u1 = GetRealInPortPtrs(block,1);
+    int u1_size = GetInPortRows(block,1);    /* u1_size = 1 */
+
+    n = sprintf(buffer, "value: %f\r\n", (float)*u1);
+
+    /* Add block code here (executed every model step) */
+#ifdef _TMS320C6X
+    mdaq_uart_write(1, (void*)buffer, n);
+#endif 
+}
+
+/* This function will be executed once at the end of model execution (only in Ext mode) */
+static void end(scicos_block *block)
+{
+    /* Prameters */
+    double *params = GetRparPtrs(block);
+
+    /* param size = 1 */
+    double param1 = params[0];
+
+    /* Add block end code here */
+}
+
+void mdaq_uart_transmit(scicos_block *block,int flag)
+{
+    if (flag == 1){            /* set output */
+        inout(block);
+    }
+    else if (flag == 5){       /* termination */
+        end(block);
+    }
+    else if (flag == 4){       /* initialisation */
+        init(block);
+    }
+}
+                   ]]>
+                </programlisting>
+            </para>
+            
+            <para></para><emphasis role="bold">Rebuild changes</emphasis>
+            <para> 
+            In order to use newly added blocks, rebuild and update block library using following script:
+            </para>
+             <para>
+             * #define for traget/host 
+				<programlisting role="example">
+					<![CDATA[ 
+                    mdaq_block_build(); //rebuild blocks 
+                    lib(mdaq_toolbox_path() + pathconvert("macros/user_blocks")); //update blocks library 
+                    ]]>
+                </programlisting>
+            </para>      
+            
+            <para></para><emphasis role="bold">Make xcos scheme.</emphasis>
+            <para> 
+             Make XCOS scheme with 'UART Transmit block', build nad load on MicroDAQ device.
+             <imagedata align="center" fileref="../images/uart_transmit_scheme.png" valign="middle"/>
+            </para>
+            
+            <para></para><emphasis role="bold">Result</emphasis>
+            <para> 
+             Screenshot from host computer that receivies data from MicroDAQ UART.
+             <imagedata align="center" fileref="../images/uart_transmit_terminal.png" valign="middle"/>
+            </para>
+            
+            
+            
+            
+   </refsection>
+ </refentry>

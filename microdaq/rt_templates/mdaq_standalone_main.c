@@ -21,6 +21,7 @@
 #include <ti/sysbios/knl/Semaphore.h>
 
 #define MODEL_TSAMP     ($$MODEL_TSAMP$$)
+#define MODEL_DURATION  ($$MODEL_DURATION$$)
 #define USEC_PER_SEC    (1000000)
 
 #define XNAME(x,y)      x##y
@@ -96,7 +97,7 @@ Void rt_task(UArg arg0)
 {
     static int end_called = 0; 
 
-	if ( model_stop_flag == 0.0 )
+	if( model_stop_flag == 0.0 && ( model_exec_timer <= MODEL_DURATION || MODEL_DURATION == -1 ))
     {
         /* Call model isr function */ 
         NAME(MODEL, _isr)(model_exec_timer);    

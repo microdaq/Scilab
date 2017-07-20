@@ -1126,29 +1126,30 @@ function  [ok,XX,alreadyran,flgcdgen,szclkINTemp,freof] = do_compile_superblock_
 
     if load_dsp_app == %t then
         disp('### Connecting to MicroDAQ...');
+        close_last_connection();
         connection_id = mdaq_open();
         if connection_id < 0 then
-            message('Unable to connect to MicroDAQ device - check cable and IP settings!');
+            message("ERROR: Unable to connect to MicroDAQ device!");
             return;
         end
-
-        disp('### Loading ' + dsp_binary + ' to MicroDAQ...');
+    
         res = mlink_dsp_load(connection_id, rpat + filesep() + dsp_binary, '');
         if res < 0 then
-            message('Unable to load model!');
+            message('Unable to load DSP firmware! (' + mdaq_error2(res) + ').');
             mdaq_close(connection_id);
             return;
         end
-
-        if standalone == %t then
-            disp('### Starting model in Standalone mode...');
-        end
+        disp('### ' + dsp_binary + ' has been loaded to MicroDAQ.');
 
         res = mlink_dsp_start(connection_id,-1);
         if res < 0 then
             message("Unable to start DSP application!");
             mdaq_close(connection_id);
             return;
+        end
+        
+        if standalone == %t then
+            disp('### Model has been started in Standalone mode.');
         end
 
         %microdaq.dsp_loaded = %T;

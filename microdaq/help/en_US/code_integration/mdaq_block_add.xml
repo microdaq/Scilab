@@ -52,6 +52,7 @@ block.param_size = [ 1 2 4 ]; // set block parameters sizes
 block.param_def_val(1) = 1;  // assign default values to defined block parameters according to block.param_size
 block.param_def_val(2) = [ 2; 3 ]; 
 block.param_def_val(3) = [ 4; 5; 6; 7 ]; 
+block.use_sim_script = %F;
 
 // define block inputs (four inputs: input 1 - vec size 1, input 2 - vec size 2, input 3 - vec size 4, input 4 - vec size 1)
 block.in = [1 2 4 1];
@@ -163,9 +164,7 @@ void mdaq_test(scicos_block *block,int flag)
     <simplelist type="inline">
   <member><link linkend="mdaq_block">mdaq_block</link> : Initialize MicroDAQ block structure</member>
 	  <member><link linkend="mdaq_block_build">mdaq_block_build</link> : Build/Rebuild MicroDAQ custom block C/C++ source code</member>
-      <member>
-        <link type="scilab" linkend="scilab.help/sum">Link to the Scilab help page</link>
-      </member>
+      <member><link linkend="mdaq_block_delete">mdaq_block_delete</link> : Deletes MicroDAQ user block</member>
     </simplelist>
   </refsection>
 </refentry>

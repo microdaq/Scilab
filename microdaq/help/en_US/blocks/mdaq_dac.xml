@@ -1,56 +1,99 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<refentry xmlns="http://docbook.org/ns/docbook" 
-xmlns:xlink="http://www.w3.org/1999/xlink" 
-xmlns:svg="http://www.w3.org/2000/svg" 
-xmlns:ns5="http://www.w3.org/1999/xhtml" 
-xmlns:mml="http://www.w3.org/1998/Math/MathML" 
-xmlns:db="http://docbook.org/ns/docbook" 
-version="5.0-subset Scilab" 
-xml:id="mdaq_dac">
-    <refnamediv>
-        <refname>mdaq_dac</refname>
-        <refpurpose>
-		
-		Sets MicroDAQ analog outputs (AO)
-		
-		</refpurpose>
-    </refnamediv>
-    <refsection>
-        <title>Block Screenshot</title>
-        <para>
-            <inlinemediaobject>
-                <imageobject>
-                    <imagedata align="center" fileref="../../../images/gif/mdaq_dac.gif" valign="middle"/>
-                </imageobject>
-            </inlinemediaobject>
-        </para>
-    </refsection>
-    <refsection id="Description_mdaq_dac">
-        <title>Description</title>
-        <para>
-		
-		This block sets MicroDAQ analog outputs. Block supports different types of MicroDAQ analog outputs, select analog output type by providing 'Converter' parameter accordingly to MicroDAQ hardware configuration.
-		In order to set more then one AI channel user can pass array of channels in block 'Channels' parameter. 'End value' parameter allows to set AO state after simulation end. User can pass one value which will 
-		be applied to all channels or can pass an array with end values for used channels.
-		
-		</para>
-		<para>This block can be used in host simulation mode and for code generation.</para>
-    </refsection>
-	
-	<refsection id="InputOutput_mdaq_dac">
-        <title>Block Input/Output ports</title>
-		<para>
-			<simplelist type="inline">
-				<member><para>input(1) - AO voltage value (scalar or vector)</para></member>
-			</simplelist>
-		</para>
-	</refsection>
-    <refsection id="SeeAlso_mdaq_dac">
-        <title>See Also</title>
-        <simplelist type="inline">
-            <member> <link linkend="mdaq_ao_write">mdaq_ao_write</link> : Sets MicroDAQ analog outputs (AO) from Scilab script</member>
-			<member> <link linkend="mdaq_adc">mdaq_adc</link> : Reads MicroDAQ analog inputs </member>
-            <member><link type="scilab" linkend="scilab.help/sum">Link to the Scilab help page</link></member>
-        </simplelist>
-    </refsection>
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:db="http://docbook.org/ns/docbook" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0-subset Scilab" xml:id="mdaq_dac">
+   <refnamediv>
+      <refname>mdaq_dac</refname>
+      <refpurpose>Writes MicroDAQ analog outputs (AO)</refpurpose>
+   </refnamediv>
+   <refsection>
+      <title>Block Screenshot</title>
+      <para>
+         <inlinemediaobject>
+            <imageobject>
+               <imagedata align="center" fileref="../../../images/gif/mdaq_dac.gif" valign="middle" />
+            </imageobject>
+         </inlinemediaobject>
+      </para>
+   </refsection>
+   <refsection id="Description_mdaq_dac">
+      <title>Description</title>
+      <para>This block writes MicroDAQ analog outputs. Block detects and configures MicroDAQ analog outputs. Block allows channel and range selection.User can set different initial and termination voltage values.</para>
+      <para>This block can be used in host simulation mode and for code generation.</para>
+   </refsection>
+   <refsection id="Dialogbox_mdaq_dac">
+      <title>Dialog box</title>
+      <para>
+         <inlinemediaobject>
+            <imageobject>
+               <imagedata align="center" fileref="../../../help/en_US/images/dac_params.png" valign="middle" />
+            </imageobject>
+         </inlinemediaobject>
+      </para>
+      <itemizedlist>
+         <listitem>
+            <para>
+               <emphasis role="bold">Channels</emphasis>
+            </para>
+            <para>Scalar or vector containing channel numbers.</para>
+            <para>Properties : Type int, Range - depending on DAC converter 1..4, 1..8 or 1..16.</para>
+            <para />
+         </listitem>
+         <listitem>
+            <para>
+               <emphasis role="bold">Range</emphasis>
+            </para>
+            <para>Range parameter defines AO output voltage range. The value can be a scalar or a vector that must be the same length as the channel vector. If scalar value is specified, that setting is replicated over the channel vector. Different ranges can be set for each channel if ADC supports more then one output range.</para>
+            <para />
+         </listitem>
+         <listitem>
+            <para>
+               <emphasis role="bold">Initial value</emphasis>
+            </para>
+            <para>The initial value vector contains the initial voltage values for the output channels. Provided scalar or a vector has to have the same length as the channel vector. If scalar value is specified, that value is replicated as the initial value over the channel vector. The channels are set to the initial values between the time the model is downloaded and the time it is started.</para>
+            <para />
+         </listitem>
+         <listitem>
+            <para>
+               <emphasis role="bold">Terminate value</emphasis>
+            </para>
+            <para>The Terminate value vector controls the behavior of the channel at model termination. Provided scalar or a vector has to have the same length as the channel vector. If scalar value is specified, that setting is replicated over the channel vector.</para>
+            <para />
+         </listitem>
+         <listitem>
+            <para>
+               <emphasis role="bold">Use Init/Term</emphasis>
+            </para>
+            <para>Use Init/Term parameter allows to enable or disable setting initial or/and termination voltage values. User can provide scalar or vector with following values:</para>
+            <para>0 - Initial and termination voltage value is ignored</para>
+            <para>1 - Initial voltage value is used</para>
+            <para>2 - Termination voltage value is used</para>
+            <para>3 - Initial and termination voltage value is used</para>
+         </listitem>
+      </itemizedlist>
+   </refsection>
+   <refsection id="InputOutput_mdaq_dac">
+      <title>Block Input/Output ports</title>
+      <para>
+         <simplelist type="inline">
+            <member>
+               <para>input(1) - AO voltage value (scalar or vector)</para>
+            </member>
+         </simplelist>
+      </para>
+   </refsection>
+   <refsection id="SeeAlso_mdaq_dac">
+      <title>See Also</title>
+      <simplelist type="inline">
+         <member>
+            <link linkend="mdaq_ao_write">mdaq_ao_write</link>
+            : Sets MicroDAQ analog outputs (AO) from Scilab script
+         </member>
+         <member>
+            <link linkend="mdaq_adc">mdaq_adc</link>
+            : Reads MicroDAQ analog inputs
+         </member>
+         <member>
+            <link type="scilab" linkend="scilab.help/sum">Link to the Scilab help page</link>
+         </member>
+      </simplelist>
+   </refsection>
 </refentry>

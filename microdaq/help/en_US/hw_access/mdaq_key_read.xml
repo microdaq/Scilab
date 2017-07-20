@@ -33,13 +33,19 @@
 	<refsection>
         <title>Examples</title>
         <programlisting role="example"><![CDATA[
-// mdaq_key_read usage example
+ledState = %T;
+link_id = mdaq_open(); 
+
 while mdaq_key_read(link_id, 1) == %F
-	// keep led on until F1 isn't pressed
-	mdaq_led_write(1, %T)
-	sleep(100);
+	// keep led blinking until F1 isn't pressed
+	mdaq_led_write(link_id, 1, ~ledState);
+    
+	sleep(100); 
+    ledState = ~ledState;
 end
-mdaq_led_write(1, %F)
+
+mdaq_led_write(link_id, 1, 0)
+mdaq_close(link_id)
  ]]></programlisting>
     </refsection>
 	

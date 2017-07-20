@@ -20,15 +20,34 @@ enum mdaq_uart_baud_rate
 	B19200 = 19200,
 	B38400 = 38400,
 	B57600 = 57600,
-	B115200 = 115200
+	B115200 = 115200,
+	B230400 = 230400,
+	B460800 = 460800,
+	B500000 = 500000,
+	B576000 = 576000,
+	B921600 = 921600,
+	B1000000 = 1000000,
+	B1152000 = 1152000,
+	B1500000 = 1500000,
+    B2000000 = 2000000,
+    B2500000 = 2500000,
+    B3000000 = 3000000
 };
 
-enum mdaq_uart_polarity
+enum mdaq_uart_parity
 {
-	NONE = 0,
-	EVEN = 1,
-	ODD = 2
+	PARITY_NONE = 1,
+	PARITY_EVEN = 2,
+	PARITY_ODD =  4
 };
+
+enum mdaq_uart_stop_bits
+{
+    STOP_BITS_1    = 1,
+    STOP_BITS_1_5  = 2,
+    STOP_BITS_2    = 4
+};
+
 
 typedef struct mdaq_uart_config_
 {
@@ -36,16 +55,10 @@ typedef struct mdaq_uart_config_
 	int data_bits;
 	int parity;
 	int stop_bits;
-	int flow_control;
 }mdaq_uart_config_t;
 
-int mdaq_uart_open(int port_num);
-int mdaq_uart_write(int port, void *data, int len);
-int mdaq_uart_read(int port, void *data, int len, int timeout);
-int mdaq_uart_setspeed(int speed);
-int mdaq_uart_config(int port, mdaq_uart_config_t *c );
-int mdaq_uart_close(int port);
-int mdaq_uart_init(void);
-
+int mdaq_uart_open(mdaq_uart_config_t *c);
+int mdaq_uart_write( void *data, int len);
+int mdaq_uart_read( void *data, int len, int timeout/* in microseconds */);
 
 #endif /* MDAQ_FILE_H_ */

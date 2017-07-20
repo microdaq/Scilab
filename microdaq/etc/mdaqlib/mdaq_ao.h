@@ -40,7 +40,9 @@ enum mdaq_dac_ids
     DAC02,
     DAC03,
     DAC04,
-    DAC05
+    DAC05,
+    DAC06,
+    DAC07
 };
 
 enum mdaq_ao_range
