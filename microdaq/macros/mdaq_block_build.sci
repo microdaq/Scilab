@@ -152,8 +152,8 @@ function mdaq_block_build(host_build, debug_build)
         end
     elseif haveacompiler() == %F then 
         mprintf("WARNING: No compiler detected, cannot build user host library. Make sure that the valid\n")
-        mprintf("\t compiler is installed. More information about supported compilers is available at:\n');
-        mprintf("\t https://help.scilab.org/doc/5.5.2/en_US/supported_compilers.html');
+        mprintf("\t compiler is installed. More information about supported compilers is available at:\n");
+        mprintf("\t https://help.scilab.org/doc/5.5.2/en_US/supported_compilers.html");
     end
     
     userhostlib_loader = mdaq_toolbox_path() + pathconvert("/etc/userlib/hostlib/loader.sce", %f);
