@@ -40,7 +40,7 @@ function mdaq_block_add(block_def)
     FORCE_SIM = %F;
     if haveacompiler() == %F & block_def.use_sim_script == %F then 
         warning("Compiler not found.");
-        warning("This block will use simulation script instead of C code during simulation mode.');
+        warning("This block will use simulation script instead of C code during simulation mode.");
         FORCE_SIM = %T;
     end
 
