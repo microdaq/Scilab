@@ -4,7 +4,7 @@ function mdaq_close(link_id)
             error("ERROR: Invalid connection id!");
         end
         result = call("sci_mlink_disconnect",..
-                        connection_id, 1, "i",..
+                        link_id, 1, "i",..
                     "out",..
                         [1, 1], 2, "i");
     else
