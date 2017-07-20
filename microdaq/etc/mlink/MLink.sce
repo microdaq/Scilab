@@ -38,6 +38,7 @@ function MLink()
     %microdaq.private.mlink_link_id = link(MLink_path, ["sci_mlink_error"..
                                "sci_mlink_connect"..
                                "sci_mlink_disconnect"..
+                               "sci_mlink_disconnect_all"..
                                "sci_mlink_dsp_load"..
                                "sci_mlink_dsp_start"..
                                "sci_mlink_dsp_upload"..

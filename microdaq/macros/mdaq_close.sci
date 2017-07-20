@@ -1,8 +1,13 @@
 function mdaq_close(link_id)
-    if link_id < 0 then
-        disp("WARNING: You are trying to close non existing connection!");
-        return;
+    if argn(2) == 1 then
+        if link_id < 0 then
+            error("ERROR: Invalid connection id!");
+        end
+        result = call("sci_mlink_disconnect",..
+                        link_id, 1, "i",..
+                    "out",..
+                        [1, 1], 2, "i");
+    else
+        call("sci_mlink_disconnect_all");
     end
-    
-    mdaq_disconnect(link_id);
 endfunction
