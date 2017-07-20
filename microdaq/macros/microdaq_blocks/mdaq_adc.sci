@@ -83,7 +83,7 @@ function [x,y,typ] = mdaq_adc(job,arg1,arg2)
             
             if %microdaq.private.mdaq_hwid <> [] then
                 adc_id = %microdaq.private.mdaq_hwid(2);
-                if find(adc_info.id == get_adc_list()) == [] then
+                if ok & (find(adc_info.id == get_adc_list()) == []) then
                     ok = %f;
                     message("Configuration not detected - run mdaq_hwinfo and try again!");
                 end
@@ -95,55 +95,55 @@ function [x,y,typ] = mdaq_adc(job,arg1,arg2)
                     adc_ch_count = adc_ch_count / 2;
                 end
 
-                if size(channel, 'r') > 1 then
+                if ok & (size(channel, 'r') > 1) then
                     ok = %f;
                     error_msg = 'Wrong channel vector - single row vector expected!';
                     message(error_msg);
                 end
 
                 n_channels = size(channel, 'c');
-                if n_channels > adc_ch_count then
+                if ok & (n_channels > adc_ch_count) then
                     ok = %f;
                     error_msg = 'Too many channels selected!';
                     message(error_msg);
                 end
 
-                if max(channel) > adc_ch_count | min(channel) < 1 then
+                if ok & (max(channel) > adc_ch_count) | (min(channel) < 1) then
                     ok = %f;
                     error_msg = 'Wrong channel number selected!';
                     message(error_msg);
                 end
 
                 // check Range parameter
-                if size(adc_range, 'r') > 1 then
+                if ok & (size(adc_range, 'r') > 1) then
                     ok = %f;
                     error_msg = 'Wrong range vector - single row vector expected!';
                     message(error_msg);
                 end
 
                 adc_range_size = size(adc_range, 'c');
-                if adc_range_size > 1 & adc_range_size <> n_channels then
+                if ok & (adc_range_size > 1) & (adc_range_size <> n_channels) then
                     ok = %f;
                     error_msg = 'Wrong range vector - size should be same as Channel vector!';
                     message(error_msg);
                 end
 
-                if adc_range > size(adc_info.c_params.c_range) | adc_range == 0 then
+                if ok & (adc_range > size(adc_info.c_params.c_range)) | (adc_range == 0) then
                     ok = %f;
                     message("Wrong range selected");
                 else
-                    if differential == 1 & adc_info.c_params.c_diff(adc_range) <> 1 then
+                    if ok & (differential == 1) & (adc_info.c_params.c_diff(adc_range) <> 1) then
                         ok = %f;
                         message("Converter does not support differential mode!");
                     end
                 end
 
-                if differential <> 0 & differential <> 1 then
+                if ok & (differential <> 0) & (differential <> 1) then
                     ok = %f;
                     message("Wrong mode selected - use 0 or 1 to set single-ended or differential mode!");
                 end
                 
-                if oversamp_count < 0 | oversamp_count > 4 then
+                if ok & (oversamp_count < 0) | (oversamp_count > 4) then
                     ok = %f;
                     message("Wrong oversampling facator selected!");
                 end
