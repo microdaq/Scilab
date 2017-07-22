@@ -97,7 +97,7 @@ static void init(scicos_block *block)
     uart.parity = PARITY_NONE;
     uart.stop_bits = STOP_BITS_1;
 
-    mdaq_uart_open(1, &uart);
+    mdaq_uart_open(&uart);
 #endif 
 }
 
@@ -115,7 +115,7 @@ static void inout(scicos_block *block)
     char buffer;
       
 #ifdef _TMS320C6X
-    mdaq_uart_read(1, (void*)&buffer, 1, RECV_TIMEOUT);
+    mdaq_uart_read((void*)&buffer, 1, RECV_TIMEOUT);
 #endif 
 
     *y1 = (double)atoi(&buffer);
@@ -179,7 +179,7 @@ static void init(scicos_block *block)
     uart.parity = PARITY_NONE;
     uart.stop_bits = STOP_BITS_1;
 
-    mdaq_uart_open(1, &uart);
+    mdaq_uart_open(&uart);
 #endif 
 
 }
@@ -203,7 +203,7 @@ static void inout(scicos_block *block)
 
     /* Add block code here (executed every model step) */
 #ifdef _TMS320C6X
-    mdaq_uart_write(1, (void*)buffer, n);
+    mdaq_uart_write((void*)buffer, n);
 #endif 
 }
 
