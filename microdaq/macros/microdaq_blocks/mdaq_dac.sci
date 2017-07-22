@@ -247,7 +247,8 @@ function [x,y,typ] = mdaq_dac(job,arg1,arg2)
         model.out=[];
         model.evtin=1;
         model.rpar = [init_value; term_value];
-        model.ipar = [n_channels; channel'; dac_range; dac_range_raw; use_init_term];
+        // TODO: range hardcoded
+        model.ipar = [n_channels; channel'; 3; dac_range_raw; use_init_term];
         model.dstate=[];
         model.blocktype='d';
         model.dep_ut=[%t %f];
