@@ -80,6 +80,13 @@ end
 // =============================================================================
 mprintf("\tLoad macros\n");
 pathmacros = pathconvert( root_tlbx ) + "macros" + filesep();
+
+if isdir(pathmacros) == %F then
+    macroBinPath = pathconvert(root_tlbx+'/bin/'+string(sci_ver(1)));
+    copyfile(macroBinPath, root_tlbx);
+end
+
+
 microdaqlib = lib(pathmacros);
 pathmacros = pathconvert( root_tlbx ) + "macros" + filesep() + "microdaq_blocks" + filesep();
 microdaqBlocks = lib(pathmacros);
