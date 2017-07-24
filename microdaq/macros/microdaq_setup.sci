@@ -11,5 +11,12 @@ function [] = microdaq_setup()
                 sleep(100)
             end
         end
+    else
+        str = [ 
+        "MicroDAQ toolbox running on Scilab 6 do not support some major features.";
+        "Curentlly features like DSP managment functions and C code integration";
+        "are only available on Scilab 5.5.2.";
+        ];
+        messagebox(str, "MicroDAQ setup", "info");
     end
 endfunction
