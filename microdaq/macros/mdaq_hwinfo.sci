@@ -11,10 +11,11 @@
 
         mdaq_close(connection_id);
 
-        if hwid(1) <> 0 then
+        if ((hwid(1) == 1000) |  (hwid(1) == 2000) | (hwid(1) == 1100))..
+            & find(get_adc_list() == hwid(2)).. 
+            & find(get_dac_list() == hwid(3)) then
+            
             global %microdaq;
-            if isequal(%microdaq.private.mdaq_hwid, hwid) == %F |..
-                isfile(mdaq_toolbox_path() + "etc"+filesep()+"mlink"+filesep()+"hwid") ==  %F then
                 %microdaq.private.mdaq_hwid = hwid;
                 %microdaq.model = 'MicroDAQ E' + string(hwid(1))..
                 + '-ADC0' + string(hwid(2))..
@@ -28,7 +29,6 @@
                 
                 %microdaq.private.adc_info = adc_info;
                 %microdaq.private.dac_info = dac_info;
-            end
 
             if hwid(4) == 0 then
                 cpu = 375;

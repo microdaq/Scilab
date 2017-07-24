@@ -41,7 +41,7 @@ c_params_e2000(2) = struct(..
         dac_lookup(1) = struct(..
             "id", 1,..
             "channel", "8",..
-            "resolution", "12-bit",..
+            "resolution", "12/16-bit",..
             "range", ["0-5V"],..
             "c_params", struct(..
                     "c_number", [],..

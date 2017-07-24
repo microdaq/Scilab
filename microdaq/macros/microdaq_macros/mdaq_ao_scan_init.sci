@@ -63,7 +63,7 @@ function  mdaq_ao_scan_init(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
     end
 
     if scan_time < 0 & scan_time <> -1 then
-        mprintf("Warning: For infinite scan session as a duration parameter use -1 value instead!\n"); 
+        mprintf("WARNING: For infinite scan session as a duration parameter use -1 value instead!\n"); 
         scan_time = -1;
     end
     
@@ -71,12 +71,12 @@ function  mdaq_ao_scan_init(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
             
     ch_count = max(size(channels));
     if ch_count < 1 | ch_count > dac_ch_count then
-        disp("Error: Wrong AO channel selected!")
+        disp("ERROR: Wrong AO channel selected!")
         return;
     end
 
     if max(channels) > dac_ch_count | min(channels) < 1 then
-        disp("Error: Wrong AO channel selected!")
+        disp("ERROR: Wrong AO channel selected!")
         return;
     end
 
@@ -84,7 +84,7 @@ function  mdaq_ao_scan_init(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
     try
         ao_range = dac_info.c_params.c_range(ao_range);
     catch
-        error("Error: wrong AO range selected!");
+        error("ERROR: wrong AO range selected!");
     end
 
     if size(ao_range, "*") == 1 then
