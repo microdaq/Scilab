@@ -18,7 +18,7 @@
             </para>
              <para>
              * #define for traget/host 
-				<programlisting role="example">
+				<programlisting role="c">
 					<![CDATA[ 
              #ifdef _TMS320C6X
                 //Code for DSP 
@@ -31,7 +31,7 @@
                 </programlisting>
             </para>    
             <para>
-                Block structure initialization.
+                Block structure initialization. All files used in this example could be found in <command>/example/uart/</command> folder.
 				<programlisting role="example">
 					<![CDATA[ 
                 // Make 'UART Receive' block definition 
@@ -58,16 +58,16 @@
             
             <para></para><emphasis role="bold">Edit source code</emphasis>
             <para>
-                Next step is to edit generated C source files which are located in src/c/userlib/. Note, in this example MicroDAQ API is used (mdaq_uart.h) therefore 
+                Next step is to edit generated C source files which are located in <command>src/c/userlib/</command>. Note, in this example MicroDAQ API is used (mdaq_uart.h) therefore 
                 code section that refers to it have to be under _TMS320C6X directive. This will allow to compile and run code on target device and host computer (without 
-                hardware capability on host).
+                hardware capability on host). 
             </para>
             <para>
-              MicroDAQ API headers are located in etc\mdaqlib\ folder. 
+              MicroDAQ API headers are located in <command>etc\mdaqlib\</command> folder. 
             </para>
             <para>
-                Copy following code to src/c/userlib/mdaq_uart_receive.c
-                <programlisting role="example">
+                Copy following code to <command>src/c/userlib/mdaq_uart_receive.c</command>
+                <programlisting role="c">
 					<![CDATA[ 
 /* Generated with MicroDAQ toolbox ver: 1.2.0 */
 #include "scicos_block4.h"
@@ -146,8 +146,8 @@ void mdaq_uart_receive(scicos_block *block,int flag)
                 </programlisting>
             </para>
             <para>
-                 Copy following code to src/c/userlib/mdaq_uart_transmit.c
-                <programlisting role="example">
+                 Copy following code to <command>src/c/userlib/mdaq_uart_transmit.c</command>
+                <programlisting role="c">
 					<![CDATA[ 
 /* Generated with MicroDAQ toolbox ver: 1.2.0 */
 #include "scicos_block4.h"
@@ -240,7 +240,6 @@ void mdaq_uart_transmit(scicos_block *block,int flag)
             In order to use newly added blocks, rebuild and update block library using following script:
             </para>
              <para>
-             * #define for traget/host 
 				<programlisting role="example">
 					<![CDATA[ 
                     mdaq_block_build(); //rebuild blocks 
