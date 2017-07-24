@@ -32,6 +32,7 @@ src/c/userlib/Debug/
 src/c/userlib/Release/
 src/c/userlib/*.c
 release/
+bin/
 
 #
 # Generated files (Linux/MacOs)
