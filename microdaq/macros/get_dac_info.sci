@@ -18,12 +18,7 @@ c_params_e2000(1) = struct(..
         "c_range", [1]);
 
 c_params_e2000(2) = struct(..
-        "c_number", [2;3],..
-        "c_range_desc", ["±10V"],..
-        "c_range", [1]);
-
-c_params_e2000(3) = struct(..
-        "c_number", [4;5],..
+        "c_number", [2; 3; 4; 5; 6; 7],..
         "c_range_desc", ["±10V"; "±5V"; "±2.5V"; "0-10V"; "0-5V"],..
         "c_range", [3, 2, 4, 1, 0]);
 
@@ -46,7 +41,7 @@ c_params_e2000(3) = struct(..
         dac_lookup(1) = struct(..
             "id", 1,..
             "channel", "8",..
-            "resolution", "12-bit",..
+            "resolution", "12/16-bit",..
             "range", ["0-5V"],..
             "c_params", struct(..
                     "c_number", [],..

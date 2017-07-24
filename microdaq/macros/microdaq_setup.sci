@@ -8,9 +8,8 @@ function [] = microdaq_setup()
             if findobj('Tag','edit2') == [] then
                 global STATE
                 STATE = 0
-                sleep(500)
+                sleep(100)
             end
-            xpause(300);
         end
     end
 endfunction

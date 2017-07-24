@@ -56,7 +56,7 @@ function mdaq_ao_write(arg1, arg2, arg3, arg4)
     end
 
     if max(channels) > dac_ch_count | min(channels) < 1 then
-        disp("ERROR: Wrong channel number selected!")
+        disp("ERROR: Wrong AO channel selected!")
         return;
     end
 
