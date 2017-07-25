@@ -37,7 +37,6 @@ bin/
 #
 # Generated files (Linux/MacOs)
 #
-*.dylib
 *_scig
 *.o
 
