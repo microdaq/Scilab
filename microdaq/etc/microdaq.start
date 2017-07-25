@@ -135,16 +135,14 @@ end
 mprintf("\tLoad MLink library\n");
 exec(pathconvert(root_tlbx + "/etc/mlink/MLink.sce", %f),-1);
 
-// TODO: rebuild host libs with VC2010
-// Load libmdaqblocks
-exec(pathconvert(root_tlbx + "/etc/mdaqlib/loader.sce", %f),-1);
-
-
-if sci_ver_str == 'scilab-5.5.2' then
+if (sci_ver_str == 'scilab-5.5.2') | (sci_ver_str == 'scilab-5.5.2.1') then
     if isdef("xcosAddToolsMenu") == %F then
         loadXcosLibs();
         sleep(1000)
     end
+    
+    // Load libmdaqblocks
+    exec(pathconvert(root_tlbx + "/etc/mdaqlib/loader.sce", %f),-1);
 
     // Add MicroDAQ toolbox options to XCos menu
     xcosAddToolsMenu("MicroDAQ web panel", "mdaq_webpanel()");
