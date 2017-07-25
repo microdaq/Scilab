@@ -31,7 +31,7 @@ function MLink()
        disp("Solaris is not supported!");
     end
     if (getos() == "Darwin") then
-       disp("MacOS is not supported!");
+       MLink_path = strcat([MLink_path, ".dylib"])
     end
 
     // Link library
