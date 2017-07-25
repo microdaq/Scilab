@@ -8,6 +8,6 @@ function mdaq_close(link_id)
                     "out",..
                         [1, 1], 2, "i");
     else
-        call("sci_mlink_disconnect_all");
+        call("sci_mlink_disconnect_all", "out", [1, 1], 1, "i");
     end
 endfunction
