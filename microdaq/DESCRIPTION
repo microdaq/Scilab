@@ -1,0 +1,57 @@
+Toolbox: microdaq
+
+Title: MicroDAQ Toolbox
+
+Summary: Toolbox for MicroDAQ real-time DSP control measurement system
+
+Version: 1.2.0
+
+Author: Embedded Solutions
+
+Maintainer: Majewski Krzysztof <info@embedded-solutions.pl>
+
+Category: Instruments Control
+
+Entity: Open source department
+
+WebSite: http://microdaq.org/
+
+URL: http://atoms.scilab.org/toolboxes/microdaq/1.0
+
+License: BSD
+
+ScilabVersion: >= 5.5.2
+
+Depends: 
+
+Date: 2017-07-24 00:00:00
+
+Description: MicroDAQ toolbox conbines Scilab/XCos environment with Embedded Solutions
+ MicroDAQ real-time control measurement system equpted with TI C6000 DSP. Module
+ extends Scilab by allowing user to automatically generate DSP applications
+ directly from XCos scheme. User can use custom XCos blocks which gives access to
+ MicroDAQ hardware (ADC, DAC, DIO, PWM, UART, Quadrature Encoder). Generated DSP
+ application utilizes SYS/BIOS real-time opearting system combined with code
+ generated from XCos scheme.
+ Depending on configuration, DSP application can be generated as a standalone or
+ Ext application (similar like External Mode in Matlab/Simulink). In standalone
+ mode generated application contains only real-time task, while in Ext mode code
+ contains real-time task and low priority task which exchanges data with Scilab
+ via TCP/IP protocol. Starting and stoping DSP application is integrated with
+ standard Xcos Start/Stop buttons, module allows using standard sinks blocks to
+ view live data from application running on DSP processor. Module allows to plot
+ DSP execution profiles and generate DSP applications in „release” and „debug”
+ mode. Generated DSP application can be used with Scilab script. Module provides
+ macros for loading DSP application, reading data from running application on
+ MicroDAQ device and terminating DSP execution. Attached example shows how to use
+ generated DSP application to compute FFT from data acquired from ADC input.
+ MicroDAQ module simplifies development of real-time control measurements
+ applications, together with MicroDAQ hardware platform gives „out of the box”
+ exeperience and can be an alternative to expensive commercial systems.
+ 
+ Toolbox allows to generate DSP code directly from Xcos scheme. In order to
+ compile generated C code user needs to install Texas Instruments Code Composer
+ Studio 5.5 (free license with xds100 emulator). After Code Composer installation
+ Scilab MicroDAQ toolbox needs to be configured with microdaq_setup function.
+ Wizard will configure Scilab MicroDAQ toolbox to work with DSP compiler. 
+
