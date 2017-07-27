@@ -3,29 +3,41 @@
 xml:id="mdaq_log">
 	<refnamediv>
 		<refname>mdaq_log</refname>
-		<refpurpose>Returns MicroDAQ system logs.</refpurpose>
+		<refpurpose>Prints or saves MicroDAQ system logs.</refpurpose>
 	</refnamediv>
 	
 	<refsynopsisdiv>
 		<title>Calling Sequence</title>
 		<synopsis>
-			result = mdaq_log();
+			mdaq_log();
+            mdaq_log(filepath);
 		</synopsis>
 	</refsynopsisdiv>
 	
 	<refsection id="Description_mdaq_log">
 		<title>Description</title>
 		<para>
-			This function returns MicroDAQ system logs. 
+			This function prints MicroDAQ system logs to Scilab console or writes to file if additional parameter has been provided. 
 		</para>
-	</refsection>  
+	</refsection>
+
+    <refsection id="Parameters_mdaq_log">
+		<title>Parameters</title>
+		<itemizedlist>
+			<listitem><para><emphasis role="bold">filepath: </emphasis> path to file where logs will be saved</para></listitem>
+		</itemizedlist>
+	</refsection>    
  
 	
 	<refsection>
         <title>Examples</title>
         <programlisting role="example"><![CDATA[
-// mdaq_log usage example
+// print to console
 mdaq_log(); 
+
+// save to file 
+mdaq_log("C:\mdaq_log.txt"); 
+
  ]]></programlisting>
     </refsection>
 	
