@@ -1,12 +1,25 @@
 function [x,y,typ] = mdaq_encoder(job,arg1,arg2)
     encoder_desc = ["This block reads MicroDAQ quadrature encoder inputs.";
+    "It uses x4 mode to decode quadrature signal.";
+    "In case of high frequency signals (up to 2MHz) ENC1/ENC2";
+    "modules shall be used. ENC3/ENC4 are suitable for lower ";
+    "frequency signals (up to 100kHz)";
     "";
+    "In order to use ENC1/2/3/4 setup DIO lines as following:";
+    "ENC1 - DIO1/2 - function: DIO, direction: input";
+    "ENC2 - DIO3/4 - function: DIO, direction: input";
+    "ENC3 - DIO5/6 - function: DIO, direction: input";
+    "ENC4 - DIO7/8 - function: DIO, direction: input";
+    "";
+    "Reset (R) block input allows to reset encoder value";
+    "to zero (0) value with rising edge.";
+    ""
     "R input - reset input";
     "";
     "P output- current encoder counter value";
-    "D output - direction: 0 - no motion, 1 - CW, 2 - CCW";
+    "D output - direction: 0 - no change, 1 - CW, 2 - CCW";
     "";
-    "Encoder module: ENC1, ENC2";
+    "Encoder module: ENC1, ENC2, ENC3, ENC4";
     "";
     "Set block parameters:"];
 
@@ -43,7 +56,7 @@ function [x,y,typ] = mdaq_encoder(job,arg1,arg2)
                 message("Wrong Encoder module selected!");
             end
             
-            if encoder_module > 2 | encoder_module < 1 then
+            if encoder_module > 4 | encoder_module < 1 then
                 ok = %f;
                 message("Wrong Encoder module selected!");
             end
