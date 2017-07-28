@@ -59,6 +59,7 @@ If you find a bug, please report it on our [issue section](https://github.com/mi
 
 Exmaple: 
 * Generate log file using mdaq command in Scilab console
-![alt text](https://raw.githubusercontent.com/microdaq/Scilab/1.2v/microdaq/help/en_US/images/generate_log.PNG)
+`mdaq_log(pathToLogFile)` - function will create logfile in provided path 
+
 * Write a short description and attach a log file
 ![alt text](https://raw.githubusercontent.com/microdaq/Scilab/1.2v/microdaq/help/en_US/images/bug-report.png)
