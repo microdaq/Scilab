@@ -24,7 +24,7 @@ Required software (dependencies)
 * [C6000 compiler (ver. 7.4.21)](http://software-dl.ti.com/codegen/non-esd/downloads/download.htm#C6000) 
 * [SYS/BIOS (ver. 6.50.01.12)](http://software-dl.ti.com/dsps/dsps_public_sw/sdo_sb/targetcontent/sysbios/6_50_01_12/index_FDS.html)
 * [XDCTools (ver. 3.50.00.10)](http://software-dl.ti.com/dsps/dsps_public_sw/sdo_sb/targetcontent/rtsc/3_50_00_10/index_FDS.html)
-* 
+
 Installation
 ============
 This package is integrated with Scilab Atoms installer. In order to use toolbox download Scilab software (version 5.5.2 or newer) and run atomsInstall('microdaq') from Scilab console. After MicroDAQ toolbox start run microdaq_setup to configure compiler and IP settings.
@@ -58,8 +58,7 @@ How to report bugs?
 If you find a bug, please report it on our [issue section](https://github.com/microdaq/Scilab/issues) with a short description how to reproduce it. To help us to identify source of the problem attach MicorDAQ log file in your report. 
 
 Exmaple: 
-* Generate log file using mdaq command in Scilab console
-`mdaq_log(pathToLogFile)` - function will create logfile in provided path 
+* Generate log file in provided path using `mdaq_log(pathToLogFile)` command in Scilab console. 
 
 * Write a short description and attach a log file
 ![alt text](https://raw.githubusercontent.com/microdaq/Scilab/1.2v/microdaq/help/en_US/images/bug-report.png)
