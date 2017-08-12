@@ -73,6 +73,16 @@ function  mdaq_ai_scan_init(arg1, arg2, arg3, arg4, arg5, arg6)
         disp("ERROR: Wrong AI channel selected!")
         return;
     end
+    
+    if channels(1) <> 1 then
+        disp("ERROR: Scan should start from channel number 1!")
+        return;
+    end
+    
+    if find((channels == (1:max(channels))) == %F) <> [] then
+        disp("ERROR: Only consecutive channels can be used!")
+        return;
+    end        
 
     try
         bipolar = adc_info.c_params.c_bipolar(ai_range);
