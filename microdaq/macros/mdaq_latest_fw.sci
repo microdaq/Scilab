@@ -1,9 +1,10 @@
 function fw_ver = mdaq_latest_fw()
+    fw_ver = [];
     try 
-        getURL("raw.githubusercontent.com/microdaq/Firmware/test/LATEST", TMPDIR + filesep() + "LATEST");
+       [a fw_ver] = getURL("raw.githubusercontent.com/microdaq/Firmware/test/LATEST", TMPDIR + filesep() + "LATEST");
+       fw_ver = strtod( strsplit(fw_ver, ',') );
     catch
-        fw_ver = [];
-        return
+      warning("Unable to connect to MicroDAQ firmware server.")
     end
-    fw_ver = csvRead( TMPDIR + filesep() + "LATEST", " ");
+   
 endfunction

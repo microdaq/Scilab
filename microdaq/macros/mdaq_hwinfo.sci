@@ -79,14 +79,8 @@
             end
             
             mprintf("Latest firmware version:\n");
-            try 
-                getURL("raw.githubusercontent.com/microdaq/MLink/master/LATEST", TMPDIR + filesep() + "LATEST");
-            catch
-                mprintf("\tUnable to connect to MicroDAQ firmware server\n")
-                return
-            end
-            
             latest_mdaq_fw = mdaq_latest_fw();
+            disp(latest_mdaq_fw)
             if latest_mdaq_fw <> [] then
                 mprintf("\t%d.%d.%d (build: %d)\n",..
                             latest_mdaq_fw(1),..
