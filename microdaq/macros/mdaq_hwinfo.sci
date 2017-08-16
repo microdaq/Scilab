@@ -80,7 +80,6 @@
             
             mprintf("Latest firmware version:\n");
             latest_mdaq_fw = mdaq_latest_fw();
-            disp(latest_mdaq_fw)
             if latest_mdaq_fw <> [] then
                 mprintf("\t%d.%d.%d (build: %d)\n",..
                             latest_mdaq_fw(1),..

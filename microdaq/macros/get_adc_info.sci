@@ -48,6 +48,7 @@ c_params_e2000(3) = struct(..
 
     adc_unknown = struct(..
             "id", 0, ..
+            "comment", "",..
             "channel", "Unknown",..
             "rate", "Unknown",..
             "resolution", "Unknown",..
@@ -66,6 +67,7 @@ c_params_e2000(3) = struct(..
         //MDAQ E2000   
         adc_lookup(1) = struct(..
             "id", 1,..
+            "comment", "",..
             "channel", "8",..
             "rate", "100ksps",..
             "resolution", "12-bit",..
@@ -79,6 +81,7 @@ c_params_e2000(3) = struct(..
         
         adc_lookup(2) = struct(..
             "id", 2,..
+            "comment", "",..
             "channel", "8",..
             "rate", "600ksps",..
             "resolution", "12-bit",..
@@ -92,6 +95,7 @@ c_params_e2000(3) = struct(..
         
         adc_lookup(3) = struct(..
             "id", 3,..
+            "comment", "",..
             "channel", "16",..
             "rate", "600ksps",..
             "resolution", "12-bit",..
@@ -105,6 +109,7 @@ c_params_e2000(3) = struct(..
         
         adc_lookup(4) = struct(..
             "id", 4,..
+            "comment", "",..
             "channel", "8",..
             "rate", "500ksps",..
             "resolution", "16-bit",..
@@ -118,6 +123,7 @@ c_params_e2000(3) = struct(..
         
         adc_lookup(5) = struct(..
             "id", 5,..
+            "comment", "",..
             "channel", "16",..
             "rate", "500ksps",..
             "resolution", "16-bit",..
@@ -131,6 +137,7 @@ c_params_e2000(3) = struct(..
         
          adc_lookup(6) = struct(..
             "id", 6,..
+            "comment", "",..
             "channel", "8",..
             "rate", "500ksps",..
             "resolution", "16-bit",..
@@ -144,6 +151,7 @@ c_params_e2000(3) = struct(..
          
          adc_lookup(7) = struct(..
             "id", 7,..
+            "comment", "",..
             "channel", "8",..
             "rate", "1000ksps",..
             "resolution", "16-bit",..
@@ -157,6 +165,7 @@ c_params_e2000(3) = struct(..
                     
          adc_lookup(8) = struct(..
             "id", 8,..
+            "comment", "",..
             "channel", "16",..
             "rate", "500ksps",..
             "resolution", "16-bit",..
@@ -170,6 +179,7 @@ c_params_e2000(3) = struct(..
                     
          adc_lookup(9) = struct(..
             "id", 9,..
+            "comment", "",..
             "channel", "16",..
             "rate", "1000ksps",..
             "resolution", "16-bit",..
@@ -183,6 +193,7 @@ c_params_e2000(3) = struct(..
                     
          adc_lookup(10) = struct(..
             "id", 10,..
+            "comment", "",..
             "channel", "16",..
             "rate", "1000ksps",..
             "resolution", "16-bit",..
@@ -196,6 +207,7 @@ c_params_e2000(3) = struct(..
                     
          adc_lookup(11) = struct(..
             "id", 11,..
+            "comment", "",..
             "channel", "32",..
             "rate", "1000ksps",..
             "resolution", "16-bit",..
@@ -209,6 +221,7 @@ c_params_e2000(3) = struct(..
                     
          adc_lookup(12) = struct(..
             "id", 12,..
+            "comment", "",..
             "channel", "32",..
             "rate", "1000ksps",..
             "resolution", "16-bit",..
@@ -219,7 +232,6 @@ c_params_e2000(3) = struct(..
                     "c_range", [],..
                     "c_bipolar", [],..
                     "c_diff", []));
-                    
 
         try
             adc_info = adc_lookup(hwid(2));
@@ -232,6 +244,7 @@ c_params_e2000(3) = struct(..
         //MDAQ E1100
          adc_lookup(1) = struct(..
             "id", 1,..
+            "comment", ["Basic conventer"; "Test01"],..
             "channel", "8",..
             "rate", "166ksps",..
             "resolution", "12-bit",..
@@ -245,6 +258,7 @@ c_params_e2000(3) = struct(..
         
          adc_lookup(2) = struct(..
             "id", 2,..
+            "comment", "",..
             "channel", "8",..
             "rate", "166ksps",..
             "resolution", "16-bit",..
