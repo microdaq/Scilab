@@ -1,5 +1,6 @@
 function [x,y,typ] = mdaq_adc(job,arg1,arg2)
     global %microdaq;
+    adc_comment = "";
     if %microdaq.private.mdaq_hwid <> [] then
         adc_info = get_adc_info(%microdaq.private.mdaq_hwid);
         channel_desc = adc_info.channel;
@@ -8,6 +9,7 @@ function [x,y,typ] = mdaq_adc(job,arg1,arg2)
         range_desc = adc_info.c_params.c_range_desc;
         range_spec_opt = [];
         range_desc = "";
+        adc_comment = adc_info.comment;
         for i = 1:size(adc_info.c_params.c_range_desc, "r")
             range_spec_opt = [range_spec_opt; string(i) + ": " + adc_info.c_params.c_range_desc(i)];
         end
@@ -46,6 +48,8 @@ function [x,y,typ] = mdaq_adc(job,arg1,arg2)
     "";
     "Input range:";
     range_spec_opt;
+    "";
+    adc_comment;
     "";
     "Set block parameters:"];
     x=[];y=[];typ=[];

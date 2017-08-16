@@ -24,6 +24,7 @@ c_params_e2000(2) = struct(..
 
     dac_unknown = struct(..
             "id", 0,..
+            "comment", "",..
             "channel", "Unknown",..
             "resolution", "Unknown",..
             "range", "Unknown",..
@@ -40,6 +41,7 @@ c_params_e2000(2) = struct(..
         //MDAQ E2000   
         dac_lookup(1) = struct(..
             "id", 1,..
+            "comment", "",..
             "channel", "8",..
             "resolution", "12/16-bit",..
             "range", ["0-5V"],..
@@ -50,6 +52,7 @@ c_params_e2000(2) = struct(..
         
         dac_lookup(2) = struct(..
             "id", 2,..
+            "comment", "",..
             "channel", "8",..
             "resolution", "12-bit",..
             "range", ["0-5V"; "0-10V";"±2.5V"; "±5V"; "±10V"],..
@@ -60,6 +63,7 @@ c_params_e2000(2) = struct(..
         
         dac_lookup(3) = struct(..
             "id", 3,..
+            "comment", "",..
             "channel", "8",..
             "resolution", "16-bit",..
             "range", ["0-5V"; "0-10V";"±2.5V"; "±5V"; "±10V"],..
@@ -70,6 +74,7 @@ c_params_e2000(2) = struct(..
         
         dac_lookup(4) = struct(..
             "id", 4,..
+            "comment", "",..
             "channel", "16",..
             "resolution", "12-bit",..
             "range", ["0-5V"; "0-10V";"±2.5V"; "±5V"; "±10V"],..
@@ -80,6 +85,7 @@ c_params_e2000(2) = struct(..
         
         dac_lookup(5) = struct(..
             "id", 5,..
+            "comment", "",..
             "channel", "16",..
             "resolution", "16-bit",..
             "range", ["0-5V"; "0-10V";"±2.5V"; "±5V"; "±10V"],..
@@ -90,6 +96,7 @@ c_params_e2000(2) = struct(..
                     
          dac_lookup(6) = struct(..
             "id", 6,..
+            "comment", "",..
             "channel", "4",..
             "resolution", "12-bit",..
             "range", ["0-5V"; "0-10V";"±2.5V"; "±5V"; "±10V"],..
@@ -100,6 +107,7 @@ c_params_e2000(2) = struct(..
              
          dac_lookup(7) = struct(..
             "id", 7,..
+            "comment", "",..
             "channel", "4",..
             "resolution", "16-bit",..
             "range", ["0-5V"; "0-10V";"±2.5V"; "±5V"; "±10V"],..
@@ -119,6 +127,7 @@ c_params_e2000(2) = struct(..
         //MDAQ E1100
          dac_lookup(1) = struct(..
             "id", 1,..
+            "comment", "",..
             "channel", "8",..
             "resolution", "12-bit",..
             "range", ["0-5V";],..
@@ -129,6 +138,7 @@ c_params_e2000(2) = struct(..
                     
          dac_lookup(2) = struct(..
             "id", 2,..
+            "comment", "",..
             "channel", "8",..
             "resolution", "16-bit",..
             "range", ["0-5V";],..

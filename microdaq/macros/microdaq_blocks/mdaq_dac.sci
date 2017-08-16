@@ -1,5 +1,6 @@
 function [x,y,typ] = mdaq_dac(job,arg1,arg2)
     global %microdaq;
+    dac_comment = "";
     if %microdaq.private.mdaq_hwid <> [] then
         dac_info = get_dac_info(%microdaq.private.mdaq_hwid);
         dac_converter = dac_info.id;
@@ -7,6 +8,7 @@ function [x,y,typ] = mdaq_dac(job,arg1,arg2)
         resolution_desc = dac_info.resolution;
         range_desc = dac_info.c_params.c_range_desc;
         range_spec_opt = [];
+        dac_comment = dac_info.comment;
         for i = 1:size(dac_info.c_params.c_range_desc, "r")
             range_spec_opt = [range_spec_opt; string(i) + ": " + dac_info.c_params.c_range_desc(i)];
         end
@@ -44,6 +46,8 @@ function [x,y,typ] = mdaq_dac(job,arg1,arg2)
     "";
     "Output rage:";
     range_spec_opt;
+    "";
+    dac_comment;
     "";
     "Set block parameters:"];
 
