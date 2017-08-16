@@ -244,9 +244,9 @@ c_params_e2000(3) = struct(..
         //MDAQ E1100
          adc_lookup(1) = struct(..
             "id", 1,..
-            "comment", ["Basic conventer"; "Test01"],..
+            "comment", "",..
             "channel", "8",..
-            "rate", "166ksps",..
+            "rate", "100ksps",..
             "resolution", "12-bit",..
             "range", ["0-5V"; "0-10V"; "±5V";" ±10V"],..
             "c_params", struct(..
@@ -260,7 +260,7 @@ c_params_e2000(3) = struct(..
             "id", 2,..
             "comment", "",..
             "channel", "8",..
-            "rate", "166ksps",..
+            "rate", "100ksps",..
             "resolution", "16-bit",..
             "range", ["0-5V"; "0-10V"; "±5V";" ±10V"],..
             "c_params", struct(..

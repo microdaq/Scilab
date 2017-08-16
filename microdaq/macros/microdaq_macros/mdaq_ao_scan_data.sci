@@ -24,7 +24,7 @@ function mdaq_ao_scan_data(arg1, arg2, arg3, arg4)
         mprintf("Description:\n");
         mprintf("\tUpdates AO channel data\n");
         mprintf("Usage:\n");
-        mprintf("\tmdaq_ao_data_data(link_id, data, opt);\n")
+        mprintf("\tmdaq_ao_data_data(link_id, channels, data, opt);\n")
         mprintf("\tlink_id - connection id returned by mdaq_open() (OPTIONAL)\n");
         mprintf("\tchannels - analog output channels to write\n");
         mprintf("\tdata - scan data\n");
