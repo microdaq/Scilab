@@ -3,8 +3,8 @@ function  mdaq_ai_scan_init(arg1, arg2, arg3, arg4, arg5, arg6)
 
     if argn(2) == 5 then
         channels = arg1;
-        ai_range = arg2;
-        differential = arg3;
+        aiRange = arg2;
+        aiMode = arg3;
         scan_freq = arg4;
         scan_time = arg5;
     end
@@ -12,8 +12,8 @@ function  mdaq_ai_scan_init(arg1, arg2, arg3, arg4, arg5, arg6)
     if argn(2) == 6 then
         link_id = arg1;
         channels = arg2;
-        ai_range = arg3;
-        differential = arg4;
+        aiRange = arg3;
+        aiMode = arg4;
         scan_freq = arg5;
         scan_time = arg6;
 
@@ -22,8 +22,6 @@ function  mdaq_ai_scan_init(arg1, arg2, arg3, arg4, arg5, arg6)
             return;
         end
     end
-    
-    
 
     global %microdaq;
     if %microdaq.private.mdaq_hwid <> [] then
@@ -32,19 +30,19 @@ function  mdaq_ai_scan_init(arg1, arg2, arg3, arg4, arg5, arg6)
             mprintf("Description:\n");
             mprintf("\tInit AI scan\n");
             mprintf("Usage:\n");
-            mprintf("\tmdaq_ai_scan_init(link_id, channels, range, differential, frequency, time);\n");               mprintf("\tlink_id - connection id returned by mdaq_open() (OPTIONAL)\n");
+            mprintf("\tmdaq_ai_scan_init(link_id, channels, range, mode, frequency, time);\n");               mprintf("\tlink_id - connection id returned by mdaq_open() (OPTIONAL)\n");
             mprintf("\tchannels - analog input channels to read\n");
             mprintf("\trange - analog input range:\n");
             for i = 1:size(adc_info.c_params.c_range_desc, "r")
                 mprintf("\t    %s\n", string(i) + ": " + adc_info.c_params.c_range_desc(i));
             end
-            
+
             if adc_info.c_params.c_diff(1) == 1 then
-                mprintf("\tdifferential - measurement type (%%T - differential, %%F - single-ended)\n");
+                mprintf("\timode - measurement type (%%T - differential, %%F - single-ended)\n");
             else
-                mprintf("\tdifferential - set %%F (differential mode not supported by AI converter)\n");
+                mprintf("\timode - set %%F (differential mode not supported by AI converter)\n");
             end
-            
+
             mprintf("\tfrequency - scan frequency\n");
             mprintf("\tduration - scan duration in seconds\n");
             return;
@@ -53,16 +51,12 @@ function  mdaq_ai_scan_init(arg1, arg2, arg3, arg4, arg5, arg6)
         error('Unable to detect MicroDAQ confituration - run mdaq_hwinfo and try again!');
         return;
     end
-    
+
     if scan_time < 0 then
         scan_time = -1;
     end
 
     adc_ch_count = strtod(adc_info.channel);
-    if differential then
-        adc_ch_count = adc_ch_count / 2;
-    end
-            
     ch_count = max(size(channels));
     if ch_count < 1 | ch_count > adc_ch_count then
         disp("ERROR: Wrong AI channel selected!")
@@ -73,31 +67,65 @@ function  mdaq_ai_scan_init(arg1, arg2, arg3, arg4, arg5, arg6)
         disp("ERROR: Wrong AI channel selected!")
         return;
     end
-    
+
     if channels(1) <> 1 then
         disp("ERROR: Scan should start from channel number 1!")
         return;
     end
-    
-    if find((channels == (1:max(channels))) == %F) <> [] then
-        disp("ERROR: Only consecutive channels can be used!")
-        return;
-    end        
 
+    if find((channels == (1:max(channels))) == %F) <> [] then
+        disp("TODO: ERROR: Only consecutive channels can be used!")
+
+        //  return;
+    end
+
+    aiRangeSize = size(aiRange, 'c');
+    if aiRangeSize <> 1 & aiRangeSize <> ch_count then
+        disp("ERROR: Range vector should match selected AI channels!")
+        return;
+    end
+
+    aiModeSize = size(aiMode, 'c');
+    if aiModeSize <> 1 & aiModeSize <> ch_count then
+        disp("ERROR: Mode vector should match selected AI channels!")
+        return;
+    end
     try
-        bipolar = adc_info.c_params.c_bipolar(ai_range);
-        ai_range_desc = adc_info.c_params.c_range_desc(ai_range);
-        ai_range = adc_info.c_params.c_range(ai_range);
+            
+        if aiRangeSize == 1 then
+            aiPolarity = ones(1,ch_count) * adc_info.c_params.c_bipolar(aiRange);
+        else
+            aiPolarity = adc_info.c_params.c_bipolar(aiRange)';
+        end
+    
+        if aiRangeSize == 1 then
+            aiRange_t = ones(1,ch_count) * aiRange;
+            aiRange = ones(1,ch_count) * adc_info.c_params.c_range(aiRange);
+        else
+            aiRange_t = aiRange;
+            aiRange = adc_info.c_params.c_range(aiRange)';
+        end
     catch
-        error("Error: wrong AI range selected!");
+        disp("ERROR: Wrong range selected!");
+        return
     end
     
-    if differential == %F | differential == 0 then
-        differential = 28;
+    aiMode_t = aiMode;
+    if aiModeSize == 1 then
+        if aiMode == %T then
+            aiMode = ones(1,ch_count) * 29;
+        else
+            aiMode = ones(1,ch_count) * 28;
+        end
     else
-        differential = 29;
+        for i = find(aiMode_t == %T)
+            aiMode(i) = 29;
+        end
+        for i = find(aiMode_t == %F)
+            aiMode(i) = 28;
+        end
     end
-    
+
     if argn(2) == 5 then
         link_id = mdaq_open();
         if link_id < 0 then
@@ -105,25 +133,25 @@ function  mdaq_ai_scan_init(arg1, arg2, arg3, arg4, arg5, arg6)
             return;
         end
     end
-    
+
     result = [];
     result = call("sci_mlink_ai_scan_init",..
-            link_id, 1, "i",..
-            channels, 2, "i",..
-            ch_count, 3, "i",..
-            ai_range, 4, "i",..
-            bipolar, 5, "i",..
-            differential, 6, "i",..
-            scan_freq, 7, "d",..
-            scan_time, 8, "d",..
-        "out",..
-            [1, 1], 9, "i");
+    link_id, 1, "i",..
+    channels, 2, "i",..
+    ch_count, 3, "i",..
+    aiRange, 4, "i",..
+    aiPolarity, 5, "i",..
+    aiMode, 6, "i",..
+    scan_freq, 7, "d",..
+    scan_time, 8, "d",..
+    "out",..
+    [1, 1], 9, "i");
 
     if result < 0 & result <> -88 then
-            if argn(2) == 5 then
-                mdaq_close(link_id);
-            end
-            error(mdaq_error2(result), 10000 + abs(result));           
+        if argn(2) == 5 then
+            mdaq_close(link_id);
+        end
+        error(mdaq_error2(result), 10000 + abs(result));
     else
         if result == -88 then
             disp("Warninng: AI scanning interrupted!")
@@ -133,63 +161,66 @@ function  mdaq_ai_scan_init(arg1, arg2, arg3, arg4, arg5, arg6)
             sleep(200);
 
             result = call("sci_mlink_ai_scan_init",..
-                    link_id, 1, "i",..
-                    channels, 2, "i",..
-                    ch_count, 3, "i",..
-                    ai_range, 4, "i",..
-                    bipolar, 5, "i",..
-                    differential, 6, "i",..
-                    scan_freq, 7, "d",..
-                    scan_time, 8, "d",..
-                "out",..
-                    [1, 1], 9, "i");
+            link_id, 1, "i",..
+            channels, 2, "i",..
+            ch_count, 3, "i",..
+            aiRange, 4, "i",..
+            aiPolarity, 5, "i",..
+            aiMode, 6, "i",..
+            scan_freq, 7, "d",..
+            scan_time, 8, "d",..
+            "out",..
+            [1, 1], 9, "i");
         end
-    
+
         if argn(2) == 5 then
             mdaq_close(link_id);
         end
-        
+
         if result < 0 then
-            error(mdaq_error2(result), 10000 + abs(result)); 
+            error(mdaq_error2(result), 10000 + abs(result));
         end
-        
+
         if result == 1 then
-            mprintf("\nWARNING: Your MicroDAQ device does not allow running AI and AO scanning session simultaneously.\n")
+            limited_cap = %t;
+        else
+            limited_cap = %f;
         end
-        
-        mprintf("\nData acquisition session settings:\n");
-        str = "";
-        s = size(channels);
-        for j=1:s(2)
-            if j > 1
-              str = str + ", ";
+
+        rows = [];
+        row = '';
+
+        adc_res = strtod(part(adc_info.resolution, 1:2))
+        for j=1:ch_count
+            if aiMode(j) == 29 then
+                measure_type = "Differential"
+            elseif (aiMode(j) == 28)
+                measure_type = "Single-ended"
             end
-            str = str + string(channels(1,j));
-        end 
-        mprintf("\tChannles:\t%s\n", str);
-
-        mprintf("\tInput Type:\t");
-        if differential == 29 then
-            mprintf("Differential\n");
-        else
-            mprintf("Single Ended\n"); 
+            adc_range = diff(adc_info.c_params.c_range_value(aiRange_t(j),:))
+            resolution = string((int(adc_range/2^adc_res * 1000000)) / 1000);
+            rows = [rows; string(channels(j)), measure_type, adc_info.c_params.c_range_desc(aiRange_t(j)), resolution+"mV"]
         end
 
-        mprintf("\tRange:\t\t");
-        mprintf("%s\n", ai_range_desc);
-
+        mprintf("\n\tAnalog input scanning session settings:\n");
+        mprintf("\t--------------------------------------------------\n")
+        str2table(rows, ["Channel", "Measurement type", "Range", "Resolution"], 3)
+        mprintf("\t--------------------------------------------------\n")
         if scan_freq >= 1000
-            mprintf("\tFrequency:\t%.3fkHz\n", scan_freq/1000);
+            mprintf("\tScan frequency:\t\t%.3fkHz\n", scan_freq/1000);
         else
-            mprintf("\tFrequency:\t%dHz\n", scan_freq);
+            mprintf("\tScan frequency:\t\t%dHz\n", scan_freq);
         end
         
         if scan_time < 0
-            mprintf("\tDuration:\tInf\n");
-            mprintf("\tScan count:\tInf");
+            mprintf("\tDuration:\t\tInf\n");
+            mprintf("\tNumber of channels:\t%d\n", ch_count)
+            mprintf("\tScan count:\t\tInf");
         else
-            mprintf("\tDuration:\t%.2fsec\n", scan_time);
-            mprintf("\tScan count:\t%d\n", scan_time * scan_freq);
+            mprintf("\tDuration:\t\t%.2fs\n", scan_time);
+            mprintf("\tNumber of channels:\t%d\n", ch_count)
+            mprintf("\tNumber of scans:\t%d\n", scan_time * scan_freq);
         end
+        mprintf("\t--------------------------------------------------\n")
     end
 endfunction

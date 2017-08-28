@@ -3,6 +3,7 @@ function adc_info = get_adc_info(hwid)
 c_params_struct = struct(..
         "c_number", [],..
         "c_range_desc", [],..
+        "c_range_value", [],..
         "c_range", [],..
         "c_bipolar", [],..
         "c_diff", []); 
@@ -13,6 +14,7 @@ c_params_e2000 = list();
 c_params_e1xxx(1) = struct(..
         "c_number", [1],..
         "c_range_desc", ["±10V"; "±5V"; "0-10V"; "0-5V"],..
+        "c_range_value",[[-10,10]; [-5,5]; [0,10]; [0,5]],..
         "c_range", [0;1;0;1],..
         "c_bipolar", [24;24;25;25],..
         "c_diff", [1;1;1;1]); 
@@ -20,6 +22,7 @@ c_params_e1xxx(1) = struct(..
 c_params_e1xxx(2) = struct(..
         "c_number", [2],..
         "c_range_desc", ["±10V"; "±5V"; "0-10V"; "0-5V"],..
+        "c_range_value",[[-10,10]; [-5,5]; [0,10]; [0,5]],..
         "c_range", [0;1;0;1],..
         "c_bipolar", [24;24;25;25],..
         "c_diff", [1;1;1;1]); 
@@ -28,20 +31,23 @@ c_params_e1xxx(2) = struct(..
 c_params_e2000(1) = struct(..
         "c_number", [1],..
         "c_range_desc", ["±10V"; "±5V"; "0-10V"; "0-5V"],..
+        "c_range_value",[[-10,10]; [-5,5]; [0,10]; [0,5]],..
         "c_range", [0;1;0;1],..
         "c_bipolar", [24;24;25;25],..
         "c_diff", [1;1;1;1]); 
 
 c_params_e2000(2) = struct(..
         "c_number", [2;3;4;5],..
-        "c_range_desc", ["±10V"; "±5V"],..
-        "c_range", [0;1],..
-        "c_bipolar", [24;24],..
-        "c_diff", [0;0]); 
+        "c_range_desc", ["±10V"; "±5V"; "±2V"; "±1V"],..
+        "c_range_value",[[-10,10]; [-5,5]; [-2,2]; [-1,1]],..
+        "c_range", [0;1;2;3],..
+        "c_bipolar", [24;24;24;24],..
+        "c_diff", [0;0;0;0]); 
 
 c_params_e2000(3) = struct(..
         "c_number", [6;7;8;9;],..
         "c_range_desc", ["±10.24V"; "±5.12V"; "±2.56V"; "±1.24V"; "±0.64V"],..
+        "c_range_value",[[-10.24,10.24]; [-5.12,5.12]; [-2.56,2.56]; [-1.24,1.24];[-0.64,0.64];],..
         "c_range", [0;1;2;3;4],..
         "c_bipolar", [24;24;24;24;24],..
         "c_diff", [1;1;1;1;1]); 
@@ -56,6 +62,7 @@ c_params_e2000(3) = struct(..
             "c_params", struct(..
                     "c_number", [],..
                     "c_range_desc", [],..
+                    "c_range_value", [],..
                     "c_range", [],..
                     "c_bipolar", [],..
                     "c_diff", []));
@@ -75,6 +82,7 @@ c_params_e2000(3) = struct(..
             "c_params", struct(..
                     "c_number", [],..
                     "c_range_desc", [],..
+                    "c_range_value", [],..
                     "c_range", [],..
                     "c_bipolar", [],..
                     "c_diff", []));
@@ -85,10 +93,11 @@ c_params_e2000(3) = struct(..
             "channel", "8",..
             "rate", "600ksps",..
             "resolution", "12-bit",..
-            "range", ["±5V"; "±10V"],..
+            "range", ["±10V"; "±5V"; "±2V"; "±1V"],..
             "c_params", struct(..
                     "c_number", [],..
                     "c_range_desc", [],..
+                    "c_range_value", [],..
                     "c_range", [],..
                     "c_bipolar", [],..
                     "c_diff", []));
@@ -99,10 +108,11 @@ c_params_e2000(3) = struct(..
             "channel", "16",..
             "rate", "600ksps",..
             "resolution", "12-bit",..
-            "range", ["±5V"; "±10V"],..
+            "range", ["±10V"; "±5V"; "±2V"; "±1V"],..
             "c_params", struct(..
                     "c_number", [],..
                     "c_range_desc", [],..
+                    "c_range_value", [],..
                     "c_range", [],..
                     "c_bipolar", [],..
                     "c_diff", []));
@@ -113,10 +123,11 @@ c_params_e2000(3) = struct(..
             "channel", "8",..
             "rate", "500ksps",..
             "resolution", "16-bit",..
-            "range", ["±5V"; "±10V"],..
+            "range", ["±10V"; "±5V"; "±2V"; "±1V"],..
             "c_params", struct(..
                     "c_number", [],..
                     "c_range_desc", [],..
+                    "c_range_value", [],..
                     "c_range", [],..
                     "c_bipolar", [],..
                     "c_diff", []));
@@ -127,10 +138,11 @@ c_params_e2000(3) = struct(..
             "channel", "16",..
             "rate", "500ksps",..
             "resolution", "16-bit",..
-            "range", ["±5V"; "±10V"],..
+            "range", ["±10V"; "±5V"; "±2V"; "±1V"],..
             "c_params", struct(..
                     "c_number", [],..
                     "c_range_desc", [],..
+                    "c_range_value", [],..
                     "c_range", [],..
                     "c_bipolar", [],..
                     "c_diff", []));
@@ -145,6 +157,7 @@ c_params_e2000(3) = struct(..
             "c_params", struct(..
                     "c_number", [],..
                     "c_range_desc", [],..
+                    "c_range_value", [],..
                     "c_range", [],..
                     "c_bipolar", [],..
                     "c_diff", []));
@@ -159,6 +172,7 @@ c_params_e2000(3) = struct(..
             "c_params", struct(..
                     "c_number", [],..
                     "c_range_desc", [],..
+                    "c_range_value", [],..
                     "c_range", [],..
                     "c_bipolar", [],..
                     "c_diff", []));
@@ -173,6 +187,7 @@ c_params_e2000(3) = struct(..
             "c_params", struct(..
                     "c_number", [],..
                     "c_range_desc", [],..
+                    "c_range_value", [],..
                     "c_range", [],..
                     "c_bipolar", [],..
                     "c_diff", []));
@@ -187,6 +202,7 @@ c_params_e2000(3) = struct(..
             "c_params", struct(..
                     "c_number", [],..
                     "c_range_desc", [],..
+                    "c_range_value", [],..
                     "c_range", [],..
                     "c_bipolar", [],..
                     "c_diff", []));
@@ -201,6 +217,7 @@ c_params_e2000(3) = struct(..
             "c_params", struct(..
                     "c_number", [],..
                     "c_range_desc", [],..
+                    "c_range_value", [],..
                     "c_range", [],..
                     "c_bipolar", [],..
                     "c_diff", []));
@@ -215,6 +232,7 @@ c_params_e2000(3) = struct(..
             "c_params", struct(..
                     "c_number", [],..
                     "c_range_desc", [],..
+                    "c_range_value", [],..
                     "c_range", [],..
                     "c_bipolar", [],..
                     "c_diff", []));
@@ -229,6 +247,7 @@ c_params_e2000(3) = struct(..
             "c_params", struct(..
                     "c_number", [],..
                     "c_range_desc", [],..
+                    "c_range_value", [],..
                     "c_range", [],..
                     "c_bipolar", [],..
                     "c_diff", []));
@@ -238,6 +257,8 @@ c_params_e2000(3) = struct(..
         catch
             disp('Cannot find ADC info.');
             adc_info = adc_unknown;
+
+
         end   
         
     elseif hwid(1) == 1100 then 
