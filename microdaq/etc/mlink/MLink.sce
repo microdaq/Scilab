@@ -82,6 +82,10 @@ function MLink()
                                "sci_mlink_ao_scan"..
                                "sci_mlink_ao_scan_stop"..
                                "sci_mlink_ao_scan_data"..
+                               "sci_fpga_reg_read"..
+                               "sci_fpga_reg_write"..
+                               "sci_fpga_data_write"..
+                               "sci_fpga_data_read"..
                                ], 'c');
 endfunction
 
