@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaq_ai_scan_examples">
 	<refnamediv>
-		<refname>mdaq_ai_scan_examples</refname>
+		<refname>AI scanning examples</refname>
 		<refpurpose>Examples for analog input scan functions.</refpurpose>
 	</refnamediv>
 	
@@ -11,12 +11,29 @@
 		This example shows how to acquire data from analog input channels 1-8, sample rate 10 kHz, duration 1 sec. 
 		Blocking mode is enabled, functions are called without link_id.
 		</para>
+		<para>In order to perform AI scanning mdaq_ai_scan_init() function have to be used. This function initializes scanning parameters and has to be called before reading scanning data (mdaq_ai_scan() call). First function parameter determined which channels will be used, second parameters set AI input range for all selected channels. Current implementation does not support setting different input ranges for different channels. Next parameter determines measuremtn type - differential or single-ended. Last two parameters defines scanning frequency and duration of the scanning session.
+		</para>
+		
+		<para> After scanning initialization data can be read in a loop. Function mdaq_ai_scan() reads AI data. It takes two parameters - number of scans to read and mode of operation which can be set to blocking (%T) and non-blocking (%F).
+		</para>
+		
+		<para>In this example we use blocking mode - mdaq_ai_scan() will block Scilab until desired AI scan number. Loop iteration can be calculated by with following formula: 
+		</para>
+		
+		<para>i = (duration * scanFrequency) / scanCount</para>
+		<para>
+		AI scanning is started after fist call of mdaq_ai_scan(). When AI acquisition is done mdaq_ai_scan_stop() shall be called. It is not mandatory but it is recommended. 
+		</para>
+		<para></para>
          <programlisting role="example"><![CDATA[
 			data = [];
+			scanFrequency = 100000;
+			duration = 1; 
+			scanCount = 1000; 
 			//init AI scan for 8 channels, 10 kHz sampling, 1 sec 
-			mdaq_ai_scan_init([1:8], 1, %F, 10000, 1)
+			mdaq_ai_scan_init([1:8], 1, %F, scanFrequency, duration)
 			for i=1:10
-				[newdata res] = mdaq_ai_scan(1000, %T);
+				[newdata res] = mdaq_ai_scan(scanCount, %T);
 				data = [data; newdata];
 				mprintf('read %d samples...\n', res);
 			end
@@ -32,6 +49,11 @@
 		This example shows how to acquire data from analog input channels 1-8, sample rate 10 kHz, duration 1 sec. 
 		Non-blocking mode is enabled, functions are called without link_id.
 		</para>
+
+		<para>In this example we use non-blocking mode - mdaq_ai_scan() function returns different number of scanns depending when it was call. Similar like in blocking mode function starts AI scanning process. In case of non-blocking operation, user code has to use function call  result of to check if AI scanning was finished. An alternative is to use counter which contain sum of acquired scans and comapre it with total number of scanns which can be calculated or taken from mdaq_ai_scan_init() scanning session summary. In this example we use mdaq_ai_scan() status (res) to determine when scanning is finished. Is status returned by function is lower than 0 (-1) there is no data to read and AI scanning session has to stopped.
+		</para>
+		<para></para>
+		
          <programlisting role="example"><![CDATA[
 			data = [];
 			res = 0;
@@ -57,6 +79,46 @@
 		<para> 
 		This example is not available on MicroDAQ with ADC01/DAC01 configuration. 
 		</para>
+		
+		<para>
+		In this example we will use AI and AO scanning to perform real-time audio stream processing. We will acquire audio samples from MicroDAQ analog input, process it and use MicroDAQ analog output generate signal after processing.
+		In order to use this example connect AI1 to audio signal source, analog output AO1 shall be connected with audio amplifier.
+</para>		
+		<para>Do not connect AO1 directly to speaker or headphones</para>
+		<para>
+		The example script uses AI and AO scanning simultaneously. At the beginning of example script we define basic scanning acquisition for analog inputs and outputs. Scanning will be performed with frequency of 44100Hz - this settings will be applied for analog inputs and outputs. Scanning functions can perform scanning on AI and AO with different frequencies, e.g. user can oversample input audio signal and after averaging acquired samples, output data on MicroDAQ AO. 
+		
+		We also define AO/AI ranges, channels and AI measurement type as a single-ended. 
+		</para>
+		<para>
+		In this example we user will stop scanning on AI/AO, no explicit duration in seconds is defined. Instead we use duration value (-1) which sets infinite  scann duration. 
+		</para>
+		<para>
+		Another very important parameter is 'IsContinuous' which defines AO scanning behaviour. In general AO scanning can be peform in two different modes - periodic and continues. In periodic mode AO buffer which is used to output AO data from is treated as a circular buffer. When data is loaded to buffer data will be 
+Lets define data acquisition parameters. The Rate parameter determines analog input sampling frequency which in our case will be 44100 Hz. We will acquire data from first channel. Next we define analog input range. At this point we can call init scanning function without parameters to obtain available analog input ranges. In this way we can check function parameters ant its values. We select lowest input range since we want to acquire analog signal which peak-to-peak amplitude will be around 0.5 Volts. 
+
+
+We will acquire audio stream for 5 seconds. Next parameter determines measurement type - differential or single ended. In our case we will use single-ended measurement type. 
+
+
+audioData variable will be use for storing audio stream. 
+
+
+Now we will use function which initializes scanning session on MicroDAQ analog inputs. This function has to be called before we access analog data,. For function parameters we use defined variables. After this step we can implement data acquisition code.
+
+
+In our application we will acquire data in the loop. Code from loop will be executed 5 times,  each time we will acquire 44100 samples which is 1 second of audio stream. Then audio samples will be stored in audioData variable. This way we will be able to plot acquired data. We call function from MicroDAQ toolbox which read data from analog inputs. First function parameters determines how many samples we want to read, second parameters determines function behaviour. It allows to select blocking or non-blocking mode. 
+
+
+Scanning function returns analog data and number of acquired samples. When blocking mode is used, function will wait for desired number of samples. In case of non-blocking mode function returns different number of samples depending when it was called.  
+
+
+When loop is finished we should call function which stops analog input scanning. Last step we need do do is to plot acquired audio samples. 
+
+
+This simple script will perform data acquisition on MicroDAQ analog inputs. After saving script we are ready to start acquisition process.
+		
+		</para>
 		<programlisting role="example"><![CDATA[
 			// Data acqisition parameters
 Rate = 44100;
@@ -64,14 +126,16 @@ Channel = 1;
 aiRange = 2; // analog input range: ±5V
 aoRange = 3; // analog output range: ±2.5V
 aoTrigger = 0; 
-IsContinuous = %T;
-IsDifferential = %F; 
+IsDifferential = %F;
+
+Duration = -1; 
+IsContinuous = %T; 
 
 Gain = 1.5;
 
 // Init analog input/output scanning 
-mdaq_ai_scan_init(Channel, aiRange, IsDifferential, Rate, -1);      
-mdaq_ao_scan_init(Channel, aoRange, IsContinuous, aoTrigger, Rate, -1);
+mdaq_ai_scan_init(Channel, aiRange, IsDifferential, Rate, Duration);      
+mdaq_ao_scan_init(Channel, aoRange, IsContinuous, aoTrigger, Rate, Duration);
 
 // Start scanning - analog input and output
 audioData = mdaq_ai_scan(Rate / 10, %T);
