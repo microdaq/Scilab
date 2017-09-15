@@ -18,7 +18,7 @@ function  mdaq_ai_scan_init(arg1, arg2, arg3, arg4, arg5, arg6)
         scan_time = arg6;
 
         if link_id < 0 then
-            disp("ERROR: Invalid link ID!")
+            error("Invalid connection ID!")
             return;
         end
     end
@@ -30,7 +30,7 @@ function  mdaq_ai_scan_init(arg1, arg2, arg3, arg4, arg5, arg6)
             mprintf("Description:\n");
             mprintf("\tInit AI scan\n");
             mprintf("Usage:\n");
-            mprintf("\tmdaq_ai_scan_init(link_id, channels, range, mode, frequency, time);\n");               mprintf("\tlink_id - connection id returned by mdaq_open() (OPTIONAL)\n");
+            mprintf("\tmdaq_ai_scan_init(link_id, channels, range, mode, frequency, duration);\n");                     mprintf("\tlink_id - connection id returned by mdaq_open() (OPTIONAL)\n");
             mprintf("\tchannels - analog input channels to read\n");
             mprintf("\trange - analog input range:\n");
             for i = 1:size(adc_info.c_params.c_range_desc, "r")
@@ -38,9 +38,9 @@ function  mdaq_ai_scan_init(arg1, arg2, arg3, arg4, arg5, arg6)
             end
 
             if adc_info.c_params.c_diff(1) == 1 then
-                mprintf("\timode - measurement type (%%T - differential, %%F - single-ended)\n");
+                mprintf("\tmode - measurement type (%%T - differential, %%F - single-ended)\n");
             else
-                mprintf("\timode - set %%F (differential mode not supported by AI converter)\n");
+                mprintf("\tmode - set %%F (differential mode not supported by AI converter)\n");
             end
 
             mprintf("\tfrequency - scan frequency\n");
@@ -56,48 +56,41 @@ function  mdaq_ai_scan_init(arg1, arg2, arg3, arg4, arg5, arg6)
         scan_time = -1;
     end
 
+    if size(aiRange, 'r') > 1 then
+        error("Wrong range - single row vector expected!")
+    end
+
+    if size(aiRange, 'r') > 1 then
+        error("Wrong mode - single row vector expected!")
+    end
+    
     adc_ch_count = strtod(adc_info.channel);
     ch_count = max(size(channels));
     if ch_count < 1 | ch_count > adc_ch_count then
-        disp("ERROR: Wrong AI channel selected!")
-        return;
+        error("Wrong AI channel selected!")
     end
 
     if max(channels) > adc_ch_count | min(channels) < 1 then
-        disp("ERROR: Wrong AI channel selected!")
-        return;
-    end
-
-    if channels(1) <> 1 then
-        disp("ERROR: Scan should start from channel number 1!")
-        return;
-    end
-
-    if find((channels == (1:max(channels))) == %F) <> [] then
-        disp("TODO: ERROR: Only consecutive channels can be used!")
-
-        //  return;
+        error("Wrong AI channel selected!")
     end
 
     aiRangeSize = size(aiRange, 'c');
     if aiRangeSize <> 1 & aiRangeSize <> ch_count then
-        disp("ERROR: Range vector should match selected AI channels!")
-        return;
+        error("Range vector should match selected AI channels!")
     end
 
     aiModeSize = size(aiMode, 'c');
     if aiModeSize <> 1 & aiModeSize <> ch_count then
-        disp("ERROR: Mode vector should match selected AI channels!")
-        return;
+        error("Mode vector should match selected AI channels!")
     end
+
     try
-            
         if aiRangeSize == 1 then
             aiPolarity = ones(1,ch_count) * adc_info.c_params.c_bipolar(aiRange);
         else
             aiPolarity = adc_info.c_params.c_bipolar(aiRange)';
         end
-    
+
         if aiRangeSize == 1 then
             aiRange_t = ones(1,ch_count) * aiRange;
             aiRange = ones(1,ch_count) * adc_info.c_params.c_range(aiRange);
@@ -106,10 +99,9 @@ function  mdaq_ai_scan_init(arg1, arg2, arg3, arg4, arg5, arg6)
             aiRange = adc_info.c_params.c_range(aiRange)';
         end
     catch
-        disp("ERROR: Wrong range selected!");
-        return
+        error("Wrong range selected!");
     end
-    
+
     aiMode_t = aiMode;
     if aiModeSize == 1 then
         if aiMode == %T then
@@ -129,23 +121,24 @@ function  mdaq_ai_scan_init(arg1, arg2, arg3, arg4, arg5, arg6)
     if argn(2) == 5 then
         link_id = mdaq_open();
         if link_id < 0 then
-            disp("ERROR: Unable to connect to MicroDAQ device!");
-            return;
+            error("Unable to connect to MicroDAQ device!");
         end
     end
 
     result = [];
-    result = call("sci_mlink_ai_scan_init",..
-    link_id, 1, "i",..
-    channels, 2, "i",..
-    ch_count, 3, "i",..
-    aiRange, 4, "i",..
-    aiPolarity, 5, "i",..
-    aiMode, 6, "i",..
-    scan_freq, 7, "d",..
-    scan_time, 8, "d",..
-    "out",..
-    [1, 1], 9, "i");
+    real_freq = scan_freq;
+    [result real_freq] = call("sci_mlink_ai_scan_init",..
+                    link_id, 1, "i",..
+                    channels, 2, "i",..
+                    ch_count, 3, "i",..
+                    aiRange, 4, "i",..
+                    aiPolarity, 5, "i",..
+                    aiMode, 6, "i",..
+                    scan_freq, 7, "d",..
+                    scan_time, 8, "d",..
+                "out",..
+                    [1, 1], 10, "i",..
+                    [1, 1], 9, "d");
 
     if result < 0 & result <> -88 then
         if argn(2) == 5 then
@@ -159,18 +152,18 @@ function  mdaq_ai_scan_init(arg1, arg2, arg3, arg4, arg5, arg6)
 
             // time to terminate TCP connection
             sleep(200);
-
-            result = call("sci_mlink_ai_scan_init",..
-            link_id, 1, "i",..
-            channels, 2, "i",..
-            ch_count, 3, "i",..
-            aiRange, 4, "i",..
-            aiPolarity, 5, "i",..
-            aiMode, 6, "i",..
-            scan_freq, 7, "d",..
-            scan_time, 8, "d",..
-            "out",..
-            [1, 1], 9, "i");
+            [result real_freq] = call("sci_mlink_ai_scan_init",..
+                            link_id, 1, "i",..
+                            channels, 2, "i",..
+                            ch_count, 3, "i",..
+                            aiRange, 4, "i",..
+                            aiPolarity, 5, "i",..
+                            aiMode, 6, "i",..
+                            scan_freq, 7, "d",..
+                            scan_time, 8, "d",..
+                        "out",..
+                            [1, 1], 10, "i",..
+                            [1, 1], 9, "d");
         end
 
         if argn(2) == 5 then
@@ -207,11 +200,14 @@ function  mdaq_ai_scan_init(arg1, arg2, arg3, arg4, arg5, arg6)
         str2table(rows, ["Channel", "Measurement type", "Range", "Resolution"], 3)
         mprintf("\t--------------------------------------------------\n")
         if scan_freq >= 1000
-            mprintf("\tScan frequency:\t\t%.3fkHz\n", scan_freq/1000);
+            mprintf("\tScan frequency:\t\t%.4fkHz\n", scan_freq/1000);
+            mprintf("\tActual scan frequency:\t%.3fkHz\n", real_freq/1000);
         else
-            mprintf("\tScan frequency:\t\t%dHz\n", scan_freq);
+            mprintf("\tScan frequency:\t\t%.4fHz\n", scan_freq);
+            mprintf("\tActual scan frequency:\t%.4fHz\n", real_freq);
         end
-        
+        mprintf("\tScan period: \t\t%fs\n", 1 / real_freq);
+
         if scan_time < 0
             mprintf("\tDuration:\t\tInf\n");
             mprintf("\tNumber of channels:\t%d\n", ch_count)
