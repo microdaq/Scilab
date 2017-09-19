@@ -45,7 +45,7 @@ c_params_e2000(2) = struct(..
         "c_diff", [0;0;0;0]); 
 
 c_params_e2000(3) = struct(..
-        "c_number", [6;7;8;9;],..
+        "c_number", [6;7;8;9;10],..
         "c_range_desc", ["±10.24V"; "±5.12V"; "±2.56V"; "±1.24V"; "±0.64V"],..
         "c_range_value",[[-10.24,10.24]; [-5.12,5.12]; [-2.56,2.56]; [-1.24,1.24];[-0.64,0.64];],..
         "c_range", [0;1;2;3;4],..
@@ -210,8 +210,8 @@ c_params_e2000(3) = struct(..
          adc_lookup(10) = struct(..
             "id", 10,..
             "comment", "",..
-            "channel", "16",..
-            "rate", "1000ksps",..
+            "channel", "8",..
+            "rate", "2000ksps",..
             "resolution", "16-bit",..
             "range", ["±1.2V"; "±2.5V"; "±5V"; "±10V"],..
             "c_params", struct(..
