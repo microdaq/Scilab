@@ -44,7 +44,8 @@ enum mdaq_adc_ids
     ADC06,
     ADC07,
     ADC08,
-    ADC09
+    ADC09,
+    ADC10 
 };
 
 
@@ -69,7 +70,7 @@ int mdaq_ai_init(uint32_t range, uint32_t polarity, uint32_t mode);
 int mdaq_ai_config_ch( uint8_t ch[], uint8_t ch_count, uint32_t *ch_config );
 int mdaq_ai_read( uint8_t ch[], uint8_t ch_count, double *data);
 int mdaq_ai_read2(uint8_t ch[], uint8_t ch_count, uint32_t oversampling, double *data);
-int mdaq_ai_scan_init(uint8_t ch[], uint8_t ch_count, uint32_t *ch_config, uint32_t scan_count, float freq);
+int mdaq_ai_scan_init(uint8_t ch[], uint8_t ch_count, uint32_t *ch_config, uint32_t scan_count, float *freq);
 int mdaq_ai_id(void);
 
 #endif /* MDAQ_AI_H */

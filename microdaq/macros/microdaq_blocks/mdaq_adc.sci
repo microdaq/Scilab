@@ -21,9 +21,9 @@ function [x,y,typ] = mdaq_adc(job,arg1,arg2)
         range_spec_opt = "Unknown";
     end
 
-    adc_desc = ["This block reads MicroDAQ analog inputs (AI).";
-    "Block detects MicroDAQ analog inputs type and allows";
-    "channel, range and measurement type selection.";
+    adc_desc = ["This block reads MicroDAQ analog inputs (AI). Block detects";
+    "MicroDAQ analog inputs type and allows channel, range";
+    "and measurement type selection.";
     "In order to select analog input channels scalar or vector";
     "containing channel number have to be provided.";
     "Input range can be selected by providing scalar or vector";
@@ -32,19 +32,18 @@ function [x,y,typ] = mdaq_adc(job,arg1,arg2)
     "Single-ended or differential measurement type can be selected.";
     "Scalar or vector with 1 and 0 values can be provided to enable";
     "and disable differential mode.";
-    "If scalar provided it will be applied for all used channels";
+    "If scalar is provided it will be applied for all used channels";
     "";
-    "Refer to MicroDAQ datasheet for supported ranges and measurement modes";
+    "Averaging allows to increase measurement accuracy by calculating";
+    "average from 4-256 ADC samples. ";
+    "Averaging factor: ";
+    "0 - averaging disabled";
+    "1 - 4 ADC reads per channel";
+    "2 - 16 ADC reads per channel";
+    "3 - 64 ADC reads per channel";
+    "4 - 256 ADC reads per channel";
     "";
-    "Oversampling can be used to increase measurement resolution.";
-    "Oversampling factor: ";
-    "0 - disabled";
-    "1 - 4 ADC readings   - 1 bit accuracy ";
-    "2 - 16 ADC readings  - 2 bits accuracy";
-    "3 - 64 ADC readings  - 3 bits accuracy";
-    "4 - 256 ADC readings - 4 bits accuracy";
-    "";
-    "output - value in volts";
+    "output - ADC value scaled to selected range";
     "";
     "Analog inputs parameters:";
     "Channels: "+channel_desc;
@@ -72,7 +71,7 @@ function [x,y,typ] = mdaq_adc(job,arg1,arg2)
                 ['Channels:';
                 'Range:';
                 'Differential:';
-                'Oversampling:'],..
+                'Averaging:'],..
                 list('row',-1,'row',-1,'row',-1,'vec',1),exprs)
             catch
                 [ok, channel, adc_range, adc_mode, oversampling,exprs]=..
@@ -80,7 +79,7 @@ function [x,y,typ] = mdaq_adc(job,arg1,arg2)
                 ['Channels:';
                 'Range:';
                 'Differential:';
-                'Oversampling:'],..
+                'Averaging:'],..
                 list('row',-1,'row',-1,'row',-1,'vec',1),exprs)
             end
 
@@ -166,23 +165,18 @@ function [x,y,typ] = mdaq_adc(job,arg1,arg2)
                     ok = %f;
                     message("Wrong oversampling facator selected!");
                 end
-            else
-                ok = %f;
-                message('Unable to detect MicroDAQ confituration - run mdaq_hwinfo and try again!');
-            end
-
-            if ok then
-                [model,graphics,ok] = check_io(model,graphics, [], n_channels, 1, []);
-                graphics.exprs = exprs;
-
-                adc_range_t = adc_range; 
-                adc_mode_t = adc_mode; 
                 
+                adc_range_t = adc_range; 
+                adc_range_param = adc_range; 
+                adc_mode_t = adc_mode; 
+
                 if adc_range_size == 1 then
                     adc_range = ones(n_channels,1) * adc_info.c_params.c_range(adc_range_t)';
-                    adc_range_sim = ones(n_channels,1) * adc_range_t
+                    adc_range_param = ones(n_channels,1) * adc_range_t;
+                    adc_range_sim   = ones(n_channels,1) * adc_range_t
                 else
                     adc_range = adc_info.c_params.c_range(adc_range_t);
+                    adc_range_param = adc_range_t;
                     adc_range_sim = adc_range_t';
                 end
 
@@ -210,6 +204,25 @@ function [x,y,typ] = mdaq_adc(job,arg1,arg2)
                     end
                     adc_mode_sim = adc_mode_t';
                 end
+
+                if ~exists("%scicos_prob") then
+                    result = adc_check_params(channel, adc_range_param', adc_mode_sim);
+                    if result < 0 then
+                        message(mdaq_error2(result));
+                        ok = %f;
+                        break;
+                    end
+                end
+
+            else
+                ok = %f;
+                message('Unable to detect MicroDAQ confituration - run mdaq_hwinfo and try again!');
+            end
+
+            if ok then
+                [model,graphics,ok] = check_io(model,graphics, [], n_channels, 1, []);
+                graphics.exprs = exprs;
+
                 model.ipar=[n_channels; channel'; adc_range; adc_polarity; adc_mode; adc_range_sim; adc_mode_sim; oversampling]
                 model.dstate = [];
                 x.graphics = graphics;
