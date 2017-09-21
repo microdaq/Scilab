@@ -44,6 +44,7 @@ c_params_e2000(2) = struct(..
         "c_bipolar", [24;24;24;24],..
         "c_diff", [0;0;0;0]); 
 
+
     c_params_e2000(3) = struct(..
         "c_number", [6;7;8;9;10],..
         "c_range_desc", ["±10.24V"; "±5.12V"; "±2.56V"; "±1.24V"; "±0.64V"],..
