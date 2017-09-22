@@ -1135,10 +1135,14 @@ function  [ok,XX,alreadyran,flgcdgen,szclkINTemp,freof] = do_compile_superblock_
     
         res = mlink_dsp_load(connection_id, rpat + filesep() + dsp_binary, '');
         if res < 0 then
-            message('Unable to load DSP firmware! (' + mdaq_error2(res) + ').');
-            mdaq_close(connection_id);
-            return;
+            res = mlink_dsp_load(connection_id, rpat + filesep() + dsp_binary, '');
+            if res < 0 then
+                message(mdaq_error2(res));                
+                mdaq_close(connection_id);
+                return
+            end
         end
+        
         disp('### ' + dsp_binary + ' has been loaded to MicroDAQ.');
 
         res = mlink_dsp_start(connection_id,-1);
