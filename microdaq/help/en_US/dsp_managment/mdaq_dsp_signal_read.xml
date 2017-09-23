@@ -13,7 +13,9 @@ xml:id="mdaq_dsp_signal_read">
   </refnamediv>
   <refsynopsisdiv>
 	<title>Description</title>
-	<para>This function reads live data from DSP application generated from XCos model. Xcos model has to contain SIGNAL block with defined ID. The DSP data is read SIGNAL block. Function blocks execution until it gathers all requested samples. In order to use this function SIGNAL block needs to be registered with mdaq_dsp_signal() function. </para>
+	<para>This function reads data from running DSP application generated from XCos model. Xcos model has to contain SIGNAL block with defined ID. Function blocks execution until it gathers all requested samples. In order to use function SIGNAL block needs to be registered with mdaq_dsp_signal() function. </para>
+	<para>User has to provide number of scalars/vectors to read. </para>
+	<para></para>
     <para>WARNING: Current mdaq_dsp_signal_read() implementation allows reading only single XCos signal - use MUX block to gather signals into one signal vector.  </para>
 	<title>Calling Sequence</title>
     <synopsis>
