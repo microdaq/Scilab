@@ -201,21 +201,29 @@ function  mdaq_ai_scan_init(arg1, arg2, arg3, arg4, arg5, arg6)
         mprintf("\t--------------------------------------------------\n")
         if scan_freq >= 1000
             mprintf("\tScan frequency:\t\t%.4fkHz\n", scan_freq/1000);
-            mprintf("\tActual scan frequency:\t%.3fkHz\n", real_freq/1000);
+            mprintf("\tActual scan frequency:\t%.4fkHz\n", real_freq/1000);
         else
             mprintf("\tScan frequency:\t\t%.4fHz\n", scan_freq);
             mprintf("\tActual scan frequency:\t%.4fHz\n", real_freq);
         end
-        mprintf("\tScan period: \t\t%fs\n", 1 / real_freq);
+        if 1 /real_freq > 0.001 then
+            mprintf("\tScan period: \t\t%fs\n", 1 / real_freq);
+        end
+        
+        if 1 /real_freq <= 0.001 then
+            mprintf("\tScan period: \t\t%fms\n", 1 / real_freq * 1000);
+        end
+        
+        
 
         if scan_time < 0
             mprintf("\tDuration:\t\tInf\n");
-            mprintf("\tNumber of channels:\t%d\n", ch_count)
             mprintf("\tScan count:\t\tInf");
+            mprintf("\tNumber of channels:\t%d\n", ch_count)
         else
             mprintf("\tDuration:\t\t%.2fs\n", scan_time);
-            mprintf("\tNumber of channels:\t%d\n", ch_count)
             mprintf("\tNumber of scans:\t%d\n", scan_time * scan_freq);
+            mprintf("\tNumber of channels:\t%d\n", ch_count)
         end
         mprintf("\t--------------------------------------------------\n")
     end
