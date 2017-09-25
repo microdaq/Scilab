@@ -8,9 +8,8 @@
 	<refsynopsisdiv>
 		<title>Calling Sequence</title>
 		<synopsis>
-			mdaq_mem_get()
-			data = mdaq_mem_get(start, size, vec_size)
-			data = mdaq_mem_get(link_id, start, size, vec_size)
+			data = mdaq_mem_get(start, size, vectorSize)
+			data = mdaq_mem_get(linkID, start, size, vectorSize)
 		</synopsis>
 	</refsynopsisdiv>
 	
@@ -26,10 +25,10 @@
 		<title>Parameters</title>
 		<itemizedlist>
 			
-			<listitem><para><emphasis role="bold">link_id: </emphasis> Valid connection link ID (optional) </para></listitem>
+			<listitem><para><emphasis role="bold">linkID: </emphasis> Valid connection link ID (optional) </para></listitem>
 			<listitem><para><emphasis role="bold">start: </emphasis> MicroDAQ memory start index </para></listitem>
 			<listitem><para><emphasis role="bold">size: </emphasis> Data size to be downloaded </para></listitem>
-			<listitem><para><emphasis role="bold">vec_size: </emphasis> Data vector size </para></listitem>
+			<listitem><para><emphasis role="bold">vectorSize: </emphasis> Data vector size </para></listitem>
 		    <listitem><para><emphasis role="bold">data: </emphasis> Resulting data </para></listitem>
 		</itemizedlist>
 	</refsection>

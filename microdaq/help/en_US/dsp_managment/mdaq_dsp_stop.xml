@@ -9,12 +9,14 @@ version="5.0-subset Scilab"
 xml:id="mdaq_dsp_stop">
   <refnamediv>
     <refname>mdaq_dsp_stop</refname>
-    <refpurpose>Terminate currently running DSP application</refpurpose>
+    <refpurpose>Stop currently running DSP application</refpurpose>
   </refnamediv>
   <refsynopsisdiv>
 	<title>Description</title>
 	<para>This function terminates model execution on MicroDAQ DSP core. It has to be called after DSP processing is done.</para>
-	<para>WARNING: TCP/IP protocol is used for data exchange - make sure that after DSP work is done the mdaq_dsp_stop() is called - otherwise next attempt to start DSP application with mdaq_dsp_start() will fail and MicroDAQ device reboot will be needed!  	</para>
+	<para></para>
+	<para>WARNING: TCP/IP protocol is used for data exchange in Ext mode - make sure that the mdaq_dsp_stop() is called after/during DSP execution, otherwise next mdaq_dsp_start() call will fail!
+	</para>
     <title>Calling Sequence</title>
     <synopsis>
       mdaq_dsp_stop();

@@ -8,5 +8,7 @@ function [mdaq_ip, result] = mdaq_get_ip()
         tmp = mgetl(ip_config_file);
         mdaq_ip = string(tmp);
         mclose(ip_config_file);
+    else
+        error("Unable to get MicroDAQ IP address - use mdaq_set_ip()");
     end
 endfunction

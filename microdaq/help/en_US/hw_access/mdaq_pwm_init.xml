@@ -8,26 +8,25 @@
 	<refsynopsisdiv>
 		<title>Calling Sequence</title>
 		<synopsis>
-			mdaq_pwm_init()
-			mdaq_pwm_init(module, period, active_low)
-			mdaq_pwm_init(link_id, module, period, active_low)
+			mdaq_pwm_init(module, period, activeLow)
+			mdaq_pwm_init(linkID, module, period, activeLow)
 		</synopsis>
 	</refsynopsisdiv>
 	
 	<refsection id="Description_mdaq_pwm_init">
 		<title>Description</title>
 		<para>
-			This function initializes MicroDAQ PWM module. Each PWM module has A and B channel which can generate PWM waveform with different duty and same period defined for PWM module. PWM waveform period is defined in microseconds (us). Active LOW option allows generation of inverted PWM waveform.  Channel A and B inputs determines initial PWM duty (0-100).
+			This function initializes MicroDAQ PWM module. Each PWM module has A and B channel which can generate PWM waveform with different duty and same period defined for PWM module. PWM waveform period is defined in microseconds (us). Active LOW option allows generation of inverted PWM waveform. Channel A and B inputs determines initial PWM duty (0-100).
 		</para>
 	</refsection>  
   
 	<refsection id="Parameters_mdaq_pwm_init">
 		<title>Parameters</title>
 		<itemizedlist>
-			<listitem><para><emphasis role="bold">link_id: </emphasis> Valid connection link ID (optional) </para></listitem>
+			<listitem><para><emphasis role="bold">linkID: </emphasis> Valid connection link ID (optional) </para></listitem>
 			<listitem><para><emphasis role="bold">module: </emphasis> PWM module number (1, 2, or 3) </para></listitem>
 			<listitem><para><emphasis role="bold">period: </emphasis> PWM module period in microseconds (2-500000)</para></listitem>
-			<listitem><para><emphasis role="bold">active_low: </emphasis> Generate inverted PWM waveform (%T/%F to enable or disable) </para></listitem>
+			<listitem><para><emphasis role="bold">activeLow: </emphasis> Generate inverted PWM waveform (%T/%F to enable or disable) </para></listitem>
 
 		</itemizedlist>
 	</refsection>

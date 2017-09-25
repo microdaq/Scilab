@@ -22,13 +22,13 @@ function mdaq_ao_scan_data(arg1, arg2, arg3, arg4)
 
     if argn(2) > 4 | argn(2) < 3 then
         mprintf("Description:\n");
-        mprintf("\tUpdates AO channel data\n");
+        mprintf("\tQueues data to be output\n");
         mprintf("Usage:\n");
-        mprintf("\tmdaq_ao_data_data(link_id, channels, data, opt);\n")
-        mprintf("\tlink_id - connection id returned by mdaq_open() (OPTIONAL)\n");
+        mprintf("\tmdaq_ao_scan_data(linkID, channels, data, opt);\n")
+        mprintf("\tlinkID - connection id returned by mdaq_open() (OPTIONAL)\n");
         mprintf("\tchannels - analog output channels to write\n");
-        mprintf("\tdata - scan data\n");
-        mprintf("\topt - reset buffer index to 0 (%s/%s) - single mode\n\t      blocking/non-blocking   (%s/%s) - continous mode", "%T", "%F", "%T", "%F");
+        mprintf("\tdata - data to be output\n");
+        mprintf("\topt - reset buffer index to 0 (%s/%s) - periodic mode\n\t      blocking/non-blocking   (%s/%s) - stream mode", "%T", "%F", "%T", "%F");
         return;
     end
     

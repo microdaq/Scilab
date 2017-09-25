@@ -64,7 +64,9 @@
             mprintf("\tDigital input/output (DIO): %d channels, 5V/TTL\n", mdaq_get_dio_config());
 
             mprintf("IP settings:\n");
-            mprintf("\tIP address: %s\n", %microdaq.ip_address);
+
+            mprintf("\tIP address: %s\n", mdaq_get_ip());
+            %microdaq.ip_address = mdaq_get_ip();
 
             mprintf("Firmware version:\n");
             mdaq_fw = mdaq_fw_version();

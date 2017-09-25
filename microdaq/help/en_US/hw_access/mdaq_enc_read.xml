@@ -8,9 +8,8 @@
 	<refsynopsisdiv>
 		<title>Calling Sequence</title>
 		<synopsis>
-			mdaq_enc_read();
 			[position, direction] = mdaq_enc_read(module);
-			[position, direction] = mdaq_enc_read(link_id, module);
+			[position, direction] = mdaq_enc_read(linkID, module);
 		</synopsis>
 	</refsynopsisdiv>
 	
@@ -21,14 +20,14 @@
 			Value of direction indicates rotation direction (0 - no motion, 1 - CW, 2 - CCW).
 		</para>
 		<para>
-			The  quadrature encoder pulse (ENC) module is used for direct interface with a linear or rotary incremental encoder to get position, direction, and speed information from a rotating machine for use in a high-performance motion and position-control systems. 
+			The  quadrature encoder pulse (ENC) module is used for direct interface with a linear or rotary incremental encoder to get position, direction, and speed information from a rotating machine for use in a high-performance motion and position-control systems. Quadrature encoder supports x4 mode and accepts input signals frequency up to 20MHz.
 		</para>
 	</refsection>  
   
 	<refsection id="Parameters_mdaq_enc_read">
 		<title>Parameters</title>
 		<itemizedlist>
-			<listitem><para><emphasis role="bold">link_id: </emphasis> Valid connection link ID (optional)</para></listitem>
+			<listitem><para><emphasis role="bold">linkID: </emphasis> Valid connection link ID (optional)</para></listitem>
 			<listitem><para><emphasis role="bold">module: </emphasis> MicroDAQ quadrature encoder module number (1 or 2) </para></listitem>
 			<listitem><para><emphasis role="bold">position: </emphasis> Current quadrature encoder position value </para></listitem>
 			<listitem><para><emphasis role="bold">direction: </emphasis> Current rotation direction (0 - no motion, 1 - CW, 2 - CCW)</para></listitem>

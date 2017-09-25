@@ -8,16 +8,15 @@
 	<refsynopsisdiv>
 		<title>Calling Sequence</title>
 		<synopsis>
-			mdaq_mem_set()
-			mdaq_mem_set(start, data)
-			mdaq_mem_set(link_id, start, data)
+			mdaq_mem_set(index, data)
+			mdaq_mem_set(linkID, index, data)
 		</synopsis>
 	</refsynopsisdiv>
 	
 	<refsection id="Description___FUNC_NAME__">
 		<title>Description</title>
 		<para>
-			This function writes MicroDAQ memory. Together with 'MEM Read' block function can be used in Standalone and Ext applications to change its parameters. 
+			This function writes MicroDAQ memory. Together with 'MEM Read' block, function can be used in Standalone and Ext applications to change its parameters. 
 			
 		</para>
 	</refsection>  
@@ -25,7 +24,7 @@
 	<refsection id="Parameters___FUNC_NAME__">
 		<title>Parameters</title>
 		<itemizedlist>
-			<listitem><para><emphasis role="bold">link_id: </emphasis> Valid connection link ID (optional) </para></listitem>
+			<listitem><para><emphasis role="bold">linkID: </emphasis> Valid connection link ID (optional) </para></listitem>
 			<listitem><para><emphasis role="bold">start: </emphasis> MicroDAQ memory start index </para></listitem>
 			<listitem><para><emphasis role="bold">data: </emphasis> Data to be written to MicroDAQ memory </para></listitem>
 		</itemizedlist>

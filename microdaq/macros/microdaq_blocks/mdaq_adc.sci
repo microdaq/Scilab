@@ -21,25 +21,29 @@ function [x,y,typ] = mdaq_adc(job,arg1,arg2)
         range_spec_opt = "Unknown";
     end
 
-    adc_desc = ["This block reads MicroDAQ analog inputs (AI).";
-    "Block detects MicroDAQ analog inputs type and allows";
-    "channel, input range and measurement type selection.";
-    "Single or multiply channels can be selected by providing";
-    "vector with channel numbers. Input range can be selected";
-    "and will be applied for all selected channels."
+    adc_desc = ["This block reads MicroDAQ analog inputs (AI). Block detects";
+    "MicroDAQ analog inputs type and allows channel, range";
+    "and measurement type selection.";
+    "In order to select analog input channels scalar or vector";
+    "containing channel number have to be provided.";
+    "Input range can be selected by providing scalar or vector";
+    "with range identifiers. If single range provided it will";
+    "be applied for all selected channels."
     "Single-ended or differential measurement type can be selected.";
-    "In order to select differential mode ''Differential'' parameter";
-    "has to be set to 1.";
+    "Scalar or vector with 1 and 0 values can be provided to enable";
+    "and disable differential mode.";
+    "If scalar is provided it will be applied for all used channels";
     "";
-    "Oversampling can be used to increase measurement resolution.";
-    "Oversampling factor: ";
-    "0 - disabled";
-    "1 - 4 ADC readings   - 1 bit accuracy ";
-    "2 - 16 ADC readings  - 2 bits accuracy";
-    "3 - 64 ADC readings  - 3 bits accuracy";
-    "4 - 256 ADC readings - 4 bits accuracy";
+    "Averaging allows to increase measurement accuracy by calculating";
+    "average from 4-256 ADC samples. ";
+    "Averaging factor: ";
+    "0 - averaging disabled";
+    "1 - 4 ADC reads per channel";
+    "2 - 16 ADC reads per channel";
+    "3 - 64 ADC reads per channel";
+    "4 - 256 ADC reads per channel";
     "";
-    "output - value in volts";
+    "output - ADC value scaled to selected range";
     "";
     "Analog inputs parameters:";
     "Channels: "+channel_desc;
@@ -62,21 +66,21 @@ function [x,y,typ] = mdaq_adc(job,arg1,arg2)
         while %t do
             try
                 getversion('scilab');
-                [ok, channel, adc_range, differential, oversamp_count,exprs]=..
+                [ok, channel, adc_range, adc_mode, oversampling,exprs]=..
                 scicos_getvalue(adc_desc,..
                 ['Channels:';
                 'Range:';
                 'Differential:';
-                'Oversampling:'],..
-                list('vec',-1,'vec',1,'vec',1,'vec',1),exprs)
+                'Averaging:'],..
+                list('row',-1,'row',-1,'row',-1,'vec',1),exprs)
             catch
-                [ok, channel, adc_range, differential, oversamp_count,exprs]=..
+                [ok, channel, adc_range, adc_mode, oversampling,exprs]=..
                 scicos_getvalue(adc_desc,..
                 ['Channels:';
                 'Range:';
                 'Differential:';
-                'Oversampling:'],..
-                list('vec',-1,'vec',1,'vec',1,'vec',1),exprs)
+                'Averaging:'],..
+                list('row',-1,'row',-1,'row',-1,'vec',1),exprs)
             end
 
             if ~ok then
@@ -84,73 +88,132 @@ function [x,y,typ] = mdaq_adc(job,arg1,arg2)
             end
 
             n_channels = size(channel,"*");
-            
+
             if %microdaq.private.mdaq_hwid <> [] then
                 adc_id = %microdaq.private.mdaq_hwid(2);
                 if ok & (find(adc_info.id == get_adc_list()) == []) then
                     ok = %f;
                     message("Configuration not detected - run mdaq_hwinfo and try again!");
                 end
-                
-                // check Channel parameter
-                adc_ch_count = strtod(adc_info.channel);
 
-                if differential == 1 then
-                    adc_ch_count = adc_ch_count / 2;
-                end
+                // check Channel parameter
+                adc_n_channels = strtod(adc_info.channel);
 
                 if ok & (size(channel, 'r') > 1) then
                     ok = %f;
-                    error_msg = 'Wrong channel vector - single row vector expected!';
-                    message(error_msg);
+                    message('Wrong channel vector - single row vector expected!');
                 end
 
                 n_channels = size(channel, 'c');
-                if ok & (n_channels > adc_ch_count) then
+                if ok & (n_channels > adc_n_channels) then
                     ok = %f;
-                    error_msg = 'Too many channels selected!';
-                    message(error_msg);
+                    message('Too many channels selected!');
                 end
 
-                if ok & (max(channel) > adc_ch_count) | (min(channel) < 1) then
+                adc_range_size = size(adc_range, 'c');
+                if ok & (adc_range_size <> 1 & adc_range_size <> n_channels) then
                     ok = %f;
-                    error_msg = 'Wrong channel number selected!';
-                    message(error_msg);
+                    message("Range vector should match selected AI channels!");
+                end
+                
+                adc_mode_size = size(adc_mode, 'c');
+                if ok & (adc_mode_size <> 1 & adc_mode_size <> n_channels) then
+                    ok = %f;
+                    message("Mode vector should match selected AI channels!");
+                end
+                
+                if ok & (max(channel) > adc_n_channels) | (min(channel) < 1) then
+                    ok = %f;
+                    message('Wrong channel number selected!');
                 end
 
                 // check Range parameter
                 if ok & (size(adc_range, 'r') > 1) then
                     ok = %f;
-                    error_msg = 'Wrong range vector - single row vector expected!';
-                    message(error_msg);
+                    message('Wrong range vector - single row vector expected!');
                 end
 
-                adc_range_size = size(adc_range, 'c');
-                if ok & (adc_range_size > 1) & (adc_range_size <> n_channels) then
-                    ok = %f;
-                    error_msg = 'Wrong range vector - size should be same as Channel vector!';
-                    message(error_msg);
+                if adc_range_size > 1 then
+                    for i=1:adc_range_size
+                        if ok & (adc_range(i) > size(adc_info.c_params.c_range)) | (adc_range(i) == 0) then
+                            ok = %f;
+                            message("Wrong range selected!");
+                            break;
+                        end
+                    end
                 end
+                
+                if adc_mode_size > 1 then
+                    for i=1:adc_mode_size
 
-                if ok & (adc_range > size(adc_info.c_params.c_range)) | (adc_range == 0) then
-                    ok = %f;
-                    message("Wrong range selected");
-                else
-                    if ok & (differential == 1) & (adc_info.c_params.c_diff(adc_range) <> 1) then
-                        ok = %f;
-                        message("Converter does not support differential mode!");
+                        if ok & (adc_mode(i) == 1) & (adc_info.c_params.c_diff(1)) <> 1 then
+                            ok = %f;
+                            message("Converter does not support differential mode!");
+                            break;
+                        end
+                 
+                        if ok & (adc_mode(i) <> 0) & (adc_mode(i) <> 1) then
+                            ok = %f;
+                            message("Wrong mode selected - use 0 or 1 to set single-ended or differential mode!");
+                            break;
+                        end
+                 
                     end
                 end
 
-                if ok & (differential <> 0) & (differential <> 1) then
-                    ok = %f;
-                    message("Wrong mode selected - use 0 or 1 to set single-ended or differential mode!");
-                end
-                
-                if ok & (oversamp_count < 0) | (oversamp_count > 4) then
+                if ok & (oversampling < 0) | (oversampling > 4) then
                     ok = %f;
                     message("Wrong oversampling facator selected!");
                 end
+                
+                adc_range_t = adc_range; 
+                adc_range_param = adc_range; 
+                adc_mode_t = adc_mode; 
+
+                if adc_range_size == 1 then
+                    adc_range = ones(n_channels,1) * adc_info.c_params.c_range(adc_range_t)';
+                    adc_range_param = ones(n_channels,1) * adc_range_t;
+                    adc_range_sim   = ones(n_channels,1) * adc_range_t
+                else
+                    adc_range = adc_info.c_params.c_range(adc_range_t);
+                    adc_range_param = adc_range_t;
+                    adc_range_sim = adc_range_t';
+                end
+
+                if adc_range_size == 1 then
+                    adc_polarity = ones(n_channels,1) * adc_info.c_params.c_bipolar(adc_range_t)';
+                else
+                    adc_polarity = adc_info.c_params.c_bipolar(adc_range_t);
+                end
+
+                if adc_mode_size == 1 then
+                    if adc_mode_t == 1 then
+                        adc_mode = ones(n_channels,1) * 29;
+                        adc_mode_sim = ones(n_channels,1);
+                    else
+                        adc_mode = ones(n_channels,1) * 28;
+                        adc_mode_sim = zeros(n_channels,1);
+                    end
+                else
+                    adc_mode = ones(n_channels,1);
+                    for i = find(adc_mode_t == 1)
+                        adc_mode(i) = 29;
+                    end
+                    for i = find(adc_mode_t == 0)
+                        adc_mode(i) = 28;
+                    end
+                    adc_mode_sim = adc_mode_t';
+                end
+
+                if ~exists("%scicos_prob") then
+                    result = adc_check_params(channel, adc_range_param', adc_mode_sim);
+                    if result < 0 then
+                        message(mdaq_error2(result));
+                        ok = %f;
+                        break;
+                    end
+                end
+
             else
                 ok = %f;
                 message('Unable to detect MicroDAQ confituration - run mdaq_hwinfo and try again!');
@@ -160,18 +223,7 @@ function [x,y,typ] = mdaq_adc(job,arg1,arg2)
                 [model,graphics,ok] = check_io(model,graphics, [], n_channels, 1, []);
                 graphics.exprs = exprs;
 
-                adc_range_sim = adc_range;
-                adc_range = adc_info.c_params.c_range(adc_range_sim);
-                adc_polarity = adc_info.c_params.c_bipolar(adc_range_sim);
-                
-                if differential == 1 then
-                    differential = 29;
-                else
-                    differential = 28;
-                end
-             
-                model.ipar = [adc_range; adc_polarity; adc_range_sim; differential; oversamp_count; n_channels; channel'];
-
+                model.ipar=[n_channels; channel'; adc_range; adc_polarity; adc_mode; adc_range_sim; adc_mode_sim; oversampling]
                 model.dstate = [];
                 x.graphics = graphics;
                 x.model = model;
@@ -182,9 +234,10 @@ function [x,y,typ] = mdaq_adc(job,arg1,arg2)
         adc_converter_str = [];
         adc_range = 1;
         adc_polarity = 1;
+        adc_mode = 0;
         adc_range_sim = 1;
-        differential = 0;
-        oversamp_count= 0;
+        adc_mode_sim = 0;
+        oversampling= 0;
         n_channels = 1;
         channel = 1;
         model=scicos_model()
@@ -193,11 +246,11 @@ function [x,y,typ] = mdaq_adc(job,arg1,arg2)
         model.outtyp=[1]
         model.evtin=1
         model.rpar=[]
-        model.ipar=[ 0; 24; 1; 28; oversamp_count; n_channels; channel];
+        model.ipar=[n_channels; channel; 0; 24; 28; adc_range_sim; adc_mode_sim; oversampling];
         model.dstate=[];
         model.blocktype='d'
         model.dep_ut=[%t %f]
-        exprs=[sci2exp(channel); sci2exp(adc_range); sci2exp(differential); sci2exp(oversamp_count)];
+        exprs=[sci2exp(channel); sci2exp(adc_range); sci2exp(adc_mode); sci2exp(oversampling)];
         gr_i=['xstringb(orig(1),orig(2),[''CH: '' ; string(channel)],sz(1),sz(2),''fill'');']
         x=standard_define([4 3],model,exprs,gr_i)
         x.graphics.in_implicit=[];

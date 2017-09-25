@@ -11,11 +11,9 @@ Gain = 1.5;
 
 // Init analog input/output scanning 
 mdaq_ai_scan_init(Channel, aiRange, IsDifferential, Rate, -1);      
-mdaq_ao_scan_init(Channel, aoRange, IsContinuous, aoTrigger, Rate, -1);
+mdaq_ao_scan_init(Channel, zeros(Rate / 10,1), aoRange, IsContinuous, Rate, -1);
 
 // Start scanning - analog input and output
-audioData = mdaq_ai_scan(Rate / 10, %T);
-mdaq_ao_data_queue(audioData, %T);
 mdaq_ao_scan();
 
 // Acquire data in the loop
@@ -27,7 +25,7 @@ while(mdaq_key_read(1) == %F)
     audioData = audioData * Gain; 
     
     // Queue audio stream data 
-    mdaq_ao_data_queue(audioData, %T);
+    mdaq_ao_scan_data(Channel, audioData, %T);
 end 
 
 // When finished stop analog input/output scanning

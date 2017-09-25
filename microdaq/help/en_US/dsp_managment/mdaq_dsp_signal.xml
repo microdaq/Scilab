@@ -13,7 +13,7 @@ xml:id="mdaq_dsp_signal">
   </refnamediv>
   <refsynopsisdiv>
 	<title>Description</title>
-	<para>This function registers Xcos signal. Xcos model has to contain SIGNAL block with defined ID. In order to read data from Xcos generated DSP application SIGNAL block with its ID needs to be registered.
+	<para>This function registers Xcos signal. In order to read data from Xcos generated DSP application SIGNAL block with its ID needs to be registered.
 	Signal ID registration has to be done before read data operation done with mdaq_dsp_signal_read().
 	</para>
 	<para>WARNING: Current mdaq_dsp_signal_read() implementation allows reading only single XCos signal - use MUX block to gather signals into one signal vector.  </para>

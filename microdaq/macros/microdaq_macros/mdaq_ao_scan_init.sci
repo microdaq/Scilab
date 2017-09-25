@@ -33,21 +33,21 @@ function  mdaq_ao_scan_init(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
             return;
         end
         dac_info = %microdaq.private.dac_info;
-        if argn(2) > 6 | argn(2) < 5 then
+        if argn(2) > 7 | argn(2) < 6 then
         mprintf("Description:\n");
-        mprintf("\Initiates AO scan\n");
+        mprintf("\Initiates AO scanning session\n");
         mprintf("Usage:\n");
-        mprintf("\tmdaq_ao_scan_init(link_id, channels, data, range, continuous, frequency, duration);\n")
-        mprintf("\tlink_id - connection id returned by mdaq_open() (OPTIONAL)\n");
+        mprintf("\tmdaq_ao_scan_init(linkId, channels, data, range, isContinuous, scanFrequency, duration);\n")
+        mprintf("\tlinkId - connection id (optional)\n");
         mprintf("\tchannels - analog output channels to write\n");
-        mprintf("\tdata - initialization data\n");
+        mprintf("\tdata - output data\n");
         mprintf("\trange - analog output range\n");
             for i = 1:size(dac_info.c_params.c_range_desc, "r")
                 mprintf("\t    %s\n", string(i) + ": " + dac_info.c_params.c_range_desc(i));
             end
            
-        mprintf("\tcontinuous - scanning mode (%%T/%%F)\n");
-        mprintf("\tfrequency - analog output scan frequency\n");
+        mprintf("\tisContinuous - mode of operation (%%T - continuous, %%F - periodic)\n");
+        mprintf("\tscanFrequency - analog output scan frequency\n");
         mprintf("\tduration - analog output scan duration in seconds\n");
             return;
         end
@@ -67,40 +67,46 @@ function  mdaq_ao_scan_init(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
         scan_time = -1;
     end
     
-    dac_ch_count = strtod(dac_info.channel);
-    data_size = size(data, "*"); 
+    if size(channels, 'r') > 1 then
+        error("Wrong channel - single row vector expected!")
+    end
     
-    ch_count = max(size(channels));
+    if size(ao_range, 'r') > 1 then
+        error("Wrong range - single row vector expected!")
+    end
+    
+    ch_count = size(channels, "c");    
+    dac_ch_count = strtod(dac_info.channel);
+    
+    if size(data, "c") <> ch_count then
+        error("Wrong output data - colums should match selected channels!")
+    end
+    
+    data_size = size(data, "*"); 
+
     if ch_count < 1 | ch_count > dac_ch_count then
-        disp("ERROR: Wrong AO channel selected!")
-        return;
+        error("Wrong AO channel selected!")
     end
 
     if max(channels) > dac_ch_count | min(channels) < 1 then
-        disp("ERROR: Wrong AO channel selected!")
-        return;
+        error("Wrong AO channel selected!")
     end
 
-    ao_range_desc_index = ao_range;
+    ao_range_size = size(ao_range, 'c');
+    if ao_range_size <> 1 & ao_range_size <> ch_count then
+        error("Range vector should match selected channels!")
+    end
+
     try
-        ao_range = dac_info.c_params.c_range(ao_range);
+        if ao_range_size == 1 then
+            ao_range_t = ones(1,ch_count) * ao_range;
+            ao_range = ones(1,ch_count) * dac_info.c_params.c_range(ao_range);
+        else
+            ao_range_t = ao_range;
+            ao_range = adc_info.c_params.c_range(ao_range)';
+        end
     catch
-        error("ERROR: wrong AO range selected!");
-    end
-
-    if size(ao_range, "*") == 1 then
-        tmp = ones(1, ch_count);
-        ao_range = tmp * ao_range; 
-    else 
-        //if size(ao_range, "*") <> ch_count then
-            disp("ERROR: Wrong AO range selected!"); 
-            return; 
-       // end
-    end
-
-    if ao_range > 4 | ao_range < 0 then
-        disp("ERROR: Wrong AO output range!")
-        return;
+        error("Wrong range selected!");
     end
     
     if continuous == %T | continuous == 1 then
@@ -118,20 +124,21 @@ function  mdaq_ao_scan_init(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
             return;
         end
     end
-        
+
     result = [];
+
     result = call("sci_mlink_ao_scan_init",..
-            link_id, 1, "i",..
-            channels, 2, "i",..
-            ch_count, 3, "i",..
-            data, 4, "d",..
-            data_size, 5, "i",..
-            ao_range, 6, "i",..
-            continuous, 7, "i", ..
-            scan_freq, 8, "d",..
-            scan_time, 9, "d",..
-        "out",..
-            [1, 1], 10, "i");
+                link_id, 1, "i",..
+                channels, 2, "i",..
+                ch_count, 3, "i",..
+                data, 4, "d",..
+                data_size, 5, "i",..
+                ao_range, 6, "i",..
+                continuous, 7, "i", ..
+                scan_freq, 8, "d",..
+                scan_time, 9, "d",..
+            "out",..
+                [1, 1], 10, "i");
 
     if argn(2) == 6 then
         mdaq_close(link_id);
@@ -144,32 +151,45 @@ function  mdaq_ao_scan_init(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
             mprintf("\nWARNING: Your MicroDAQ device does not allow running AI and AO scanning session simultaneously.\n")
         end
         
-        mprintf("\nData acquisition session settings:\n");
+        rows = [];
+        row = '';
 
-        range_table = [ "0-5V" "0-10V" "±5V" "±10V" "±2.5V" ];
-        str = "";
-        s = size(channels);
-        for j=1:s(2)
-            if j > 1
-              str = str + ", ";
-            end
-            str = str + string(channels(1,j)) + "(" + dac_info.c_params.c_range_desc(ao_range_desc_index) +")";
-        end 
-        mprintf("\tChannles:\t%s\n", str);
-        
+        dac_res = strtod(part(dac_info.resolution, 1:2))
+        for j=1:ch_count
+            dac_range = diff(dac_info.c_params.c_range_value(ao_range_t(j),:))
+            resolution = string((int(dac_range/2^dac_res * 1000000)) / 1000);
+            rows = [rows; string(channels(j)), dac_info.c_params.c_range_desc(ao_range_t(j)), resolution+"mV"]
+        end
+
+        mprintf("\nAnalog output scanning session settings:\n");
+        mprintf("\t---------------------------------\n")
+        str2table(rows, ["Channel",  "Range", "Resolution"], 5)
+        mprintf("\t---------------------------------\n")
+
         if scan_freq >= 1000
-            mprintf("\tFrequency:\t%.3fkHz\n", scan_freq/1000);
+            mprintf("\tScan frequency:\t\t%.3fkHz\n", scan_freq/1000);
         else
-            mprintf("\tFrequency:\t%dHz\n", scan_freq);
+            mprintf("\tScan frequency:\t\t%dHz\n", scan_freq);
         end
         
-        if scan_time < 0
-            mprintf("\tDuration:\tInf\n");
-            mprintf("\tScan count:\tInf");
+        if continuous == 1 then
+            mprintf("\tMode:\t\t\tStream\n"); 
         else
-            mprintf("\tDuration:\t%.2fsec\n", scan_time);
-            mprintf("\tScan count:\t%d", scan_time * scan_freq);
+            mprintf("\tMode:\t\t\tPeriodic\n"); 
         end
+
+        mprintf("\tOudput data size: \t%sx%s\n", string(size(data,"c")), string(size(data,"r")))
+        if scan_time < 0
+            mprintf("\tDuration:\t\tInf\n");
+            mprintf("\tNumber of scans:\tInf\n");
+            mprintf("\tNumber of channels:\t%d\n", ch_count)
+        else
+            mprintf("\tDuration:\t\t%.2fs\n", scan_time);
+            mprintf("\tNumber of scans:\t%d\n", scan_time * scan_freq);
+            mprintf("\tNumber of channels:\t%d\n", ch_count)
+        end
+        mprintf("\t---------------------------------\n")
+
     end
 endfunction
 

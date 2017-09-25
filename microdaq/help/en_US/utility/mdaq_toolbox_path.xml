@@ -20,22 +20,19 @@ xml:id="mdaq_toolbox_path">
       path = mdaq_toolbox_path();
     </synopsis>
   </refsynopsisdiv>
+  
+  	<refsection id="Description_mdaq_toolbox_path">
+		<title>Description</title>
+		<para>
+			This function returns directory path where microdaq toolbox is installed.
+		</para>
+	</refsection>  
   <refsection id="Parameters___FUNC_NAME__">
-    <title>Arguments</title>
+    <title>Output arguments</title>
     <itemizedlist>
       <listitem>
         <para><emphasis role="bold">path : </emphasis> MicroDAQ toolbox installation path</para>
       </listitem>	  
     </itemizedlist>
-  </refsection>
-  <refsection id="SeeAlso___FUNC_NAME__">
-    <title>See Also</title>
-    <simplelist type="inline">
-  <member><link linkend="mdaq_toolbox_path">mdaq_toolbox_path</link> : Initialize MicroDAQ block structure</member>
-	  <member><link linkend="mdaq_block_build">mdaq_block_build</link> : Generate new MicroDAQ block      </member>
-      <member>
-        <link type="scilab" linkend="scilab.help/sum">Link to the Scilab help page</link>
-		</member>
-    </simplelist>
   </refsection>
 </refentry>

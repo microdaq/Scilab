@@ -2,6 +2,7 @@ function dac_info = get_dac_info(hwid)
 c_params_struct = struct(..
         "c_number", [],..
         "c_range_desc", [],..
+        "c_range_value", [],..
         "c_range", []); 
  
 c_params_e1xxx = list();
@@ -10,16 +11,19 @@ c_params_e2000 = list();
 c_params_e1xxx(1) = struct(..
         "c_number", [1;2],..
         "c_range_desc", ["0-5V"],..
+        "c_range_value", [0,5],..
         "c_range", [1]);
 
 c_params_e2000(1) = struct(..
         "c_number", [1],..
         "c_range_desc", ["0-5V"],..
+        "c_range_value", [0,5],..
         "c_range", [1]);
 
 c_params_e2000(2) = struct(..
         "c_number", [2; 3; 4; 5; 6; 7],..
         "c_range_desc", ["±10V"; "±5V"; "±2.5V"; "0-10V"; "0-5V"],..
+        "c_range_value", [[-10,10];[-5,5]; [-2.5,2.5]; [0,10]; [0,5]],..
         "c_range", [3, 2, 4, 1, 0]);
 
     dac_unknown = struct(..
@@ -32,6 +36,7 @@ c_params_e2000(2) = struct(..
             "c_params", struct(..
                     "c_number", [],..
                     "c_range_desc", [],..
+                    "c_range_value", [],..
                     "c_range", []));
                      
     dac_lookup = list();
@@ -43,11 +48,12 @@ c_params_e2000(2) = struct(..
             "id", 1,..
             "comment", "",..
             "channel", "8",..
-            "resolution", "12/16-bit",..
+            "resolution", "12-bit",..
             "range", ["0-5V"],..
             "c_params", struct(..
                     "c_number", [],..
                     "c_range_desc", [],..
+                    "c_range_value", [],..
                     "c_range", []));
         
         dac_lookup(2) = struct(..
@@ -55,10 +61,11 @@ c_params_e2000(2) = struct(..
             "comment", "",..
             "channel", "8",..
             "resolution", "12-bit",..
-            "range", ["0-5V"; "0-10V";"±2.5V"; "±5V"; "±10V"],..
+            "range", ["±10V"; "±5V"; "±2.5V"; "0-10V"; "0-5V"],..
             "c_params", struct(..
                     "c_number", [],..
                     "c_range_desc", [],..
+                    "c_range_value", [],..
                     "c_range", []));
         
         dac_lookup(3) = struct(..
@@ -66,10 +73,11 @@ c_params_e2000(2) = struct(..
             "comment", "",..
             "channel", "8",..
             "resolution", "16-bit",..
-            "range", ["0-5V"; "0-10V";"±2.5V"; "±5V"; "±10V"],..
+            "range", ["±10V"; "±5V"; "±2.5V"; "0-10V"; "0-5V"],..
             "c_params", struct(..
                     "c_number", [],..
                     "c_range_desc", [],..
+                    "c_range_value", [],..
                     "c_range", []));
         
         dac_lookup(4) = struct(..
@@ -77,10 +85,11 @@ c_params_e2000(2) = struct(..
             "comment", "",..
             "channel", "16",..
             "resolution", "12-bit",..
-            "range", ["0-5V"; "0-10V";"±2.5V"; "±5V"; "±10V"],..
+            "range", ["±10V"; "±5V"; "±2.5V"; "0-10V"; "0-5V"],..
             "c_params", struct(..
                     "c_number", [],..
                     "c_range_desc", [],..
+                    "c_range_value", [],..
                     "c_range", []));
         
         dac_lookup(5) = struct(..
@@ -88,10 +97,11 @@ c_params_e2000(2) = struct(..
             "comment", "",..
             "channel", "16",..
             "resolution", "16-bit",..
-            "range", ["0-5V"; "0-10V";"±2.5V"; "±5V"; "±10V"],..
+            "range", ["±10V"; "±5V"; "±2.5V"; "0-10V"; "0-5V"],..
             "c_params", struct(..
                     "c_number", [],..
                     "c_range_desc", [],..
+                    "c_range_value", [],..
                     "c_range", []));
                     
          dac_lookup(6) = struct(..
@@ -99,10 +109,11 @@ c_params_e2000(2) = struct(..
             "comment", "",..
             "channel", "4",..
             "resolution", "12-bit",..
-            "range", ["0-5V"; "0-10V";"±2.5V"; "±5V"; "±10V"],..
+            "range", ["±10V"; "±5V"; "±2.5V"; "0-10V"; "0-5V"],..
             "c_params", struct(..
                     "c_number", [],..
                     "c_range_desc", [],..
+                    "c_range_value", [],..
                     "c_range", []));
              
          dac_lookup(7) = struct(..
@@ -110,17 +121,17 @@ c_params_e2000(2) = struct(..
             "comment", "",..
             "channel", "4",..
             "resolution", "16-bit",..
-            "range", ["0-5V"; "0-10V";"±2.5V"; "±5V"; "±10V"],..
+            "range", ["±10V"; "±5V"; "±2.5V"; "0-10V"; "0-5V"],..
             "c_params", struct(..
                     "c_number", [],..
                     "c_range_desc", [],..
+                    "c_range_value", [],..
                     "c_range", []));
-
 
         try
             dac_info = dac_lookup(hwid(3));
         catch
-            disp('Cannot find MDAQ-E2000 DAC info.');
+            disp('Cannot read MicroDAQ analog output settings.');
             dac_info = dac_unknown;
         end   
     elseif hwid(1) == 1100 then 
@@ -145,11 +156,12 @@ c_params_e2000(2) = struct(..
             "c_params", struct(..
                     "c_number", [],..
                     "c_range_desc", [],..
+                    "c_range_value", [],..
                     "c_range", []));
         try
             dac_info = dac_lookup(hwid(3));
         catch
-            disp('Cannot find MDAQ-E1100 DAC info.')
+            disp('Cannot read MicroDAQ analog output settings.');
             dac_info = dac_unknown;
         end    
     end 
@@ -174,6 +186,4 @@ c_params_e2000(2) = struct(..
           dac_range = dac_range+" | "+dac_info.range(i);
     end
     dac_info.range_desc = dac_range;
-    
-
 endfunction

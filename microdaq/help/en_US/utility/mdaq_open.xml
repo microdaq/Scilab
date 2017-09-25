@@ -9,21 +9,21 @@ xml:id="mdaq_open">
 	<refsynopsisdiv>
 		<title>Calling Sequence</title>
 		<synopsis>
-			link_id = mdaq_open();
+			linkID = mdaq_open();
 		</synopsis>
 	</refsynopsisdiv>
 	
 	<refsection id="Description_mdaq_open">
 		<title>Description</title>
 		<para>
-			This function creates connection with MicroDAQ device. Function uses IP address which was set during microdaq_setup or with mdaq_set_ip call. On error function will return negative value. 
+			This function creates connection with MicroDAQ device. Function uses IP address which was set during MicroDAQ toolbox setup (see <link linkend="microdaq_setup">microdaq_setup()</link>) or with <link linkend="mdaq_set_ip">mdaq_set_ip()</link> call. On error function will return negative value. To close connection <link linkend="mdaq_close">mdaq_close()</link> function should be used.
 		</para>
 	</refsection>  
   
 	<refsection id="Parameters_mdaq_open">
-		<title>Parameters</title>
+		<title>Output arguments</title>
 		<itemizedlist>
-			<listitem><para><emphasis role="bold">link_id: </emphasis> Connection link ID (negative if unable to connect)</para></listitem>
+			<listitem><para><emphasis role="bold">linkID: </emphasis> Connection link ID (negative if unable to connect)</para></listitem>
 		</itemizedlist>
 	</refsection>
 	

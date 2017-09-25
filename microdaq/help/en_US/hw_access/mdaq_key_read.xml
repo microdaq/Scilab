@@ -2,30 +2,29 @@
 <refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaq_key_read">
 	<refnamediv>
 		<refname>mdaq_key_read</refname>
-		<refpurpose>Reads MicroDAQ function key state</refpurpose>
+		<refpurpose>Reads MicroDAQ function button state</refpurpose>
 	</refnamediv>
 	
 	<refsynopsisdiv>
 		<title>Calling Sequence</title>
 		<synopsis>
-			mdaq_key_read()
-		    state = mdaq_key_read(func_key)
-			state = mdaq_key_read(link_id, func_key)
+		    state = mdaq_key_read(button)
+			state = mdaq_key_read(linkID, button)
 		</synopsis>
 	</refsynopsisdiv>
 	
 	<refsection id="Description_mdaq_key_read">
 		<title>Description</title>
 		<para>
-			This function reads MicroDAQ function key (F1, F2) state. 
+			This function reads MicroDAQ function button (F1, F2) state. 
 		</para>
 	</refsection>  
   
 	<refsection id="Parameters_mdaq_key_read">
 		<title>Parameters</title>
 		<itemizedlist>
-			<listitem><para><emphasis role="bold">link_id: </emphasis> Valid connection link ID (optional)</para></listitem>
-			<listitem><para><emphasis role="bold">func_key: </emphasis> Function key number (1 or 2)</para></listitem>
+			<listitem><para><emphasis role="bold">linkID: </emphasis> Valid connection link ID (optional)</para></listitem>
+			<listitem><para><emphasis role="bold">button: </emphasis> Function key number (1 or 2)</para></listitem>
 			<listitem><para><emphasis role="bold">state: </emphasis> Function key state</para></listitem>
 		</itemizedlist>
 	</refsection>
