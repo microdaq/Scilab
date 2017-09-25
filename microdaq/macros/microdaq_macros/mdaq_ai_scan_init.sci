@@ -195,7 +195,7 @@ function  mdaq_ai_scan_init(arg1, arg2, arg3, arg4, arg5, arg6)
             rows = [rows; string(channels(j)), measure_type, adc_info.c_params.c_range_desc(aiRange_t(j)), resolution+"mV"]
         end
 
-        mprintf("\n\tAnalog input scanning session settings:\n");
+        mprintf("\nAnalog input scanning session settings:\n");
         mprintf("\t--------------------------------------------------\n")
         str2table(rows, ["Channel", "Measurement type", "Range", "Resolution"], 3)
         mprintf("\t--------------------------------------------------\n")
@@ -216,7 +216,7 @@ function  mdaq_ai_scan_init(arg1, arg2, arg3, arg4, arg5, arg6)
 
         if scan_time < 0
             mprintf("\tDuration:\t\tInf\n");
-            mprintf("\tNumber of scans::\t\tInf");
+            mprintf("\tNumber of scans:\tInf\n");
             mprintf("\tNumber of channels:\t%d\n", ch_count)
         else
             mprintf("\tDuration:\t\t%.2fs\n", scan_time);

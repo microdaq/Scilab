@@ -161,7 +161,7 @@ function  mdaq_ao_scan_init(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
             rows = [rows; string(channels(j)), dac_info.c_params.c_range_desc(ao_range_t(j)), resolution+"mV"]
         end
 
-        mprintf("\n\tAnalog output scanning session settings:\n");
+        mprintf("\nAnalog output scanning session settings:\n");
         mprintf("\t---------------------------------\n")
         str2table(rows, ["Channel",  "Range", "Resolution"], 5)
         mprintf("\t---------------------------------\n")
@@ -180,13 +180,13 @@ function  mdaq_ao_scan_init(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
 
         mprintf("\tOudput data size: \t%sx%s\n", string(size(data,"c")), string(size(data,"r")))
         if scan_time < 0
-            mprintf("\tNumber of scans::\t\tInf");
-            mprintf("\tNumber of channels:\t%d\n", ch_count)
             mprintf("\tDuration:\t\tInf\n");
+            mprintf("\tNumber of scans:\tInf\n");
+            mprintf("\tNumber of channels:\t%d\n", ch_count)
         else
+            mprintf("\tDuration:\t\t%.2fs\n", scan_time);
             mprintf("\tNumber of scans:\t%d\n", scan_time * scan_freq);
             mprintf("\tNumber of channels:\t%d\n", ch_count)
-            mprintf("\tDuration:\t\t%.2fs\n", scan_time);
         end
         mprintf("\t---------------------------------\n")
 
