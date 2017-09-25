@@ -31,6 +31,7 @@ function mdaq_dsp_stop(arg1)
         end
 
         res = mlink_set_obj(link_id, 'model_stop_flag', 1.0 );
+        res = mlink_set_obj(link_id, 'terminate_signal_task', 1 );
         if argn(2) == 0 then
             mdaq_close(link_id);
         end
