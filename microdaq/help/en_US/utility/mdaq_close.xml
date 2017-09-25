@@ -9,6 +9,7 @@ xml:id="mdaq_close">
 	<refsynopsisdiv>
 		<title>Calling Sequence</title>
 		<synopsis>
+			mdaq_close();
 			mdaq_close(link_id);
 		</synopsis>
 	</refsynopsisdiv>
@@ -16,14 +17,14 @@ xml:id="mdaq_close">
 	<refsection id="Description_mdaq_close">
 		<title>Description</title>
 		<para>
-			This function closes connection with MicroDAQ. Connection needs to be open with mdaq_open function.
+			This function closes connection with MicroDAQ. When called without argument it closes last connection. It should be used in case of "Already connected" error.
 		</para>
 	</refsection>  
   
 	<refsection id="Parameters_mdaq_close">
-		<title>Parameters</title>
+		<title>Input arguments</title>
 		<itemizedlist>
-			<listitem><para><emphasis role="bold">link_id: </emphasis> Valid connection link ID</para></listitem>
+			<listitem><para><emphasis role="bold">linkID: </emphasis> Valid connection link ID</para></listitem>
 		</itemizedlist>
 	</refsection>
 	

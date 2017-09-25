@@ -8,9 +8,8 @@
 	<refsynopsisdiv>
 		<title>Calling Sequence</title>
 		<synopsis>
-		    mdaq_pwm_write()
-			mdaq_pwm_write(module, duty_a, duty_b)
-			mdaq_pwm_write(link_id, module, duty_a, duty_b)
+			mdaq_pwm_write(module, pwmChannelA, pwmChannelB)
+			mdaq_pwm_write(linkID, module, pwmChannelA, pwmChannelB)
 		</synopsis>
 	</refsynopsisdiv>
 	
@@ -26,8 +25,8 @@
 		<itemizedlist>
 			<listitem><para><emphasis role="bold">link_id: </emphasis> Valid connection link ID (optional) </para></listitem>
 			<listitem><para><emphasis role="bold">module: </emphasis> PWM module number (1, 2, or 3) </para></listitem>
-			<listitem><para><emphasis role="bold">duty_a: </emphasis> PWM channel A duty </para></listitem>
-			<listitem><para><emphasis role="bold">duty_b: </emphasis> PWM channel B duty </para></listitem>
+			<listitem><para><emphasis role="bold">pwmChannelA: </emphasis> PWM channel A duty </para></listitem>
+			<listitem><para><emphasis role="bold">pwmChannelB: </emphasis> PWM channel B duty </para></listitem>
 		</itemizedlist>
 	</refsection>
 	

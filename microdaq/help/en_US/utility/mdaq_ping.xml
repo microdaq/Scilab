@@ -21,7 +21,7 @@ xml:id="mdaq_ping">
 	</refsection>  
   
 	<refsection id="Parameters_mdaq_ping">
-		<title>Parameters</title>
+		<title>Output arguments</title>
 		<itemizedlist>
 			<listitem><para><emphasis role="bold">result: </emphasis> Negative if unable to connect to MicroDAQ device</para></listitem>
 		</itemizedlist>

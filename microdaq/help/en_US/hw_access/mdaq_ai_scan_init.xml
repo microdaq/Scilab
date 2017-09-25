@@ -2,68 +2,108 @@
 <refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaq_ai_scan_init">
 	<refnamediv>
 		<refname>mdaq_ai_scan_init</refname>
-		<refpurpose>Initiates MicroDAQ analog inputs (AO) in scanning mode</refpurpose>
+		<refpurpose>Initiates analog input scanning session</refpurpose>
 	</refnamediv>
 	
 	<refsynopsisdiv>
 		<title>Calling Sequence</title>
 		<synopsis>
-			mdaq_ai_scan_init(link_id, channels, range, differential, frequency, time);
-			mdaq_ai_scan_init(channels, range, differential, frequency, time);
+			mdaq_ai_scan_init(channels, range, differential, scanFrequency, duration);
+			mdaq_ai_scan_init(linkID, channels, range, differential, scanFrequency, duration);
 		</synopsis>
 	</refsynopsisdiv>
 	
 	<refsection id="Description_mdaq_ai_scan_init">
 		<title>Description</title>
 		<para>
-			This function initaties analog inputs (AO) in scanning mode.
-		</para> 
+			This function initiates analog input scanning session. The function must be called before acquisition started. The channels argument can be a scalar or vector and it should contain channels numbers according to MicroDAQ hardware configuration. The range argument specifies channel measurement input range. Scalar or vector (if applicable for MicroDAQ hardware configuration) can be provided. If scalar provided, its value will be used for all used channels. In order to obtain supported ranges by device <link linkend="mdaq_ai_scan_init">mdaq_ai_scan_init()</link> function shall be called without arguments. The differential argument specifies measurement mode - differential or single-ended. This argument can be scalar or vector (if applicable for MicroDAQ hardware configuration). If scalar provided, its value will be used for all used channels.</para> 
+			<para>
+			The scanFrequency argument determines scans per second rate for analog input selected analog input channels. Values greater or equal 1Hz are supported.
+			</para>
+			<para>
+			The duration argument specifies a duration of acquisition in seconds. When set to -1, the session will run continuously, acquiring data until stopped with <link linkend="mdaq_ai_scan_stop">mdaq_ai_scan_stop()</link> function.
+			</para>
 		
 		<para>
-		HARDWARE LIMITATIONS: On MicroDAQ version with ADC01/DAC01 there is no possibility to use AI and AO scan functions simultaneously.
+		<emphasis role="bold">Limitation:</emphasis> ADC1-DAC01 MicroDAQ configuration doesn't support running simultaneously AI and AO scanning sessions.
 		</para>
 	</refsection>  
   
 	<refsection id="Parameters_mdaq_ai_scan_init">
-		<title>Parameters</title>
+		<title>Input arguments</title>
 		<itemizedlist>
-			<listitem><para><emphasis role="bold">link_id: </emphasis> Valid connection link ID (optional)</para></listitem>
-			<listitem><para><emphasis role="bold">channels: </emphasis> Single channel or array of channels to use</para></listitem>
-			<listitem><para><emphasis role="bold">range: </emphasis> Analog input range, integer number according to MDAQ device version - check usage description.</para></listitem>
-			<listitem><para><emphasis role="bold">differential: </emphasis> measurement type (%T - differential, %F - single-ended)</para></listitem>
+			<listitem><para><emphasis role="bold">linkID: </emphasis> Valid connection link id (optional)</para></listitem>
+			<listitem><para><emphasis role="bold">channels: </emphasis> Scalar or vector with channels to be read</para></listitem>
+            <listitem><para><emphasis role="bold">range: </emphasis> Scalar or vector with ranges</para></listitem>
+			<listitem><para><emphasis role="bold">differential: </emphasis> Scalar or vector with measurement mode settings: %T - differential, %F - single-ended mode</para></listitem>
 			<listitem><para><emphasis role="bold">frequency:  </emphasis> Analog input scan frequency [Hz]</para></listitem>
-			<listitem><para><emphasis role="bold">duration:  </emphasis> Analog input scan duration [sec], (-1) - infinite duration</para></listitem>
+			<listitem><para><emphasis role="bold">duration:  </emphasis> Analog input scan duration [sec], (-1) - continuous operation</para></listitem>
 		</itemizedlist>
 	</refsection>
 	
 	<refsection>
         <title>Examples</title>
         
-		<para> Getting function usage description </para>
-			<programlisting role="example"><![CDATA[
-			mdaq_ai_scan_init
-			 ]]>
-			</programlisting>
-		
-		<para> 
-		This example acquire data from analog input channels 1-8, sample rate 10 kHz, duration 1 sec. 
-		Functions are called without link_id.
-		</para>
+		<para> Perform blocking data acquisition from 8 single-ended analog input channels, one analog input range, scan frequency of 10kHz and 1 second duration.</para>
         <programlisting role="example"><![CDATA[
-			data = [];
-			//init AI scan for 8 channels, 10 kHz sampling, 1 sec 
-			mdaq_ai_scan_init([1:8], 1, %F, 10000, 1)
-			for i=1:10
-				[newdata res] = mdaq_ai_scan(1000, %T);
-				data = [data; newdata];
-				mprintf('read %d samples...\n', res);
-			end
-			mdaq_ai_scan_stop();
-			
-			//show data
-			plot(data);
+			mdaq_ai_scan_init(1:8, 1, %F, 10000, 1)
+			plot(mdaq_ai_scan(10000, %T));
 			 ]]>
 		</programlisting>
+		<para> Data acquisition from 8 single-ended analog input channels, one analog input range, scan frequency of 10kHz and 1 second duration.</para>
+        <programlisting role="example"><![CDATA[
+			aiData = [];
+			dataCount = 0;
+			mdaq_ai_scan_init(1:8, 1, %F, 10000, 1)
+			for i=1:10
+				[data result] = mdaq_ai_scan(1000, %T);
+				aiData = [aiData; data];
+				dataCount = dataCount + result;
+				mprintf('Acquired %d scans (total: %d scans)\n', result, dataCount);
+			end
+			mdaq_ai_scan_stop();
+			plot(aiData);
+			clear aiData;
+			 ]]>
+		</programlisting>
+		
+		<para> Data acquisition from 2 single-ended and 1 differential analog input channels, different input ranges, scan frequency of 10kHz and 1 second duration.</para>
+		<para>NOTE: Example will work if applicable for MicroDAQ analog input configuration</para>
+        <programlisting role="example"><![CDATA[
+			aiData = [];
+			dataCount = 0;
+			mdaq_ai_scan_init([1 3 4], [1 2 2], [%T %F %F], 10000, 1)
+			for i=1:10
+				[data result] = mdaq_ai_scan(1000, %T);
+				aiData = [aiData; data];
+				dataCount = dataCount + result;
+				mprintf('Acquired %d scans (total: %d scans)\n', result, dataCount);
+			end
+			mdaq_ai_scan_stop();
+			plot(aiData);
+			clear aiData;
+			 ]]>
+		</programlisting>
+		
+		<para> Continuous data acquisition from 8 single-ended analog input channels, one analog input range, scan frequency of 1kHz. Stop when MicroDAQ F1 button pressed.</para>
+		<para>NOTE: For long acquisition Scilab stack can be exceeded!</para>
+        <programlisting role="example"><![CDATA[
+			aiData = [];
+			dataCount = 0;
+			mdaq_ai_scan_init(1:8, 1, %F, 1000, -1)
+			while(mdaq_key_read(1) == %F)
+				[data result] = mdaq_ai_scan(100, %T);
+				aiData = [aiData; data];
+				dataCount = dataCount + result;
+				mprintf('Acquired %d scans (total: %d scans)\n', result, dataCount);
+			end
+			mdaq_ai_scan_stop();
+			plot(aiData);
+			clear aiData;
+			 ]]>
+		</programlisting>
+		
+		
     </refsection>
 	
   <refsection id="SeeAlso_mdaq_ai_scan_init">
@@ -71,7 +111,7 @@
 		<simplelist type="inline">
 			<member><link linkend="mdaq_ai_scan">mdaq_ai_scan</link></member>
 			<member><link linkend="mdaq_ai_scan_stop">mdaq_ai_scan_stop</link></member>
-			<member><link linkend="mdaq_ai_scan_examples">AI scan - examples</link></member>
+			
 		</simplelist>
   </refsection>
 </refentry>

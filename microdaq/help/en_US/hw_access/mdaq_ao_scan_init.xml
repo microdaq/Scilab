@@ -2,83 +2,92 @@
 <refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaq_ao_scan_init">
 	<refnamediv>
 		<refname>mdaq_ao_scan_init</refname>
-		<refpurpose>Initiates MicroDAQ analog outputs (AO) in scanning mode</refpurpose>
+		<refpurpose>Initiates analog outputs scanning session</refpurpose>
 	</refnamediv>
 	
 	<refsynopsisdiv>
 		<title>Calling Sequence</title>
 		<synopsis>
-			mdaq_ao_scan_init(link_id, channels, range, continuous, trigger, frequency, duration);
-			mdaq_ao_scan_init(channels, range, continuous, trigger, frequency, duration);
+			mdaq_ao_scan_init(channels, data, range, stream, scanFrequency, duration);
+			mdaq_ao_scan_init(linkID, channels, data, range, stream, scanFrequency, duration);
 		</synopsis>
 	</refsynopsisdiv>
 	
 	<refsection id="Description_mdaq_ao_scan_init">
 		<title>Description</title>
-		<para>
-		This function initaties analog outputs (AO) in scanning mode. This is first step in a scan process:
+
+				<para> This function is part of analog scan functionality and has to be called in the following sequence:
 		<orderedlist>
-		
 			<listitem>
-				<para><emphasis role="bold">INIT</emphasis> - <link linkend="mdaq_ao_scan_init">mdaq_ao_scan_init()</link></para>
+				<para><emphasis role="bold">Initialize scanning session</emphasis> - <link linkend="mdaq_ao_scan_init">mdaq_ao_scan_init()</link></para>
 			</listitem>
 			<listitem>
-				<para>LOAD INIT DATA - <link linkend="mdaq_ao_data_update">mdaq_ao_data_update()</link>, <link linkend="mdaq_ao_data_queue">mdaq_ao_data_queue()</link></para>
+				<para>Start scanning session - <link linkend="mdaq_ao_scan">mdaq_ao_scan()</link></para>
 			</listitem>
 			<listitem>
-				<para>START SCAN - <link linkend="mdaq_ao_scan">mdaq_ao_scan()</link></para>
+				<para>Queue new data - <link linkend="mdaq_ao_scan_data">mdaq_ao_scan_data()</link></para>
 			</listitem>
 			<listitem>
-				<para>UPDATE DATA - <link linkend="mdaq_ao_data_update">mdaq_ao_data_update()</link>, <link linkend="mdaq_ao_data_queue">mdaq_ao_data_queue()</link></para>
-			</listitem>
-			<listitem>
-				<para>STOP SCAN - <link linkend="mdaq_ao_scan_stop">mdaq_ao_scan_stop()</link></para>
+				<para>Stop scanning session - <link linkend="mdaq_ao_scan_stop">mdaq_ao_scan_stop()</link></para>
 			</listitem>
 		</orderedlist>
 		</para> 
+
+
 		
 		<para>
-		Data size is determinated in step 2 therefore if you load data after <link linkend="mdaq_ao_scan_start">mdaq_ao_scan()</link> you have to keep the same data size.
+			This function initiates analog output scanning session. The function must be called before acquisition started. The channels argument can be a scalar or vector and it should contain channels numbers according to MicroDAQ hardware configuration. The range argument specifies channel measurement input range. Scalar or vector (if applicable for MicroDAQ hardware configuration) can be provided. If scalar provided, its value will be used for all used channels. In order to obtain supported ranges by device <link linkend="mdaq_ao_scan_init">mdaq_ao_scan_init()</link> function shall be called without arguments. 
+			
+		</para>
+		<para>
+			The data argument contains data to be output and is specified as an m-by-n matrix, where m is the number of scans to generate, and n is the number of used output channels. 
 		</para>
 		
 		<para>
-		Function allows also to set analog outputs scan (signal generating) mode. 
-		Two modes are available: 
-		<itemizedlist>
-			<listitem>
-				<para><emphasis role="bold">Continuous</emphasis> - param continuous = %T, in this case you have to supply data in continuous stream using 
-				<link linkend="mdaq_ao_data_queue">mdaq_ao_data_queue()</link> function. If you don't load new data in demand time, the last sample will stay on output. This mode is suitable for 
-				real-time signal processing. 
-				</para>
-			</listitem>
-			<listitem>
-				<para>
-					<emphasis role="bold">Single</emphasis> - param continuous = %F, in this mode data is uploaded once using <link linkend="mdaq_ao_data_update">mdaq_ao_data_update()</link> function.
-					Data is read from buffer periodically. It is possible to update data on the fly. This mode is perfect solution for application like frequency generator.
-				</para>
-			</listitem>
-		</itemizedlist>
+		<emphasis role="bold">Important:</emphasis> The data argument determines size of data which can be queued with <link linkend="mdaq_ao_scan_data">mdaq_ao_scan_data()</link>. Queued data size must be the same size as data argument in <link linkend="mdaq_ao_scan_init">mdaq_ao_scan_init()</link>
 		</para>
+		
+	
 		<para>
-		Buffer data has following size: (1 048 576 values / number of channels) in single mode. For continuous mode buffer size is twice smaller. 
+			The scanFrequency argument determines scans per second rate for analog input selected analog input channels. Values greater or equal 1Hz are supported.
 		</para>
 		
 		<para>
-		HARDWARE LIMITATIONS: On MicroDAQ version with ADC01/DAC01 there is no possibility to use AI and AO scan functions simultaneously.
-		Maximum frequency rate depends on Microdaq model: 1-100 kHz on E1xxx and 1-1 MHZ on E2xxx series. 
+			The duration argument specifies a duration of acquisition in seconds. When set to -1, the session will run continuously, acquiring data until stopped with <link linkend="mdaq_ao_scan_stop">mdaq_ai_scan_stop()</link> function.
+		</para>
+		<para>
+			The stream argument determines scanning session behavior. Two modes are available - periodic and stream. The periodic mode (stream=%F) uses a single buffer which data is output from. When the end of the buffer is reached, data index is switched to the beginning of the buffer. This mode is suitable for generating periodic signals e.g sine waveform. The buffer can be changed during signal generation with <link linkend="mdaq_ao_scan_data">mdaq_ao_scan_data()</link> function.
+		</para>
+		<para>
+			The stream mode (stream=%T) uses two buffers architecture to ensure uninterrupted analog signal generation. This mode of operation is suitable for stream data type e.g. generating audio stream, this mode requires from user to queue data with certain time constraints. If new data isn't queued on time last value remains on analog output until new data has been queued. See <link linkend="mdaq_ao_scan_data">mdaq_ao_scan_data()</link> documentation for more details.
+			
+		</para>
+		<para>
+		<emphasis role="bold">Maximum data size for stream and periodic mode:</emphasis>
+		</para>
+		<para>
+	
+		<simplelist type="inline">
+			<member>- stream mode - 524288 values / number of used channels</member>
+			<member>- periodic mode - 1048576 values / number of used channels</member>
+		</simplelist>
+		</para>
+		
+		<para>
+		<emphasis role="bold">Limitations:</emphasis> On MicroDAQ ADC01-DAC01 hardware configuration running AI and AO scanning simultaneously is not supported.
+
 		</para>
 	</refsection>  
   
 	<refsection id="Parameters_mdaq_ao_scan_init">
-		<title>Parameters</title>
+		<title>Input arguments</title>
 		<itemizedlist>
 			<listitem><para><emphasis role="bold">link_id: </emphasis> Valid connection link ID (optional)</para></listitem>
 			<listitem><para><emphasis role="bold">channels: </emphasis> Single channel or array of channels to use</para></listitem>
 			<listitem><para><emphasis role="bold">range: </emphasis> Analog output range, integer number according to MDAQ device version - check usage description.</para></listitem>
-			<listitem><para><emphasis role="bold">continuous: </emphasis> Scanning mode (%F-single, %T-continuous)</para></listitem>
-			<listitem><para><emphasis role="bold">trigger: </emphasis> DIO number (DIO1-8), high state triggers scanning</para></listitem>
-			<listitem><para><emphasis role="bold">frequency:  </emphasis> Analog output scan frequency [Hz]</para></listitem>
-			<listitem><para><emphasis role="bold">duration:  </emphasis> Analog output scan duration [sec], (-1) - infinite duration</para></listitem>
+			<listitem><para><emphasis role="bold">stream: </emphasis> Scanning mode (%F-periodic, %T-stream)</para></listitem>
+			<listitem><para><emphasis role="bold">scanFrequency:  </emphasis> Analog output scan frequency [Hz]</para></listitem>
+			<listitem><para><emphasis role="bold">duration:  </emphasis> Analog output scan duration [sec], (-1) - continuous</para></listitem>
 		</itemizedlist>
 	</refsection>
 	
@@ -91,26 +100,18 @@ mdaq_ao_scan_init
  ]]></programlisting>
 		
 		<para> 
-		This example generates sine waveform on AO channel 1 and triangle waveform on AO channel 2 for 5 sec. 
-		Output signal ferquency is 1 Hz. Functions are called without link_id.
+		Generate sine and triangle waveform in periodic mode. Sample update frequency 1000Hz, duration 5 seconds.
 		</para>
         <programlisting role="example"><![CDATA[
-//generate dataset
-sinus_data = sin(linspace(0, 2*%pi, 1000)) + 1.0;
-triangle_data = linspace(0, 5, 1000);
+			sineData = sin(linspace(0, 2*%pi, 1000)) + 1.0;
+			triangleData = linspace(0, 5, 1000);
 
-//init scan and load first dataset for each channel
-//in single mode
-mdaq_ao_scan_init([1:2], 1, %F, 0, 1000, 5);
-    mdaq_ao_data_update(1, sinus_data);
-    mdaq_ao_data_update(2, triangle_data);
-    
-//run scan 
-mdaq_ao_scan();
+			mdaq_ao_scan_init(1:2, [sineData' triangleData'], 1, %F, 1000, 5);
 
- ]]></programlisting>
+			mdaq_ao_scan();
+		 ]]></programlisting>
  
-<para>
+		<para>
 	Results:
 	<imagedata align="center" fileref="../images/single_result.png" valign="middle"/>
 </para>
@@ -123,7 +124,7 @@ mdaq_ao_scan();
 			<member><link linkend="mdaq_ao_data_queue">mdaq_ao_data_queue</link></member>
 			<member><link linkend="mdaq_ao_scan_stop">mdaq_ao_scan_stop</link></member>
 			<member><link linkend="mdaq_ao_scan">mdaq_ao_scan</link></member>
-			<member><link linkend="mdaq_ao_scan_examples">AO scan - examples</link></member>
+			
 		</simplelist>
   </refsection>
 </refentry>

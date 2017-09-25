@@ -2,68 +2,68 @@
 <refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaq_ao_scan">
 	<refnamediv>
 		<refname>mdaq_ao_scan</refname>
-		<refpurpose>Starts AO scanning</refpurpose>
+		<refpurpose>Starts analog output scanning</refpurpose>
 	</refnamediv>
 	
 	<refsynopsisdiv>
 		<title>Calling Sequence</title>
 		<synopsis>
-			mdaq_ao_scan(link_id);
 			mdaq_ao_scan();
+			mdaq_ao_scan(linkID);
 		</synopsis>
 	</refsynopsisdiv>
 	
 	<refsection id="Description_mdaq_ao_scan">
 		<title>Description</title>
-		<para>
-			This function starts scanning for analog outputs. 
+		
+		<para> This function is part of analog scan functionality and has to be called in the following sequence:
 		<orderedlist>
 			<listitem>
-				<para>INIT - <link linkend="mdaq_ao_scan_init">mdaq_ao_scan_init()</link></para>
+				<para>Initialize scanning session - <link linkend="mdaq_ao_scan_init">mdaq_ao_scan_init()</link></para>
 			</listitem>
 			<listitem>
-				<para>LOAD INIT DATA - <link linkend="mdaq_ao_data_update">mdaq_ao_data_update()</link>, <link linkend="mdaq_ao_data_queue">mdaq_ao_data_queue()</link></para>
+				<para><emphasis role="bold">Start scanning session</emphasis> - <link linkend="mdaq_ao_scan">mdaq_ao_scan()</link></para>
 			</listitem>
 			<listitem>
-				<para><emphasis role="bold">START SCAN</emphasis> - <link linkend="mdaq_ao_scan">mdaq_ao_scan()</link></para>
+				<para>Queue new data - <link linkend="mdaq_ao_scan_data">mdaq_ao_scan_data()</link></para>
 			</listitem>
 			<listitem>
-				<para>UPDATE DATA - <link linkend="mdaq_ao_data_update">mdaq_ao_data_update()</link>, <link linkend="mdaq_ao_data_queue">mdaq_ao_data_queue()</link></para>
-			</listitem>
-			<listitem>
-				<para>STOP SCAN - <link linkend="mdaq_ao_scan_stop">mdaq_ao_scan_stop()</link></para>
+				<para>Stop scanning session - <link linkend="mdaq_ao_scan_stop">mdaq_ao_scan_stop()</link></para>
 			</listitem>
 		</orderedlist>
 		</para> 
+		
+		<para>
+			This function starts analog output scanning. A function call has to be preceded with <link linkend="mdaq_ao_scan_init">mdaq_ao_scan_init()</link> which initiates analog output scanning session parameters. Function enables MicroDAQ hardware to output data on selected AO channels and returns immediately (doesn't block Scilab console). In order to stop scanning on analog outputs function <link linkend="mdaq_ao_scan_stop">mdaq_ao_scan_stop()</link> has to be called.
+			
+		</para>
+		<para>
+		<emphasis role="bold">Limitation:</emphasis> ADC1-DAC01 MicroDAQ configuration doesn't support running simultaneously AI and AO scanning sessions.
+		</para>
 	</refsection>  
   
 	<refsection id="Parameters_mdaq_ao_scan">
-		<title>Parameters</title>
+		<title>Input arguments</title>
 		<itemizedlist>
-			<listitem><para><emphasis role="bold">link_id: </emphasis> Valid connection link ID (optional)</para></listitem>
+			<listitem><para><emphasis role="bold">linkID: </emphasis> Valid connection link ID (optional)</para></listitem>
 		</itemizedlist>
 	</refsection>
 	
 	<refsection>
         <title>Examples</title>  
 		<para> 
-		This example generates sine waveform on AO channel 1 and triangle waveform on AO channel 2 for 5 sec.  
-		Output signal ferquency is 1 Hz. Functions are called without link_id.
+		Generate 10Hz sine waveform on AO1 for 5 sec.
 		</para>
         <programlisting role="example"><![CDATA[
-//generate dataset
-sinus_data = sin(linspace(0, 2*%pi, 1000)) + 1.0;
-triangle_data = linspace(0, 5, 1000);
+			// generate dataset
+			sineBias = 1; 
+			sineData = sin(linspace(0, 2*%pi, 100)) + sineBias;
 
-//init scan and load first dataset for each channel
-//in single mode
-mdaq_ao_scan_init([1:2], 1, %F, 0, 1000, 5);
-    mdaq_ao_data_update(1, sinus_data);
-    mdaq_ao_data_update(2, triangle_data);
-    
-//run scan 
-mdaq_ao_scan();
+			// initialize scanning session
+			mdaq_ao_scan_init(1, sineData', 1, %F, 1000, 5);
 
+			// start sine waveform generation
+			mdaq_ao_scan();
  ]]></programlisting>
  
 <para>
@@ -81,10 +81,9 @@ mdaq_ao_scan();
 		<title>See Also</title>
 		<simplelist type="inline">
 			<member><link linkend="mdaq_ao_scan_init">mdaq_ao_scan_init</link></member>
-			<member><link linkend="mdaq_ao_data_update">mdaq_ao_data_update</link></member>
-			<member><link linkend="mdaq_ao_data_queue">mdaq_ao_data_queue</link></member>
+			<member><link linkend="mdaq_ao_scan_data">mdaq_ao_scan_data</link></member>
 			<member><link linkend="mdaq_ao_scan_stop">mdaq_ao_scan_stop</link></member>
-			<member><link linkend="mdaq_ao_scan_examples">AO scan - examples</link></member>
+			
 		</simplelist>
   </refsection>
 </refentry>

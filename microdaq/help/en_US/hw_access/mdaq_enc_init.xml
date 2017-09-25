@@ -8,25 +8,24 @@
 	<refsynopsisdiv>
 		<title>Calling Sequence</title>
 		<synopsis>
-		    mdaq_enc_init();
-			mdaq_enc_init(module, init_value);
-			mdaq_enc_init(link_id, module, init_value);
+			mdaq_enc_init(module, initValue);
+			mdaq_enc_init(linkID, module, initValue);
 		</synopsis>
 	</refsynopsisdiv>
 	
 	<refsection id="Description_mdaq_enc_init">
 		<title>Description</title>
 		<para>
-			This function initializes selected quadrature encoder module (ENC1, ENC2) with provided initial value.
+			This function initializes selected quadrature encoder module (ENC1, ENC2) with provided initial value. Quadrature encoder supports x4 mode and accepts input signals frequency up to 20MHz.
 		</para>
 	</refsection>  
   
 	<refsection id="Parameters_mdaq_enc_init">
 		<title>Parameters</title>
 		<itemizedlist>
-			<listitem><para><emphasis role="bold">link_id: </emphasis> Valid connection link ID (optional)</para></listitem>
+			<listitem><para><emphasis role="bold">linkID: </emphasis> Valid connection link ID (optional)</para></listitem>
 			<listitem><para><emphasis role="bold">module: </emphasis> MicroDAQ quadrature encoder module number (1 or 2) </para></listitem>
-			<listitem><para><emphasis role="bold">init_value: </emphasis> Initial position value for selected quadrature encoder module </para></listitem>
+			<listitem><para><emphasis role="bold">initValue: </emphasis> Initial position value for selected quadrature encoder module </para></listitem>
 		</itemizedlist>
 	</refsection>
 	

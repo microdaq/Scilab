@@ -15,41 +15,49 @@
 	
 	<refsection id="Description_mdaq_ao_scan_stop">
 		<title>Description</title>
+		
+				<para> This function is part of analog scan functionality and has to be called in the following sequence:
+		<orderedlist>
+			<listitem>
+				<para>Initialize scanning session - <link linkend="mdaq_ao_scan_init">mdaq_ao_scan_init()</link></para>
+			</listitem>
+			<listitem>
+				<para>Start scanning session - <link linkend="mdaq_ao_scan">mdaq_ao_scan()</link></para>
+			</listitem>
+			<listitem>
+				<para>Queue new data - <link linkend="mdaq_ao_scan_data">mdaq_ao_scan_data()</link></para>
+			</listitem>
+			<listitem>
+				<para><emphasis role="bold">Stop scanning session</emphasis> - <link linkend="mdaq_ao_scan_stop">mdaq_ao_scan_stop()</link></para>
+			</listitem>
+		</orderedlist>
+		</para> 
 		<para>
-			This function stops scanning mode for analog outputs. 
+				This function stops analog output scanning session. Function can be used to interrupt acquisition (duration > 0), or to stop continuous acquisition (duration=-1). After calling <link linkend="mdaq_ao_scan_stop">mdaq_ao_scan_stop()</link> function, scanning session has to be re-initialized.
+
         </para> 
 	</refsection>  
   
 	<refsection id="Parameters_mdaq_ao_scan_stop">
-		<title>Parameters</title>
+		<title>Input arguments</title>
 		<itemizedlist>
-			<listitem><para><emphasis role="bold">link_id: </emphasis> Valid connection link ID (optional)</para></listitem>
+			<listitem><para><emphasis role="bold">linkID: </emphasis> Valid connection link ID (optional)</para></listitem>
 		</itemizedlist>
 	</refsection>
 	
-<para> 
-		This example acquire data from analog input channels 1-8, sample rate 10 kHz, duration 1 sec. 
+		<para> 
+		Generate sine and triangle waveform in periodic mode. Sample update frequency 1000Hz, duration 5 seconds.
 		</para>
         <programlisting role="example"><![CDATA[
-//generate dataset
-sinus_data = sin(linspace(0, 2*%pi, 1000)) + 1.0;
-triangle_data = linspace(0, 5, 1000);
+			sineData = sin(linspace(0, 2*%pi, 1000)) + 1.0;
+			triangleData = linspace(0, 5, 1000);
 
-//init scan and load first dataset for each channel
-//in single mode
-mdaq_ao_scan_init([1:2], 1, %F, 0, 1000, -1);
-    mdaq_ao_data_update(1, sinus_data);
-    mdaq_ao_data_update(2, triangle_data);
-    
-//run scan 
-mdaq_ao_scan();
+			mdaq_ao_scan_init(1:2, [sineData' triangleData'], 1, %F, 1000, 5);
 
-//wait 5 sec and stop generatig waveforms 
-sleep(5000);
-mdaq_ao_scan_stop();
-
- ]]></programlisting>
-	<para>
+			mdaq_ao_scan();
+		 ]]></programlisting>
+ 
+		<para>
 	Results:
 	<imagedata align="center" fileref="../images/single_result.png" valign="middle"/>
 </para>
@@ -60,7 +68,7 @@ mdaq_ao_scan_stop();
 			<member><link linkend="mdaq_ao_data_update">mdaq_ao_data_update</link></member>
 			<member><link linkend="mdaq_ao_data_queue">mdaq_ao_data_queue</link></member>
 			<member><link linkend="mdaq_ao_scan">mdaq_ao_scan</link></member>
-			<member><link linkend="mdaq_ao_scan_examples">AO scan - examples</link></member>
+			
 		</simplelist>
   </refsection>
 </refentry>

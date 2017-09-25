@@ -8,9 +8,8 @@
 	<refsynopsisdiv>
 		<title>Calling Sequence</title>
 		<synopsis>
-			mdaq_dio_func();
 			mdaq_dio_func(func, enable);
-			mdaq_dio_func(link_id, func, enable);
+			mdaq_dio_func(linkID, func, enable);
 		</synopsis>
 	</refsynopsisdiv>
 	
@@ -37,7 +36,7 @@
 	<refsection id="Parameters_mdaq_dio_set_func">
 		<title>Parameters</title>
 		<itemizedlist>
-			<listitem><para><emphasis role="bold">link_id: </emphasis> Valid connection link ID (optional)</para></listitem>
+			<listitem><para><emphasis role="bold">linkID: </emphasis> Valid connection link ID (optional)</para></listitem>
 			<listitem><para><emphasis role="bold">func: </emphasis> Alternative DIO function </para></listitem>
 			<listitem><para><emphasis role="bold">enable: </emphasis> Alternative DIO function state (%T/%F to enable or disable) </para></listitem>
 		</itemizedlist>

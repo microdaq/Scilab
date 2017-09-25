@@ -2,38 +2,40 @@
 <refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaq_ai_read">
 	<refnamediv>
 		<refname>mdaq_ai_read</refname>
-		<refpurpose>Reads MicroDAQ analog inputs (AI)</refpurpose>
+		<refpurpose>Reads analog inputs</refpurpose>
 	</refnamediv>
 	
 	<refsynopsisdiv>
 		<title>Calling Sequence</title>
 		<synopsis>
-			data = mdaq_ai_read();
 			data = mdaq_ai_read(channels, range, differential);
-			data = mdaq_ai_read(link_id, channels, range, differential);
+			data = mdaq_ai_read(linkId, channels, range, differential);
 		</synopsis>
 	</refsynopsisdiv>
 	
 	<refsection id="Description_mdaq_ai_read">
 		<title>Description</title>
 		<para>
-			This function reads MicroDAQ AI (analog inputs) channels. In order to select channels to read an array of channels has to be provided. 
-            Analog inputs (AI) can accept input ranges according to ADC version. To find out what ranges support your device, type 'mdaq_ai_read'
-            in Scilab console. Usage description contains valid information about connected MicroDAQ device. 
-            The 'differential' parameter sets single ended or differential mode analog input mode</para>
+			This function returns immediately acquired values from MicroDAQ input channels as a 1-by-n array of doubles. The value is stored in data, where n is the number of input channels. The channels parameter can be a scalar or vector and it should contain channels numbers according to MicroDAQ hardware configuration. The range argument specifies channel measurement input range. Scalar or vector (if applicable for MicroDAQ hardware configuration) can be provided. If scalar provided, its value will be used for all used channels. In order to obtain supported ranges by device <link linkend="mdaq_ai_read">mdaq_ai_read()</link> function shall be called without arguments. The differential argument specifies measurement mode - differential or single-ended. This argument can be scalar or vector (if applicable for MicroDAQ hardware configuration). If scalar provided, its value will be used for all used channels.</para>
         <para> 
-    For function usage description call function without parameters. In order to increase AI read performance call mdaq_ai_read with link_id (returned by mdaq_open()).
+			For function usage description call function without arguments.  
 		</para>
 	</refsection>  
   
 	<refsection id="Parameters_mdaq_ai_read">
-		<title>Parameters</title>
+		<title>Input arguments</title>
 		<itemizedlist>
-			<listitem><para><emphasis role="bold">link_id: </emphasis> Valid connection link ID (optional)</para></listitem>
-			<listitem><para><emphasis role="bold">channels: </emphasis> Single channel of array of channels number to read</para></listitem>
-            <listitem><para><emphasis role="bold">range: </emphasis> Analog input range, integer number according to MDAQ device version - check usage description.</para></listitem>
-			<listitem><para><emphasis role="bold">differential: </emphasis> Analog input mode: %T - differential, %F - single ended mode</para></listitem>
-			<listitem><para><emphasis role="bold">data:  </emphasis> Single value or array with AI voltage values</para></listitem>
+			<listitem><para><emphasis role="bold">linkID: </emphasis> Valid connection link id (optional)</para></listitem>
+			<listitem><para><emphasis role="bold">channels: </emphasis> Scalar or vector with channels to be read</para></listitem>
+            <listitem><para><emphasis role="bold">range: </emphasis> Scalar or vector with ranges</para></listitem>
+			<listitem><para><emphasis role="bold">differential: </emphasis> Scalar or vector with measurement mode settings: %T - differential, %F - single-ended mode</para></listitem>
+		</itemizedlist>
+	</refsection>
+
+	<refsection id="out_Parameters_mdaq_ai_read">
+		<title>Output arguments</title>
+		<itemizedlist>
+			<listitem><para><emphasis role="bold">data:  </emphasis> Values of acquired data</para></listitem>
 		</itemizedlist>
 	</refsection>
     <para>
@@ -43,33 +45,55 @@
             <member><para>Channel 2 - AI3(+), AI4(-)</para></member>
             <member><para>Channel 3 - AI5(+), AI6(-)</para></member>
             <member><para>Channel 4 - AI7(+), AI8(-)</para></member>
-        </simplelist>
+            <member><para>Channel 5 - AI9(+), AI10(-)</para></member>
+            <member><para>Channel 6 - AI11(+), AI12(-)</para></member>
+            <member><para>Channel 7 - AI13(+), AI14(-)</para></member>
+            <member><para>Channel 8 - AI15(+), AI16(-)</para></member>
+			</simplelist>
     </para>
 	
 	<refsection>
         <title>Examples</title>
-        <para> Getting function usage description </para>
 
+        <para> Read 8 single-ended channels with same channel input rage</para>
         <programlisting role="example"><![CDATA[
-// show mdaq_ai_read usage description
-mdaq_ai_read
- ]]></programlisting>
-        <para> Calling function without link_id </para>
-        <programlisting role="example"><![CDATA[
-// mdaq_ai_read usage example
-data = mdaq_ai_read([1 2 3 4 5 6 7 8], 1, %F);
-mprintf("ADC data: %f %f %f %f %f %f %f %f \n", data) 
+data = mdaq_ai_read(1:8, 1, %F);
+mprintf("data: %f %f %f %f %f %f %f %f \n", data) 
  ]]></programlisting>
 
-        <para> Calling function with link_id for better performance </para>
+        <para> Read 4 single-ended channels with different channel input rage</para>
+		<para>NOTE: Example will work if applicable for MicroDAQ analog input configuration</para>
         <programlisting role="example"><![CDATA[
-// mdaq_ai_read usage example with link_id parameter
-con = mdaq_open();
-for i=1:1000
-    data = mdaq_ai_read(con, [1 2 3 4 5 6 7 8], 1, %F);
-    mprintf("ADC data: %f %f %f %f %f %f %f %f \n", data)
+data = mdaq_ai_read(1:4, [ 1 2 1 3], %F);
+mprintf("data: %f %f %f %f\n", data) 
+ ]]></programlisting>
+
+        <para> Read 1 differential channel, 2 single-ended channels with different channel input rage</para>
+		<para>NOTE: Example will work if applicable for MicroDAQ analog input configuration</para>
+        <programlisting role="example"><![CDATA[
+data = mdaq_ai_read([1 3 4], [1 2 1], [%T %F %F]);
+mprintf("data: %f %f %f\n", data) 
+ ]]></programlisting>
+ 
+        <para>Performance comparison with and without linkId parameter</para>
+        <programlisting role="example"><![CDATA[
+// mdaq_ai_read usage example with and wihtout linkID parameter
+tic();
+for i = 1:10
+    mdaq_ai_read(1,1,%F);
 end
-mdaq_close(con)
+read_time = toc();
+mprintf("\nExecution time for ten mdaq_ai_read() call without linkId: \t%fs \n", read_time);
+
+// Create connection with MicroDAQ beafore mdaq_ai_read() call
+linkID = mdaq_open(); 
+tic();
+for i = 1:10
+    mdaq_ai_read(linkID,1,1,%F);
+end
+read_time = toc();
+mdaq_close(linkID);
+mprintf("Execution time for ten mdaq_ai_read() call with linkId: \t%fs\n", read_time);
  ]]></programlisting>
 
  

@@ -2,60 +2,87 @@
 <refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaq_ai_scan">
 	<refnamediv>
 		<refname>mdaq_ai_scan</refname>
-		<refpurpose>Starts scanning and reads scan data</refpurpose>
+		<refpurpose>Starts scanning operation and reads acquired data</refpurpose>
 	</refnamediv>
 	
 	<refsynopsisdiv>
 		<title>Calling Sequence</title>
 		<synopsis>
-			mdaq_ai_scan(link_id, scan_count, blocking);
-			mdaq_ai_scan(scan_count, blocking);
+			[data, result] = mdaq_ai_scan(scanCount, blocking);
+			[data, result] = mdaq_ai_scan(linkID, scanCount, blocking);
 		</synopsis>
 	</refsynopsisdiv>
 	
 	<refsection id="Description_mdaq_ai_scan">
 		<title>Description</title>
 		<para>
-			Starts scanning and reads scan data.
+This function starts analog input scanning session and reads acquired data. A function call has to be preceded with <link linkend="mdaq_ai_scan_init">mdaq_ai_scan_init()</link> which initiates scanning session parameters. Blocking or non-blocking operation is defined by blocking argument. When blocking(blocking=%T) mode is used function will block Scilab command line until required number of scan is acquired. The function has fixed 2-second time-out, that is why a user has to provide scanCout argument which will not cause <link linkend="mdaq_ai_scan">mdaq_ai_scan()</link> function time-out. When non-blocking (blocking=%F) mode is used, function acquired scan data which is currently available in analog input data queue. The number of acquired scans is returned by result output argument. The scanCount argument in non-blocking mode determines maximum number of scans which can be acquired by function call. Values of acquired data, returned as an m-by-n array, where m is the number of scans (scanCount argument) acquired, and n is the number of input channels defined during scan session initialization with <link linkend="mdaq_ai_scan_init">mdaq_ai_scan_init()</link> function call.
 		</para> 
-		
+		<para>
+		<emphasis role="bold">Limitation:</emphasis> ADC1-DAC01 MicroDAQ configuration doesn't support running simultaneously AI and AO scanning sessions.
+		</para>
 	</refsection>  
   
 	<refsection id="Parameters_mdaq_ai_scan">
-		<title>Parameters</title>
+		<title>Input arguments</title>
 		<itemizedlist>
-			<listitem><para><emphasis role="bold">link_id: </emphasis> Valid connection link ID (optional)</para></listitem>
-			<listitem><para><emphasis role="bold">scan_count:  </emphasis> number of scans to read</para></listitem>
+			<listitem><para><emphasis role="bold">linkID: </emphasis> Valid connection link id (optional)</para></listitem>
+			<listitem><para><emphasis role="bold">scanCount:  </emphasis> number of scans to read</para></listitem>
 			<listitem><para><emphasis role="bold">blocking:  </emphasis> blocking or non-blocking read (%T / %F)</para></listitem>
 		</itemizedlist>
 	</refsection>
+
+	<refsection id="Parameters_mdaq_ai_scan">
+		<title>Output arguments</title>
+		<itemizedlist>
+			<listitem><para><emphasis role="bold">data: </emphasis> Values of acquired data, specified as an m-by-n matrix, where m is the number of scans, and n is the number of used channels.</para></listitem>
+			<listitem><para><emphasis role="bold">result:  </emphasis> number of acquired scans</para></listitem>
+		</itemizedlist>
+	</refsection>
+
 	
 	<refsection>
         <title>Examples</title>
-        
-		<para> Getting function usage description </para>
-			<programlisting role="example"><![CDATA[
-			mdaq_ai_scan
-			 ]]>
-			</programlisting>
-		
-		<para> 
-		This example acquire data from analog input channels 1-8, sample rate 10 kHz, duration 1 sec. 
-		Functions are called without link_id.
-		</para>
+		<para> Perform blocking data acquisition from 8 single-ended analog input channels, one analog input range, scan frequency of 10kHz and 1 second duration.</para>
         <programlisting role="example"><![CDATA[
-			data = [];
-			//init AI scan for 8 channels, 10 kHz sampling, 1 sec 
-			mdaq_ai_scan_init([1:8], 1, %F, 10000, 1)
+			mdaq_ai_scan_init(1:8, 1, %F, 10000, 1)
+			plot(mdaq_ai_scan(10000, %T));
+			 ]]>
+		</programlisting>
+
+		<para> Perform blocking data acquisition from 8 single-ended analog input channels, one analog input range, scan frequency of 10kHz and 1 second duration.</para>
+        <programlisting role="example"><![CDATA[
+			aiData = [];
+			dataCount = 0;
+			mdaq_ai_scan_init(1:8, 1, %F, 10000, 1)
 			for i=1:10
-				[newdata res] = mdaq_ai_scan(1000, %T);
-				data = [data; newdata];
-				mprintf('read %d samples...\n', res);
+				[data result] = mdaq_ai_scan(1000, %T);
+				aiData = [aiData; data];
+				dataCount = dataCount + result;
+				mprintf('Acquired %d scans (total: %d scans)\n', result, dataCount);
 			end
 			mdaq_ai_scan_stop();
-			
-			//show data
-			plot(data);
+			plot(aiData);
+			clear aiData;
+			 ]]>
+		</programlisting>
+
+		<para> Perform non-blocking data acquisition from 8 single-ended analog input channels, one analog input range, scan frequency of 10kHz and 1 second duration.</para>
+        <programlisting role="example"><![CDATA[
+			aiData = [];
+			dataCount = 0;
+			mdaq_ai_scan_init(1:8, 1, %F, 10000, 1)
+			while(dataCount < 10000)
+				[data result] = mdaq_ai_scan(1000, %F);
+				aiData = [aiData; data];
+				dataCount = dataCount + result;
+				if result > 0 then
+					mprintf('Acquired %d scans (total: %d scans)\n', result, dataCount);
+				end
+			end
+			mdaq_ai_scan_stop();
+			plot(aiData);
+			clear aiData;
 			 ]]>
 		</programlisting>
     </refsection>
@@ -65,7 +92,7 @@
 		<simplelist type="inline">
 			<member><link linkend="mdaq_ai_scan_init">mdaq_ai_scan_init</link></member>
 			<member><link linkend="mdaq_ai_scan_stop">mdaq_ai_scan_stop</link></member>
-			<member><link linkend="mdaq_ai_scan_examples">AI scan - examples</link></member>
+			
 		</simplelist>
   </refsection>
 </refentry>
