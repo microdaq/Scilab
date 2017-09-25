@@ -213,12 +213,10 @@ function  mdaq_ai_scan_init(arg1, arg2, arg3, arg4, arg5, arg6)
         if 1 /real_freq <= 0.001 then
             mprintf("\tScan period: \t\t%fms\n", 1 / real_freq * 1000);
         end
-        
-        
 
         if scan_time < 0
             mprintf("\tDuration:\t\tInf\n");
-            mprintf("\tScan count:\t\tInf");
+            mprintf("\tNumber of scans::\t\tInf");
             mprintf("\tNumber of channels:\t%d\n", ch_count)
         else
             mprintf("\tDuration:\t\t%.2fs\n", scan_time);

@@ -33,7 +33,7 @@ function  mdaq_ao_scan_init(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
             return;
         end
         dac_info = %microdaq.private.dac_info;
-        if argn(2) > 6 | argn(2) < 5 then
+        if argn(2) > 7 | argn(2) < 6 then
         mprintf("Description:\n");
         mprintf("\Initiates AO scanning session\n");
         mprintf("Usage:\n");
@@ -128,17 +128,17 @@ function  mdaq_ao_scan_init(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
     result = [];
 
     result = call("sci_mlink_ao_scan_init",..
-            link_id, 1, "i",..
-            channels, 2, "i",..
-            ch_count, 3, "i",..
-            data, 4, "d",..
-            data_size, 5, "i",..
-            ao_range, 6, "i",..
-            continuous, 7, "i", ..
-            scan_freq, 8, "d",..
-            scan_time, 9, "d",..
-        "out",..
-            [1, 1], 10, "i");
+                link_id, 1, "i",..
+                channels, 2, "i",..
+                ch_count, 3, "i",..
+                data, 4, "d",..
+                data_size, 5, "i",..
+                ao_range, 6, "i",..
+                continuous, 7, "i", ..
+                scan_freq, 8, "d",..
+                scan_time, 9, "d",..
+            "out",..
+                [1, 1], 10, "i");
 
     if argn(2) == 6 then
         mdaq_close(link_id);
@@ -173,19 +173,23 @@ function  mdaq_ao_scan_init(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
         end
         
         if continuous == 1 then
-            mprintf("\tMode:\t\t\tContinous\n"); 
+            mprintf("\tMode:\t\t\tStream\n"); 
         else
             mprintf("\tMode:\t\t\tPeriodic\n"); 
         end
 
         mprintf("\tOudput data size: \t%sx%s\n", string(size(data,"c")), string(size(data,"r")))
         if scan_time < 0
+            mprintf("\tNumber of scans::\t\tInf");
+            mprintf("\tNumber of channels:\t%d\n", ch_count)
             mprintf("\tDuration:\t\tInf\n");
-            mprintf("\tScan count:\t\tInf");
         else
-            mprintf("\tDuration:\t\t%.2fsec\n", scan_time);
-            mprintf("\tScan count:\t\t%d", scan_time * scan_freq);
+            mprintf("\tNumber of scans:\t%d\n", scan_time * scan_freq);
+            mprintf("\tNumber of channels:\t%d\n", ch_count)
+            mprintf("\tDuration:\t\t%.2fs\n", scan_time);
         end
+        mprintf("\t---------------------------------\n")
+
     end
 endfunction
 
