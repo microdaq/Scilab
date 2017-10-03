@@ -58,9 +58,9 @@ enum mdaq_ao_range
 #define AO_ASYNC    (1 << 1)
 #define AO_SYNC     (1 << 2)
 
-int mdaq_ao_init( uint8_t converter,  uint8_t mode);
+int mdaq_ao_init(uint32_t mode);
 int mdaq_ao_write( uint8_t ch[], uint8_t ch_count, const double *value);
-int mdaq_ao_ch_config(uint8_t ch[], uint8_t range[], uint8_t ch_count);
+int mdaq_ao_ch_config(uint8_t ch[], float range[], uint8_t ch_count);
 int mdaq_ao_scan_prepare_data(uint8_t ch, uint8_t range, double *value, uint32_t sample_count);
 
 #endif /* MDAQ_AO_H */

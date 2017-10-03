@@ -82,6 +82,8 @@ function MLink()
                                "sci_mlink_ao_scan"..
                                "sci_mlink_ao_scan_stop"..
                                "sci_mlink_ao_scan_data"..
+                               "sci_mlink_ao_check_params"..
+                               "sci_mlink_ai_check_params"..
                                ], 'c');
 endfunction
 

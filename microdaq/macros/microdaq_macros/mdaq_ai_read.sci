@@ -26,14 +26,13 @@ function data = mdaq_ai_read(arg1, arg2, arg3, arg4)
             mprintf("Description:\n");
             mprintf("\tReads MicroDAQ analog inputs\n");
             mprintf("Usage:\n");
-            mprintf("\tmdaq_ai_read(link_id, channels, range, aiMode);\n")
+            mprintf("\tmdaq_ai_read(link_id, channels, range, mode);\n")
             mprintf("\tlink_id - connection id returned by mdaq_open() (OPTIONAL)\n");
             mprintf("\tchannels - scalar or vector with channel numbers\n");
-            mprintf("\trange - scalar or vector with input ranges:\n");
-            for i = 1:size(adc_info.c_params.c_range_desc, "r")
-                mprintf("\t    %s\n", string(i) + ": " + adc_info.c_params.c_range_desc(i));
-            end
-            mprintf("\taiMode - scalar or vector defining measurement type (%%T - differential, %%F - single-ended)\n");
+            mprintf("\trange - analog input range matrix e.g.\n");
+            mprintf("\t        [-10,10] - single range argument applied for all used channels\n");
+            mprintf("\t        [-10,10;-5,5] - multi-range argument for two channels\n");
+            mprintf("\tmode - scalar or vector defining measurement type (%%T - differential, %%F - single-ended)\n");
             return;
         end
     else
@@ -42,17 +41,17 @@ function data = mdaq_ai_read(arg1, arg2, arg3, arg4)
     end
 
     if size(channels, 'r') > 1 then
-        disp("ERROR: Single row AI channel vector expected!")
+        error("Single row AI channel vector expected!")
         return;
     end
 
-    if size(aiRange, 'r') > 1 then
-        disp("ERROR: Single row AI range vector expected!")
+    if size(aiRange, 'c') <> 2 then
+        error("Vector range [low,high;low,high;...] expected!")
         return;
     end
 
     if size(aiMode, 'r') > 1 then
-        disp("ERROR: Single row AI measurement mode vector expected!")
+        error("Single row AI measurement mode vector expected!")
         return;
     end
     
@@ -63,56 +62,40 @@ function data = mdaq_ai_read(arg1, arg2, arg3, arg4)
 
     ch_count = size(channels, 'c');
     if ch_count < 1 | ch_count > adc_ch_count then
-        disp("ERROR: Wrong AI channel selected!")
+        error("Wrong AI channel selected!")
         return;
     end
     
     if max(channels) > adc_ch_count | min(channels) < 1 then
-        disp("ERROR: Wrong AI channel selected!")
+        error("Wrong AI channel selected!")
         return;
     end
     
-    aiRangeSize = size(aiRange, 'c');
+    aiRangeSize = size(aiRange, 'r');
     if aiRangeSize <> 1 & aiRangeSize <> ch_count then
-        disp("ERROR: Range vector should match selected AI channels!")
+        error("Range vector should match selected AI channels!")
         return; 
     end
     
     aiModeSize = size(aiMode, 'c');
     if aiModeSize <> 1 & aiModeSize <> ch_count then
-        disp("ERROR: Mode vector should match selected AI channels!")
+        error("Mode vector should match selected AI channels!")
         return; 
     end
 
     if aiRangeSize == 1 then
-        aiPolarity = ones(1,ch_count) * adc_info.c_params.c_bipolar(aiRange);
-    else
-        aiPolarity = adc_info.c_params.c_bipolar(aiRange)';
+        range_tmp = aiRange;
+        aiRange = ones(ch_count,2);
+        aiRange(:,1) = range_tmp(1);
+        aiRange(:,2) = range_tmp(2);
     end
+    
+    aiRange = matrix(aiRange', 1, ch_count*2);
 
-    if aiRangeSize == 1 then
-        aiRange = ones(1,ch_count) * adc_info.c_params.c_range(aiRange);
-    else
-        aiRange = adc_info.c_params.c_range(aiRange)';
-    end
-    
-    aiMode_t = aiMode; 
+    aiMode(find(aiMode==%T))=1;
     if aiModeSize == 1 then
-        if aiMode == %T then
-            aiMode = ones(1,ch_count) * 29;
-        else
-            aiMode = ones(1,ch_count) * 28;
-        end
-    else
-        for i = find(aiMode_t == %T)
-            aiMode(i) = 29;
-        end
-        for i = find(aiMode_t == %F)
-            aiMode(i) = 28;
-        end
+        aiMode = ones(1, ch_count) * aiMode;    
     end
-    
-    clear aiMode_t;
 
     if argn(2) == 3 then
         link_id = mdaq_open();
@@ -121,24 +104,23 @@ function data = mdaq_ai_read(arg1, arg2, arg3, arg4)
             return;
         end
     end
-    
+
     result = [];
     [data result] = call("sci_mlink_ai_read",..
                         link_id, 1, "i",..
                         channels, 2, "i",..
                         ch_count, 3, "i",..
-                        aiRange, 4, "i",..
-                        aiPolarity, 5, "i",..
-                        aiMode, 6, "i",..
+                        aiRange, 4, "d",..
+                        aiMode, 5, "i",..
                     "out",..
-                        [1, ch_count], 7, "d",..
-                        [1, 1], 8, "i");
+                        [1, ch_count], 6, "d",..
+                        [1, 1], 7, "i");
 
     if argn(2) == 3 then
         mdaq_close(link_id);
     end
     
     if result < 0 then
-        mdaq_error(result);
+        error(mdaq_error2(result), 10000+(-result));
     end
 endfunction

@@ -20,12 +20,7 @@ function mdaq_ao_write(arg1, arg2, arg3, arg4)
     end
 
     global %microdaq;
-    if %microdaq.private.mdaq_hwid <> [] then
-        dac = %microdaq.private.mdaq_hwid(3);
-        if  dac == 0 then
-            disp("ERROR: Unable to detect DAC configuration!");
-            return;
-        end
+    if %microdaq.private.mdaq_hwid <> [] | %microdaq.private.mdaq_hwid(3) == 0 then
         dac_info = %microdaq.private.dac_info;
         if argn(2) > 4 | argn(2) < 3 then
             mprintf("Description:\n");
@@ -34,58 +29,43 @@ function mdaq_ao_write(arg1, arg2, arg3, arg4)
             mprintf("\tmdaq_ao_write(link_id, channels, range, data);\n")
             mprintf("\tlink_id - connection id returned by mdaq_open() (OPTIONAL)\n");
             mprintf("\tchannels - analog output channels \n");
-            mprintf("\trange - analog output range:\n");
-            for i = 1:size(dac_info.c_params.c_range_desc, "r")
-                mprintf("\t    %s\n", string(i) + ": " + dac_info.c_params.c_range_desc(i));
-            end
+            mprintf("\trange - analog output range matrix e.g.\n");
+            mprintf("\t        [-10,10] - single range argument applied for all used channels\n");
+            mprintf("\t        [-10,10;-5,5] - multi-range argument for two channels\n");
             mprintf("\tdata - data to be written\n");
             return;
         end
     else
-        error('ERROR: Unable to detect MicroDAQ configuration - run mdaq_hwinfo and try again!');
+        error('Unable to detect MicroDAQ configuration - run mdaq_hwinfo and try again!');
         return;
     end
 
     data_size = size(data, '*');
     ch_count = size(channels, '*');
-    dac_ch_count = strtod(dac_info.channel);
 
-    if ch_count > dac_ch_count then
-        disp("ERROR: Too many channels selected!")
+    if size(ao_range, 'c') <> 2 then
+        error("Vector range [low,high;low,high;...] expected!")
         return;
     end
-
-    if max(channels) > dac_ch_count | min(channels) < 1 then
-        disp("ERROR: Wrong AO channel selected!")
-        return;
-    end
-
+    
     if data_size <> ch_count then
-        disp("ERROR: Wrong data for selected AO channels!");
+        error("Wrong data for selected AO channels");
         return;
     end
 
-    if ao_range > size(dac_info.c_params.c_range_desc, "r") | ao_range < 1 then
-        mprintf("ERROR: Wrong AO range selected.\nSupported ranges:\n");
-        for i = 1:size(dac_info.c_params.c_range_desc, "r")
-            mprintf("\t    %s\n", string(i) + ": " + dac_info.c_params.c_range_desc(i));
-        end
-        return;
+    if size(ao_range, 'r') == 1 then
+        range_tmp = ao_range;
+        ao_range = ones(ch_count,2);
+        ao_range(:,1) = range_tmp(1);
+        ao_range(:,2) = range_tmp(2);
     end
-
-    range_size = size(ao_range, 'c');
-    if range_size == 1 then
-        ao_range = ones(ch_count, 1) * dac_info.c_params.c_range(ao_range);
-    else
-        for i = 1:ch_count
-            ao_range(i) = dac_info.c_params.c_range(ao_range(i));
-        end
-    end
-
+    
+    ao_range = matrix(ao_range', 1, ch_count*2);
+    
     if argn(2) == 3 then
         link_id = mdaq_open();
         if link_id < 0 then
-            disp("ERROR: Unable to connect to MicroDAQ device!");
+            error("Unable to connect to MicroDAQ device!");
             return;
         end
     end
@@ -93,13 +73,12 @@ function mdaq_ao_write(arg1, arg2, arg3, arg4)
     result = [];
     result = call("sci_mlink_ao_write",..
                     link_id, 1, "i",..
-                    dac, 2, "i",..
-                    channels, 3, "i",..
-                    ch_count, 4, "i",..
-                    ao_range, 5, "i",..
-                    data, 6, "d",..
+                    channels, 2, "i",..
+                    ch_count, 3, "i",..
+                    ao_range, 4, "d",..
+                    data, 5, "d",..
                 "out",..
-                    [1, 1], 7, "i");
+                    [1, 1], 6, "i");
 
     if argn(2) == 3 then
         mdaq_close(link_id);
@@ -108,8 +87,4 @@ function mdaq_ao_write(arg1, arg2, arg3, arg4)
     if result < 0  then
         error(mdaq_error2(result), 10000 + abs(result)); 
     end
-    
-    clear data_size;
-    clear ch_count;
-    clear dac_ch_count;
 endfunction

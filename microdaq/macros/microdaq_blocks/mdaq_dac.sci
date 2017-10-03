@@ -1,25 +1,5 @@
 function [x,y,typ] = mdaq_dac(job,arg1,arg2)
     global %microdaq;
-    dac_comment = "";
-    if %microdaq.private.mdaq_hwid <> [] then
-        dac_info = get_dac_info(%microdaq.private.mdaq_hwid);
-        dac_converter = dac_info.id;
-        channel_desc = dac_info.channel;
-        resolution_desc = dac_info.resolution;
-        range_desc = dac_info.c_params.c_range_desc;
-        range_spec_opt = [];
-        dac_comment = dac_info.comment;
-        for i = 1:size(dac_info.c_params.c_range_desc, "r")
-            range_spec_opt = [range_spec_opt; string(i) + ": " + dac_info.c_params.c_range_desc(i)];
-        end
-    else
-        dac_converter = 1;
-        channel_desc = "Unknown";
-        resolution_desc = "Unknown";
-        range_desc = "Unknown";
-        range_spec_opt = "Unknown";
-    end
-
     dac_desc = ["This block writes data to MicroDAQ analog output module (AO).";
     "Block detects MicroDAQ analog output type and allows";
     "setting output range, initial and termination voltage.";
@@ -38,16 +18,9 @@ function [x,y,typ] = mdaq_dac(job,arg1,arg2)
     "2 - Termination voltage value is used";
     "3 - Initial and termination voltage value is used";
     "";
+    "Use mdaq_hwinfo to get DAC parameters"
+    "";
     "input - value in volts"
-    "";
-    "Analog outputs parameters:";
-    "Channels: "+channel_desc;
-    "Resolution: "+resolution_desc;
-    "";
-    "Output rage:";
-    range_spec_opt;
-    "";
-    dac_comment;
     "";
     "Set block parameters:"];
 
@@ -61,23 +34,23 @@ function [x,y,typ] = mdaq_dac(job,arg1,arg2)
         while %t do
             try
                 getversion('scilab');
-                [ok,channel,dac_range,init_value,term_value,use_init_term,exprs]=..
-                scicos_getvalue(dac_desc,..
-                ['Channels:';
-                'Range:';
-                'Initial value:';
-                'Termination value:';
-                'Use Init/Term:'],..
-                list('vec',-1,'vec',-1,'vec',-1,'vec',-1,'vec',-1),exprs)
+                [ok,channels,dac_range,init_value,term_value,use_init_term,exprs]=..
+                    scicos_getvalue(dac_desc,..
+                                    ['Channels:';
+                                    'Range:';
+                                    'Initial value:';
+                                    'Termination value:';
+                                    'Use Init/Term:'],..
+                                    list('vec',-1,'mat',[-1,-1],'vec',-1,'vec',-1,'vec',-1),exprs)
             catch
-                [ok,channel,dac_range,init_value,term_value,use_init_term,exprs]=..
-                scicos_getvalue(dac_desc,..
-                ['Channels:';
-                'Range:';
-                'Initial value:';
-                'Termination value:';
-                'Use Init/Term:'],..
-                list('vec',-1,'vec',-1,'vec',-1,'vec',-1,'vec',-1),exprs)
+                [ok,channels,dac_range,init_value,term_value,use_init_term,exprs]=..
+                    scicos_getvalue(dac_desc,..
+                                    ['Channels:';
+                                    'Range:';
+                                    'Initial value:';
+                                    'Termination value:';
+                                    'Use Init/Term:'],..
+                                    list('vec',-1,'mat',[-1,-1],'vec',-1,'vec',-1,'vec',-1),exprs)
             end;
 
             if ~ok then
@@ -85,53 +58,29 @@ function [x,y,typ] = mdaq_dac(job,arg1,arg2)
             end
 
             if %microdaq.private.mdaq_hwid <> [] then
-                if find(dac_info.id == get_dac_list()) == [] then
+                dac_id = %microdaq.private.mdaq_hwid(2);
+                if find(dac_id == get_dac_list()) == [] then
                     ok = %f;
                     message("Configuration not detected - run mdaq_hwinfo and try again!");
                 end
 
-                dac_ch_count = strtod(dac_info.channel);
-
-                // check Channel parameter
-                if ok & (size(channel, 'r') > 1) then
+                n_channels = size(channels, 'c');
+                if ok & size(channels, 'r') > 1 then
+                    message("Single row channel vector expected!")
                     ok = %f;
-                    error_msg = 'Wrong channel vector - single row vector expected!';
-                    message(error_msg);
-                end
-
-                n_channels = size(channel, 'c');
-                if ok & (n_channels > dac_ch_count) then
-                    ok = %f;
-                    error_msg = 'Too many channels selected!';
-                    message(error_msg);
-                end
-
-                if ok & (max(channel) > dac_ch_count) | (min(channel) < 1) then
-                    ok = %f;
-                    error_msg = 'Wrong channel number selected!';
-                    message(error_msg);
                 end
 
                 // check Range parameter
-                if ok & (size(dac_range, 'r') > 1) then
+                if ok & size(dac_range, 'c') <> 2 then
+                    message("Vector range [low,high;low,high;...] expected!")
                     ok = %f;
-                    error_msg = 'Wrong range vector - single row vector expected!';
-                    message(error_msg);
                 end
 
-                dac_range_size = size(dac_range, 'c');
+                dac_range_size = size(dac_range, 'r');
                 if ok & (dac_range_size > 1) & (dac_range_size <> n_channels) then
                     ok = %f;
-                    error_msg = 'Wrong range vector - size should be same as Channel vector!';
+                    error_msg = 'Wrong range vector - size should match channel vector!';
                     message(error_msg);
-                end
-
-                for i = 1:dac_range_size
-                    if ok & (dac_range(i) > size(dac_info.c_params.c_range, 'c')) | (dac_range(i) < 1) then
-                        ok = %f;
-                        error_msg = 'Wrong range value!';
-                        message(error_msg);
-                    end
                 end
 
                 // check Init value parameter
@@ -181,6 +130,21 @@ function [x,y,typ] = mdaq_dac(job,arg1,arg2)
                     error_msg = 'Wrong Use init/term paremeter vector - scalar or vector for selected channels expected!';
                     message(error_msg);
                 end
+                
+                if dac_range_size == 1 & ok then
+                    range_tmp = dac_range;
+                    dac_range = ones(n_channels,2);
+                    dac_range(:,1) = range_tmp(1);
+                    dac_range(:,2) = range_tmp(2);
+                end
+                
+                if ok & ~exists("%scicos_prob") then
+                    result = dac_check_params(channels, dac_range);
+                    if result < 0 then
+                        message(mdaq_error2(result));
+                        ok = %f;
+                    end
+                end
             else
                 ok = %f;
                 error_msg = 'Unable to detect MicroDAQ analog outputs - run mdaq_hwinfo and try again!';
@@ -191,26 +155,13 @@ function [x,y,typ] = mdaq_dac(job,arg1,arg2)
                 [model,graphics,ok] = check_io(model,graphics, n_channels, [], 1, []);
                 graphics.exprs = exprs;
 
-                // prepare block IPAR/RPAR data
-                if dac_range_size == 1 then
-                    dac_range_p = ones(n_channels, 1) * dac_info.c_params.c_range(dac_range);
-                    dac_range_raw_p = ones(n_channels, 1) * dac_range;
-                else
-                    dac_range_p = ones(n_channels, 1);
-                    dac_range_raw_p = ones(n_channels, 1);
-                    for i = 1:n_channels
-                        dac_range_p(i) = dac_info.c_params.c_range(dac_range(i));
-                        dac_range_raw_p(i) = dac_range(i);
-                    end
-                end
-
                 // init value
                 if init_value_size == 1 then
                     init_value = ones(n_channels, 1) * init_value;
                 else
                     init_value = init_value';
                 end
-
+   
                 // termination value
                 if term_value_size == 1 then
                     term_value = ones(n_channels, 1) * term_value;
@@ -224,10 +175,10 @@ function [x,y,typ] = mdaq_dac(job,arg1,arg2)
                 else 
                     use_init_term = use_init_term';
                 end
-                
+ 
                 // set IPAR and RPAR
-                model.ipar = [n_channels; channel'; dac_range_p; dac_range_raw_p; use_init_term];
-                model.rpar = [init_value; term_value];
+                model.ipar = [n_channels; channels'; use_init_term];
+                model.rpar = [init_value; term_value; matrix(dac_range', 1, n_channels*2)'];
 
                 model.dstate = [];
                 x.graphics = graphics;
@@ -236,9 +187,8 @@ function [x,y,typ] = mdaq_dac(job,arg1,arg2)
             end
         end
     case 'define' then 
-        channel=1
-        dac_range = 1;
-        dac_range_raw = 1;
+        channels=1
+        dac_range = [0,5];
         init_value = 0;
         term_value = 0;
         use_init_term = 2;
@@ -250,14 +200,13 @@ function [x,y,typ] = mdaq_dac(job,arg1,arg2)
         model.intyp=1;
         model.out=[];
         model.evtin=1;
-        model.rpar = [init_value; term_value];
-        // TODO: range hardcoded
-        model.ipar = [n_channels; channel'; 3; dac_range_raw; use_init_term];
+        model.ipar = [n_channels; channels'; use_init_term];
+        model.rpar = [init_value; term_value; dac_range'];
         model.dstate=[];
         model.blocktype='d';
         model.dep_ut=[%t %f];
-        exprs=[sci2exp(channel);sci2exp(dac_range);sci2exp(init_value);sci2exp(term_value);sci2exp(use_init_term)];
-        gr_i=['xstringb(orig(1),orig(2),[''CH:'' ; string(channel)],sz(1),sz(2),''fill'');'];
+        exprs=[sci2exp(channels);sci2exp(dac_range);sci2exp(init_value);sci2exp(term_value);sci2exp(use_init_term)];
+        gr_i=['xstringb(orig(1),orig(2),[''CH:'' ; string(channels)],sz(1),sz(2),''fill'');'];
         x=standard_define([4 3],model,exprs,gr_i);
         x.graphics.in_implicit=[];
         x.graphics.exprs=exprs;
