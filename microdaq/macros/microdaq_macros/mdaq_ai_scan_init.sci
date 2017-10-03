@@ -32,17 +32,9 @@ function  mdaq_ai_scan_init(arg1, arg2, arg3, arg4, arg5, arg6)
             mprintf("Usage:\n");
             mprintf("\tmdaq_ai_scan_init(link_id, channels, range, mode, frequency, duration);\n");                     mprintf("\tlink_id - connection id returned by mdaq_open() (OPTIONAL)\n");
             mprintf("\tchannels - analog input channels to read\n");
-            mprintf("\trange - analog input range:\n");
-            for i = 1:size(adc_info.c_params.c_range_desc, "r")
-                mprintf("\t    %s\n", string(i) + ": " + adc_info.c_params.c_range_desc(i));
-            end
-
-            if adc_info.c_params.c_diff(1) == 1 then
-                mprintf("\tmode - measurement type (%%T - differential, %%F - single-ended)\n");
-            else
-                mprintf("\tmode - set %%F (differential mode not supported by AI converter)\n");
-            end
-
+            mprintf("\trange - analog input range matrix e.g.\n");
+            mprintf("\t        [-10,10] - single range argument applied for all used channels\n");
+            mprintf("\t        [-10,10;-5,5] - multi-range argument for two channels\n");
             mprintf("\tfrequency - scan frequency\n");
             mprintf("\tduration - scan duration in seconds\n");
             return;
@@ -73,31 +65,23 @@ function  mdaq_ai_scan_init(arg1, arg2, arg3, arg4, arg5, arg6)
     end
     
     adc_ch_count = strtod(adc_info.channel);
-    if aiMode then
-        adc_ch_count = adc_ch_count / 2;
-    end
-
     ch_count = size(channels, 'c');
     if ch_count < 1 | ch_count > adc_ch_count then
-        disp("ERROR: Wrong AI channel selected!")
-        return;
+        error("Wrong AI channel selected!")
     end
     
     if max(channels) > adc_ch_count | min(channels) < 1 then
-        disp("ERROR: Wrong AI channel selected!")
-        return;
+        error("Wrong AI channel selected!")
     end
     
     aiRangeSize = size(aiRange, 'r');
     if aiRangeSize <> 1 & aiRangeSize <> ch_count then
-        disp("ERROR: Range vector should match selected AI channels!")
-        return; 
+        error("Range vector should match selected AI channels!")
     end
     
     aiModeSize = size(aiMode, 'c');
     if aiModeSize <> 1 & aiModeSize <> ch_count then
-        disp("ERROR: Mode vector should match selected AI channels!")
-        return; 
+        error("Mode vector should match selected AI channels!")
     end
 
     if aiRangeSize == 1 then
@@ -107,6 +91,7 @@ function  mdaq_ai_scan_init(arg1, arg2, arg3, arg4, arg5, arg6)
         aiRange(:,2) = range_tmp(2);
         clear range_tmp;
     end
+    
     aiRange_t = aiRange;
     aiRange = matrix(aiRange', 1, ch_count*2);
 
@@ -185,9 +170,15 @@ function  mdaq_ai_scan_init(arg1, arg2, arg3, arg4, arg5, arg6)
             elseif (aiMode(j) == 0)
                 measure_type = "Single-ended"
             end
-            adc_range = diff(aiRange_t(j, 1), aiRange_t(j, 2) );
+            adc_range = aiRange_t(j, 2) - aiRange_t(j, 1); 
             resolution = string((int(adc_range/2^adc_res * 1000000)) / 1000);
-            rows = [rows; string(channels(j)), measure_type, "dupa" , resolution+"mV"]
+            rangeStr="";
+            if aiRange_t(j, 1) < 0 then
+                rangeStr = "±" + string(aiRange_t(j, 2))+"V";
+            else 
+                rangeStr = "0-" + string(aiRange_t(j, 2))+"V";
+            end
+            rows = [rows; string(channels(j)), measure_type, rangeStr, resolution+"mV"]
         end
 
         mprintf("\nAnalog input scanning session settings:\n");

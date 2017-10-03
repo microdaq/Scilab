@@ -5,9 +5,9 @@ function [data, result] = mdaq_ai_scan(arg1, arg2, arg3)
 
     ch_count = call("sci_mlink_ai_scan_get_ch_count", "out", [1, 1], 1, "i");
     if ch_count < 0 | ch_count > 16 then
-        disp("Error: Unable to read AI scann channel configuration!");
-        return; 
+        error("Unable to read AI scann channel configuration!");
     end
+    
     if argn(2) == 2 then;  
         scan_count = arg1; 
         blocking = arg2; 
