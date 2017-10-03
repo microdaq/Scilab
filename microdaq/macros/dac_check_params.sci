@@ -1,3 +1,4 @@
+function result = dac_check_params(channels, aoRange)
     data = [];
     result = 0; 
     [link_id, result] = call("sci_mlink_connect",..
@@ -11,6 +12,7 @@
         result = 0;
         return; 
     end
+
     aoRange = matrix(aoRange', 1, size(channels, 'c')*2);
     result = call("sci_mlink_ao_check_params",..
                         link_id, 1, "i",..
