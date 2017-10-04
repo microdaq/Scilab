@@ -251,3 +251,20 @@ function [report] = validate_test_val(out, expected_out, tolerance, testTitle)
         error("------------- !TEST FAILED! --------------");
     end   
 endfunction
+
+
+function mdaq_test(name, channels, aoRange, aoData, aiRange, aiMode, refData)
+    mode(-1)
+    treshold = 0.1;
+    mdaq_ao_test(channels, aoRange, aoData', 0);
+    r1 = validate_test_val(mdaq_ai_test(channels, aiRange, aiMode, 0), refData, treshold, "macro test");
+
+    mdaq_ao_test(channels, aoRange, aoData', 1);
+    r2 = validate_test_val(mdaq_ai_test(channels, aiRange, aiMode, 1), refData, treshold, "sim test");
+
+    mdaq_ao_test(channels, aoRange, aoData', 2);
+    r3 = validate_test_val(mdaq_ai_test(channels, aiRange, aiMode, 2), refData, treshold, "DSP test");
+    mprintf("\n\n---------- REPORT: "+name+" ----------")
+    mprintf(r1); mprintf(r2); mprintf(r3);
+    mprintf("----------------------------------------------\n\n")
+endfunction
