@@ -58,7 +58,7 @@ function [x,y,typ] = mdaq_dac(job,arg1,arg2)
             end
 
             if %microdaq.private.mdaq_hwid <> [] then
-                dac_id = %microdaq.private.mdaq_hwid(2);
+                dac_id = %microdaq.private.mdaq_hwid(3);
                 if find(dac_id == get_dac_list()) == [] then
                     ok = %f;
                     message("Configuration not detected - run mdaq_hwinfo and try again!");
