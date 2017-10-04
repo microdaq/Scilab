@@ -50,7 +50,7 @@ endfunction
 
 function out = mdaq_ai_test(channels, ranges, aiMode, testMode)
     xcosTestModel = mdaq_toolbox_path() + "tests\AIO_COMPLEX_TEST\ADC_test.zcos";
-    FREQ = 100;
+    tolerance = 0.1;
     out = [];
     
     //load_diagram(xcosTestModel);   
@@ -76,6 +76,14 @@ function out = mdaq_ai_test(channels, ranges, aiMode, testMode)
             out = mdaq_ai_read(channels, ranges, aiMode);
         case 1 // simulation 
             xcos_simulate(scs_m, 4);
+            // TOLERANCE 
+            for i=2:size(OUT_TEST.values, "r")
+                high = find( OUT_TEST.values(1, 1:size(channels, "*")) > OUT_TEST.values(i, 1:size(channels, "*")) + tolerance);
+                low = find( OUT_TEST.values(1, 1:size(channels, "*")) < OUT_TEST.values(i, 1:size(channels, "*")) - tolerance);
+                if size(low, '*') > 0 | size(high, '*') > 0 then
+                    error("mdaq_ai_test: Simulation data is incoherent!")
+                end 
+            end
             out = OUT_TEST.values(1, 1:size(channels, "*"));
         case 2 // dsp 
             // Propagate context through all blocks
@@ -117,7 +125,18 @@ function out = mdaq_ai_test(channels, ranges, aiMode, testMode)
             end
             mdaq_code_gen(%T);
             xcos_simulate(scs_m, 4);
-            out = OUT_TEST.values(1, 1:size(channels, "*"));   
+            
+            // TOLERANCE 
+            for i=2:size(OUT_TEST.values, "r")
+                high = find( OUT_TEST.values(1, 1:size(channels, "*")) > OUT_TEST.values(i, 1:size(channels, "*")) + tolerance);
+                low = find( OUT_TEST.values(1, 1:size(channels, "*")) < OUT_TEST.values(i, 1:size(channels, "*")) - tolerance);
+                if size(low, '*') > 0 | size(high, '*') > 0 then
+                    error("mdaq_ai_test: DSP data is incoherent!")
+                end 
+            end
+            
+            
+            out = OUT_TEST.values(1, 1:size(channels, "*")); 
     end
 endfunction
 
@@ -215,24 +234,22 @@ function [out, maxErr, idxErr, errOut, expectedOut] = compare_vec_err(v1, v2, to
     idxErr = [];
     
     if size(v1, "*") <> size(v2, "*")
-        error("Vectors have different sizes!");
-    end 
-    
-    for i=1:size(v1, "*")
-        errors = [errors; v2(i) - v1(i)];
-                
-        if  (v1(i) > (v2(i) + tolerance)) | (v1(i) < (v2(i) - tolerance))
-            [maxErr idxErr] = max(abs(errors));
-            errOut = v1(i);
-            expectedOut = v2(i);
-            return;
-        end
+        error("compare_vec_err: vectors have different sizes!");
     end
     
+    low = find( v1 < v2 - tolerance );
+    high = find( v1 > v2 + tolerance );
+    
+    errors = v2 - v1;
     [maxErr idxErr] = max(abs(errors));
     errOut = v1(idxErr);
     expectedOut = v2(idxErr);
-    out = %T;
+    
+    if size(low, '*') > 0 | size(high, '*') > 0 then
+        out = %F;
+    else
+        out = %T;
+    end
 endfunction 
 
 function [report] = validate_test_val(out, expected_out, tolerance, testTitle)
