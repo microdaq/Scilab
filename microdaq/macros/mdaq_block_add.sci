@@ -430,7 +430,7 @@ function mdaq_block_add(block_def)
     gen_svg(svg_path, name_converted, block_def.name);
 
     // build macros and compile C code
-    mdaq_block_build();
+    mdaq_block_build(~block_def.use_sim_script);
 endfunction
 
 function res = save_string(filename, content)

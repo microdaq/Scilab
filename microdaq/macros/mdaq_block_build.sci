@@ -56,6 +56,15 @@ function mdaq_block_build(host_build, debug_build)
     if isfile("userlib.lib") then
         copyfile("userlib.lib", userlib_path);
     end
+    
+    //get list of existing blocks 
+    blocks = [];
+    cd(macros_path);
+    macros = ls("*_sim.sci")
+    for i=1:size(macros,'*')
+        blocks(i) = part(macros(i), 1:length(macros(i)) - 8);
+    end
+    chdir(userlib_src_path);
 
     //Building userdll for host
     if haveacompiler() & (host_build == %T) then
@@ -82,16 +91,6 @@ function mdaq_block_build(host_build, debug_build)
         end
         
         mprintf(" ### Building host library...\n")
-        //get list of existing blocks 
-        blocks = [];
-        cd(macros_path);
-        macros = ls("*_sim.sci")
-        for i=1:size(macros,'*')
-            blocks(i) = part(macros(i), 1:length(macros(i)) - 8);
-        end
-        chdir(userlib_src_path);
-        
-        
         c_flags = "";
         scicos_libpath = "";
         os = getos();
