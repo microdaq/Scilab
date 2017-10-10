@@ -71,11 +71,20 @@ function  mdaq_ao_scan_init(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
         error("Wrong channel - single row vector expected!")
     end
     
-    if size(ao_range, 'r') > 1 then
-        error("Wrong range - single row vector expected!")
+    if size(ao_range, 'c') <> 2 then
+        error("Vector range [low,high;low,high;...] expected!")
+        return;
     end
     
     ch_count = size(channels, "c");    
+    
+    if size(ao_range, 'r') == 1 then
+        range_tmp = ao_range;
+        ao_range = ones(ch_count,2);
+        ao_range(:,1) = range_tmp(1);
+        ao_range(:,2) = range_tmp(2);
+    end
+    ao_range = matrix(ao_range', 1, ch_count*2);
     dac_ch_count = strtod(dac_info.channel);
     
     if size(data, "c") <> ch_count then
@@ -90,23 +99,6 @@ function  mdaq_ao_scan_init(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
 
     if max(channels) > dac_ch_count | min(channels) < 1 then
         error("Wrong AO channel selected!")
-    end
-
-    ao_range_size = size(ao_range, 'c');
-    if ao_range_size <> 1 & ao_range_size <> ch_count then
-        error("Range vector should match selected channels!")
-    end
-
-    try
-        if ao_range_size == 1 then
-            ao_range_t = ones(1,ch_count) * ao_range;
-            ao_range = ones(1,ch_count) * dac_info.c_params.c_range(ao_range);
-        else
-            ao_range_t = ao_range;
-            ao_range = adc_info.c_params.c_range(ao_range)';
-        end
-    catch
-        error("Wrong range selected!");
     end
     
     if continuous == %T | continuous == 1 then
@@ -133,7 +125,7 @@ function  mdaq_ao_scan_init(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
                 ch_count, 3, "i",..
                 data, 4, "d",..
                 data_size, 5, "i",..
-                ao_range, 6, "i",..
+                ao_range, 6, "d",..
                 continuous, 7, "i", ..
                 scan_freq, 8, "d",..
                 scan_time, 9, "d",..
@@ -153,17 +145,17 @@ function  mdaq_ao_scan_init(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
         
         rows = [];
         row = '';
-
-        dac_res = strtod(part(dac_info.resolution, 1:2))
-        for j=1:ch_count
-            dac_range = diff(dac_info.c_params.c_range_value(ao_range_t(j),:))
-            resolution = string((int(dac_range/2^dac_res * 1000000)) / 1000);
-            rows = [rows; string(channels(j)), dac_info.c_params.c_range_desc(ao_range_t(j)), resolution+"mV"]
-        end
+// TODO: print info table with RANGES 
+//        dac_res = strtod(part(dac_info.resolution, 1:2))
+//        for j=1:ch_count
+//            //dac_range = diff(dac_info.c_params.c_range_value(ao_range_t(j),:))
+//            resolution = string((int(0/2^dac_res * 1000000)) / 1000);
+//            rows = [rows; string(channels(j)), 0, resolution+"mV"]
+//        end
 
         mprintf("\nAnalog output scanning session settings:\n");
         mprintf("\t---------------------------------\n")
-        str2table(rows, ["Channel",  "Range", "Resolution"], 5)
+        //str2table(rows, ["Channel",  "Range", "Resolution"], 5)
         mprintf("\t---------------------------------\n")
 
         if scan_freq >= 1000
