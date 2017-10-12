@@ -5,13 +5,13 @@ function mdaq_set_ip(mdaq_ip)
         mprintf("Description:\n");
         mprintf("\tSet IP address\n");
         mprintf("Usage:\n");
-        mprintf("\tmdaq_set_ip(ip_address);\n")
-        mprintf("\tip_address - MicroDAQ IP address (string)\n");
+        mprintf("\tmdaq_set_ip(ipAddress);\n")
+        mprintf("\tipAddress - MicroDAQ IP address (string)\n");
         return;
     end
-    
-    if mdaq_ip == [] | mdaq_ip == "" then
-        disp("Wrong input argument - provide valid MicroDAQ IP address")
+
+    if mdaq_ip == [] | mdaq_ip == "" | regexp(mdaq_ip, "/(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})/") == [] then
+        error("Wrong IP address")
     end
     
     [f,err] = mopen(ip_config_file_path,'w');
@@ -21,6 +21,6 @@ function mdaq_set_ip(mdaq_ip)
         global %microdaq
         %microdaq.ip_address = mdaq_ip; 
     else
-        disp("ERROR: Unable to set IP address!")
+        error("Unable to set IP address!")
     end
 endfunction
