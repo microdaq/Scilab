@@ -18,37 +18,36 @@ if getos() == "Linux" & opts(2) == 'x86' then
 end
 
 
-//function [microdaqlib, microdaqBlocks, microdaqMacros, microdaqUserBlocks] = startModule()
 // create global microdaq settings struct
 global %microdaq;
 %microdaq = struct("model", ["Unknown"],..
-"ip_address", [],..
-"dsp_loaded", %F,..
-"dsp_ext_mode", %T,..
-"dsp_debug_mode", %F,..
-"private", struct(..
-"mlink_link_id", -1000,..
-"userhostlib_link_id", -1000,..
-"connection_id", -1,..
-"has_mdaq_block", %F,..
-"has_mdaq_param_sim", %F,..
-"mem_write_idx", 0,..
-"mem_read_idx", 0,..
-"to_file_idx", 0,..
-"dac_idx", 0,..
-"adc_idx", 0,..
-"webscope_idx", 0,..
-"udpsend_idx", 0,..
-"udprecv_idx", 0,..
-"tcpsend_idx", 0,..
-"tcprecv_idx", 0,..
-"mdaq_signal_id", 0,..
-"mdaq_param_id", 0,..
-"ao_scan_ch_count", -1,..
-"mdaq_hwid",..
-"adc_info",..
-"dac_info", [])..
-);
+                            "ip_address", [],..
+                            "dsp_loaded", %F,..
+                            "dsp_ext_mode", %T,..
+                            "dsp_debug_mode", %F,..
+                            "private", struct(..
+                            "mlink_link_id", -1000,..
+                            "userhostlib_link_id", -1000,..
+                            "connection_id", -1,..
+                            "has_mdaq_block", %F,..
+                            "has_mdaq_param_sim", %F,..
+                            "mem_write_idx", 0,..
+                            "mem_read_idx", 0,..
+                            "to_file_idx", 0,..
+                            "dac_idx", 0,..
+                            "adc_idx", 0,..
+                            "webscope_idx", 0,..
+                            "udpsend_idx", 0,..
+                            "udprecv_idx", 0,..
+                            "tcpsend_idx", 0,..
+                            "tcprecv_idx", 0,..
+                            "mdaq_signal_id", 0,..
+                            "mdaq_param_id", 0,..
+                            "ao_scan_ch_count", -1,..
+                            "mdaq_hwid",..
+                            "adc_info",..
+                            "dac_info", [])..
+                            );
 
 // check minimal version (xcosPal required)
 // =============================================================================
@@ -217,13 +216,13 @@ if (sci_ver_str == 'scilab-5.5.2') | (sci_ver_str == 'scilab-5.5.2.1') then
         end
     end
 
-
     %microdaq.ip_address = mdaq_get_ip();
-    
     if check_mdaq_compiler() == %F then
-       mprintf("\nFor more help on MicroDAQ toolbox, DSP managment functions, C code integration\ntools and other MicroDAQ toolbox features see help (help microdaq).\n\n");
-       mprintf("WARNING: MicroDAQ toolbox ver 1.2.x requires firmware ver 2.0.0 or higher.\n\t Make sure that latest firmware has been installed. Link to latest\n\t firmware version https://github.com/microdaq/Firmware\n\n\t TI Code Composer Studio 5.x is no longer supported. Please install\n\t proper C6000 compiler, XDC tools and SYS/BIOS according to \n\t microdaq_setup installer (help button).\n\nRun microdaq_setup to configure MicroDAQ toolbox.\n");
-    end
+        mprintf("\nFor more help on MicroDAQ toolbox, DSP managment functions, C code integration\ntools and other MicroDAQ toolbox features see help (help microdaq).\n\n");
+        mprintf("WARNING: MicroDAQ toolbox ver 1.2.x requires firmware ver 2.0.0 or higher.\n\t Make sure that latest firmware has been installed. Link to latest\n\t firmware version https://github.com/microdaq/Firmware\n\n\t TI Code Composer Studio 5.x is no longer supported. Please install\n\t proper C6000 compiler, XDC tools and SYS/BIOS according to \n\t microdaq_setup installer (help button).\n")
+        if sci_ver(1) == 5 then 
+            mprintf("\nRun microdaq_setup to configure toolbox:\n\tmicrodaq_setup() - GUI mode\n\tmicrodaq_setup(compilerPath, xdctoolsPath, sysbiosPath, ipAddress) - non-GUI mode");
+        end
     
     userhostlib_loader = root_tlbx + pathconvert("/etc/userlib/hostlib/loader.sce", %f);
 
@@ -233,10 +232,9 @@ if (sci_ver_str == 'scilab-5.5.2') | (sci_ver_str == 'scilab-5.5.2.1') then
     end
 else
     [mdaq_ip_addr, res] = mdaq_get_ip();
-    if mdaq_ip_addr == [] then
-        mprintf("\n\nFor more help on MicroDAQ toolbox, HW access functions, utility\nfunctions and other MicroDAQ toolbox features see help (help microdaq).\n");
-        mprintf("\nWARNING: MicroDAQ toolbox running on Scilab 6 do not support some major\n\t features like DSP managment function and C code integration.\n\t To use all available features, use toolbox on Scilab 5.5.2.\n\n");
-        warning("Unable to get MicroDAQ IP address - run mdaq_set_ip(''10.10.1.1'')!");
+    if mdaq_ip_addr == [] & sci_ver(1) == 6 then
+        mprintf("\nWARNING: MicroDAQ toolbox on Scilab 6.0 has limited functionality. \n\tCode generation from Xcos diagram, DSP management functions\n\tand legacy C code integration is not supported.\n\tUse Scilab 5.5.2 to have full-featured MicroDAQ toolbox for Scilab\n");
+        mprintf("\nRun microdaq_setup to configure toolbox:\n\tmicrodaq_setup(ipAddress)"); 
     end
 end
 

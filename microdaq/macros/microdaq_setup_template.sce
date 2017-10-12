@@ -280,10 +280,13 @@ help_desc = [
 'Example directory structure:';
 help_paths;
 '';
-'Make sure that correct version of component is installed.'
+'Make sure that correct version of component is installed.';
 '';
 'More info is available on website: ';
 'https://github.com/microdaq/Scilab';
+'';
+'For non-GUI microdaq_setup use: ";
+" microdaq_setup(compilerPath, xdctoolsPath, sysbiosPath, ipAddress);";
 ];
 
 //First step
