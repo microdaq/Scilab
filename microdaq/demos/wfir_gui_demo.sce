@@ -37,7 +37,7 @@ function [ok,values_res,exprs]=wfir_gui_demo(exprs)
     if argn(2)<1 then
         exprs=["""bp""";
         """hn"""
-        "64";
+        "48";
         "44100";
         "300"
         "3000";
@@ -582,55 +582,61 @@ function [ok,values_res,exprs]=wfir_gui_demo(exprs)
     set(gui,"userdata",[Fview,Filtertype,Windowtype,Forderv,Forders,Lcfv,Lcfs,Hcfv,Hcfs,Fpv,Fps,Sfreq,Ftv,Wtv])
 
     Rate = 44100;  
-    Channel = 1; 
-    aiRange = 2; // analog input range: ±5V
-    aoRange = 3; // analog output range: ±2.5V
-    aoTrigger = 0; 
+    ChannelIN = [1 2]; 
+    ChannelOUT = [1 2]; 
+    aiRange = [-0.64 0.64]; // analog input range: ±5V
+    aoRange = [-2.5 2.5]; // analog output range: ±2.5V
     IsContinuous = %T;
     IsDifferential = %F; 
     ChunkSize = Rate/6;
     SampleOffset = 100;
+    
+    initialData = [zeros(ChunkSize,1) zeros(ChunkSize,1)];
      
     [ftype,forder,low,high,wtype,fpar,freq_ech]=wfirGetFilterParameters(gui.userdata);
-    FILTER = wfir(ftype, 64,[low/Rate high/Rate],wtype,fpar);
+    FILTER = wfir(ftype, 48,[low/Rate high/Rate],wtype,fpar);
 
-    realtimeinit(0.01);
+    realtimeinit(0.1);
     t=0;
+    
+    mdaq_close();
     
     while ret==0&or(winsid()==fig_id) then
         if START == %T then
             // Init analog input/output scanning 
-            mdaq_ai_scan_init(Channel, aiRange, IsDifferential, Rate, -1);
-            mdaq_ao_scan_init(Channel, aoRange, IsContinuous, aoTrigger, Rate, -1);
+            mdaq_ai_scan_init(ChannelIN, aiRange, IsDifferential, Rate, -1);
+            mdaq_ao_scan_init(ChannelOUT, initialData, aoRange, IsContinuous, Rate, -1);
             
-            audioData = mdaq_ai_scan(ChunkSize, %T);
-            mdaq_ao_data_queue(zeros(ChunkSize, 1), %T);
-            
+            audioData = mdaq_ai_scan(ChunkSize, %T);    
             mdaq_ao_scan();
+            mdaq_ao_scan_data(ChannelOUT, audioData, %T);
             
             mprintf("\nFiltering h as been started...\n");
             sample_count = 0;
             
             while START==%T then   
-                            
+
                 // Acquire data
                 pastAudioData = audioData;
                 audioData = mdaq_ai_scan(ChunkSize, %T);
-                audioDataExt = [pastAudioData(ChunkSize-SampleOffset+1:ChunkSize); audioData];
+                audioDataExt = [pastAudioData(ChunkSize-SampleOffset+1:ChunkSize, :); audioData];
                 
                 // FIR Filter 
-                filtAudioData = filter(FILTER, 1, audioDataExt);
-                filtAudioData = filtAudioData(SampleOffset+1:size(filtAudioData, '*'));
+                //left channel 
+                filtAudioDataLeft = filter(FILTER, 1, audioDataExt(:, 1));
+                filtAudioDataLeft = filtAudioDataLeft(SampleOffset+1:size(filtAudioDataLeft, '*'));
+                 
+                //right channel 
+                filtAudioDataRight = filter(FILTER, 1, audioDataExt(:, 2));
+                filtAudioDataRight = filtAudioDataRight(SampleOffset+1:size(filtAudioDataRight, '*'));
                 
                 // Analog Output 
                 if NO_FILTER == %F then 
-                    mdaq_ao_data_queue((filtAudioData*GAIN), %T);
+                    mdaq_ao_scan_data( ChannelOUT, [(filtAudioDataLeft*GAIN) (filtAudioDataRight*GAIN)], %T);
                 else
-                    mdaq_ao_data_queue((audioData*GAIN), %T);
+                    mdaq_ao_scan_data(ChannelOUT, (audioData*GAIN), %T);
                 end
                       
-        
-        
                 sample_count = sample_count + size(audioData, '*');
                 mprintf("Filtered samples: %d\n", sample_count);
                 realtime(t);
@@ -700,7 +706,7 @@ function gainSliderCall(hs)
 endfunction
 
 function wfirSliderpos2Value(hs)
-    
+    xpause(200);
     if argn(2)<1 then hs=gcbo,end
     hs.value=floor(hs.value)
     ud=hs.userdata
