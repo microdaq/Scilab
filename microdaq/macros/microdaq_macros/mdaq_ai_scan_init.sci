@@ -48,42 +48,30 @@ function  mdaq_ai_scan_init(arg1, arg2, arg3, arg4, arg5, arg6)
         scan_time = -1;
     end
 
-
     if size(channels, 'r') > 1 then
-        disp("ERROR: Single row AI channel vector expected!")
-        return;
+        error('Wrong channel - scalar or single row vector expected')
     end
 
     if size(aiRange, 'c') <> 2 then
-        disp("ERROR: Vector range [low,high;low,high;...] expected!")
-        return;
+        error('Wrong range - matrix range [low,high;low,high;...] expected')
     end
 
     if size(aiMode, 'r') > 1 then
-        disp("ERROR: Single row AI measurement mode vector expected!")
-        return;
+        error('Wrong mode - scalar or single row vector expected')
     end
     
-    adc_ch_count = strtod(adc_info.channel);
     ch_count = size(channels, 'c');
-    if ch_count < 1 | ch_count > adc_ch_count then
-        error("Wrong AI channel selected!")
-    end
-    
-    if max(channels) > adc_ch_count | min(channels) < 1 then
-        error("Wrong AI channel selected!")
-    end
     
     aiRangeSize = size(aiRange, 'r');
     if aiRangeSize <> 1 & aiRangeSize <> ch_count then
-        error("Range vector should match selected AI channels!")
+        error('Range vector should match selected AI channels')
     end
     
     aiModeSize = size(aiMode, 'c');
     if aiModeSize <> 1 & aiModeSize <> ch_count then
-        error("Mode vector should match selected AI channels!")
+        error('Mode vector should match selected AI channels')
     end
-
+    
     if aiRangeSize == 1 then
         range_tmp = aiRange;
         aiRange = ones(ch_count,2);
