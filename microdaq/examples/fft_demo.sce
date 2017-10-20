@@ -12,10 +12,10 @@ TIME = 20;
 FREQ = 5000;
 
 // Build DSP binary from Xcos model
-mdaq_dsp_build(mdaq_toolbox_path() + filesep() + "examples" + filesep() +"fft_demo.zcos");
+mdaqDSPBuild(mdaqToolboxPath() + filesep() + "examples" + filesep() +"fft_demo.zcos");
 
 // Start DSP application
-result = mdaq_dsp_start('fft_demo_scig\fft_demo.out', 1.0/FREQ);
+result = mdaqDSPStart('fft_demo_scig\fft_demo.out', 1.0/FREQ);
 if result < 0 then
     abort;
 end
@@ -35,7 +35,7 @@ sample_count = FREQ/10;
 fig = figure("Figure_name","MicroDAQ FFT demo");
 
 for i=1:(TIME*10)
-    [result, s] = mdaq_dsp_signal_read(sample_count);
+    [result, s] = mdaqDSPSignalRead(sample_count);
     if result < 0 then
         disp("ERROR: unable to read signal data!");
         abort;
@@ -65,7 +65,7 @@ for i=1:(TIME*10)
 end
 
 // Stop DSP execution
-mdaq_dsp_stop();
+mdaqDSPStop();
 
 // Close plot
 mprintf("\nFFT demo has been stopped.");

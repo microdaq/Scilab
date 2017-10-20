@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaq_ai_scan_stop">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaqAIScanStop">
 	<refnamediv>
-		<refname>mdaq_ai_scan_stop</refname>
+		<refname>mdaqAIScanStop</refname>
 		<refpurpose>Stops analog input acquisition</refpurpose>
 	</refnamediv>
 
 	<refsynopsisdiv>
 		<title>Calling Sequence</title>
 		<synopsis>
-			mdaq_ai_scan_stop()
-			mdaq_ai_scan_stop(linkID)
+			mdaqAIScanStop()
+			mdaqAIScanStop(linkID)
 		</synopsis>
 	</refsynopsisdiv>
 
-	<refsection id="Description_mdaq_ai_scan_stop">
+	<refsection id="Description_mdaqAIScanStop">
 		<title>Description</title>
 		<para>
-			This function stops analog input acquisition. Function can be used to interrupt acquisition (when duration > 0), or to stop continuous acquisition (when duration=-1). After calling <link linkend="mdaq_ai_scan_stop">mdaq_ai_scan_stop()</link> function scanning session has to be re-initialized.
+			This function stops analog input acquisition. Function can be used to interrupt acquisition (when duration > 0), or to stop continuous acquisition (when duration=-1). After calling <link linkend="mdaqAIScanStop">mdaqAIScanStop()</link> function scanning session has to be re-initialized.
 		</para> 
 
 	</refsection>  
 
-	<refsection id="Parameters_mdaq_ai_scan_stop">
+	<refsection id="Parameters_mdaqAIScanStop">
 		<title>Input arguments</title>
 		<itemizedlist>
 			<listitem>
@@ -38,14 +38,14 @@
 			<![CDATA[
 			aiData = [];
 			dataCount = 0;
-			mdaq_ai_scan_init(1:8, [-10,10], %F, 10000, 1)
+			mdaqAIScanInit(1:8, [-10,10], %F, 10000, 1)
 			for i=1:10
-				[data result] = mdaq_ai_scan(1000, %T);
+				[data result] = mdaqAIScan(1000, %T);
 				aiData = [aiData; data];
 				dataCount = dataCount + result;
 				mprintf('Acquired %d scans (total: %d scans)\n', result, dataCount);
 			end
-			mdaq_ai_scan_stop();
+			mdaqAIScanStop();
 			plot(aiData);
 			clear aiData;
 			 ]]>
@@ -57,14 +57,14 @@
 			<![CDATA[
 			aiData = [];
 			dataCount = 0;
-			mdaq_ai_scan_init(1:8, [-10,10], %F, 1000, -1)
-			while(mdaq_key_read(1) == %F)
-				[data result] = mdaq_ai_scan(100, %T);
+			mdaqAIScanInit(1:8, [-10,10], %F, 1000, -1)
+			while(mdaqKeyRead(1) == %F)
+				[data result] = mdaqAIScan(100, %T);
 				aiData = [aiData; data];
 				dataCount = dataCount + result;
 				mprintf('Acquired %d scans (total: %d scans)\n', result, dataCount);
 			end
-			mdaq_ai_scan_stop();
+			mdaqAIScanStop();
 			plot(aiData);
 			clear aiData;
 			 ]]>
@@ -72,14 +72,14 @@
 
 	</refsection>
 
-	<refsection id="SeeAlso_mdaq_ai_scan_stop">
+	<refsection id="SeeAlso_mdaqAIScanStop">
 		<title>See Also</title>
 		<simplelist type="inline">
 			<member>
-				<link linkend="mdaq_ai_scan_init">mdaq_ai_scan_init</link>
+				<link linkend="mdaqAIScanInit">mdaqAIScanInit</link>
 			</member>
 			<member>
-				<link linkend="mdaq_ai_scan">mdaq_ai_scan</link>
+				<link linkend="mdaqAIScan">mdaqAIScan</link>
 			</member>
 
 		</simplelist>

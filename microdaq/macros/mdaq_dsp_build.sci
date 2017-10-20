@@ -1,6 +1,6 @@
-function mdaq_dsp_build(diagram_file)
+function mdaqDSPBuild(diagram_file)
     // Check version compatibility 
-    [is_supp vers] = mdaq_is_working('mdaq_dsp_build');
+    [is_supp vers] = mdaq_is_working('mdaqDSPBuild');
     if is_supp == %F then
         error('ERROR: ' + vers)
         return;

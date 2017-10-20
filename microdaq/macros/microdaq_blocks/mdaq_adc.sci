@@ -23,7 +23,7 @@ function [x,y,typ] = mdaq_adc(job,arg1,arg2)
     "3 - 64 ADC reads per channel";
     "4 - 256 ADC reads per channel";
     "";
-    "Use mdaq_hwinfo to get ADC parameters"
+    "Use mdaqHWInfo to get ADC parameters"
     "";
     "output - ADC value scaled to selected range";
     "";
@@ -64,7 +64,7 @@ function [x,y,typ] = mdaq_adc(job,arg1,arg2)
                 adc_id = %microdaq.private.mdaq_hwid(2);
                 if ok & (find(adc_id == get_adc_list()) == []) then
                     ok = %f;
-                    message("Configuration not detected - run mdaq_hwinfo and try again!");
+                    message("Configuration not detected - run mdaqHWInfo and try again!");
                 end
 
                 if ok & size(channels, 'r') > 1 then
@@ -119,7 +119,7 @@ function [x,y,typ] = mdaq_adc(job,arg1,arg2)
                 end
             else
                 ok = %f;
-                message('Unable to detect MicroDAQ confituration - run mdaq_hwinfo and try again!');
+                message('Unable to detect MicroDAQ confituration - run mdaqHWInfo and try again!');
             end
 
             if ok then

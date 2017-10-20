@@ -1,4 +1,4 @@
-function  mdaq_ai_scan_init(arg1, arg2, arg3, arg4, arg5, arg6)
+function  mdaqAIScanInit(arg1, arg2, arg3, arg4, arg5, arg6)
     link_id = -1;
 
     if argn(2) == 5 then
@@ -30,7 +30,7 @@ function  mdaq_ai_scan_init(arg1, arg2, arg3, arg4, arg5, arg6)
             mprintf("Description:\n");
             mprintf("\tInit AI scan\n");
             mprintf("Usage:\n");
-            mprintf("\tmdaq_ai_scan_init(link_id, channels, range, mode, frequency, duration);\n");                     mprintf("\tlink_id - connection id returned by mdaq_open() (OPTIONAL)\n");
+            mprintf("\tmdaqAIScanInit(link_id, channels, range, mode, frequency, duration);\n");                     mprintf("\tlink_id - connection id returned by mdaqOpen() (OPTIONAL)\n");
             mprintf("\tchannels - analog input channels to read\n");
             mprintf("\trange - analog input range matrix e.g.\n");
             mprintf("\t        [-10,10] - single range argument applied for all used channels\n");
@@ -40,7 +40,7 @@ function  mdaq_ai_scan_init(arg1, arg2, arg3, arg4, arg5, arg6)
             return;
         end
     else
-        error('Unable to detect MicroDAQ confituration - run mdaq_hwinfo and try again!');
+        error('Unable to detect MicroDAQ confituration - run mdaqHWInfo and try again!');
         return;
     end
 
@@ -89,7 +89,7 @@ function  mdaq_ai_scan_init(arg1, arg2, arg3, arg4, arg5, arg6)
     end
 
     if argn(2) == 5 then
-        link_id = mdaq_open();
+        link_id = mdaqOpen();
         if link_id < 0 then
             error("Unable to connect to MicroDAQ device!");
         end
@@ -111,13 +111,13 @@ function  mdaq_ai_scan_init(arg1, arg2, arg3, arg4, arg5, arg6)
 
     if result < 0 & result <> -88 then
         if argn(2) == 5 then
-            mdaq_close(link_id);
+            mdaqClose(link_id);
         end
         error(mdaq_error2(result), 10000 + abs(result));
     else
         if result == -88 then
             disp("Warninng: AI scanning interrupted!")
-            mdaq_ai_scan_stop()
+            mdaqAIScanStop()
 
             // time to terminate TCP connection
             sleep(200);
@@ -135,7 +135,7 @@ function  mdaq_ai_scan_init(arg1, arg2, arg3, arg4, arg5, arg6)
         end
 
         if argn(2) == 5 then
-            mdaq_close(link_id);
+            mdaqClose(link_id);
         end
 
         if result < 0 then

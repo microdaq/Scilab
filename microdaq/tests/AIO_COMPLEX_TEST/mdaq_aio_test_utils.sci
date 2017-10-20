@@ -49,7 +49,7 @@ function out = vec2str(in, opt)
 endfunction
 
 function out = mdaq_ai_test(channels, ranges, aiMode, testMode)
-    xcosTestModel = mdaq_toolbox_path() + "tests\AIO_COMPLEX_TEST\ADC_test.zcos";
+    xcosTestModel = mdaqToolboxPath() + "tests\AIO_COMPLEX_TEST\ADC_test.zcos";
     tolerance = 0.1;
     out = [];
     
@@ -73,7 +73,7 @@ function out = mdaq_ai_test(channels, ranges, aiMode, testMode)
     
     select testMode
         case 0 // script 
-            out = mdaq_ai_read(channels, ranges, aiMode);
+            out = mdaqAIRead(channels, ranges, aiMode);
         case 1 // simulation 
             xcos_simulate(scs_m, 4);
             // TOLERANCE 
@@ -141,7 +141,7 @@ function out = mdaq_ai_test(channels, ranges, aiMode, testMode)
 endfunction
 
 function mdaq_ao_test(channels, ranges, data, testMode)
-    xcosTestModel = mdaq_toolbox_path() + "tests\AIO_COMPLEX_TEST\DAC_test.zcos";
+    xcosTestModel = mdaqToolboxPath() + "tests\AIO_COMPLEX_TEST\DAC_test.zcos";
     FREQ = 100;
     
     //load_diagram(xcosTestModel);   
@@ -165,7 +165,7 @@ function mdaq_ao_test(channels, ranges, data, testMode)
     
     select testMode
         case 0 // script 
-            mdaq_ao_write(channels, ranges, data);
+            mdaqAOWrite(channels, ranges, data);
         case 1 // simulation 
             xcos_simulate(scs_m, 4);
         case 2 // dsp 

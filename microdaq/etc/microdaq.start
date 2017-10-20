@@ -94,8 +94,8 @@ microdaqMacros = lib(pathmacros);
 userblock_path = root_tlbx + pathconvert("/macros/user_blocks/");
 
 
-if isfile(mdaq_toolbox_path() + "etc"+filesep()+"mlink"+filesep()+"hwid") then
-    load(mdaq_toolbox_path() + "etc"+filesep()+"mlink"+filesep()+"hwid");
+if isfile(mdaqToolboxPath() + "etc"+filesep()+"mlink"+filesep()+"hwid") then
+    load(mdaqToolboxPath() + "etc"+filesep()+"mlink"+filesep()+"hwid");
     %microdaq.private.mdaq_hwid = mdaq_hwid;
     %microdaq.private.adc_info = adc_info;
     %microdaq.private.dac_info = dac_info;

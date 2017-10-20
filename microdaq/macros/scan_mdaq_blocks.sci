@@ -1,4 +1,4 @@
-function obj=scan_mdaq_blocks(scs_m)
+function obj=scan_mdaqBlocks(scs_m)
     global %microdaq;
     obj = [];
     
@@ -13,7 +13,7 @@ function obj=scan_mdaq_blocks(scs_m)
             if scs_m.objs(i).model.sim=="super"|scs_m.objs(i).model.sim=="csuper" then
 
                 // if we have superblock make a recurrence call
-                scs_m.objs(i).model.rpar = scan_mdaq_blocks(scs_m.objs(i).model.rpar);
+                scs_m.objs(i).model.rpar = scan_mdaqBlocks(scs_m.objs(i).model.rpar);
             else
 
                 // check if we have MicroDAQ block if so change type from 5 to 4
@@ -22,7 +22,7 @@ function obj=scan_mdaq_blocks(scs_m)
                         if scs_m.objs(i).model.sim(2) == 5 then
                             scs_m.objs(i).model.sim(2) = 4;
                             if find(mdaq_sim_blocks == scs_m.objs(i).model.sim(1)) ~= [] then
-                                %microdaq.private.has_mdaq_block = %T; 
+                                %microdaq.private.has_mdaqBlock = %T; 
                             end
                         end
                     end

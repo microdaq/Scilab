@@ -29,7 +29,7 @@ function result = mdaq_dsp_signal(arg1, arg2, arg3)
         mprintf("\tRegisters DSP signal\n");
         mprintf("Usage:\n");
         mprintf("\tmdaq_dsp_signal(link_id, signal_id, signal_size);\n")
-        mprintf("\tlink_id - connection id returned by mdaq_open() (OPTIONAL)\n");
+        mprintf("\tlink_id - connection id returned by mdaqOpen() (OPTIONAL)\n");
         mprintf("\tsignal_id - signal ID defined in SIGNAL block\n");
         mprintf("\tsignal_size - signal vector size\n");
         return;

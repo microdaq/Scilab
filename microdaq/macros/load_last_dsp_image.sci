@@ -6,7 +6,7 @@ function load_last_dsp_image()
         dsp_app_path = mgetl(TMPDIR + filesep() + "last_mdaq_dsp_image");
         if isfile(dsp_app_path) == %t then
             close_last_connection();
-            connection_id = mdaq_open();
+            connection_id = mdaqOpen();
             if connection_id < 0 then
                 message("ERROR: Unable to connect to MicroDAQ device!");
                 return;
@@ -15,8 +15,8 @@ function load_last_dsp_image()
             res = mlink_dsp_load(connection_id, dsp_app_path, '');
             if res < 0 then
                 // try again to load application
-                mdaq_close(connection_id);
-                connection_id = mdaq_open();
+                mdaqClose(connection_id);
+                connection_id = mdaqOpen();
                 if connection_id < 0 then
                     message("ERROR: Unable to connect to MicroDAQ device!");
                     return;
@@ -24,7 +24,7 @@ function load_last_dsp_image()
                 res = mlink_dsp_load(connection_id, dsp_app_path, '');
                 if res < 0 then
                     message('Unable to load DSP firmware! (' + mdaq_error2(res) + ').');
-                    mdaq_close(connection_id);
+                    mdaqClose(connection_id);
                     %microdaq.dsp_loaded = %F
                     return;
                 end
@@ -36,7 +36,7 @@ function load_last_dsp_image()
             res = mlink_dsp_start(connection_id,-1);
             if res < 0 then
                 message("Unable to start DSP application!");
-                mdaq_close(connection_id);
+                mdaqClose(connection_id);
                 %microdaq.dsp_loaded = %F;
                 return;
             end
@@ -46,7 +46,7 @@ function load_last_dsp_image()
            end
 
             %microdaq.dsp_loaded = %T;
-            mdaq_close(connection_id);
+            mdaqClose(connection_id);
         else
             message("Unable to find model, build model and try again!")
         end

@@ -1,12 +1,12 @@
 clc;
-mdaq_close();
-//mdaq_hwinfo();
+mdaqClose();
+//mdaqHWInfo();
 
 if exists("mdaq_ao_test") == 0 then
-    exec(mdaq_toolbox_path() + "tests\AIO_COMPLEX_TEST\mdaq_aio_test_utils.sci");
+    exec(mdaqToolboxPath() + "tests\AIO_COMPLEX_TEST\mdaq_aio_test_utils.sci");
 end 
 
-exec(mdaq_toolbox_path() + "tests\AIO_COMPLEX_TEST\test_defines.sce")
+exec(mdaqToolboxPath() + "tests\AIO_COMPLEX_TEST\test_defines.sce")
 
 
 
@@ -17,33 +17,33 @@ mprintf("------ TESTING ADC0%d / DAC0%d config -------", ADC_ID, DAC_ID)
 // --- MACROS - ERROR CHECKING  ----
 
 //common errors 
-assert_checkerror("mdaq_ai_read(1, [-5.0 10], %F)", "Unsupported range")
-assert_checkerror("mdaq_ai_read([1 2 3 4], [-10.24 10.24], [%F %T])", "Mode vector should match selected AI channels!")
+assert_checkerror("mdaqAIRead(1, [-5.0 10], %F)", "Unsupported range")
+assert_checkerror("mdaqAIRead([1 2 3 4], [-10.24 10.24], [%F %T])", "Mode vector should match selected AI channels!")
 
-assert_checkerror("mdaq_ao_write(1, [0 20], 1)", "Unsupported range")
-assert_checkerror("mdaq_ao_write(1:18, [0 5], 1:18)", "Undefined error") // BUG                     
-assert_checkerror("mdaq_ao_write([1 2], [0 5], 1:5)", "Wrong data for selected AO channels") 
+assert_checkerror("mdaqAOWrite(1, [0 20], 1)", "Unsupported range")
+assert_checkerror("mdaqAOWrite(1:18, [0 5], 1:18)", "Undefined error") // BUG                     
+assert_checkerror("mdaqAOWrite([1 2], [0 5], 1:5)", "Wrong data for selected AO channels") 
 
 
 select ADC_ID
 case 6 
-assert_checkerror("mdaq_ai_read(1:9, [-10.24 10.24], %F)", "Wrong AI channel selected!")
-assert_checkerror("mdaq_ai_scan_init(1, [-10.24 10.24], %F, 500001, 1)", "AI scan frequency out of range") 
+assert_checkerror("mdaqAIRead(1:9, [-10.24 10.24], %F)", "Wrong AI channel selected!")
+assert_checkerror("mdaqAIScanInit(1, [-10.24 10.24], %F, 500001, 1)", "AI scan frequency out of range") 
 
 case 7
-assert_checkerror("mdaq_ai_read(1:9, [-10.24 10.24], %F)", "Wrong AI channel selected!")
-assert_checkerror("mdaq_ai_scan_init(1, [-10.24 10.24], %F, 1000001, 1)", "AI scan frequency out of range") 
+assert_checkerror("mdaqAIRead(1:9, [-10.24 10.24], %F)", "Wrong AI channel selected!")
+assert_checkerror("mdaqAIScanInit(1, [-10.24 10.24], %F, 1000001, 1)", "AI scan frequency out of range") 
 
 case 8
-assert_checkerror("mdaq_ai_read(1:17, [-10.24 10.24], %F)", "Wrong AI channel selected!")
-assert_checkerror("mdaq_ai_scan_init(1, [-10.24 10.24], %F, 500001, 1)", "AI scan frequency out of range") 
+assert_checkerror("mdaqAIRead(1:17, [-10.24 10.24], %F)", "Wrong AI channel selected!")
+assert_checkerror("mdaqAIScanInit(1, [-10.24 10.24], %F, 500001, 1)", "AI scan frequency out of range") 
 
 case 9
-assert_checkerror("mdaq_ai_read(1:17, [-10.24 10.24], %F)", "Wrong AI channel selected!")
-assert_checkerror("mdaq_ai_scan_init(1, [-10.24 10.24], %F, 1000001, 1)", "AI scan frequency out of range") 
+assert_checkerror("mdaqAIRead(1:17, [-10.24 10.24], %F)", "Wrong AI channel selected!")
+assert_checkerror("mdaqAIScanInit(1, [-10.24 10.24], %F, 1000001, 1)", "AI scan frequency out of range") 
 
 case 10
-assert_checkerror("mdaq_ai_scan_init(1, [-10.24 10.24], %F, 2000001, 1)", "AI scan frequency out of range") 
+assert_checkerror("mdaqAIScanInit(1, [-10.24 10.24], %F, 2000001, 1)", "AI scan frequency out of range") 
 
 end
 

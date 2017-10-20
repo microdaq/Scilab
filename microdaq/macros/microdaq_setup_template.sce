@@ -85,7 +85,7 @@ endfunction
 function [] = connect_callback()
     set(h(21),'Enable','off')
     ip = get(h(20),'String')
-    mdaq_set_ip(ip);
+    mdaqSetIP(ip);
     
     set(h(21),'Enable','off')
     set(h(21),'String','Checking...')
@@ -101,7 +101,7 @@ function [] = connect_callback()
     if firmVer(1) < 2 then
         messagebox(['Firmware version '+rawFrimVer+' is not supported.' 'Please upgrade MicroDAQ firmware.'],'Error','error')
     else
-        result = mdaq_open();
+        result = mdaqOpen();
         if result < 0  then
             messagebox('Unable to connect to MicroDAQ device!','Error','error')
             set(h(21),'Enable','on')
@@ -109,7 +109,7 @@ function [] = connect_callback()
             global %microdaq;
             messagebox([%microdaq.model + ' connected!' 'Firmware version: '+rawFrimVer],'MicroDAQ info','info');
             set(h(21),'Enable','on')
-            mdaq_close(result);
+            mdaqClose(result);
         end
     end
 endfunction
@@ -192,7 +192,7 @@ function [] = setup_callback ()
             end
 
             ip = get(h(20),'String')
-            mdaq_set_ip(ip);
+            mdaqSetIP(ip);
 
             //close window
             messagebox('Completed.','Building sys','info');

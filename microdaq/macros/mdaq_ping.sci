@@ -1,11 +1,11 @@
-function result = mdaq_ping()
+function result = mdaqPing()
     [mdaq_ip_addr, res] = mdaq_get_ip();
     if res < 0 then
         disp("Unable to get MicroDAQ IP address - run microdaq_setup!");
         result = %F;
     else
         mprintf('Connecting to MicroDAQ@%s...',mdaq_ip_addr); 
-        connection_id = mdaq_open();
+        connection_id = mdaqOpen();
         if connection_id < 0 then
             mprintf(' ERROR!\nUnable to connect to MicroDAQ device, check your configuration!\n');
             mprintf('Scilab is configured with following settings:\n');

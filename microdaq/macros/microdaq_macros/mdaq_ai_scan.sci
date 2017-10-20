@@ -1,4 +1,4 @@
-function [data, result] = mdaq_ai_scan(arg1, arg2, arg3)
+function [data, result] = mdaqAIScan(arg1, arg2, arg3)
     link_id = -1; 
     data = [];
     result = [];
@@ -29,8 +29,8 @@ function [data, result] = mdaq_ai_scan(arg1, arg2, arg3)
         mprintf("Description:\n");
         mprintf("\tStarts scanning and reads scan data\n");
         mprintf("Usage:\n");
-        mprintf("\tmdaq_ai_scan(link_id, scan_count, blocking);\n")
-        mprintf("\tlink_id - connection id returned by mdaq_open() (OPTIONAL)\n");
+        mprintf("\tmdaqAIScan(link_id, scan_count, blocking);\n")
+        mprintf("\tlink_id - connection id returned by mdaqOpen() (OPTIONAL)\n");
         mprintf("\tscan_count - number of scans to read\n");
         mprintf("\tblocking - blocking or non-blocking read (%%T/%%F)\n");
         return;

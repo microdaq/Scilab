@@ -1,11 +1,11 @@
-function mdaq_set_ip(mdaq_ip)
+function mdaqSetIP(mdaq_ip)
     
-    ip_config_file_path = mdaq_toolbox_path() + "etc"+filesep()+"mlink"+filesep()+"ip_config.txt";
+    ip_config_file_path = mdaqToolboxPath() + "etc"+filesep()+"mlink"+filesep()+"ip_config.txt";
     if argn(2) > 1 | argn(2) < 1 then
         mprintf("Description:\n");
         mprintf("\tSet IP address\n");
         mprintf("Usage:\n");
-        mprintf("\tmdaq_set_ip(ipAddress);\n")
+        mprintf("\tmdaqSetIP(ipAddress);\n")
         mprintf("\tipAddress - MicroDAQ IP address (string)\n");
         return;
     end

@@ -1,4 +1,4 @@
-function data = mdaq_ai_read(arg1, arg2, arg3, arg4)
+function data = mdaqAIRead(arg1, arg2, arg3, arg4)
     data = [];
     link_id = -1;
 
@@ -26,8 +26,8 @@ function data = mdaq_ai_read(arg1, arg2, arg3, arg4)
             mprintf("Description:\n");
             mprintf("\tReads MicroDAQ analog inputs\n");
             mprintf("Usage:\n");
-            mprintf("\tmdaq_ai_read(link_id, channels, range, mode);\n")
-            mprintf("\tlink_id - connection id returned by mdaq_open() (OPTIONAL)\n");
+            mprintf("\tmdaqAIRead(link_id, channels, range, mode);\n")
+            mprintf("\tlink_id - connection id returned by mdaqOpen() (OPTIONAL)\n");
             mprintf("\tchannels - scalar or vector with channel numbers\n");
             mprintf("\trange - analog input range matrix e.g.\n");
             mprintf("\t        [-10,10] - single range argument applied for all used channels\n");
@@ -36,7 +36,7 @@ function data = mdaq_ai_read(arg1, arg2, arg3, arg4)
             return;
         end
     else
-        error('Unable to detect MicroDAQ confituration - run mdaq_hwinfo and try again!');
+        error('Unable to detect MicroDAQ confituration - run mdaqHWInfo and try again!');
         return;
     end
 
@@ -98,7 +98,7 @@ function data = mdaq_ai_read(arg1, arg2, arg3, arg4)
     end
 
     if argn(2) == 3 then
-        link_id = mdaq_open();
+        link_id = mdaqOpen();
         if link_id < 0 then
             disp("ERROR: Unable to connect to MicroDAQ device!");
             return;
@@ -117,7 +117,7 @@ function data = mdaq_ai_read(arg1, arg2, arg3, arg4)
                         [1, 1], 7, "i");
 
     if argn(2) == 3 then
-        mdaq_close(link_id);
+        mdaqClose(link_id);
     end
     
     if result < 0 then

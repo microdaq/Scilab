@@ -1,6 +1,6 @@
-function [result, data] = mdaq_dsp_signal_read(arg1, arg2)
+function [result, data] = mdaqDSPSignalRead(arg1, arg2)
     // Check version compatibility 
-    [is_supp vers] = mdaq_is_working('mdaq_dsp_signal_read');
+    [is_supp vers] = mdaq_is_working('mdaqDSPSignalRead');
     if is_supp == %F then
         error('ERROR: ' + vers)
         return;
@@ -26,8 +26,8 @@ function [result, data] = mdaq_dsp_signal_read(arg1, arg2)
         mprintf("Description:\n");
         mprintf("\tReads DSP signal\n");
         mprintf("Usage:\n");
-        mprintf("\tmdaq_dsp_signal_read(link_id, sample_count);\n")
-        mprintf("\tlink_id - connection id returned by mdaq_open() (OPTIONAL)\n");
+        mprintf("\tmdaqDSPSignalRead(link_id, sample_count);\n")
+        mprintf("\tlink_id - connection id returned by mdaqOpen() (OPTIONAL)\n");
         mprintf("\tsample_count - number of samples to be read\n");
         return;
     end

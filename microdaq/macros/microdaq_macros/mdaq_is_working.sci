@@ -4,17 +4,17 @@ function [is_working, versions] = mdaq_is_working(func_name)
     uglyfuncs = list();
     
     // CUSTOM BLOCKS -
-    uglyfuncs($+1) = list('mdaq_block_build',           '5.5.2');     
-    uglyfuncs($+1) = list('mdaq_block_add',             '5.5.2');
-    uglyfuncs($+1) = list('mdaq_block',                 '5.5.2');
+    uglyfuncs($+1) = list('mdaqBlockBuild',           '5.5.2');     
+    uglyfuncs($+1) = list('mdaqBlockAdd',             '5.5.2');
+    uglyfuncs($+1) = list('mdaqBlock',                 '5.5.2');
     
     // DSP MANAGMENT -
-    uglyfuncs($+1) = list('mdaq_dsp_build',             '5.5.2');
+    uglyfuncs($+1) = list('mdaqDSPBuild',             '5.5.2');
     uglyfuncs($+1) = list('mdaq_dsp_signal',            '5.5.2');
-    uglyfuncs($+1) = list('mdaq_dsp_signal_read',       '5.5.2');
-    uglyfuncs($+1) = list('mdaq_dsp_start',             '5.5.2');
-    uglyfuncs($+1) = list('mdaq_dsp_stop',              '5.5.2');
-    uglyfuncs($+1) = list('mdaq_dsp_terminate',         '5.5.2');
+    uglyfuncs($+1) = list('mdaqDSPSignalRead',       '5.5.2');
+    uglyfuncs($+1) = list('mdaqDSPStart',             '5.5.2');
+    uglyfuncs($+1) = list('mdaqDSPStop',              '5.5.2');
+    uglyfuncs($+1) = list('mdaqDSPTerminate',         '5.5.2');
     
        
     versions = 'This function is not supported in Scilab '+string(sci_ver(1))+'.'+string(sci_ver(2))+'.'+string(sci_ver(3))+..

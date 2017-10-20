@@ -1,4 +1,4 @@
-function mdaq_dio_write(arg1, arg2, arg3)
+function mdaqDIOWrite(arg1, arg2, arg3)
 
     if argn(2) == 2 then
         dio = arg1;
@@ -20,8 +20,8 @@ function mdaq_dio_write(arg1, arg2, arg3)
         mprintf("Description:\n");
         mprintf("\tWrites DIO state\n");
         mprintf("Usage:\n");
-        mprintf("\tmdaq_dio_write(link_id, dio, state);\n")
-        mprintf("\tlink_id - connection id returned by mdaq_open() (OPTIONAL)\n");
+        mprintf("\tmdaqDIOWrite(link_id, dio, state);\n")
+        mprintf("\tlink_id - connection id returned by mdaqOpen() (OPTIONAL)\n");
         mprintf("\tdio - DIO number\n");
         mprintf("\tstate - DIO output state\n");
         return;
@@ -46,7 +46,7 @@ function mdaq_dio_write(arg1, arg2, arg3)
     end
 
     if argn(2) == 2 then
-        link_id = mdaq_open();
+        link_id = mdaqOpen();
         if link_id < 0 then
             disp("ERROR: Unable to connect to MicroDAQ device!");
             return;
@@ -61,7 +61,7 @@ function mdaq_dio_write(arg1, arg2, arg3)
                     [1, 1], 4, "i");
 
     if argn(2) == 2 then
-        mdaq_close(link_id);
+        mdaqClose(link_id);
     end
     
     if result < 0  then

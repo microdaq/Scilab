@@ -1,6 +1,6 @@
-﻿function mdaq_hwinfo()
+﻿function mdaqHWInfo()
     hwid = [];
-    connection_id = mdaq_open();
+    connection_id = mdaqOpen();
     if connection_id > -1 then
         result = -1;
         [hwid, result] = call("sci_mlink_hwid",..
@@ -9,7 +9,7 @@
             [5, 1], 2, "i",..
             [1, 1], 3, "i");
 
-        mdaq_close(connection_id);
+        mdaqClose(connection_id);
 
         if ((hwid(1) == 1000) |  (hwid(1) == 2000) | (hwid(1) == 1100))..
             & find(get_adc_list() == hwid(2)).. 
@@ -25,7 +25,7 @@
                 
                 adc_info = get_adc_info(hwid);
                 dac_info = get_dac_info(hwid);
-                save(mdaq_toolbox_path() + "etc"+filesep()+"mlink"+filesep()+"hwid", 'mdaq_hwid','adc_info','dac_info');
+                save(mdaqToolboxPath() + "etc"+filesep()+"mlink"+filesep()+"hwid", 'mdaq_hwid','adc_info','dac_info');
                 
                 %microdaq.private.adc_info = adc_info;
                 %microdaq.private.dac_info = dac_info;

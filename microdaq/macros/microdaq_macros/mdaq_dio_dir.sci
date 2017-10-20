@@ -27,7 +27,7 @@ function mdaq_dio_dir(arg1, arg2, arg3)
         mprintf("\tSets MicroDAQ DIO bank direction\n");
         mprintf("Usage:\n");
         mprintf("\tmdaq_dio_dir(link_id, bank, direction);\n")
-        mprintf("\tlink_id - connection id returned by mdaq_open() (OPTIONAL)\n");
+        mprintf("\tlink_id - connection id returned by mdaqOpen() (OPTIONAL)\n");
         mprintf("\tbank - bank number (1-4)\n");
         mprintf("\tdirection - bank direction (0 - input, 1 - output)\n");
         return;
@@ -43,7 +43,7 @@ function mdaq_dio_dir(arg1, arg2, arg3)
     end
 
     if argn(2) == 2 then
-        link_id = mdaq_open();
+        link_id = mdaqOpen();
         if link_id < 0 then
             disp("ERROR: Unable to connect to MicroDAQ device!");
             return; 
@@ -59,7 +59,7 @@ function mdaq_dio_dir(arg1, arg2, arg3)
             [1, 1], 5, "i");
 
     if argn(2) == 2 then
-        mdaq_close(link_id);
+        mdaqClose(link_id);
     end
     
     if result < 0  then

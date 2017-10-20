@@ -1,8 +1,8 @@
 function continueSimulation=pre_xcos_simulate(scs_m, needcompile)
     global %microdaq;
-    %microdaq.private.has_mdaq_block = %F;
+    %microdaq.private.has_mdaqBlock = %F;
     continueSimulation = %T;
-    look_for_mdaq_blocks = %T; 
+    look_for_mdaqBlocks = %T; 
     runFromMainScheme = %F;
 
     for i = 1:size(scs_m.objs)
@@ -20,12 +20,12 @@ function continueSimulation=pre_xcos_simulate(scs_m, needcompile)
             tmp = scs_m;
             
             perform_scan(tmp);
-            if %microdaq.private.has_mdaq_block then
+            if %microdaq.private.has_mdaqBlock then
                 scs_m.props.tol(5) = 1;
             end
 
             if %microdaq.dsp_loaded == %T then
-                look_for_mdaq_blocks = %F; 
+                look_for_mdaqBlocks = %F; 
                 // if dsp is loaded set real-time scaling to 1
                 scs_m.props.tol(5) = 1;
 
@@ -39,9 +39,9 @@ function continueSimulation=pre_xcos_simulate(scs_m, needcompile)
 
                 result = client_connect(mdaq_ip_addr, 4344);
                 if result < 0 then
-                    con = mdaq_open(); 
+                    con = mdaqOpen(); 
                     result = mlink_set_obj(con, "ext_mode", 1);
-                    mdaq_close(con);
+                    mdaqClose(con);
                     if result == -25 then
                         message("ERROR: Unable to connect - your are running model in Standalone mode!");
                     else
@@ -55,7 +55,7 @@ function continueSimulation=pre_xcos_simulate(scs_m, needcompile)
                    
                 perform_scan(tmp);
                 if %microdaq.private.has_mdaq_param_sim then
-                    result = mdaq_open();
+                    result = mdaqOpen();
                     if result > -1 then
                         %microdaq.private.connection_id = result; 
                     else
@@ -74,13 +74,13 @@ function continueSimulation=pre_xcos_simulate(scs_m, needcompile)
         return;
     end
 
-    if look_for_mdaq_blocks then
+    if look_for_mdaqBlocks then
         tmp = scs_m;
         perform_scan(tmp);
-        if %microdaq.private.has_mdaq_block then
+        if %microdaq.private.has_mdaqBlock then
             disp("### Running model in simulation mode... ")
             close_last_connection();       
-            result = mdaq_open();
+            result = mdaqOpen();
             if result > -1 then
                 %microdaq.private.connection_id = result; 
             else

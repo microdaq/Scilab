@@ -1,4 +1,4 @@
-function  mdaq_ao_scan_init(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
+function  mdaqAOScanInit(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
     global %microdaq;
     
     link_id = -1;
@@ -37,7 +37,7 @@ function  mdaq_ao_scan_init(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
         mprintf("Description:\n");
         mprintf("\Initiates AO scanning session\n");
         mprintf("Usage:\n");
-        mprintf("\tmdaq_ao_scan_init(linkId, channels, data, range, isContinuous, scanFrequency, duration);\n")
+        mprintf("\tmdaqAOScanInit(linkId, channels, data, range, isContinuous, scanFrequency, duration);\n")
         mprintf("\tlinkId - connection id (optional)\n");
         mprintf("\tchannels - analog output channels to write\n");
         mprintf("\tdata - output data\n");
@@ -52,7 +52,7 @@ function  mdaq_ao_scan_init(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
             return;
         end
     else
-        error('Unable to detect MicroDAQ confituration - run mdaq_hwinfo and try again!');
+        error('Unable to detect MicroDAQ confituration - run mdaqHWInfo and try again!');
         return;
     end
     
@@ -110,7 +110,7 @@ function  mdaq_ao_scan_init(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
     %microdaq.private.ao_scan_ch_count = ch_count;
 
     if argn(2) == 6 then
-        link_id = mdaq_open();
+        link_id = mdaqOpen();
         if link_id < 0 then
             disp("ERROR: Unable to connect to MicroDAQ device!");
             return;
@@ -133,7 +133,7 @@ function  mdaq_ao_scan_init(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
                 [1, 1], 10, "i");
 
     if argn(2) == 6 then
-        mdaq_close(link_id);
+        mdaqClose(link_id);
     end
     
     if result < 0 then

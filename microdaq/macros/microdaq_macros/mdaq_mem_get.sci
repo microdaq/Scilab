@@ -1,4 +1,4 @@
-function [data] = mdaq_mem_get(arg1, arg2, arg3, arg4)
+function [data] = mdaqMemRead(arg1, arg2, arg3, arg4)
     data = [];
     result = 0;
 
@@ -24,8 +24,8 @@ function [data] = mdaq_mem_get(arg1, arg2, arg3, arg4)
         mprintf("Description:\n");
         mprintf("\tReads MicroDAQ volatile memory\n");
         mprintf("Usage:\n");
-        mprintf("\tmdaq_mem_get(link_id, start, size, vec_size);\n")
-        mprintf("\tlink_id - connection id returned by mdaq_open() (OPTIONAL)\n");
+        mprintf("\tmdaqMemRead(link_id, start, size, vec_size);\n")
+        mprintf("\tlink_id - connection id returned by mdaqOpen() (OPTIONAL)\n");
         mprintf("\tstart - memory start index\n");
         mprintf("\tsize - total data size to be read\n");
         mprintf("\tvec_size - MEM write block vector size\n");
@@ -57,7 +57,7 @@ function [data] = mdaq_mem_get(arg1, arg2, arg3, arg4)
     col_size = data_size / vector_size;
 
     if argn(2) == 3 then
-        link_id = mdaq_open();
+        link_id = mdaqOpen();
         if link_id < 0 then
             disp("ERROR: Unable to connect to MicroDAQ device!");
             return;
@@ -73,7 +73,7 @@ function [data] = mdaq_mem_get(arg1, arg2, arg3, arg4)
                             [1,1], 5, 'i');
 
     if argn(2) == 3 then
-        mdaq_close(link_id);
+        mdaqClose(link_id);
     end
 
     if result < 0  then

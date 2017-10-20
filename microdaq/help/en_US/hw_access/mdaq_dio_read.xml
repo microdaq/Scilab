@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaq_dio_read">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaqDIORead">
 	<refnamediv>
-		<refname>mdaq_dio_read</refname>
+		<refname>mdaqDIORead</refname>
 		<refpurpose>Reads DIO channel</refpurpose>
 	</refnamediv>
 
 	<refsynopsisdiv>
 		<title>Calling Sequence</title>
 		<synopsis>
-			state = mdaq_dio_read(dio)
-			state = mdaq_dio_read(linkID, dio)
+			state = mdaqDIORead(dio)
+			state = mdaqDIORead(linkID, dio)
 		</synopsis>
 	</refsynopsisdiv>
 
-	<refsection id="Description_mdaq_dio_read">
+	<refsection id="Description_mdaqDIORead">
 		<title>Description</title>
 		<para>This function reads DIO channel input state. </para>
 		<para>
@@ -22,7 +22,7 @@
 		</para>
 	</refsection>  
 
-	<refsection id="Parameters_mdaq_dio_read">
+	<refsection id="Parameters_mdaqDIORead">
 		<title>Parameters</title>
 		<itemizedlist>
 			<listitem>
@@ -53,18 +53,18 @@
 				// disable Encoder 1 function
 				mdaq_dio_func(1, %f);	
 				// read DIO1 state				
-				mprintf('DIO 1 state: %d\n', mdaq_dio_read(1));
+				mprintf('DIO 1 state: %d\n', mdaqDIORead(1));
 				// enable Encoder 1 function
 				mdaq_dio_func(1, %t);
 			 ]]>
 		</programlisting>
 	</refsection>
 
-	<refsection id="SeeAlso_mdaq_dio_read">
+	<refsection id="SeeAlso_mdaqDIORead">
 		<title>See Also</title>
 		<simplelist type="inline">
 			<member>
-				<link linkend="mdaq_dio_write">mdaq_dio_write</link>
+				<link linkend="mdaqDIOWrite">mdaqDIOWrite</link>
 			</member>
 			<member>
 				<link linkend="mdaq_dio_func">mdaq_dio_func</link>

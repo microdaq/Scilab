@@ -1,4 +1,4 @@
-function mdaq_mem_set(arg1, arg2, arg3)
+function mdaqMemWrite(arg1, arg2, arg3)
 
     if argn(2) == 2 then
         start_idx = arg1; 
@@ -20,8 +20,8 @@ function mdaq_mem_set(arg1, arg2, arg3)
         mprintf("Description:\n");
         mprintf("\tWrites MicroDAQ memory\n");
         mprintf("Usage:\n");
-        mprintf("\tmdaq_mem_set(link_id, start, data);\n")
-        mprintf("\tlink_id - connection id returned by mdaq_open() (OPTIONAL)\n");
+        mprintf("\tmdaqMemWrite(link_id, start, data);\n")
+        mprintf("\tlink_id - connection id returned by mdaqOpen() (OPTIONAL)\n");
         mprintf("\tstart - memory start index\n");
         mprintf("\tdata - data to be written\n");
         return;
@@ -33,7 +33,7 @@ function mdaq_mem_set(arg1, arg2, arg3)
     end
 
     if argn(2) == 2 then
-        link_id = mdaq_open();
+        link_id = mdaqOpen();
         if link_id < 0 then
             disp("ERROR: Unable to connect to MicroDAQ device!");
             return; 
@@ -50,7 +50,7 @@ function mdaq_mem_set(arg1, arg2, arg3)
             [1,1], 5, 'i');
             
     if argn(2) == 2 then
-        mdaq_close(link_id);
+        mdaqClose(link_id);
     end
     
     if result < 0  then

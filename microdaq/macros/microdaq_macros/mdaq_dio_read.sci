@@ -1,4 +1,4 @@
-function state = mdaq_dio_read(arg1, arg2)
+function state = mdaqDIORead(arg1, arg2)
     state = -1;
     if argn(2) == 1 then
         dio = arg1; 
@@ -17,8 +17,8 @@ function state = mdaq_dio_read(arg1, arg2)
         mprintf("Description:\n");
         mprintf("\tReads DIO state\n");
         mprintf("Usage:\n");
-        mprintf("\tmdaq_dio_read(link_id, dio);\n")
-        mprintf("\tlink_id - connection id returned by mdaq_open() (OPTIONAL)\n");
+        mprintf("\tmdaqDIORead(link_id, dio);\n")
+        mprintf("\tlink_id - connection id returned by mdaqOpen() (OPTIONAL)\n");
         mprintf("\tdio - DIO number\n");
         return;
     end
@@ -30,7 +30,7 @@ function state = mdaq_dio_read(arg1, arg2)
     end
 
     if argn(2) == 1 then
-        link_id = mdaq_open();
+        link_id = mdaqOpen();
         if link_id < 0 then
             disp("ERROR: Unable to connect to MicroDAQ device!");
             return; 
@@ -52,7 +52,7 @@ function state = mdaq_dio_read(arg1, arg2)
     end
     
     if argn(2) == 1 then
-        mdaq_close(link_id);
+        mdaqClose(link_id);
     end
     
     if result < 0  then

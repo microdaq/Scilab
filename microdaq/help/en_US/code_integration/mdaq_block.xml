@@ -6,14 +6,14 @@ xmlns:ns5="http://www.w3.org/1999/xhtml"
 xmlns:mml="http://www.w3.org/1998/Math/MathML" 
 xmlns:db="http://docbook.org/ns/docbook" 
 version="5.0-subset Scilab" 
-xml:id="mdaq_block">
+xml:id="mdaqBlock">
   <refnamediv>
-    <refname>mdaq_block</refname>
+    <refname>mdaqBlock</refname>
     <refpurpose>Initializes MicroDAQ block structure with default values</refpurpose>
   </refnamediv>
   <refsynopsisdiv>
 	<title>Description</title>
-	<para>This function initializes MicroDAQ block structure with default values. Returned structure describes block parameters and number of input/output ports. MicroDAQ block structure is used as a parameter for mdaq_block_add() function to generate custom MicroDAQ block.	</para>
+	<para>This function initializes MicroDAQ block structure with default values. Returned structure describes block parameters and number of input/output ports. MicroDAQ block structure is used as a parameter for mdaqBlockAdd() function to generate custom MicroDAQ block.	</para>
     <para> 	MicroDAQ block structure: 	</para>
 		<simplelist type="inline">
             <member><para>block.name - contains MicroDAQ block name. Block will be generated with prefix 'mdaq_'. </para></member>
@@ -26,7 +26,7 @@ xml:id="mdaq_block">
         </simplelist>
 	<title>Calling Sequence</title>
     <synopsis>
-      block = mdaq_block();
+      block = mdaqBlock();
     </synopsis>
   </refsynopsisdiv>
   <refsection id="Parameters___FUNC_NAME__">
@@ -42,8 +42,8 @@ xml:id="mdaq_block">
         <title>Examples</title>
         <programlisting role="example"><![CDATA[
 
-// call mdaq_block to initialize block structure describing new MicroDAQ block		
-block = mdaq_block();
+// call mdaqBlock to initialize block structure describing new MicroDAQ block		
+block = mdaqBlock();
 block.name = "test"; // set block name 
 block.param_name = [ "param1" "param2" "param3" ]; // set block parameters
 block.param_size = [ 1 2 4 ]; // set block parameters sizes
@@ -59,15 +59,15 @@ block.in = [ 1 2 4 1];
 block.in = [ 1 1];
 
 // create block - generate block code and corresponding C source file
-mdaq_block_add(block);
+mdaqBlockAdd(block);
  ]]></programlisting>
     </refsection>
 	
   <refsection id="SeeAlso___FUNC_NAME__">
     <title>See Also</title>
     <simplelist type="inline">
-        <member><link linkend="mdaq_block">mdaq_block</link> : Initialize MicroDAQ block structure</member>
-	    <member><link linkend="mdaq_block_build">mdaq_block_build</link> : Build/Rebuild MicroDAQ custom block C/C++ source code</member>
+        <member><link linkend="mdaqBlock">mdaqBlock</link> : Initialize MicroDAQ block structure</member>
+	    <member><link linkend="mdaqBlockBuild">mdaqBlockBuild</link> : Build/Rebuild MicroDAQ custom block C/C++ source code</member>
     </simplelist>
   </refsection>
 </refentry>

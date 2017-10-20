@@ -47,8 +47,8 @@ xml:id="mdaq_led">
         <title>See Also</title>
         <simplelist type="inline">
 			<member> <link linkend="mdaq_dio_conig">mdaq_dio_config</link> : Configures MicroDAQ DIO functions and direction</member>
-            <member> <link linkend="mdaq_dio_write">mdaq_dio_write</link> : Sets MicroDAQ DIO output state from Scilab script</member>
-			<member> <link linkend="mdaq_dio_read">mdaq_dio_read</link> : Reads MicroDAQ DIO input state from Scilab script</member>
+            <member> <link linkend="mdaqDIOWrite">mdaqDIOWrite</link> : Sets MicroDAQ DIO output state from Scilab script</member>
+			<member> <link linkend="mdaqDIORead">mdaqDIORead</link> : Reads MicroDAQ DIO input state from Scilab script</member>
 			<member> <link linkend="mdaq_dio_func">mdaq_dio_func</link> : Sets alternative DIO function from Scilab script</member>
 			<member> <link linkend="mdaq_dio_dir">mdaq_dio_dir</link> : Sets MicroDAQ DIO bank direction from Scilab script</member>
             <member><link type="scilab" linkend="scilab.help/sum">Link to the Scilab help page</link></member>

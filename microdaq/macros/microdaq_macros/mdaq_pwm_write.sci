@@ -1,4 +1,4 @@
-function mdaq_pwm_write(arg1, arg2, arg3, arg4)
+function mdaqPWMWrite(arg1, arg2, arg3, arg4)
     link_id = -1; 
 
     if argn(2) == 3 then
@@ -23,8 +23,8 @@ function mdaq_pwm_write(arg1, arg2, arg3, arg4)
         mprintf("Description:\n");
         mprintf("\tSets MicroDAQ PWM outputs\n");
         mprintf("Usage:\n");
-        mprintf("\tmdaq_pwm_write(link_id, module, duty_a, duty_b);\n")
-        mprintf("\tlink_id - connection id returned by mdaq_open() (OPTIONAL)\n");
+        mprintf("\tmdaqPWMWrite(link_id, module, duty_a, duty_b);\n")
+        mprintf("\tlink_id - connection id returned by mdaqOpen() (OPTIONAL)\n");
         mprintf("\tmodule - PWM module (1, 2 or 3)\n");
         mprintf("\tduty_a - PWM channel A duty (0-100)\n");
         mprintf("\tduty_b - PWM channel B duty (0-100)\n");
@@ -52,7 +52,7 @@ function mdaq_pwm_write(arg1, arg2, arg3, arg4)
     end
     
     if argn(2) == 3 then
-        link_id = mdaq_open();
+        link_id = mdaqOpen();
         if link_id < 0 then
             disp("ERROR: Unable to connect to MicroDAQ device!");
             return; 
@@ -69,7 +69,7 @@ function mdaq_pwm_write(arg1, arg2, arg3, arg4)
                 [1, 1], 5, "i");
 
     if argn(2) == 3 then
-        mdaq_close(link_id);
+        mdaqClose(link_id);
     end
     
     if result < 0  then

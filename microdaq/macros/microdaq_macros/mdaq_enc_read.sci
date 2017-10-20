@@ -1,4 +1,4 @@
-function [position, direction] = mdaq_enc_read(arg1, arg2)
+function [position, direction] = mdaqEncoderRead(arg1, arg2)
     position = [];
     direction = [];
     
@@ -20,14 +20,14 @@ function [position, direction] = mdaq_enc_read(arg1, arg2)
         mprintf("Description:\n");
         mprintf("\tReads encoder position and motion direction\n");
         mprintf("Usage:\n");
-        mprintf("\tmdaq_enc_read(link_id, encoder);\n")
-        mprintf("\tlink_id - connection id returned by mdaq_open() (OPTIONAL)\n");
+        mprintf("\tmdaqEncoderRead(link_id, encoder);\n")
+        mprintf("\tlink_id - connection id returned by mdaqOpen() (OPTIONAL)\n");
         mprintf("\tencoder - encoder module (1 or 2)\n");
         return;
     end
     
     if argn(2) == 1 then
-        link_id = mdaq_open();
+        link_id = mdaqOpen();
         if link_id < 0 then
             disp("ERROR: Unable to connect to MicroDAQ device!");
             return; 
@@ -44,7 +44,7 @@ function [position, direction] = mdaq_enc_read(arg1, arg2)
                 [1, 1], 5, "i");
 
     if argn(2) == 1 then
-        mdaq_close(link_id);
+        mdaqClose(link_id);
     end
     
     if result < 0  then

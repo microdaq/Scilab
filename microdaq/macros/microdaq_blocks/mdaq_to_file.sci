@@ -7,8 +7,8 @@ function [x,y,typ] = mdaq_to_file(job,arg1,arg2)
     "''dsp/data'' directory. Files can be downloaded with web browser or";
     "mass storage interface. ";
     "";
-    "In order to import file data to Scilab mdaq_get_file_data script can be used.";
-    "See mdaq_get_file_data help for more.";
+    "In order to import file data to Scilab mdaqFileData script can be used.";
+    "See mdaqFileData help for more.";
     "";
     "Data can be written to file in text of binary format. Depending ";
     "on selected option data can appended to previous content of the file";

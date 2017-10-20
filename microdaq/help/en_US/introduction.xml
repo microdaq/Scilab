@@ -23,7 +23,7 @@ Real-time operating system TI-RTOS is used to ensure hard real-time constrains, 
     <title>MicroDAQ blocks</title>
 	<para>
 	MicroDAQ toolbox can generate application from Xcos model as a standalone and Ext mode. These modes will be used in different ways and on a different model development stages. 
-	When Standalone mode is selected generated application will contain single TI-RTOS task (clock function) which is executed on the DSP with selected sample rate. Generated model is executed periodicly and there is no communication with Xcos like in Ext mode. MicroDAQ palette provides blocks which can be used to access Standalone application parameters. In order to change Standalone parameters during its execution 'MEM read' block and mdaq_mem_set() function can be used. In case when user wants to download data from Standalone application 'MEM Write' and mdaq_mem_get() function can be a solution. The Standalone application generated from XCos diagram can be uploaded on MicroDAQ and will create independent control-measurement system. 
+	When Standalone mode is selected generated application will contain single TI-RTOS task (clock function) which is executed on the DSP with selected sample rate. Generated model is executed periodicly and there is no communication with Xcos like in Ext mode. MicroDAQ palette provides blocks which can be used to access Standalone application parameters. In order to change Standalone parameters during its execution 'MEM read' block and mdaqMemWrite() function can be used. In case when user wants to download data from Standalone application 'MEM Write' and mdaqMemRead() function can be a solution. The Standalone application generated from XCos diagram can be uploaded on MicroDAQ and will create independent control-measurement system. 
 	</para>
   </refsection>
   
@@ -47,20 +47,20 @@ When Standalone mode is selected (with SETUP block) generated application contai
 	<para>
 	Not every application requires real-time processing, some applications can be created with Scilab script and perform data acquisition or corntrol tasks. For users which preferes scripting MicroDAQ tooblox for Scilab provides functions which allow easy access to MicroDAQ hardware and resources. User can use functions to access analog input and outputs, read/write digital IO lines, configure PWM of read Quadrature encder from Scilab script. Toolbox also features functions which allows DSP execution managment, generated DSP application can be started and managed from Scilab script. The DSP application data can be read during its execution. For more information about DSP managment functions and real-time processing capabilities see Real-time processing with Scilab script article. </para>
 <programlisting role="example"><![CDATA[
-// mdaq_led_write, mdaq_key_read example
+// mdaqLEDWrite, mdaqKeyRead example
 ledState = %T;
-link_id = mdaq_open(); 
+link_id = mdaqOpen(); 
 
-while mdaq_key_read(link_id, 1) == %F
+while mdaqKeyRead(link_id, 1) == %F
 	// keep led blinking until F1 isn't pressed
-	mdaq_led_write(link_id, 1, ~ledState);
+	mdaqLEDWrite(link_id, 1, ~ledState);
     
 	sleep(100); 
     ledState = ~ledState;
 end
 
-mdaq_led_write(link_id, 1, 0)
-mdaq_close(link_id)
+mdaqLEDWrite(link_id, 1, 0)
+mdaqClose(link_id)
  ]]></programlisting>
 
   </refsection>

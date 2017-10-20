@@ -1,6 +1,6 @@
 function [x,y,typ] = mdaq_mem_write(job,arg1,arg2)
     mem_write_desc = ["This block writes data to MicroDAQ memory.";
-    "Block with mdaq_mem_get function can be used ";
+    "Block with mdaqMemRead function can be used ";
     "to get data from Standalone and Ext model.";
     "";
     "Start index:";

@@ -1,4 +1,4 @@
-function mdaq_ao_write(arg1, arg2, arg3, arg4)
+function mdaqAOWrite(arg1, arg2, arg3, arg4)
     link_id = -1;
 
     if argn(2) == 3 then
@@ -26,8 +26,8 @@ function mdaq_ao_write(arg1, arg2, arg3, arg4)
             mprintf("Description:\n");
             mprintf("\tWrites data to MicroDAQ analog outputs\n");
             mprintf("Usage:\n");
-            mprintf("\tmdaq_ao_write(link_id, channels, range, data);\n")
-            mprintf("\tlink_id - connection id returned by mdaq_open() (OPTIONAL)\n");
+            mprintf("\tmdaqAOWrite(link_id, channels, range, data);\n")
+            mprintf("\tlink_id - connection id returned by mdaqOpen() (OPTIONAL)\n");
             mprintf("\tchannels - analog output channels \n");
             mprintf("\trange - analog output range matrix e.g.\n");
             mprintf("\t        [-10,10] - single range argument applied for all used channels\n");
@@ -36,7 +36,7 @@ function mdaq_ao_write(arg1, arg2, arg3, arg4)
             return;
         end
     else
-        error('Unable to detect MicroDAQ configuration - run mdaq_hwinfo and try again!');
+        error('Unable to detect MicroDAQ configuration - run mdaqHWInfo and try again!');
         return;
     end
 
@@ -63,7 +63,7 @@ function mdaq_ao_write(arg1, arg2, arg3, arg4)
     ao_range = matrix(ao_range', 1, ch_count*2);
     
     if argn(2) == 3 then
-        link_id = mdaq_open();
+        link_id = mdaqOpen();
         if link_id < 0 then
             error("Unable to connect to MicroDAQ device!");
             return;
@@ -81,7 +81,7 @@ function mdaq_ao_write(arg1, arg2, arg3, arg4)
                     [1, 1], 6, "i");
 
     if argn(2) == 3 then
-        mdaq_close(link_id);
+        mdaqClose(link_id);
     end
     
     if result < 0  then

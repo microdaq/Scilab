@@ -1,4 +1,4 @@
-function mdaq_log(filepath)
+function mdaqLog(filepath)
     mdaq_ip = mdaq_get_ip();
     if mdaq_system_ping() then
         try

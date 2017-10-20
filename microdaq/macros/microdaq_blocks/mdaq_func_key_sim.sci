@@ -6,7 +6,7 @@ function block=mdaq_func_key_sim(block,flag)
         case 0 // Derivative State Update
         case 1 // Output Update
             if %microdaq.private.connection_id > -1 then
-                key_state = mdaq_key_read(%microdaq.private.connection_id,..
+                key_state = mdaqKeyRead(%microdaq.private.connection_id,..
                                                 block.ipar(1));
                 if key_state then
                     block.outptr(1) = 1;

@@ -1127,7 +1127,7 @@ function  [ok,XX,alreadyran,flgcdgen,szclkINTemp,freof] = do_compile_superblock_
     if load_dsp_app == %t then
         disp('### Connecting to MicroDAQ...');
         close_last_connection();
-        connection_id = mdaq_open();
+        connection_id = mdaqOpen();
         if connection_id < 0 then
             message("ERROR: Unable to connect to MicroDAQ device!");
             return;
@@ -1138,7 +1138,7 @@ function  [ok,XX,alreadyran,flgcdgen,szclkINTemp,freof] = do_compile_superblock_
             res = mlink_dsp_load(connection_id, rpat + filesep() + dsp_binary, '');
             if res < 0 then
                 message(mdaq_error2(res));                
-                mdaq_close(connection_id);
+                mdaqClose(connection_id);
                 return
             end
         end
@@ -1148,7 +1148,7 @@ function  [ok,XX,alreadyran,flgcdgen,szclkINTemp,freof] = do_compile_superblock_
         res = mlink_dsp_start(connection_id,-1);
         if res < 0 then
             message("Unable to start DSP application!");
-            mdaq_close(connection_id);
+            mdaqClose(connection_id);
             return;
         end
         
@@ -1159,7 +1159,7 @@ function  [ok,XX,alreadyran,flgcdgen,szclkINTemp,freof] = do_compile_superblock_
         %microdaq.dsp_loaded = %T;
 
         beep();
-        mdaq_close(connection_id);
+        mdaqClose(connection_id);
 
     end
 

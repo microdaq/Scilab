@@ -20,14 +20,14 @@ function test()
         inc = inc + 0.1;
     end
     // initialize analog input/output scanning sessions
-    mdaq_ao_scan_init(channels, AOdata, [-10 10], %T, scanFrequency, duration);
-    mdaq_ai_scan_init(channels, [-10.24 10.24], %F, scanFrequency, duration);
+    mdaqAOScanInit(channels, AOdata, [-10 10], %T, scanFrequency, duration);
+    mdaqAIScanInit(channels, [-10.24 10.24], %F, scanFrequency, duration);
     
     // start AI scanning without waiting for data
-    mdaq_ai_scan(0, %T);
+    mdaqAIScan(0, %T);
     
     // start signal generation
-    mdaq_ao_scan();
+    mdaqAOScan();
     n = (scanFrequency  * duration) / scanDataSize;
     for i=1:n-1
         expValue = expValue + 0.8;
@@ -42,13 +42,13 @@ function test()
         end
         
         // queue new data 
-        mdaq_ao_scan_data(channels, AOdata, %T);
+        mdaqAOScanData(channels, AOdata, %T);
         
         // start and acquire data from analog inputs
-        aiData = [aiData; mdaq_ai_scan(scanDataSize, %T)];
+        aiData = [aiData; mdaqAIScan(scanDataSize, %T)];
     end
     // acquire rest of samples
-    aiData = [aiData; mdaq_ai_scan(scanDataSize, %T)];
+    aiData = [aiData; mdaqAIScan(scanDataSize, %T)];
     plot(aiData)
 endfunction
 

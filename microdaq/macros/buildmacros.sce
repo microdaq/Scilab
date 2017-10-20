@@ -12,7 +12,7 @@ function buildmacros()
         "mlink_link_id", -1000,..
         "userhostlib_link_id", -1000,..
         "connection_id", -1,..
-        "has_mdaq_block", %F,..
+        "has_mdaqBlock", %F,..
         "has_mdaq_param_sim", %F,..
         "mem_write_idx", 0,..
         "mem_read_idx", 0,..

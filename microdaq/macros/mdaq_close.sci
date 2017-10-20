@@ -1,4 +1,4 @@
-function mdaq_close(link_id)
+function mdaqClose(link_id)
     if argn(2) == 1 then
         if link_id < 0 then
             error("ERROR: Invalid connection id!");

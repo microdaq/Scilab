@@ -1,6 +1,6 @@
-function result = mdaq_dsp_start( arg1, arg2, arg3 )
+function result = mdaqDSPStart( arg1, arg2, arg3 )
     // Check version compatibility 
-    [is_supp vers] = mdaq_is_working('mdaq_dsp_start');
+    [is_supp vers] = mdaq_is_working('mdaqDSPStart');
     if is_supp == %F then
         error('ERROR: ' + vers)
         return;
@@ -28,15 +28,15 @@ function result = mdaq_dsp_start( arg1, arg2, arg3 )
         mprintf("Description:\n");
         mprintf("\tStarts DSP execution\n");
         mprintf("Usage:\n");
-        mprintf("\tmdaq_dsp_start(linkId, dspFirmware, stepTime);\n")
-        mprintf("\tlinkId - connection id returned by mdaq_open() (OPTIONAL)\n");
+        mprintf("\tmdaqDSPStart(linkId, dspFirmware, stepTime);\n")
+        mprintf("\tlinkId - connection id returned by mdaqOpen() (OPTIONAL)\n");
         mprintf("\tdspFirmware - XCos generated DSP application\n");
         mprintf("\stepTime - custom model mode step or -1 to keep Xcos settings\n");
         return;
     end
 
     if argn(2) == 2 then
-        link_id = mdaq_open();
+        link_id = mdaqOpen();
         if link_id < 0 then
             disp("ERROR: Unable to connect to MicroDAQ device!");
             return; 
@@ -48,7 +48,7 @@ function result = mdaq_dsp_start( arg1, arg2, arg3 )
         res = mlink_dsp_load(link_id, dsp_firmware, '');
         if res < 0 then
             if argn(2) == 2 then
-                mdaq_close(link_id);
+                mdaqClose(link_id);
             end
             error(mdaq_error2(res), 10000 + abs(res)); 
         end
@@ -57,7 +57,7 @@ function result = mdaq_dsp_start( arg1, arg2, arg3 )
     res = mlink_dsp_start(link_id, model_freq);
     if res < 0 then
         if argn(2) == 2 then
-            mdaq_close(link_id);
+            mdaqClose(link_id);
         end
         error(mdaq_error2(res), 10000 + abs(res));
     end
@@ -69,7 +69,7 @@ function result = mdaq_dsp_start( arg1, arg2, arg3 )
     res = mlink_set_obj(link_id, 'ext_mode', 1 );
     
     if argn(2) == 2 then
-        mdaq_close(link_id);
+        mdaqClose(link_id);
     end
 
     if res == 0 then

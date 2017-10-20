@@ -1,4 +1,4 @@
-function mdaq_enc_init(arg1, arg2, arg3)
+function mdaqEncoderInit(arg1, arg2, arg3)
     if argn(2) == 2 then
         enc = arg1; 
         init_value = arg2; 
@@ -19,15 +19,15 @@ function mdaq_enc_init(arg1, arg2, arg3)
         mprintf("Description:\n");
         mprintf("\tInitializes encoder module\n");
         mprintf("Usage:\n");
-        mprintf("\tmdaq_enc_init(link_id, encoder, init_value);\n")
-        mprintf("\tlink_id - connection id returned by mdaq_open() (OPTIONAL)\n");
+        mprintf("\tmdaqEncoderInit(link_id, encoder, init_value);\n")
+        mprintf("\tlink_id - connection id returned by mdaqOpen() (OPTIONAL)\n");
         mprintf("\tencoder - encoder module (1 or 2)\n");
         mprintf("\tinit_value - initial encoder value\n");
         return;
     end
 
     if argn(2) == 2 then
-        link_id = mdaq_open();
+        link_id = mdaqOpen();
         if link_id < 0 then
             disp("ERROR: Unable to connect to MicroDAQ device!");
             return; 
@@ -42,7 +42,7 @@ function mdaq_enc_init(arg1, arg2, arg3)
                 [1, 1], 4, "i");
                 
     if argn(2) == 2 then
-        mdaq_close(link_id);
+        mdaqClose(link_id);
     end
     
     if result < 0  then

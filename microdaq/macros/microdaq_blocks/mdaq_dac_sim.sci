@@ -7,7 +7,7 @@ function block=mdaq_dac_sim(block,flag)
         case 1 // Output Update
             if %microdaq.private.connection_id > -1 then   
                 aoRange = matrix(block.rpar(2*block.ipar(1)+1 : size(block.rpar, 'r')), 2, block.ipar(1))';
-                mdaq_ao_write(%microdaq.private.connection_id,..
+                mdaqAOWrite(%microdaq.private.connection_id,..
                                 block.ipar(2:block.ipar(1)+1)',..
                                 aoRange,..
                                 block.inptr(1)');
@@ -23,7 +23,7 @@ function block=mdaq_dac_sim(block,flag)
                 use_init_term = block.ipar(2+(1*block.ipar(1)):2+(2*block.ipar(1))-1)';
                 for i = 1:size(channel, '*')
                     if use_init_term(i) == 2 | use_init_term(i) == 3 then
-                        mdaq_ao_write(%microdaq.private.connection_id, channel(i), aoRange(1,:), term_voltage(i))
+                        mdaqAOWrite(%microdaq.private.connection_id, channel(i), aoRange(1,:), term_voltage(i))
                     end
                 end
            end

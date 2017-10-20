@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" 
-xml:id="mdaq_set_ip">
+xml:id="mdaqSetIP">
 	<refnamediv>
-		<refname>mdaq_set_ip</refname>
+		<refname>mdaqSetIP</refname>
 		<refpurpose>Sets IP address</refpurpose>
 	</refnamediv>
 	
 	<refsynopsisdiv>
 		<title>Calling Sequence</title>
 		<synopsis>
-			mdaq_set_ip(ip_address);
+			mdaqSetIP(ip_address);
 		</synopsis>
 	</refsynopsisdiv>
 	
-	<refsection id="Description_mdaq_set_ip">
+	<refsection id="Description_mdaqSetIP">
 		<title>Description</title>
 		<para>
 			This function allows to change Scilab/XCos IP settings which are used to connect to MicroDAQ device.
@@ -21,7 +21,7 @@ xml:id="mdaq_set_ip">
 		</para>
 	</refsection>  
   
-	<refsection id="Parameters_mdaq_set_ip">
+	<refsection id="Parameters_mdaqSetIP">
 		<title>Parameters</title>
 		<itemizedlist>
 			<listitem><para><emphasis role="bold">ip_address: </emphasis> MicroDAQ IP address</para></listitem>
@@ -31,15 +31,15 @@ xml:id="mdaq_set_ip">
 	<refsection>
         <title>Examples</title>
         <programlisting role="example"><![CDATA[
-mdaq_set_ip("10.10.1.1");
-mdaq_ping();  
+mdaqSetIP("10.10.1.1");
+mdaqPing();  
  ]]></programlisting>
     </refsection>
 	
-  <refsection id="SeeAlso_mdaq_set_ip">
+  <refsection id="SeeAlso_mdaqSetIP">
 		<title>See Also</title>
 		<simplelist type="inline">
-			<member><link linkend="mdaq_ping">mdaq_set_ip</link></member>
+			<member><link linkend="mdaqPing">mdaqSetIP</link></member>
 		</simplelist>
   </refsection>
 </refentry>

@@ -1,4 +1,4 @@
-function mdaq_dio_func(arg1, arg2, arg3)
+function mdaqDIOFunc(arg1, arg2, arg3)
     
     if argn(2) == 2 then
         func = arg1; 
@@ -20,8 +20,8 @@ function mdaq_dio_func(arg1, arg2, arg3)
         mprintf("Description:\n");
         mprintf("\tSets DIO alternative function\n");
         mprintf("Usage:\n");
-        mprintf("\tmdaq_dio_func(link_id, func, enable);\n")
-        mprintf("\tlink_id - connection id returned by mdaq_open() (OPTIONAL)\n");
+        mprintf("\tmdaqDIOFunc(link_id, func, enable);\n")
+        mprintf("\tlink_id - connection id returned by mdaqOpen() (OPTIONAL)\n");
         mprintf("\tfunc - DIO alternative function\n");
         mprintf("\t\t1 - ENC1: DIO1 - Channel A, DIO2 - Channel B (enabled by default)\n");
         mprintf("\t\t2 - ENC2: DIO3 - Channel A, DIO4 - Channel B (enabled by default)\n");
@@ -46,7 +46,7 @@ function mdaq_dio_func(arg1, arg2, arg3)
     end
     
     if argn(2) == 2 then
-        link_id = mdaq_open();
+        link_id = mdaqOpen();
         if link_id < 0 then
             disp("ERROR: Unable to connect to MicroDAQ device!");
             return; 
@@ -61,7 +61,7 @@ function mdaq_dio_func(arg1, arg2, arg3)
             [1, 1], 4, "i");
             
     if argn(2) == 2 then
-        mdaq_close(link_id);
+        mdaqClose(link_id);
     end
     
     if result < 0  then

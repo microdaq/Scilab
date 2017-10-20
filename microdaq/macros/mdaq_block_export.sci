@@ -1,9 +1,9 @@
-function mdaq_block_export(export_dir, blocks)
+function mdaqBlock_export(export_dir, blocks)
     cur_dir = pwd();
-    macros_path = mdaq_toolbox_path() + "macros" + filesep() + "user_blocks" + filesep();
-    userlib_path = mdaq_toolbox_path()+'src'+filesep()+'c'+ filesep()+'userlib'+filesep();
-    svg_path = mdaq_toolbox_path() + "images" + filesep() + "svg" + filesep();
-    gif_path = mdaq_toolbox_path() + "images" + filesep() + "gif" + filesep();
+    macros_path = mdaqToolboxPath() + "macros" + filesep() + "user_blocks" + filesep();
+    userlib_path = mdaqToolboxPath()+'src'+filesep()+'c'+ filesep()+'userlib'+filesep();
+    svg_path = mdaqToolboxPath() + "images" + filesep() + "svg" + filesep();
+    gif_path = mdaqToolboxPath() + "images" + filesep() + "gif" + filesep();
 
     if argn(2) == 2 then
         for i=1:size(blocks,'*')

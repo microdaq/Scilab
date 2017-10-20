@@ -1,4 +1,4 @@
-function mdaq_led_write(arg1, arg2, arg3)
+function mdaqLEDWrite(arg1, arg2, arg3)
     
     if argn(2) == 2 then
         led = arg1; 
@@ -20,8 +20,8 @@ function mdaq_led_write(arg1, arg2, arg3)
         mprintf("Description:\n");
         mprintf("\tSets MicroDAQ D1 and D2 LED state\n");
         mprintf("Usage:\n");
-        mprintf("\tmdaq_led_write(link_id, led, state);\n")
-        mprintf("\tlink_id - connection id returned by mdaq_open() (OPTIONAL)\n");
+        mprintf("\tmdaqLEDWrite(link_id, led, state);\n")
+        mprintf("\tlink_id - connection id returned by mdaqOpen() (OPTIONAL)\n");
         mprintf("\tled - LED number (1 or 2)\n");
         mprintf("\tstate - LED state (%%T or %%F)\n");
         return;
@@ -40,7 +40,7 @@ function mdaq_led_write(arg1, arg2, arg3)
     end
 
     if argn(2) == 2 then
-        link_id = mdaq_open();
+        link_id = mdaqOpen();
         if link_id < 0 then
             disp("ERROR: Unable to connect to MicroDAQ device!");
             return; 
@@ -55,7 +55,7 @@ function mdaq_led_write(arg1, arg2, arg3)
             [1, 1], 4, "i");
 
     if argn(2) == 2 then
-        mdaq_close(link_id);
+        mdaqClose(link_id);
     end
     
     if result < 0  then

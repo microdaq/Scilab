@@ -43,12 +43,12 @@ function block=mdaq_dio_config_sim(block,flag)
                         mdaq_dio_dir(%microdaq.private.connection_id, 4, 0);
                     end
                 end
-                mdaq_dio_func(%microdaq.private.connection_id, 1, block.ipar(1));
-                mdaq_dio_func(%microdaq.private.connection_id, 2, block.ipar(2));
-                mdaq_dio_func(%microdaq.private.connection_id, 3, block.ipar(3));
-                mdaq_dio_func(%microdaq.private.connection_id, 4, block.ipar(4));
-                mdaq_dio_func(%microdaq.private.connection_id, 5, block.ipar(5));
-                mdaq_dio_func(%microdaq.private.connection_id, 6, block.ipar(6));
+                mdaqDIOFunc(%microdaq.private.connection_id, 1, block.ipar(1));
+                mdaqDIOFunc(%microdaq.private.connection_id, 2, block.ipar(2));
+                mdaqDIOFunc(%microdaq.private.connection_id, 3, block.ipar(3));
+                mdaqDIOFunc(%microdaq.private.connection_id, 4, block.ipar(4));
+                mdaqDIOFunc(%microdaq.private.connection_id, 5, block.ipar(5));
+                mdaqDIOFunc(%microdaq.private.connection_id, 6, block.ipar(6));
             end
         case 5 // Ending
         case 6 // Re-Initialisation

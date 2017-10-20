@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaq_key_read">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaqKeyRead">
 	<refnamediv>
-		<refname>mdaq_key_read</refname>
+		<refname>mdaqKeyRead</refname>
 		<refpurpose>Reads MicroDAQ function key state</refpurpose>
 	</refnamediv>
 
 	<refsynopsisdiv>
 		<title>Calling Sequence</title>
 		<synopsis>
-		    state = mdaq_key_read(functionKey)
-			state = mdaq_key_read(linkID, functionKey)
+		    state = mdaqKeyRead(functionKey)
+			state = mdaqKeyRead(linkID, functionKey)
 		</synopsis>
 	</refsynopsisdiv>
 
-	<refsection id="Description_mdaq_key_read">
+	<refsection id="Description_mdaqKeyRead">
 		<title>Description</title>
 		<para>
 			This function reads MicroDAQ function key (F1, F2) state. 
 		</para>
 	</refsection>  
 
-	<refsection id="Parameters_mdaq_key_read">
+	<refsection id="Parameters_mdaqKeyRead">
 		<title>Input arguments</title>
 		<itemizedlist>
 			<listitem>
@@ -37,7 +37,7 @@
 			</listitem>
 		</itemizedlist>
 	</refsection>
-	<refsection id="Parameters_mdaq_key_read">
+	<refsection id="Parameters_mdaqKeyRead">
 		<title>Output arguments</title>
 		<itemizedlist>
 			<listitem>
@@ -52,22 +52,22 @@
 			<![CDATA[
 				disp('Press MicroDAQ F1 to stop...')
 				ledState = %T; 
-				while mdaq_key_read(1) == %F
+				while mdaqKeyRead(1) == %F
 					// keep led blinking until F1 isn't pressed
-					mdaq_led_write(1, ~ledState);
+					mdaqLEDWrite(1, ~ledState);
 					sleep(100); 
 					ledState = ~ledState;
 				end
-				mdaq_led_write(1, 0)
+				mdaqLEDWrite(1, 0)
 			 ]]>
 		</programlisting>
 	</refsection>
 
-	<refsection id="SeeAlso_mdaq_key_read">
+	<refsection id="SeeAlso_mdaqKeyRead">
 		<title>See Also</title>
 		<simplelist type="inline">
 			<member>
-				<link linkend="mdaq_led_write">mdaq_led_write</link>
+				<link linkend="mdaqLEDWrite">mdaqLEDWrite</link>
 			</member>
 		</simplelist>
 	</refsection>

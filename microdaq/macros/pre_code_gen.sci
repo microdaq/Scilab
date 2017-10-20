@@ -7,9 +7,9 @@ function [ok,out]=pre_code_gen(scs_m)
     
     ok = %t;
 
-    // scan_mdaq_block will fill mdaq_signal_id
+    // scan_mdaqBlock will fill mdaq_signal_id
     // with signal ID from whole scheme
-    out = scan_mdaq_blocks(scs_m);
+    out = scan_mdaqBlocks(scs_m);
     size_unique_signal_id = size(unique(%microdaq.private.mdaq_signal_id));
     size_signal_id = size(%microdaq.private.mdaq_signal_id);
     if size_unique_signal_id(2) <> size_signal_id(2) then

@@ -1,4 +1,4 @@
-function mdaq_pwm_init(arg1, arg2, arg3, arg4)
+function mdaqPWMInit(arg1, arg2, arg3, arg4)
 
     link_id = -1; 
 
@@ -24,8 +24,8 @@ function mdaq_pwm_init(arg1, arg2, arg3, arg4)
         mprintf("Description:\n");
         mprintf("\tSetup MicroDAQ PWM outputs\n");
         mprintf("Usage:\n");
-        mprintf("\tmdaq_pwm_init(link_id, module, period, active_low);\n")
-        mprintf("\tlink_id - connection id returned by mdaq_open() (OPTIONAL)\n");
+        mprintf("\tmdaqPWMInit(link_id, module, period, active_low);\n")
+        mprintf("\tlink_id - connection id returned by mdaqOpen() (OPTIONAL)\n");
         mprintf("\tmodule - PWM module (1, 2 or 3)\n");
         mprintf("\tperiod - PWM module period in microseconds(2-500000)\n");
         mprintf("\tactive_low - PWM waveform polarity (%%F or %%T)\n");
@@ -46,7 +46,7 @@ function mdaq_pwm_init(arg1, arg2, arg3, arg4)
     
     
     if argn(2) == 3 then
-        link_id = mdaq_open();
+        link_id = mdaqOpen();
         if link_id < 0 then
             disp("ERROR: Unable to connect to MicroDAQ device!");
             return; 
@@ -65,7 +65,7 @@ function mdaq_pwm_init(arg1, arg2, arg3, arg4)
                 [1, 1], 7, "i");
 
     if argn(2) == 3 then
-        mdaq_close(link_id);
+        mdaqClose(link_id);
     end
 
     if result < 0  then

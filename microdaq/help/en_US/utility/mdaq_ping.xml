@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" 
-xml:id="mdaq_ping">
+xml:id="mdaqPing">
 	<refnamediv>
-		<refname>mdaq_ping</refname>
+		<refname>mdaqPing</refname>
 		<refpurpose>Checks connection with MicroDAQ</refpurpose>
 	</refnamediv>
 	
 	<refsynopsisdiv>
 		<title>Calling Sequence</title>
 		<synopsis>
-			result = mdaq_ping();
+			result = mdaqPing();
 		</synopsis>
 	</refsynopsisdiv>
 	
-	<refsection id="Description_mdaq_ping">
+	<refsection id="Description_mdaqPing">
 		<title>Description</title>
 		<para>
-			This function checks connection with MicroDAQ device. This function can be helpful to verify if Ethernet of Wi-Fi connection is working properly. Function uses IP address which was set during microdaq_setup call or with mdaq_set_ip call.
+			This function checks connection with MicroDAQ device. This function can be helpful to verify if Ethernet of Wi-Fi connection is working properly. Function uses IP address which was set during microdaq_setup call or with mdaqSetIP call.
 		</para>
 	</refsection>  
   
-	<refsection id="Parameters_mdaq_ping">
+	<refsection id="Parameters_mdaqPing">
 		<title>Output arguments</title>
 		<itemizedlist>
 			<listitem><para><emphasis role="bold">result: </emphasis> Negative if unable to connect to MicroDAQ device</para></listitem>
@@ -30,17 +30,17 @@ xml:id="mdaq_ping">
 	<refsection>
         <title>Examples</title>
         <programlisting role="example"><![CDATA[
-// mdaq_ping usage example
-mdaq_ping(); 
+// mdaqPing usage example
+mdaqPing(); 
  ]]></programlisting>
     </refsection>
 	
-  <refsection id="SeeAlso_mdaq_ping">
+  <refsection id="SeeAlso_mdaqPing">
 		<title>See Also</title>
 		<simplelist type="inline">
-			<member><link linkend="mdaq_open">mdaq_open</link></member>
-			<member><link linkend="mdaq_close">mdaq_close</link></member>
-			<member><link linkend="mdaq_set_ip">mdaq_set_ip</link></member>
+			<member><link linkend="mdaqOpen">mdaqOpen</link></member>
+			<member><link linkend="mdaqClose">mdaqClose</link></member>
+			<member><link linkend="mdaqSetIP">mdaqSetIP</link></member>
 		</simplelist>
   </refsection>
 </refentry>

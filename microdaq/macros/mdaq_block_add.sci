@@ -1,6 +1,6 @@
-function mdaq_block_add(block_def)
+function mdaqBlockAdd(block_def)
     // Check version compatibility 
-    [is_supp vers] = mdaq_is_working('mdaq_block_add');
+    [is_supp vers] = mdaq_is_working('mdaqBlockAdd');
     if is_supp == %F then
         error('ERROR: ' + vers)
         return;
@@ -9,9 +9,9 @@ function mdaq_block_add(block_def)
     if type(block_def) <> 17 then
         disp("ERROR: Wrong type of input argument!");
         if type(block_def) == 13 then
-            disp("Input argument type is function - use ''block = mdaq_block()'' instead of ''block = mdaq_block''")
+            disp("Input argument type is function - use ''block = mdaqBlock()'' instead of ''block = mdaqBlock''")
         else
-            disp("Use mdaq_block() function to create initialized block sctructure!")
+            disp("Use mdaqBlock() function to create initialized block sctructure!")
         end
         return;
     end
@@ -44,7 +44,7 @@ function mdaq_block_add(block_def)
         FORCE_SIM = %T;
     end
 
-    path = dirname(get_function_path('mdaq_block_add')) + filesep();
+    path = dirname(get_function_path('mdaqBlockAdd')) + filesep();
     module_path = part(path,1:length(path)-length("macros") - 1 );
     SCRIPT_FILE_ROOT = path + 'user_blocks' + filesep();
     C_FILE_ROOT = module_path+'src'+filesep()+'c'+ filesep()+'userlib'+filesep();
@@ -430,7 +430,7 @@ function mdaq_block_add(block_def)
     gen_svg(svg_path, name_converted, block_def.name);
 
     // build macros and compile C code
-    mdaq_block_build(~block_def.use_sim_script);
+    mdaqBlockBuild(~block_def.use_sim_script);
 endfunction
 
 function res = save_string(filename, content)

@@ -1,4 +1,4 @@
-function mdaq_ao_scan_data(arg1, arg2, arg3, arg4)
+function mdaqAOScanData(arg1, arg2, arg3, arg4)
     global %microdaq;
     link_id = -1; 
 
@@ -24,8 +24,8 @@ function mdaq_ao_scan_data(arg1, arg2, arg3, arg4)
         mprintf("Description:\n");
         mprintf("\tQueues data to be output\n");
         mprintf("Usage:\n");
-        mprintf("\tmdaq_ao_scan_data(linkID, channels, data, opt);\n")
-        mprintf("\tlinkID - connection id returned by mdaq_open() (OPTIONAL)\n");
+        mprintf("\tmdaqAOScanData(linkID, channels, data, opt);\n")
+        mprintf("\tlinkID - connection id returned by mdaqOpen() (OPTIONAL)\n");
         mprintf("\tchannels - analog output channels to write\n");
         mprintf("\tdata - data to be output\n");
         mprintf("\topt - reset buffer index to 0 (%s/%s) - periodic mode\n\t      blocking/non-blocking   (%s/%s) - stream mode", "%T", "%F", "%T", "%F");
@@ -46,7 +46,7 @@ function mdaq_ao_scan_data(arg1, arg2, arg3, arg4)
     data_size = size(data, "*"); 
     
     if argn(2) == 3 then
-        link_id = mdaq_open();
+        link_id = mdaqOpen();
         if link_id < 0 then
             error("ERROR: Unable to connect to MicroDAQ device!");
             return; 
@@ -65,7 +65,7 @@ function mdaq_ao_scan_data(arg1, arg2, arg3, arg4)
                     [1, 1], 7, "i");
 
     if argn(2) == 3 then
-        mdaq_close(link_id);
+        mdaqClose(link_id);
     end
 
     if result < 0  then

@@ -13,7 +13,7 @@ function mdaq_dsp_upload( dsp_firmware )
             return
         end
         
-        connection_id = mdaq_open();
+        connection_id = mdaqOpen();
         if connection_id < 0 then
             message('ERROR: Unable to connect to MicroDAQ device - check your setup!');
             return;
@@ -22,8 +22,8 @@ function mdaq_dsp_upload( dsp_firmware )
         res = mlink_dsp_load(connection_id, dsp_firmware, '');
         if res < 0 then
             // try again to load application
-            mdaq_close(connection_id);
-            connection_id = mdaq_open();
+            mdaqClose(connection_id);
+            connection_id = mdaqOpen();
             if connection_id < 0 then
                 message('ERROR: Unable to connect to MicroDAQ device - check your setup!');
                 return;
@@ -31,13 +31,13 @@ function mdaq_dsp_upload( dsp_firmware )
             res = mlink_dsp_load(connection_id, dsp_firmware, '');
             if res < 0 then
                 message('Unable to load DSP firmware! (' + mdaq_error2(res) + ').');
-                mdaq_close(connection_id);
+                mdaqClose(connection_id);
                 return;
             end
         end
     // upload already loaded program
     else
-        connection_id = mdaq_open();
+        connection_id = mdaqOpen();
         if connection_id < 0 then
             message('ERROR: Unable to connect to MicroDAQ device - check your setup!');
             return;
@@ -50,15 +50,15 @@ function mdaq_dsp_upload( dsp_firmware )
         res = mlink_dsp_upload(connection_id);
         if res == -3 then
             message("ERROR: Unable to upload - model not loaded on target!");
-            mdaq_close(connection_id);
+            mdaqClose(connection_id);
             return;
         end
     else
         message("ERROR: Unable to upload Ext model - only Standalone model can be uploaded on target!");
-        mdaq_close(connection_id);
+        mdaqClose(connection_id);
         return;
     end
 
     message("DSP application uploaded (saved) on target successfully!");
-    mdaq_close(connection_id);
+    mdaqClose(connection_id);
 endfunction

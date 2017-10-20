@@ -1,5 +1,5 @@
 function [res] = build_mdaq_palette(palette_path)
-    toolbox_dir = mdaq_toolbox_path();  
+    toolbox_dir = mdaqToolboxPath();  
     xpal = list();
 
     //Create complete mdaq palette

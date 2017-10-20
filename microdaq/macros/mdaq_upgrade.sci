@@ -68,7 +68,7 @@ function mdaq_upgrade(firmware)
     end
 
     mprintf("Uploading firmware on MicroDAQ...\n");    
-    link_id = mdaq_open();
+    link_id = mdaqOpen();
     if link_id < 0 then
         disp("Unable to connect to MicroDAQ device!");
         return; 
@@ -84,7 +84,7 @@ function mdaq_upgrade(firmware)
         disp("Unable to upload firware file"); 
         return; 
     end
-    mdaq_close(link_id);
+    mdaqClose(link_id);
 
     mdaq_ip = mdaq_get_ip(); 
 

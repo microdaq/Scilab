@@ -1,11 +1,11 @@
-function result = mdaq_get_file_data(filename, filetype, rows, cols)
+function result = mdaqFileData(filename, filetype, rows, cols)
     result = [];
     
     if (argn(2) > 4 | argn(2) < 2) | (filetype == 2 & argn(2) <> 4) then
         mprintf("Description:\n");
         mprintf("\tReads data from file created with MicroDAQ ''To File'' block\n");
         mprintf("Usage:\n");
-        mprintf("\tmdaq_get_file_data(name, type, rows, cols);\n")
+        mprintf("\tmdaqFileData(name, type, rows, cols);\n")
         mprintf("\tname - name of file from user-disk/dsp/data\n");
         mprintf("\ttype - (1 - text | 2 - binary)\n");
         mprintf("\trows - number of rows (optinal for text filetype)\n");

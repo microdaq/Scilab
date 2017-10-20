@@ -1,4 +1,4 @@
-function mdaq_ao_scan(arg1)
+function mdaqAOScan(arg1)
         
     if argn(2) == 1 then
         link_id = arg1;   
@@ -9,7 +9,7 @@ function mdaq_ao_scan(arg1)
     end
 
     if argn(2) <> 1 then
-        link_id = mdaq_open();
+        link_id = mdaqOpen();
         if link_id < 0 then
             disp("ERROR: Unable to connect to MicroDAQ device!");
             return; 
@@ -22,7 +22,7 @@ function mdaq_ao_scan(arg1)
                     [1, 1], 2, "i");
 
     if argn(2) == 0 then
-        mdaq_close(link_id);
+        mdaqClose(link_id);
     end
     
     if result < 0  then

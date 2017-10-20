@@ -1,5 +1,5 @@
 function fw_ver = mdaq_fw_version()
-    connection_id = mdaq_open();
+    connection_id = mdaqOpen();
     if connection_id > -1  then
         result = [];
         [fw_ver, result] = call("sci_mlink_version",..
@@ -8,7 +8,7 @@ function fw_ver = mdaq_fw_version()
                                 [4,1], 2, "i",..
                                 [1,1], 3, "i");
 
-        mdaq_close(connection_id);
+        mdaqClose(connection_id);
         if result < 0 then
             mdaq_error(result);
         end

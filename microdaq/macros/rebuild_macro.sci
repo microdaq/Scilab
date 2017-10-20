@@ -1,5 +1,5 @@
 function rebuild_macro(name)
-    tbx_path = mdaq_toolbox_path();
+    tbx_path = mdaqToolboxPath();
     
     //run builder
     exec(tbx_path+"builder.sce", -1);

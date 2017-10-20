@@ -18,7 +18,7 @@ function block=mdaq_adc_sim(block,flag)
                   end
                end
                
-               block.outptr(1) = mdaq_ai_read(%microdaq.private.connection_id, channels, aiRange, aiMode');
+               block.outptr(1) = mdaqAIRead(%microdaq.private.connection_id, channels, aiRange, aiMode');
                clear aiMode;
             end
         case 2 // State Update

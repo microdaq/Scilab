@@ -1,9 +1,9 @@
-function mdaq_block_delete(block_name)
+function mdaqBlockDelete(block_name)
     if argn(2) < 1 then
         mprintf("Description:\n");
         mprintf("\tDeletes MicroDAQ user block\n");
         mprintf("Usage:\n");
-        mprintf("\tmdaq_block_delete(block_name);\n")
+        mprintf("\tmdaqBlockDelete(block_name);\n")
         return;
     end
     
@@ -19,21 +19,21 @@ function mdaq_block_delete(block_name)
     name_converted = 'mdaq_' + name_converted;
     
     // Delete from macros 
-    macrosPath = pathconvert(mdaq_toolbox_path()+'macros/user_blocks/');
+    macrosPath = pathconvert(mdaqToolboxPath()+'macros/user_blocks/');
     mdelete(macrosPath+name_converted+'.sci');
     mdelete(macrosPath+name_converted+'_sim.sci');
     mdelete(macrosPath+name_converted+'.bin');
     mdelete(macrosPath+name_converted+'_sim.bin');
     
     // Delete images 
-    imagesPath = pathconvert(mdaq_toolbox_path()+'images/');
+    imagesPath = pathconvert(mdaqToolboxPath()+'images/');
     mdelete(imagesPath+'gif'+filesep()+name_converted+'.gif');
     mdelete(imagesPath+'h5'+filesep()+name_converted+'.sod');
     mdelete(imagesPath+'svg'+filesep()+name_converted+'.svg');
     
     // Delete code 
-    srcPath = pathconvert(mdaq_toolbox_path()+'src/c/userlib/');
-    backUpPath = mdaq_toolbox_path()+pathconvert("src\c\userlib\.removed_code");
+    srcPath = pathconvert(mdaqToolboxPath()+'src/c/userlib/');
+    backUpPath = mdaqToolboxPath()+pathconvert("src\c\userlib\.removed_code");
     try
         if isdir(backUpPath) == %F then
                 mkdir(backUpPath);
