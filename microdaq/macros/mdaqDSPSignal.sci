@@ -1,6 +1,6 @@
-function result = mdaq_dsp_signal(arg1, arg2, arg3)
+function result = mdaqDSPSignal(arg1, arg2, arg3)
     // Check version compatibility 
-    [is_supp vers] = mdaq_is_working('mdaq_dsp_signal');
+    [is_supp vers] = mdaq_is_working('mdaqDSPSignal');
     if is_supp == %F then
         error('ERROR: ' + vers)
         return;
@@ -28,7 +28,7 @@ function result = mdaq_dsp_signal(arg1, arg2, arg3)
         mprintf("Description:\n");
         mprintf("\tRegisters DSP signal\n");
         mprintf("Usage:\n");
-        mprintf("\tmdaq_dsp_signal(link_id, signal_id, signal_size);\n")
+        mprintf("\tmdaqDSPSignal(link_id, signal_id, signal_size);\n")
         mprintf("\tlink_id - connection id returned by mdaqOpen() (OPTIONAL)\n");
         mprintf("\tsignal_id - signal ID defined in SIGNAL block\n");
         mprintf("\tsignal_size - signal vector size\n");

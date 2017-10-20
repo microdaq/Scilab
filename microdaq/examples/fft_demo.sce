@@ -21,7 +21,7 @@ if result < 0 then
 end
 
 // Register signal ID and signal size
-result = mdaq_dsp_signal(1, 1);
+result = mdaqDSPSignal(1, 1);
 if result < 0 then
     disp("ERROR: unable to register signal");
     abort;

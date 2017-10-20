@@ -10,7 +10,7 @@ function [is_working, versions] = mdaq_is_working(func_name)
     
     // DSP MANAGMENT -
     uglyfuncs($+1) = list('mdaqDSPBuild',             '5.5.2');
-    uglyfuncs($+1) = list('mdaq_dsp_signal',            '5.5.2');
+    uglyfuncs($+1) = list('mdaqDSPSignal',            '5.5.2');
     uglyfuncs($+1) = list('mdaqDSPSignalRead',       '5.5.2');
     uglyfuncs($+1) = list('mdaqDSPStart',             '5.5.2');
     uglyfuncs($+1) = list('mdaqDSPStop',              '5.5.2');
