@@ -2,51 +2,67 @@
 <refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaq_pwm_write">
 	<refnamediv>
 		<refname>mdaq_pwm_write</refname>
-		<refpurpose>Sets PWM duty</refpurpose>
+		<refpurpose>Writes PWM duty</refpurpose>
 	</refnamediv>
-	
+
 	<refsynopsisdiv>
 		<title>Calling Sequence</title>
 		<synopsis>
-			mdaq_pwm_write(module, pwmChannelA, pwmChannelB)
-			mdaq_pwm_write(linkID, module, pwmChannelA, pwmChannelB)
+			mdaq_pwm_write(module, dutyChannelA, dutyChannelB)
+			mdaq_pwm_write(linkID, module, dutyChannelA, dutyChannelB)
 		</synopsis>
 	</refsynopsisdiv>
-	
+
 	<refsection id="Description_mdaq_pwm_write">
 		<title>Description</title>
 		<para>
-			This function sets PWM waveform duty for A and B channels for selected PWM module.
+			This function sets PWM waveform duty for A and B channels for selected PWM module. PWM module has to be initiated with <link linkend="mdaq_pwm_init">mdaq_pwm_init</link>
 		</para>
 	</refsection>  
-  
+
 	<refsection id="Parameters_mdaq_pwm_write">
 		<title>Parameters</title>
 		<itemizedlist>
-			<listitem><para><emphasis role="bold">link_id: </emphasis> Valid connection link ID (optional) </para></listitem>
-			<listitem><para><emphasis role="bold">module: </emphasis> PWM module number (1, 2, or 3) </para></listitem>
-			<listitem><para><emphasis role="bold">pwmChannelA: </emphasis> PWM channel A duty </para></listitem>
-			<listitem><para><emphasis role="bold">pwmChannelB: </emphasis> PWM channel B duty </para></listitem>
+			<listitem>
+				<para>
+					<emphasis role="bold">link_id: </emphasis> Valid connection link ID (optional) </para>
+			</listitem>
+			<listitem>
+				<para>
+					<emphasis role="bold">module: </emphasis> PWM module (1|2|3)</para>
+			</listitem>
+			<listitem>
+				<para>
+					<emphasis role="bold">dutyChannelA: </emphasis> PWM channel A duty </para>
+			</listitem>
+			<listitem>
+				<para>
+					<emphasis role="bold">dutyChannelB: </emphasis> PWM channel B duty </para>
+			</listitem>
 		</itemizedlist>
 	</refsection>
-	
+
 	<refsection>
-        <title>Examples</title>
-        <programlisting role="example"><![CDATA[
-// mdaq_pwm_write usage example
-link_id = mdaq_open();
-// setup PWM1 to 1khz period and initial duty for A and B channel to 0 
-mdaq_pwm_init(link_id, 1, 1000, 0, 0, 0)
-// set PWM1 duty channel A to 25% ane channel B to 50%
-mdaq_pwm_write(link_id, 1, 25, 50)
-mdaq_close(link_id)
- ]]></programlisting>
-    </refsection>
-	
-  <refsection id="SeeAlso_mdaq_pwm_write">
+		<title>Examples</title>
+		<programlisting role="example">
+			<![CDATA[
+			// mdaq_pwm_write usage example
+				link_id = mdaq_open();
+				// setup PWM1 to 1khz period and initial duty for A and B channel to 0 
+				mdaq_pwm_init(link_id, 1, 1000, 0, 0, 0)
+				// set PWM1 duty channel A to 25% ane channel B to 50%
+				mdaq_pwm_write(link_id, 1, 25, 50)
+				mdaq_close(link_id)
+			]]>
+		</programlisting>
+	</refsection>
+
+	<refsection id="SeeAlso_mdaq_pwm_write">
 		<title>See Also</title>
 		<simplelist type="inline">
-			<member><link linkend="mdaq_pwm_init">mdaq_pwm_init</link></member>
+			<member>
+				<link linkend="mdaq_pwm_init">mdaq_pwm_init</link>
+			</member>
 		</simplelist>
-  </refsection>
+	</refsection>
 </refentry>

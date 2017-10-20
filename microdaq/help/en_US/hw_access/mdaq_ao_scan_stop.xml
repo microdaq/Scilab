@@ -2,73 +2,90 @@
 <refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaq_ao_scan_stop">
 	<refnamediv>
 		<refname>mdaq_ao_scan_stop</refname>
-		<refpurpose>Stops AO scanning mode</refpurpose>
+		<refpurpose>Stops analog output scanning</refpurpose>
 	</refnamediv>
-	
+
 	<refsynopsisdiv>
 		<title>Calling Sequence</title>
 		<synopsis>
-			mdaq_ao_scan_stop(link_id);
-			mdaq_ao_scan_stop();
+			mdaq_ao_scan_stop(linkID)
+			mdaq_ao_scan_stop()
 		</synopsis>
 	</refsynopsisdiv>
-	
+
 	<refsection id="Description_mdaq_ao_scan_stop">
 		<title>Description</title>
-		
-				<para> This function is part of analog scan functionality and has to be called in the following sequence:
-		<orderedlist>
-			<listitem>
-				<para>Initialize scanning session - <link linkend="mdaq_ao_scan_init">mdaq_ao_scan_init()</link></para>
-			</listitem>
-			<listitem>
-				<para>Start scanning session - <link linkend="mdaq_ao_scan">mdaq_ao_scan()</link></para>
-			</listitem>
-			<listitem>
-				<para>Queue new data - <link linkend="mdaq_ao_scan_data">mdaq_ao_scan_data()</link></para>
-			</listitem>
-			<listitem>
-				<para><emphasis role="bold">Stop scanning session</emphasis> - <link linkend="mdaq_ao_scan_stop">mdaq_ao_scan_stop()</link></para>
-			</listitem>
-		</orderedlist>
+
+		<para> This function is part of analog scan functionality and has to be called in the following sequence:
+			<orderedlist>
+				<listitem>
+					<para>Initialize scanning session - <link linkend="mdaq_ao_scan_init">mdaq_ao_scan_init()</link>
+					</para>
+				</listitem>
+				<listitem>
+					<para>Start scanning session - <link linkend="mdaq_ao_scan">mdaq_ao_scan()</link>
+					</para>
+				</listitem>
+				<listitem>
+					<para>Queue new data - <link linkend="mdaq_ao_scan_data">mdaq_ao_scan_data()</link>
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						<emphasis role="bold">Stop scanning session</emphasis> - <link linkend="mdaq_ao_scan_stop">mdaq_ao_scan_stop()</link>
+					</para>
+				</listitem>
+			</orderedlist>
 		</para> 
 		<para>
 				This function stops analog output scanning session. Function can be used to interrupt acquisition (duration > 0), or to stop continuous acquisition (duration=-1). After calling <link linkend="mdaq_ao_scan_stop">mdaq_ao_scan_stop()</link> function, scanning session has to be re-initialized.
 
-        </para> 
+		</para> 
 	</refsection>  
-  
+
 	<refsection id="Parameters_mdaq_ao_scan_stop">
 		<title>Input arguments</title>
 		<itemizedlist>
-			<listitem><para><emphasis role="bold">linkID: </emphasis> Valid connection link ID (optional)</para></listitem>
+			<listitem>
+				<para>
+					<emphasis role="bold">linkID: </emphasis> Valid connection link ID (optional)</para>
+			</listitem>
 		</itemizedlist>
 	</refsection>
-	
+	<refsection>
+		<title>Examples</title>
 		<para> 
-		Generate sine and triangle waveform in periodic mode. Sample update frequency 1000Hz, duration 5 seconds.
+		Generate sine and triangle waveform in periodic mode. Sample update frequency 1000Hz, duration - Inf - interrupted by user code.
 		</para>
-        <programlisting role="example"><![CDATA[
+		<programlisting role="example">
+			<![CDATA[
 			sineData = sin(linspace(0, 2*%pi, 1000)) + 1.0;
 			triangleData = linspace(0, 5, 1000);
-
-			mdaq_ao_scan_init(1:2, [sineData' triangleData'], 1, %F, 1000, 5);
-
+			mdaq_ao_scan_init(1:2, [sineData' triangleData'], [0,5], %F, 1000, -1);
 			mdaq_ao_scan();
-		 ]]></programlisting>
- 
+			sleep(5000);
+			mdaq_ao_scan_stop();
+		 ]]>
+		</programlisting>
+
 		<para>
-	Results:
-	<imagedata align="center" fileref="../images/single_result.png" valign="middle"/>
-</para>
-  <refsection id="SeeAlso_mdaq_ao_scan_stop">
+			Results:
+			<imagedata align="center" fileref="../images/single_result.png" valign="middle"/>
+		</para>
+	</refsection>  			
+	<refsection id="SeeAlso_mdaq_ao_scan_stop">
 		<title>See Also</title>
 		<simplelist type="inline">
-			<member><link linkend="mdaq_ao_scan_init">mdaq_ao_scan_init</link></member>
-			<member><link linkend="mdaq_ao_data_update">mdaq_ao_data_update</link></member>
-			<member><link linkend="mdaq_ao_data_queue">mdaq_ao_data_queue</link></member>
-			<member><link linkend="mdaq_ao_scan">mdaq_ao_scan</link></member>
-			
+			<member>
+				<link linkend="mdaq_ao_scan_init">mdaq_ao_scan_init</link>
+			</member>
+			<member>
+				<link linkend="mdaq_ao_data_update">mdaq_ao_data_data</link>
+			</member>
+			<member>
+				<link linkend="mdaq_ao_scan">mdaq_ao_scan</link>
+			</member>
+
 		</simplelist>
-  </refsection>
+	</refsection>
 </refentry>

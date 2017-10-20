@@ -4,7 +4,7 @@
 		<refname>mdaq_led_write</refname>
 		<refpurpose>Sets MicroDAQ LED state</refpurpose>
 	</refnamediv>
-	
+
 	<refsynopsisdiv>
 		<title>Calling Sequence</title>
 		<synopsis>
@@ -12,40 +12,53 @@
 			mdaq_led_write(linkID, led, state)
 		</synopsis>
 	</refsynopsisdiv>
-	
+
 	<refsection id="Description_mdaq_led_write">
 		<title>Description</title>
 		<para>
 			This function sets MicroDAQ D1/D2 LED state.
 		</para>
 	</refsection>  
-  
+
 	<refsection id="Parameters_mdaq_led_write">
-		<title>Parameters</title>
+		<title>Input parameters</title>
 		<itemizedlist>
-			<listitem><para><emphasis role="bold">linkID: </emphasis> Valid connection link ID (optional)</para></listitem>
-			<listitem><para><emphasis role="bold">led: </emphasis> LED number (1 or 2)</para></listitem>
-			<listitem><para><emphasis role="bold">state: </emphasis> LED state (%T/%F or 1/0)</para></listitem>
+			<listitem>
+				<para>
+					<emphasis role="bold">linkID: </emphasis> Valid connection link ID (optional)</para>
+			</listitem>
+			<listitem>
+				<para>
+					<emphasis role="bold">led: </emphasis> LED number (1|2)</para>
+			</listitem>
+			<listitem>
+				<para>
+					<emphasis role="bold">state: </emphasis> LED state (%T/%F or 1/0)</para>
+			</listitem>
 		</itemizedlist>
 	</refsection>
-	
+
 	<refsection>
-        <title>Examples</title>
-        <programlisting role="example"><![CDATA[
-mdaq_led_write(1, 1);
-sleep(500);
-mdaq_led_write(2, 1);
-sleep(500);
-mdaq_led_write(1, 0);
-sleep(500);
-mdaq_led_write(2, 0);
- ]]></programlisting>
-    </refsection>
-	
-  <refsection id="SeeAlso_mdaq_led_write">
+		<title>Examples</title>
+		<programlisting role="example">
+			<![CDATA[
+				mdaq_led_write(1, 1);
+				sleep(500);
+				mdaq_led_write(2, 1);
+				sleep(500);
+				mdaq_led_write(1, 0);
+				sleep(500);
+				mdaq_led_write(2, 0);
+			 ]]>
+		</programlisting>
+	</refsection>
+
+	<refsection id="SeeAlso_mdaq_led_write">
 		<title>See Also</title>
 		<simplelist type="inline">
-			<member><link linkend="mdaq_key_read">mdaq_key_read</link></member>
+			<member>
+				<link linkend="mdaq_key_read">mdaq_key_read</link>
+			</member>
 		</simplelist>
-  </refsection>
+	</refsection>
 </refentry>

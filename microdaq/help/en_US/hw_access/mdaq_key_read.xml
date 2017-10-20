@@ -2,56 +2,73 @@
 <refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaq_key_read">
 	<refnamediv>
 		<refname>mdaq_key_read</refname>
-		<refpurpose>Reads MicroDAQ function button state</refpurpose>
+		<refpurpose>Reads MicroDAQ function key state</refpurpose>
 	</refnamediv>
-	
+
 	<refsynopsisdiv>
 		<title>Calling Sequence</title>
 		<synopsis>
-		    state = mdaq_key_read(button)
-			state = mdaq_key_read(linkID, button)
+		    state = mdaq_key_read(functionKey)
+			state = mdaq_key_read(linkID, functionKey)
 		</synopsis>
 	</refsynopsisdiv>
-	
+
 	<refsection id="Description_mdaq_key_read">
 		<title>Description</title>
 		<para>
-			This function reads MicroDAQ function button (F1, F2) state. 
+			This function reads MicroDAQ function key (F1, F2) state. 
 		</para>
 	</refsection>  
-  
+
 	<refsection id="Parameters_mdaq_key_read">
-		<title>Parameters</title>
+		<title>Input arguments</title>
 		<itemizedlist>
-			<listitem><para><emphasis role="bold">linkID: </emphasis> Valid connection link ID (optional)</para></listitem>
-			<listitem><para><emphasis role="bold">button: </emphasis> Function key number (1 or 2)</para></listitem>
-			<listitem><para><emphasis role="bold">state: </emphasis> Function key state</para></listitem>
+			<listitem>
+				<para>
+					<emphasis role="bold">linkID: </emphasis> Valid connection link ID (optional)</para>
+			</listitem>
+			<listitem>
+				<para>
+					<emphasis role="bold">button: </emphasis> Function key (1|2)</para>
+			</listitem>
+			<listitem>
+				<para>
+					<emphasis role="bold">state: </emphasis> Function key state</para>
+			</listitem>
 		</itemizedlist>
 	</refsection>
-	
+	<refsection id="Parameters_mdaq_key_read">
+		<title>Output arguments</title>
+		<itemizedlist>
+			<listitem>
+				<para>
+					<emphasis role="bold">state: </emphasis> Function key state</para>
+			</listitem>
+		</itemizedlist>
+	</refsection>
 	<refsection>
-        <title>Examples</title>
-        <programlisting role="example"><![CDATA[
-ledState = %T;
-link_id = mdaq_open(); 
+		<title>Examples</title>
+		<programlisting role="example">
+			<![CDATA[
+				disp('Press MicroDAQ F1 to stop...')
+				ledState = %T; 
+				while mdaq_key_read(1) == %F
+					// keep led blinking until F1 isn't pressed
+					mdaq_led_write(1, ~ledState);
+					sleep(100); 
+					ledState = ~ledState;
+				end
+				mdaq_led_write(1, 0)
+			 ]]>
+		</programlisting>
+	</refsection>
 
-while mdaq_key_read(link_id, 1) == %F
-	// keep led blinking until F1 isn't pressed
-	mdaq_led_write(link_id, 1, ~ledState);
-    
-	sleep(100); 
-    ledState = ~ledState;
-end
-
-mdaq_led_write(link_id, 1, 0)
-mdaq_close(link_id)
- ]]></programlisting>
-    </refsection>
-	
-  <refsection id="SeeAlso_mdaq_key_read">
+	<refsection id="SeeAlso_mdaq_key_read">
 		<title>See Also</title>
 		<simplelist type="inline">
-		<member><link linkend="mdaq_led_write">mdaq_led_write</link></member>
+			<member>
+				<link linkend="mdaq_led_write">mdaq_led_write</link>
+			</member>
 		</simplelist>
-  </refsection>
+	</refsection>
 </refentry>

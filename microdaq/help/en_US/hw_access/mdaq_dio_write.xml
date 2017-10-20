@@ -2,60 +2,68 @@
 <refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaq_dio_write">
 	<refnamediv>
 		<refname>mdaq_dio_write</refname>
-		<refpurpose>Sets MicroDAQ DIO output state</refpurpose>
+		<refpurpose>Writes DIO channel output</refpurpose>
 	</refnamediv>
-	
+
 	<refsynopsisdiv>
 		<title>Calling Sequence</title>
 		<synopsis>
-			mdaq_dio_write(dio, state);
-			mdaq_dio_write(linkID, dio, state);
+			mdaq_dio_write(dio, state)
+			mdaq_dio_write(linkID, dio, state)
 		</synopsis>
 	</refsynopsisdiv>
-	
+
 	<refsection id="Description_mdaq_dio_write">
 		<title>Description</title>
 		<para>
 			This function sets DIO channel output state. 
 			Function will return an error when DIO channel is configured as input or has alternative function (ENC1, ENC2, PWM1, PWM2, PWM3, UART). </para>
 		<para>
-			DIO Bank containing selected DIO channel should be configured as an output with mdaq_dio_dir function. Selected DIO channel should be configured as a DIO function, if ENC1, ENC2, PWM1, PWM2, PWM3 or UART function is enabled on selected DIO channel, mdaq_dio_func function should be used to disable it.
+			DIO Bank containing selected DIO channel should be configured as an output with mdaq_dio_dir function. Selected DIO channel should be configured as a DIO function, if ENC1, ENC2, PWM1, PWM2, PWM3 or UART function is enabled on selected DIO channel, <link linkend="mdaq_dio_func">mdaq_dio_func</link> function should be used to disable it.
 		</para>
 	</refsection>  
-  
+
 	<refsection id="Parameters_mdaq_dio_write">
 		<title>Parameters</title>
 		<itemizedlist>
-			<listitem><para><emphasis role="bold">linkID: </emphasis> Valid connection link ID (optional)</para></listitem>
-			<listitem><para><emphasis role="bold">dio: </emphasis> DIO pin number </para></listitem>
-			<listitem><para><emphasis role="bold">state: </emphasis> DIO pin state (%T/%F or 1/other then 1) </para></listitem>
+			<listitem>
+				<para>
+					<emphasis role="bold">linkID: </emphasis> Valid connection link ID (optional)</para>
+			</listitem>
+			<listitem>
+				<para>
+					<emphasis role="bold">dio: </emphasis> DIO pin number </para>
+			</listitem>
+			<listitem>
+				<para>
+					<emphasis role="bold">state: </emphasis> DIO pin state (%T/%F or 1/other then 1) </para>
+			</listitem>
 		</itemizedlist>
 	</refsection>
-	
+
 	<refsection>
-        <title>Examples</title>
-        <programlisting role="example"><![CDATA[
-mdaq_dio_func(1, %F); //Disable ENC1
-mdaq_dio_dir(1, 1);   //Set DIO1..8 to output direction 
+		<title>Examples</title>
+		<programlisting role="example">
+			<![CDATA[
+				mdaq_dio_write(16, 1);
+				sleep(5000);
+				mdaq_dio_write(16, 0);
+			]]>
+		</programlisting>
+	</refsection>
 
-link_id = mdaq_open(); 
-
-mdaq_dio_write(link_id, 1, 1); // set DIO1 to HIGH
-sleep(100);
-mdaq_dio_write(link_id, 1, 0); // set DIO1 to LOW
-
-mdaq_close(link_id);
- ]]></programlisting>
-    </refsection>
-	
-  <refsection id="SeeAlso_mdaq_dio_write">
+	<refsection id="SeeAlso_mdaq_dio_write">
 		<title>See Also</title>
 		<simplelist type="inline">
-		<member>
-			<member><link linkend="mdaq_dio_func">mdaq_dio_func</link></member>
-			<member><link linkend="mdaq_dio_read">mdaq_dio_read</link></member>
-			<member><link linkend="mdaq_dio_dir">mdaq_dio_dir</link></member>
-		</member>
+			<member>
+				<link linkend="mdaq_dio_func">mdaq_dio_func</link>
+			</member>
+			<member>
+				<link linkend="mdaq_dio_read">mdaq_dio_read</link>
+			</member>
+			<member>
+				<link linkend="mdaq_dio_dir">mdaq_dio_dir</link>
+			</member>
 		</simplelist>
-  </refsection>
+	</refsection>
 </refentry>

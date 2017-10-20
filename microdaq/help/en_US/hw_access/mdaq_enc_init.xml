@@ -2,50 +2,63 @@
 <refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaq_enc_init">
 	<refnamediv>
 		<refname>mdaq_enc_init</refname>
-		<refpurpose>Initializes MicroDAQ quadrature encoder (ENC) module</refpurpose>
+		<refpurpose>Initializes quadrature encoder module</refpurpose>
 	</refnamediv>
-	
+
 	<refsynopsisdiv>
 		<title>Calling Sequence</title>
 		<synopsis>
-			mdaq_enc_init(module, initValue);
-			mdaq_enc_init(linkID, module, initValue);
+			mdaq_enc_init(module, initValue)
+			mdaq_enc_init(linkID, module, initValue)
 		</synopsis>
 	</refsynopsisdiv>
-	
+
 	<refsection id="Description_mdaq_enc_init">
 		<title>Description</title>
 		<para>
-			This function initializes selected quadrature encoder module (ENC1, ENC2) with provided initial value. Quadrature encoder supports x4 mode and accepts input signals frequency up to 20MHz.
+			This function initializes selected quadrature encoder module (ENC1, ENC2) with provided initial value. 
 		</para>
 	</refsection>  
-  
+
 	<refsection id="Parameters_mdaq_enc_init">
-		<title>Parameters</title>
+		<title>Input arguments</title>
 		<itemizedlist>
-			<listitem><para><emphasis role="bold">linkID: </emphasis> Valid connection link ID (optional)</para></listitem>
-			<listitem><para><emphasis role="bold">module: </emphasis> MicroDAQ quadrature encoder module number (1 or 2) </para></listitem>
-			<listitem><para><emphasis role="bold">initValue: </emphasis> Initial position value for selected quadrature encoder module </para></listitem>
+			<listitem>
+				<para>
+					<emphasis role="bold">linkID: </emphasis> Valid connection link ID (optional)</para>
+			</listitem>
+			<listitem>
+				<para>
+					<emphasis role="bold">module: </emphasis> Quadrature encoder module (1 | 2) </para>
+			</listitem>
+			<listitem>
+				<para>
+					<emphasis role="bold">initValue: </emphasis> Initial position value for selected quadrature encoder module </para>
+			</listitem>
 		</itemizedlist>
 	</refsection>
-	
+
 	<refsection>
-        <title>Examples</title>
-        <programlisting role="example"><![CDATA[
-// mdaq_enc_init usage example
-link_id =  mdaq_open(); 
-// initialize quadrature encoder with 0 
-mdaq_enc_init(link_id, 1, 0); 
-// read quadrature encoder module 1
-mdaq_enc_read(link_id, 1)
-mdaq_close(link_id)
- ]]></programlisting>
-    </refsection>
-	
-  <refsection id="SeeAlso_mdaq_enc_init">
+		<title>Examples</title>
+		<programlisting role="example">
+			<![CDATA[
+				// mdaq_enc_init usage example
+				link_id =  mdaq_open(); 
+				// initialize quadrature encoder with 0 
+				mdaq_enc_init(link_id, 1, 0); 
+				// read quadrature encoder module 1
+				mprintf('Encoder position: %d\n', mdaq_enc_read(link_id, 1));
+				mdaq_close(link_id)
+			 ]]>
+		</programlisting>
+	</refsection>
+
+	<refsection id="SeeAlso_mdaq_enc_init">
 		<title>See Also</title>
 		<simplelist type="inline">
-		<member><link linkend="mdaq_enc_read">mdaq_enc_read</link></member>
+			<member>
+				<link linkend="mdaq_enc_read">mdaq_enc_read</link>
+			</member>
 		</simplelist>
-  </refsection>
+	</refsection>
 </refentry>
