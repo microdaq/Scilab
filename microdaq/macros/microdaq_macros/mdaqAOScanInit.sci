@@ -145,43 +145,57 @@ function  mdaqAOScanInit(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
         
         rows = [];
         row = '';
-// TODO: print info table with RANGES 
-//        dac_res = strtod(part(dac_info.resolution, 1:2))
-//        for j=1:ch_count
-//            //dac_range = diff(dac_info.c_params.c_range_value(ao_range_t(j),:))
-//            resolution = string((int(0/2^dac_res * 1000000)) / 1000);
-//            rows = [rows; string(channels(j)), 0, resolution+"mV"]
-//        end
-
-        mprintf("\nAnalog output scanning session settings:\n");
-        mprintf("\t---------------------------------\n")
-        //str2table(rows, ["Channel",  "Range", "Resolution"], 5)
-        mprintf("\t---------------------------------\n")
-
-        if scan_freq >= 1000
-            mprintf("\tScan frequency:\t\t%.3fkHz\n", scan_freq/1000);
-        else
-            mprintf("\tScan frequency:\t\t%dHz\n", scan_freq);
+        adc_res = strtod(part(adc_info.resolution, 1:2))
+        for j=1:ch_count
+            dac_range = range_tmp(j, 2) - range_tmp(j, 1); 
+            resolution = string((int(dac_range/2^adc_res * 1000000)) / 1000);
+            rangeStr="";
+            if range_tmp(j, 1) < 0 then
+                rangeStr = "±" + string(range_tmp(j, 2))+"V";
+            else 
+                rangeStr = "0-" + string(range_tmp(j, 2))+"V";
+            end
+            rows = [rows; "AO"+string(channels(j)), rangeStr, resolution+"mV"]
         end
         
+        mprintf("\nAnalog output scanning session settings:\n");
+        mprintf("\t--------------------------------------------------\n")
+        str2table(rows, ["Channel",  "Range", "Resolution"], 12)
+        mprintf("\t--------------------------------------------------\n")
+
+        if scan_freq >= 1000
+            mprintf("\tScan frequency:\t\t%.5f kHz\n", scan_freq/1000);
+        else
+            mprintf("\tScan frequency:\t\t%d Hz\n", scan_freq);
+        end
+        if 1 /scan_freq > 0.001 then
+            mprintf("\tScan period: \t\t%.5f seconds\n", 1 / scan_freq);
+        end
+        
+        if 1 /scan_freq <= 0.001 then
+            mprintf("\tScan period: \t\t%.5f ms\n", 1 / scan_freq * 1000);
+        end
         if continuous == 1 then
             mprintf("\tMode:\t\t\tStream\n"); 
         else
             mprintf("\tMode:\t\t\tPeriodic\n"); 
         end
 
-        mprintf("\tOudput data size: \t%sx%s\n", string(size(data,"c")), string(size(data,"r")))
+        mprintf("\tQueue data size: \t%sx%s\n", string(size(data,"c")), string(size(data,"r")))
         if scan_time < 0
-            mprintf("\tDuration:\t\tInf\n");
+            mprintf("\tNumber of channels:\t%d\n", ch_count)
             mprintf("\tNumber of scans:\tInf\n");
-            mprintf("\tNumber of channels:\t%d\n", ch_count)
+            mprintf("\tDuration:\t\tInf\n");
         else
-            mprintf("\tDuration:\t\t%.2fs\n", scan_time);
-            mprintf("\tNumber of scans:\t%d\n", scan_time * scan_freq);
             mprintf("\tNumber of channels:\t%d\n", ch_count)
+            mprintf("\tNumber of scans:\t%d\n", scan_time * scan_freq);
+            if scan_time == 1 
+                mprintf("\tDuration:\t\t%.2f second\n", scan_time);
+            else
+                mprintf("\tDuration:\t\t%.2f seconds\n", scan_time);
+            end
         end
-        mprintf("\t---------------------------------\n")
-
+        mprintf("\t--------------------------------------------------\n")
     end
 endfunction
 
