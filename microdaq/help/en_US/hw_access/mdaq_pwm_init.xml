@@ -8,8 +8,8 @@
 	<refsynopsisdiv>
 		<title>Calling Sequence</title>
 		<synopsis>
-			mdaqPWMInit(module, period, activeLow)
-			mdaqPWMInit(linkID, module, period, activeLow)
+			mdaqPWMInit(module, period, activeLow, dutyChannelA, dutyChannelB)
+			mdaqPWMInit(linkID, module, period, activeLow, dutyChannelA, dutyChannelB)
 		</synopsis>
 	</refsynopsisdiv>
 
@@ -39,7 +39,14 @@
 				<para>
 					<emphasis role="bold">activeLow: </emphasis> Generate inverted PWM waveform (%T/%F to enable or disable) </para>
 			</listitem>
-
+			<listitem>
+				<para>
+					<emphasis role="bold">dutyChannelA: </emphasis> initial PWM channel A duty</para>
+			</listitem>
+			<listitem>
+				<para>
+					<emphasis role="bold">dutyChannelB: </emphasis> initial PWM channel B duty</para>
+			</listitem>
 		</itemizedlist>
 	</refsection>
 
@@ -50,7 +57,7 @@
 				// mdaqPWMInit usage example
 				link_id = mdaqOpen();
 				// setup PWM1 to 1khz period and initial duty for A and B channel to 0 
-				mdaqPWMInit(link_id, 1, 1000, %F)
+				mdaqPWMInit(link_id, 1, 1000, %F, 0, 0)
 				// set PWM1 duty channel A to 25% ane channel B to 50%
 				mdaqPWMWrite(link_id, 1, 25, 50)
 				mdaqClose(link_id)

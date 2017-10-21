@@ -8,8 +8,8 @@
 	<refsynopsisdiv>
 		<title>Calling Sequence</title>
 		<synopsis>
-			mdaqAIScanInit(channels, range, isDifferential, rate, duration);
-			mdaqAIScanInit(linkID, channels, range, isDifferential, rate, duration);
+			mdaqAIScanInit(channels, range, isDifferential, rate, duration)
+			mdaqAIScanInit(linkID, channels, range, isDifferential, rate, duration)
 		</synopsis>
 	</refsynopsisdiv>
 	

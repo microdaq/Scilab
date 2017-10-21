@@ -18,7 +18,7 @@
 		<para>This function reads DIO channel input state. </para>
 		<para>
 			Function will return an error if DIO channel is configured as input or has alternative function (ENC1, ENC2, PWM1, PWM2, PWM3, UART). 
-			DIO Bank containing selected DIO channel should be configured as an output with mdaq_dio_dir function. Selected DIO channel should be configured as a DIO function, if ENC1, ENC2, PWM1, PWM2, PWM3 or UART function is enabled on selected DIO channel, <link linkend="mdaq_dio_func">mdaq_dio_func</link> function should be used to disable it.
+			DIO Bank containing selected DIO channel should be configured as an output with mdaq_dio_dir function. Selected DIO channel should be configured as a DIO function, if ENC1, ENC2, PWM1, PWM2, PWM3 or UART function is enabled on selected DIO channel, <link linkend="mdaqDIOFunc">mdaqDIOFunc</link> function should be used to disable it.
 		</para>
 	</refsection>  
 
@@ -51,11 +51,12 @@
 		<programlisting role="example">
 			<![CDATA[
 				// disable Encoder 1 function
-				mdaq_dio_func(1, %f);	
-				// read DIO1 state				
-				mprintf('DIO 1 state: %d\n', mdaqDIORead(1));
+				mdaqDIOFunc(1, %f);    
+				// read DIO1 state			
+				disp("DIO 1 state:");
+				disp(mdaqDIORead(1))
 				// enable Encoder 1 function
-				mdaq_dio_func(1, %t);
+				mdaqDIOFunc(1, %t);
 			 ]]>
 		</programlisting>
 	</refsection>
@@ -67,7 +68,7 @@
 				<link linkend="mdaqDIOWrite">mdaqDIOWrite</link>
 			</member>
 			<member>
-				<link linkend="mdaq_dio_func">mdaq_dio_func</link>
+				<link linkend="mdaqDIOFunc">mdaqDIOFunc</link>
 			</member>
 			<member>
 				<link linkend="mdaq_dio_dir">mdaq_dio_dir</link>

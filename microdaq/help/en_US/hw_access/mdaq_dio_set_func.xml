@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaq_dio_func">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaqDIOFunc">
 	<refnamediv>
-		<refname>mdaq_dio_func</refname>
+		<refname>mdaqDIOFunc</refname>
 		<refpurpose>Controls alternative DIO function</refpurpose>
 	</refnamediv>
 
 	<refsynopsisdiv>
 		<title>Calling Sequence</title>
 		<synopsis>
-			mdaq_dio_func(dioFunction, isEnabled)
-			mdaq_dio_func(linkID, dioFunction, isEnabled)
+			mdaqDIOFunc(dioFunction, isEnabled)
+			mdaqDIOFunc(linkID, dioFunction, isEnabled)
 		</synopsis>
 	</refsynopsisdiv>
 
@@ -56,7 +56,7 @@
 			<![CDATA[
 				// disable Encoder1 function - set to DIO
 				linkID = mdaqOpen(); 
-				mdaq_dio_func(linkID, 1, 0);
+				mdaqDIOFunc(linkID, 1, 0);
 				mdaqClose(linkID);
 			 ]]>
 		</programlisting>

@@ -25,7 +25,7 @@
 		<itemizedlist>
 			<listitem>
 				<para>
-					<emphasis role="bold">link_id: </emphasis> Valid connection link ID (optional) </para>
+					<emphasis role="bold">linkID: </emphasis> Valid connection link id (optional) </para>
 			</listitem>
 			<listitem>
 				<para>
@@ -49,7 +49,7 @@
 			// mdaqPWMWrite usage example
 				link_id = mdaqOpen();
 				// setup PWM1 to 1khz period and initial duty for A and B channel to 0 
-				mdaqPWMInit(link_id, 1, 1000, 0, 0, 0)
+				mdaqPWMInit(link_id, 1, 1000, %F, 0, 0)
 				// set PWM1 duty channel A to 25% ane channel B to 50%
 				mdaqPWMWrite(link_id, 1, 25, 50)
 				mdaqClose(link_id)

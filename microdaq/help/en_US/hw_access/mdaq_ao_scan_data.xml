@@ -8,8 +8,8 @@
 	<refsynopsisdiv>
 		<title>Calling Sequence</title>
 		<synopsis>
-			result = mdaqAOScanData(data, opt)
-			result = mdaqAOScanData(linkID, data, opt)
+			result = mdaqAOScanData(channels, data, opt)
+			result = mdaqAOScanData(linkID, channels data, opt)
 		</synopsis>
 	</refsynopsisdiv>
 
@@ -39,7 +39,7 @@
 		</para> 
 
 		<para>
-			This function queues data to be output. A function call has to be preceded with <link linkend="mdaqAOScanInit">mdaqAOScanInit()</link>. Function queues data in the stream and periodic mode. The data argument must have the same size as the data argument in function <link linkend="mdaqAOScanInit">mdaqAOScanInit()</link>. The <link linkend="mdaqAOScanInit">mdaqAOScanInit()</link> perform initial data queue operation. The periodic mode uses a single buffer which data is output from. When the end of the buffer is reached, data index is switched to the beginning of the buffer. The <link linkend="mdaqAOScanData">mdaqAOScanData()</link> function overwrites whole buffer with new data. Depending on the scanning mode opt argument has a different meaning. When the periodic mode is used opt argument allows controlling data index after queuing data. When opt=%T data index will be set to the beginning of the buffer. If opt=%F queue operation doesn't affect data index. 
+			This function queues data to be output. A function call has to be preceded with <link linkend="mdaqAOScanInit">mdaqAOScanInit()</link>. Function queues data in the stream and periodic mode and its behavior depends on selected scan mode. In periodic mode, the function can queue data for every channel combination from used channels (defined in <link linkend="mdaqAOScanInit">mdaqAOScanInit()</link>). If e.g. in scanning session four channels are used: 1, 2, 3, 4 <link linkend="mdaqAOScanData">mdaqAOScanData()</link> can be called to queue data for 1 or 4 or 1,2 or 1,4, or 3,4 etc. channel or queue data for all selected channels. In periodic mode channels argument can contain every combination of used channels, while in stream mode channel argument must be the same as used in <link linkend="mdaqAOScanInit">mdaqAOScanInit()</link>. The data argument in stream mode must have the same size as the data argument in function <link linkend="mdaqAOScanInit">mdaqAOScanInit()</link>. The <link linkend="mdaqAOScanInit">mdaqAOScanInit()</link> perform initial data queue operation. The periodic mode uses a single buffer which data is output from. When the end of the buffer is reached, data index is switched to the beginning of the buffer. The <link linkend="mdaqAOScanData">mdaqAOScanData()</link> function overwrites the whole buffer with new data. Depending on the scanning mode opt argument has a different meaning. When the periodic mode is used opt argument allows controlling data index after queuing data. When opt=%T data index will be set to the beginning of the buffer. If opt=%F queue operation doesn't affect data index. 
 		</para>
 		<para>
 			<inlinemediaobject>

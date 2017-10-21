@@ -19,7 +19,7 @@
 			This function sets DIO channel output state. 
 			Function will return an error when DIO channel is configured as input or has alternative function (ENC1, ENC2, PWM1, PWM2, PWM3, UART). </para>
 		<para>
-			DIO Bank containing selected DIO channel should be configured as an output with mdaq_dio_dir function. Selected DIO channel should be configured as a DIO function, if ENC1, ENC2, PWM1, PWM2, PWM3 or UART function is enabled on selected DIO channel, <link linkend="mdaq_dio_func">mdaq_dio_func</link> function should be used to disable it.
+			DIO Bank containing selected DIO channel should be configured as an output with mdaq_dio_dir function. Selected DIO channel should be configured as a DIO function, if ENC1, ENC2, PWM1, PWM2, PWM3 or UART function is enabled on selected DIO channel, <link linkend="mdaqDIOFunc">mdaqDIOFunc</link> function should be used to disable it.
 		</para>
 	</refsection>  
 
@@ -56,7 +56,7 @@
 		<title>See Also</title>
 		<simplelist type="inline">
 			<member>
-				<link linkend="mdaq_dio_func">mdaq_dio_func</link>
+				<link linkend="mdaqDIOFunc">mdaqDIOFunc</link>
 			</member>
 			<member>
 				<link linkend="mdaqDIORead">mdaqDIORead</link>

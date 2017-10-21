@@ -9,7 +9,7 @@
 		<title>Calling Sequence</title>
 		<synopsis>
 			data = mdaqAIRead(channels, range, isDifferential)
-			data = mdaqAIRead(linkId, channels, range, isDifferential)
+			data = mdaqAIRead(linkID, channels, range, isDifferential)
 		</synopsis>
 	</refsynopsisdiv>
 
@@ -33,7 +33,7 @@
 				<para>
 					<emphasis role="bold">channels: </emphasis> Scalar or vector with channels to be read</para>
 				<para>
-		Analog input channel selection in differential mode: 
+					Analog input channel selection in differential mode: 
 					<simplelist type="inline">
 						<member>Channel 1 - AI1(+), AI2(-)</member>
 						<member>Channel 2 - AI3(+), AI4(-)</member>
@@ -48,11 +48,13 @@
 			</listitem>
 			<listitem>
 				<para>
-					<emphasis role="bold">range: </emphasis> Range matrix - single row matrix e.g. [-10,10] sets -10 to 10V input range which will be used for all channels. If multi-range used, row number must match selected channels e.g. range matrix for 3 channels [-10,10; -5,5; -2,2] </para>
+					<emphasis role="bold">range: </emphasis> Range matrix - single row matrix e.g. [-10,10] sets -10 to 10V input range which will be used for all channels. If multi-range used, row number must match selected channels e.g. range matrix for 3 channels [-10,10; -5,5; -2,2] 
+				</para>
 			</listitem>
 			<listitem>
 				<para>
-					<emphasis role="bold">isDifferential: </emphasis> Scalar or vector with measurement mode settings: %T - differential, %F - single-ended mode</para>
+					<emphasis role="bold">isDifferential: </emphasis> Scalar or vector with measurement mode settings: %T - differential, %F - single-ended mode
+				</para>
 			</listitem>
 		</itemizedlist>
 	</refsection>
@@ -62,7 +64,8 @@
 		<itemizedlist>
 			<listitem>
 				<para>
-					<emphasis role="bold">data:  </emphasis> Values of acquired data</para>
+					<emphasis role="bold">data:  </emphasis> Values of acquired data
+				</para>
 			</listitem>
 		</itemizedlist>
 	</refsection>
