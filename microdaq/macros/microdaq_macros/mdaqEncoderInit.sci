@@ -10,7 +10,7 @@ function mdaqEncoderInit(arg1, arg2, arg3)
         init_value = arg3; 
 
         if link_id < 0 then
-            disp("ERROR: Invalid link ID!")
+            error("Invalid link ID!")
             return;
         end
     end
@@ -19,10 +19,10 @@ function mdaqEncoderInit(arg1, arg2, arg3)
         mprintf("Description:\n");
         mprintf("\tInitializes encoder module\n");
         mprintf("Usage:\n");
-        mprintf("\tmdaqEncoderInit(link_id, encoder, init_value);\n")
-        mprintf("\tlink_id - connection id returned by mdaqOpen() (OPTIONAL)\n");
-        mprintf("\tencoder - encoder module (1 or 2)\n");
-        mprintf("\tinit_value - initial encoder value\n");
+        mprintf("\tmdaqEncoderInit(linkID, module, initValue)\n")
+        mprintf("\tlinkID - connection id returned by mdaqOpen() (OPTIONAL)\n");
+        mprintf("\tmodule - encoder module (1 | 2)\n");
+        mprintf("\tinitValue - initial position value\n");
         return;
     end
 

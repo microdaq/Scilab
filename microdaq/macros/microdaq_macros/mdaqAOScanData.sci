@@ -24,7 +24,7 @@ function mdaqAOScanData(arg1, arg2, arg3, arg4)
         mprintf("Description:\n");
         mprintf("\tQueues data to be output\n");
         mprintf("Usage:\n");
-        mprintf("\tmdaqAOScanData(linkID, channels, data, opt);\n")
+        mprintf("\tresult = mdaqAOScanData(linkID, channels, data, opt)\n")
         mprintf("\tlinkID - connection id returned by mdaqOpen() (OPTIONAL)\n");
         mprintf("\tchannels - analog output channels to write\n");
         mprintf("\tdata - data to be output\n");

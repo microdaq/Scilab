@@ -15,7 +15,7 @@ function [data] = mdaqMemRead(arg1, arg2, arg3, arg4)
         vector_size = arg4;
 
         if link_id < 0 then
-            disp("ERROR: Invalid link ID!")
+            error("Invalid link ID!")
             return;
         end
     end
@@ -24,33 +24,29 @@ function [data] = mdaqMemRead(arg1, arg2, arg3, arg4)
         mprintf("Description:\n");
         mprintf("\tReads MicroDAQ volatile memory\n");
         mprintf("Usage:\n");
-        mprintf("\tmdaqMemRead(link_id, start, size, vec_size);\n")
-        mprintf("\tlink_id - connection id returned by mdaqOpen() (OPTIONAL)\n");
+        mprintf("\tdata = mdaqMemRead(linkID, start, size, vectorSize)\n")
+        mprintf("\tlinkID - connection id returned by mdaqOpen() (OPTIONAL)\n");
         mprintf("\tstart - memory start index\n");
         mprintf("\tsize - total data size to be read\n");
-        mprintf("\tvec_size - MEM write block vector size\n");
+        mprintf("\tvectorSize - MEM write block vector size\n");
         return;
     end
 
     if  start_index < 1 | start_index > 4000000 then
-        disp("ERROR: Incorrect start index - use values from 1 to 4000000!")
-        return;
+        error("Incorrect start index - use values from 1 to 4000000!")
     end
 
     if data_size < 1 then
-        disp("ERROR: Incorrect data size!");
-        return;
+        error("ERROR: Incorrect data size!");
     end
 
     if vector_size < 1 then
-        disp("ERROR: Incorrect data vector size!");
-        return;
+		error("Incorrect data vector size!");
     end
 
     size_mod = modulo(data_size, vector_size)
     if size_mod <> 0  then
-        disp("ERROR: Incorrect data and vector size!");
-        return;
+        error("Incorrect data and vector size!");
     end
 
     row_size = vector_size;

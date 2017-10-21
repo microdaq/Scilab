@@ -27,12 +27,12 @@ function [data, result] = mdaqAIScan(arg1, arg2, arg3)
 
     if argn(2) > 3 | argn(2) < 2 then
         mprintf("Description:\n");
-        mprintf("\tStarts scanning and reads scan data\n");
+        mprintf("\tStarts scanning operation and reads acquired data\n");
         mprintf("Usage:\n");
-        mprintf("\tmdaqAIScan(link_id, scan_count, blocking);\n")
-        mprintf("\tlink_id - connection id returned by mdaqOpen() (OPTIONAL)\n");
-        mprintf("\tscan_count - number of scans to read\n");
-        mprintf("\tblocking - blocking or non-blocking read (%%T/%%F)\n");
+        mprintf("\t[data, result] = mdaqAIScan(linkID, scanCount, isBlocking\n")
+        mprintf("\tlinkID - connection id returned by mdaqOpen() (OPTIONAL)\n");
+        mprintf("\tscanCount - number of scans to read, when 0 - start acquisition only\n");
+        mprintf("\tisBlocking - blocking or non-blocking read (%%T/%%F)\n");
         return;
     end
     

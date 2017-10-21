@@ -11,8 +11,7 @@ function mdaqMemWrite(arg1, arg2, arg3)
         data = arg3; 
 
         if link_id < 0 then
-            disp("ERROR: Invalid link ID!")
-            return;
+            error("Invalid link ID!")
         end
     end
 
@@ -20,23 +19,21 @@ function mdaqMemWrite(arg1, arg2, arg3)
         mprintf("Description:\n");
         mprintf("\tWrites MicroDAQ memory\n");
         mprintf("Usage:\n");
-        mprintf("\tmdaqMemWrite(link_id, start, data);\n")
-        mprintf("\tlink_id - connection id returned by mdaqOpen() (OPTIONAL)\n");
-        mprintf("\tstart - memory start index\n");
+        mprintf("\tmdaqMemWrite(linkID, index, data)\n")
+        mprintf("\tlinkID - connection id returned by mdaqOpen() (OPTIONAL)\n");
+        mprintf("\tindex - memory start index\n");
         mprintf("\tdata - data to be written\n");
         return;
     end
 
     if  start_idx < 1 | start_idx > 4000000 then
-        disp("ERROR: Incorrect start index - use values from 1 to 4000000!")
-        return
+        error("Incorrect start index - use values from 1 to 4000000!")
     end
 
     if argn(2) == 2 then
         link_id = mdaqOpen();
         if link_id < 0 then
-            disp("ERROR: Unable to connect to MicroDAQ device!");
-            return; 
+            error("Unable to connect to MicroDAQ device!");
         end
     end
     

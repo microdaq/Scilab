@@ -8,7 +8,7 @@ function state = mdaqDIORead(arg1, arg2)
         link_id = arg1;   
         dio = arg2; 
         if link_id < 0 then
-            disp("ERROR: Invalid link ID!")
+            error("Invalid link ID!")
             return;
         end
     end
@@ -17,15 +17,9 @@ function state = mdaqDIORead(arg1, arg2)
         mprintf("Description:\n");
         mprintf("\tReads DIO state\n");
         mprintf("Usage:\n");
-        mprintf("\tmdaqDIORead(link_id, dio);\n")
-        mprintf("\tlink_id - connection id returned by mdaqOpen() (OPTIONAL)\n");
+        mprintf("\tstate = mdaqDIORead(linkID, dio)\n")
+        mprintf("\tlinkID - connection id returned by mdaqOpen() (OPTIONAL)\n");
         mprintf("\tdio - DIO number\n");
-        return;
-    end
-
-    dio_count = mdaq_get_dio_config(); 
-    if dio > dio_count | dio < 1 then
-        disp("ERROR: Wrong DIO number!")
         return;
     end
 

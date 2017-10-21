@@ -24,10 +24,10 @@ function mdaqAOWrite(arg1, arg2, arg3, arg4)
         dac_info = %microdaq.private.dac_info;
         if argn(2) > 4 | argn(2) < 3 then
             mprintf("Description:\n");
-            mprintf("\tWrites data to MicroDAQ analog outputs\n");
+            mprintf("\tWrites analog outputs\n");
             mprintf("Usage:\n");
-            mprintf("\tmdaqAOWrite(link_id, channels, range, data);\n")
-            mprintf("\tlink_id - connection id returned by mdaqOpen() (OPTIONAL)\n");
+            mprintf("\tmdaqAOWrite(linkID, channels, range, data)\n")
+            mprintf("\tlinkID - connection id returned by mdaqOpen() (OPTIONAL)\n");
             mprintf("\tchannels - analog output channels \n");
             mprintf("\trange - analog output range matrix e.g.\n");
             mprintf("\t        [-10,10] - single range argument applied for all used channels\n");

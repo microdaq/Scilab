@@ -37,17 +37,15 @@ function  mdaqAOScanInit(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
         mprintf("Description:\n");
         mprintf("\Initiates AO scanning session\n");
         mprintf("Usage:\n");
-        mprintf("\tmdaqAOScanInit(linkId, channels, data, range, isContinuous, scanFrequency, duration);\n")
-        mprintf("\tlinkId - connection id (optional)\n");
+        mprintf("\tmdaqAOScanInit(linkID, channels, initialData, range, isStreamMode, rate, duration\n")
+        mprintf("\tlinkID - connection id (optional)\n");
         mprintf("\tchannels - analog output channels to write\n");
-        mprintf("\tdata - output data\n");
-        mprintf("\trange - analog output range\n");
-            for i = 1:size(dac_info.c_params.c_range_desc, "r")
-                mprintf("\t    %s\n", string(i) + ": " + dac_info.c_params.c_range_desc(i));
-            end
-           
-        mprintf("\tisContinuous - mode of operation (%%T - continuous, %%F - periodic)\n");
-        mprintf("\tscanFrequency - analog output scan frequency\n");
+        mprintf("\tinitialData - output data\n");
+		mprintf("\trange - analog output range matrix e.g.\n");
+		mprintf("\t        [-10,10] - single range argument applied for all used channels\n");
+		mprintf("\t        [-10,10; -5,5] - multi-range argument for two channels\n");
+        mprintf("\tisStreamMode - mode of operation (%%T - stream, %%F - periodic)\n");
+        mprintf("\trate - scans per second rate (scan frequency)\n");
         mprintf("\tduration - analog output scan duration in seconds\n");
             return;
         end

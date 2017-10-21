@@ -30,12 +30,14 @@ function  mdaqAIScanInit(arg1, arg2, arg3, arg4, arg5, arg6)
             mprintf("Description:\n");
             mprintf("\tInit AI scan\n");
             mprintf("Usage:\n");
-            mprintf("\tmdaqAIScanInit(link_id, channels, range, mode, frequency, duration);\n");                     mprintf("\tlink_id - connection id returned by mdaqOpen() (OPTIONAL)\n");
+            mprintf("\tmdaqAIScanInit(linkID, channels, range, isDifferential, rate, duration)\n");
+			mprintf("\tlinkID - connection id returned by mdaqOpen() (OPTIONAL)\n");
             mprintf("\tchannels - analog input channels to read\n");
             mprintf("\trange - analog input range matrix e.g.\n");
             mprintf("\t        [-10,10] - single range argument applied for all used channels\n");
             mprintf("\t        [-10,10;-5,5] - multi-range argument for two channels\n");
-            mprintf("\tfrequency - scan frequency\n");
+			mprintf("\tisDifferential - scalar or vector with measurement mode settings: %%T - differential, %%F - single-ended mode\n");
+            mprintf("\trate - scans per second rate (scan frequency)\n");
             mprintf("\tduration - scan duration in seconds\n");
             return;
         end

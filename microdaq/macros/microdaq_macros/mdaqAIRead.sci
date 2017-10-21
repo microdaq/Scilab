@@ -24,15 +24,15 @@ function data = mdaqAIRead(arg1, arg2, arg3, arg4)
         adc_info = %microdaq.private.adc_info;
         if argn(2) > 4 | argn(2) < 3 then
             mprintf("Description:\n");
-            mprintf("\tReads MicroDAQ analog inputs\n");
+            mprintf("\tReads analog inputs\n");
             mprintf("Usage:\n");
-            mprintf("\tmdaqAIRead(link_id, channels, range, mode);\n")
-            mprintf("\tlink_id - connection id returned by mdaqOpen() (OPTIONAL)\n");
+            mprintf("\tdata = mdaqAIRead(linkId, channels, range, isDifferential)\n")
+            mprintf("\tlinkId - connection id returned by mdaqOpen() (OPTIONAL)\n");
             mprintf("\tchannels - scalar or vector with channel numbers\n");
             mprintf("\trange - analog input range matrix e.g.\n");
             mprintf("\t        [-10,10] - single range argument applied for all used channels\n");
-            mprintf("\t        [-10,10;-5,5] - multi-range argument for two channels\n");
-            mprintf("\tmode - scalar or vector defining measurement type (%%T - differential, %%F - single-ended)\n");
+            mprintf("\t        [-10,10; -5,5] - multi-range argument for two channels\n");
+            mprintf("\tisDifferential - scalar or vector defining measurement type (%%T - differential, %%F - single-ended)\n");
             return;
         end
     else

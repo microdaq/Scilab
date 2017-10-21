@@ -1,9 +1,8 @@
-function mdaq_dio_dir(arg1, arg2, arg3)
+function mdaqDIODir(arg1, arg2, arg3)
 
     global %microdaq;
     if %microdaq.private.mdaq_hwid(1) <> 1100 then
-        disp("ERROR: This function is not supported.")
-        return;
+        error("This function is not supported on this device.")
     end
     
     if argn(2) == 2 then
@@ -17,8 +16,7 @@ function mdaq_dio_dir(arg1, arg2, arg3)
         direction = arg3; 
 
         if link_id < 0 then
-            disp("ERROR: Invalid link ID!")
-            return;
+            error("Invalid link ID!")
         end
     end
 
@@ -26,8 +24,8 @@ function mdaq_dio_dir(arg1, arg2, arg3)
         mprintf("Description:\n");
         mprintf("\tSets MicroDAQ DIO bank direction\n");
         mprintf("Usage:\n");
-        mprintf("\tmdaq_dio_dir(link_id, bank, direction);\n")
-        mprintf("\tlink_id - connection id returned by mdaqOpen() (OPTIONAL)\n");
+        mprintf("\tmdaqDIODir(linkID, bank, direction);\n")
+        mprintf("\tlinkID - connection ID returned by mdaqOpen() (OPTIONAL)\n");
         mprintf("\tbank - bank number (1-4)\n");
         mprintf("\tdirection - bank direction (0 - input, 1 - output)\n");
         return;

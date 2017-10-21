@@ -10,18 +10,18 @@ function state = mdaqKeyRead(arg1, arg2)
         func_key = arg2; 
 
         if link_id < 0 then
-            disp("ERROR: Invalid link ID!")
+            error("Invalid link ID!")
             return;
         end
     end
 
     if argn(2) > 2 | argn(2) < 1 | func_key > 2 | func_key < 1 then
         mprintf("Description:\n");
-        mprintf("\tReads MicroDAQ function buttons F1 and F2\n");
+        mprintf("\tReads MicroDAQ function key state\n");
         mprintf("Usage:\n");
-        mprintf("\tmdaqKeyRead(link_id, key);\n")
-        mprintf("\tlink_id - connection id returned by mdaqOpen() (OPTIONAL)\n");
-        mprintf("\tencoder - function key number (1 or 2)\n");
+        mprintf("\tstate = mdaqKeyRead(linkID, functionKey)\n")
+        mprintf("\tlinkID - connection id returned by mdaqOpen() (OPTIONAL)\n");
+        mprintf("\tfunctionKey - function key number (1 | 2)\n");
         return;
     end
     

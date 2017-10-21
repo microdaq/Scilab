@@ -11,7 +11,7 @@ function mdaqLEDWrite(arg1, arg2, arg3)
         state = arg3; 
 
         if link_id < 0 then
-            disp("ERROR: Invalid link ID!")
+            error("Invalid link ID!")
             return;
         end
     end
@@ -20,8 +20,8 @@ function mdaqLEDWrite(arg1, arg2, arg3)
         mprintf("Description:\n");
         mprintf("\tSets MicroDAQ D1 and D2 LED state\n");
         mprintf("Usage:\n");
-        mprintf("\tmdaqLEDWrite(link_id, led, state);\n")
-        mprintf("\tlink_id - connection id returned by mdaqOpen() (OPTIONAL)\n");
+        mprintf("\tmdaqLEDWrite(linkID, led, state);\n")
+        mprintf("\tlinkID - connection id returned by mdaqOpen() (OPTIONAL)\n");
         mprintf("\tled - LED number (1 or 2)\n");
         mprintf("\tstate - LED state (%%T or %%F)\n");
         return;

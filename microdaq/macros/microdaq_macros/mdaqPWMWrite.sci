@@ -14,25 +14,24 @@ function mdaqPWMWrite(arg1, arg2, arg3, arg4)
         channel_b = arg4; 
 
         if link_id < 0 then
-            disp("ERROR: Invalid link ID!")
-            return;
+            error("Invalid link ID!")
         end
     end
     
     if argn(2) > 4 | argn(2) < 3 | module > 3 | module < 1 then
         mprintf("Description:\n");
-        mprintf("\tSets MicroDAQ PWM outputs\n");
+        mprintf("\tWrites PWM duty\n");
         mprintf("Usage:\n");
-        mprintf("\tmdaqPWMWrite(link_id, module, duty_a, duty_b);\n")
-        mprintf("\tlink_id - connection id returned by mdaqOpen() (OPTIONAL)\n");
-        mprintf("\tmodule - PWM module (1, 2 or 3)\n");
-        mprintf("\tduty_a - PWM channel A duty (0-100)\n");
-        mprintf("\tduty_b - PWM channel B duty (0-100)\n");
+        mprintf("\tmdaqPWMWrite(linkID, module, dutyChannelA, dutyChannelB)\n")
+        mprintf("\tlinkID - connection id returned by mdaqOpen() (OPTIONAL)\n");
+        mprintf("\tmodule - PWM module (1|2|3)\n");
+        mprintf("\tdutyChannelA - PWM channel A duty (0-100)\n");
+        mprintf("\tdutyChannelB - PWM channel B duty (0-100)\n");
         return;
     end
 
     if channel_a > 100 | channel_a < 0 then
-        disp("WARNING: Channel A duty outside the limit (0-100)!");
+        disp("WARNING: Channel A duty out of range (0-100)!");
         if channel_a > 100 then
             channel_a = 100;
         end
@@ -42,7 +41,7 @@ function mdaqPWMWrite(arg1, arg2, arg3, arg4)
     end
 
     if channel_b > 100 | channel_b < 0 then
-        disp("WARNING: Channel B duty outside the limit (0-100)!");
+        disp("WARNING: Channel B duty out of range (0-100)!");
         if channel_b > 100 then
             channel_b = 100;
         end

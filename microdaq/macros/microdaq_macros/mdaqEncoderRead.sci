@@ -11,8 +11,7 @@ function [position, direction] = mdaqEncoderRead(arg1, arg2)
         enc = arg2; 
 
         if link_id < 0 then
-            disp("ERROR: Invalid link ID!")
-            return;
+            error("Invalid link ID!")
         end
     end
     
@@ -20,9 +19,9 @@ function [position, direction] = mdaqEncoderRead(arg1, arg2)
         mprintf("Description:\n");
         mprintf("\tReads encoder position and motion direction\n");
         mprintf("Usage:\n");
-        mprintf("\tmdaqEncoderRead(link_id, encoder);\n")
-        mprintf("\tlink_id - connection id returned by mdaqOpen() (OPTIONAL)\n");
-        mprintf("\tencoder - encoder module (1 or 2)\n");
+        mprintf("\t[position, direction] = mdaqEncoderRead(linkID, module)\n")
+        mprintf("\tlinkID - connection id returned by mdaqOpen() (OPTIONAL)\n");
+        mprintf("\tmodule - encoder module (1 | 2)\n");
         return;
     end
     

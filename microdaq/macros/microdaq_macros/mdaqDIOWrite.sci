@@ -20,16 +20,10 @@ function mdaqDIOWrite(arg1, arg2, arg3)
         mprintf("Description:\n");
         mprintf("\tWrites DIO state\n");
         mprintf("Usage:\n");
-        mprintf("\tmdaqDIOWrite(link_id, dio, state);\n")
-        mprintf("\tlink_id - connection id returned by mdaqOpen() (OPTIONAL)\n");
+        mprintf("\tmdaqDIOWrite(linkID, dio, state);\n")
+        mprintf("\tlinkID - connection id returned by mdaqOpen() (OPTIONAL)\n");
         mprintf("\tdio - DIO number\n");
         mprintf("\tstate - DIO output state\n");
-        return;
-    end
-
-    dio_count = mdaq_get_dio_config();
-    if dio > dio_count | dio < 1 then
-        disp("ERROR: Wrong DIO number!")
         return;
     end
 

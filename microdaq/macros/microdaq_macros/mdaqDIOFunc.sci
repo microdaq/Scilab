@@ -11,8 +11,7 @@ function mdaqDIOFunc(arg1, arg2, arg3)
         enable = arg3; 
 
         if link_id < 0 then
-            disp("ERROR: Invalid link ID!")
-            return;
+            error("Invalid link ID!")
         end
     end
     
@@ -20,16 +19,16 @@ function mdaqDIOFunc(arg1, arg2, arg3)
         mprintf("Description:\n");
         mprintf("\tSets DIO alternative function\n");
         mprintf("Usage:\n");
-        mprintf("\tmdaqDIOFunc(link_id, func, enable);\n")
-        mprintf("\tlink_id - connection id returned by mdaqOpen() (OPTIONAL)\n");
-        mprintf("\tfunc - DIO alternative function\n");
+        mprintf("\tmdaqDIOFunc(linkID, dioFunction, isEnabled);\n")
+        mprintf("\tlinkID - connection id returned by mdaqOpen() (OPTIONAL)\n");
+        mprintf("\tdioFunction - DIO alternative function\n");
         mprintf("\t\t1 - ENC1: DIO1 - Channel A, DIO2 - Channel B (enabled by default)\n");
         mprintf("\t\t2 - ENC2: DIO3 - Channel A, DIO4 - Channel B (enabled by default)\n");
         mprintf("\t\t3 - PWM1: DIO10 - Channel A, DIO11 - Channel B (enabled by default)\n");
         mprintf("\t\t4 - PWM2: DIO12 - Channel A, DIO13 - Channel B (enabled by default)\n");
         mprintf("\t\t5 - PWM3: DIO14 - Channel A, DIO15 - Channel B (enabled by default)\n");
         mprintf("\t\t6 - UART: DIO8 - Rx, DIO9 - Tx (enabled by default)\n");
-        mprintf("\tenable - function state (%%T/%%F to enable/disable function)\n");
+        mprintf("\tisEnabled - function state (%%T/%%F to enable/disable function)\n");
         return;
     end
 
