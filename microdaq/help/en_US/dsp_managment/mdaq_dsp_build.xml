@@ -6,9 +6,9 @@ xmlns:ns5="http://www.w3.org/1999/xhtml"
 xmlns:mml="http://www.w3.org/1998/Math/MathML" 
 xmlns:db="http://docbook.org/ns/docbook" 
 version="5.0-subset Scilab" 
-xml:id="mdaq_dsp_build">
+xml:id="mdaqDSPBuild">
   <refnamediv>
-    <refname>mdaq_dsp_build</refname>
+    <refname>mdaqDSPBuild</refname>
     <refpurpose>Build model for MicroDAQ DSP</refpurpose>
   </refnamediv>
   <refsynopsisdiv>
@@ -16,14 +16,14 @@ xml:id="mdaq_dsp_build">
 	<para>This function builds DSP executable from provided Xcos model.</para>
     <title>Calling Sequence</title>
     <synopsis>
-      mdaq_dsp_build(path);
-	  mdaq_dsp_build(connection_id,path);
+      mdaqDSPBuild(path);
+	  mdaqDSPBuild(connection_id,path);
     </synopsis>
   </refsynopsisdiv>
   <refsection id="Parameters___FUNC_NAME__">
     <title>Arguments</title>
     <itemizedlist>
-	    <listitem><para><emphasis role="bold">connection_id : </emphasis> Connection ID returned by mdaq_open() (OPTIONAL)</para></listitem>
+	    <listitem><para><emphasis role="bold">connection_id : </emphasis> Connection ID returned by mdaqOpen() (OPTIONAL)</para></listitem>
 	    <listitem><para><emphasis role="bold">path : </emphasis> Xcos model path</para></listitem>
     </itemizedlist>
   </refsection>
@@ -38,16 +38,16 @@ TIME = 20;
 FREQ = 5000;
 
 // Build DSP binary from Xcos model
-mdaq_dsp_build(mdaq_toolbox_path() + filesep() + "examples" + filesep() +"fft_demo.zcos");
+mdaqDSPBuild(mdaqToolboxPath() + filesep() + "examples" + filesep() +"fft_demo.zcos");
 
 // Start DSP application
-result = mdaq_dsp_start('fft_demo_scig\fft_demo.out', 1.0/FREQ);
+result = mdaqDSPStart('fft_demo_scig\fft_demo.out', 1.0/FREQ);
 if result < 0 then
     abort;
 end
 
 // Register signal ID and signal size
-result = mdaq_dsp_signal(1, 1);
+result = mdaqDSPSignal(1, 1);
 if result < 0 then
     disp("ERROR: unable to register signal");
     abort;
@@ -61,7 +61,7 @@ sample_count = FREQ/10;
 fig = figure("Figure_name","MicroDAQ FFT demo");
 
 for i=1:(TIME*10)
-    [result, s] = mdaq_dsp_signal_read(sample_count);
+    [result, s] = mdaqDSPSignalRead(sample_count);
     if result < 0 then
         disp("ERROR: unable to read signal data!");
         abort;
@@ -91,7 +91,7 @@ for i=1:(TIME*10)
 end
 
 // Stop DSP execution
-mdaq_dsp_stop();
+mdaqDSPStop();
 
 // Close plot
 mprintf("\nFFT demo has been stopped.");
@@ -103,10 +103,10 @@ end
   <refsection id="SeeAlso___FUNC_NAME__">
     <title>See Also</title>
     <simplelist type="inline">
-     <member><link linkend="mdaq_dsp_start">mdaq_dsp_start</link> : Start DSP execution </member>
-	  <member><link linkend="mdaq_dsp_stop">mdaq_dsp_stop</link> : Terminate DSP execution </member>
-	  <member><link linkend="mdaq_dsp_signal_read">mdaq_dsp_signal_read</link> : Read DSP signal data </member>
-	  <member><link linkend="mdaq_dsp_signal">mdaq_dsp_signal</link> : Register DSP Signal ID </member>
+     <member><link linkend="mdaqDSPStart">mdaqDSPStart</link> : Start DSP execution </member>
+	  <member><link linkend="mdaqDSPStop">mdaqDSPStop</link> : Terminate DSP execution </member>
+	  <member><link linkend="mdaqDSPSignalRead">mdaqDSPSignalRead</link> : Read DSP signal data </member>
+	  <member><link linkend="mdaqDSPSignal">mdaqDSPSignal</link> : Register DSP Signal ID </member>
       <member>
         <link type="scilab" linkend="scilab.help/sum">Link to the Scilab help page</link>
       </member>

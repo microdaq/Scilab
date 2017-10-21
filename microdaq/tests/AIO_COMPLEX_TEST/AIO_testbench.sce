@@ -1,7 +1,7 @@
 clc;
-mdaq_close();
+mdaqClose();
 if exists("mdaq_ao_test") == 0 then
-exec(mdaq_toolbox_path() + "tests\AIO_COMPLEX_TEST\mdaq_aio_test_utils.sci");
+exec(mdaqToolboxPath() + "tests\AIO_COMPLEX_TEST\mdaq_aio_test_utils.sci");
 end 
 
 SCRIPT_MODE = 0;

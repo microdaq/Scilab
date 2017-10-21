@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaq_enc_init">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaqEncoderInit">
 	<refnamediv>
-		<refname>mdaq_enc_init</refname>
+		<refname>mdaqEncoderInit</refname>
 		<refpurpose>Initializes quadrature encoder module</refpurpose>
 	</refnamediv>
 
 	<refsynopsisdiv>
 		<title>Calling Sequence</title>
 		<synopsis>
-			mdaq_enc_init(module, initValue)
-			mdaq_enc_init(linkID, module, initValue)
+			mdaqEncoderInit(module, initValue)
+			mdaqEncoderInit(linkID, module, initValue)
 		</synopsis>
 	</refsynopsisdiv>
 
-	<refsection id="Description_mdaq_enc_init">
+	<refsection id="Description_mdaqEncoderInit">
 		<title>Description</title>
 		<para>
 			This function initializes selected quadrature encoder module (ENC1, ENC2) with provided initial value. 
 		</para>
 	</refsection>  
 
-	<refsection id="Parameters_mdaq_enc_init">
+	<refsection id="Parameters_mdaqEncoderInit">
 		<title>Input arguments</title>
 		<itemizedlist>
 			<listitem>
@@ -42,22 +42,22 @@
 		<title>Examples</title>
 		<programlisting role="example">
 			<![CDATA[
-				// mdaq_enc_init usage example
-				link_id =  mdaq_open(); 
+				// mdaqEncoderInit usage example
+				link_id =  mdaqOpen(); 
 				// initialize quadrature encoder with 0 
-				mdaq_enc_init(link_id, 1, 0); 
+				mdaqEncoderInit(link_id, 1, 0); 
 				// read quadrature encoder module 1
-				mprintf('Encoder position: %d\n', mdaq_enc_read(link_id, 1));
-				mdaq_close(link_id)
+				mprintf('Encoder position: %d\n', mdaqEncoderRead(link_id, 1));
+				mdaqClose(link_id)
 			 ]]>
 		</programlisting>
 	</refsection>
 
-	<refsection id="SeeAlso_mdaq_enc_init">
+	<refsection id="SeeAlso_mdaqEncoderInit">
 		<title>See Also</title>
 		<simplelist type="inline">
 			<member>
-				<link linkend="mdaq_enc_read">mdaq_enc_read</link>
+				<link linkend="mdaqEncoderRead">mdaqEncoderRead</link>
 			</member>
 		</simplelist>
 	</refsection>

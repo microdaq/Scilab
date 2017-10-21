@@ -13,12 +13,12 @@ disp("Press F1 or F2 to increase/decrease sine waveform noise");
 disp("Hold F1 and F2 in order to terminate script")
 
 // connect to MicroDAQ
-con = mdaq_open();
+con = mdaqOpen();
 
 while(i < data_size & finish == %F )
     // read F1 and F2 key state
-    f1 = mdaq_key_read(con, 1);
-    f2 = mdaq_key_read(con, 2);
+    f1 = mdaqKeyRead(con, 1);
+    f2 = mdaqKeyRead(con, 2);
 
     // when F1 pressed increase noise amplitude
     if f1 then
@@ -40,11 +40,11 @@ while(i < data_size & finish == %F )
     noise = amp * (rand() - 0.5);
 
     // set parameters 
-    mdaq_mem_set(con, 1, data * sin_data(i));
-    mdaq_mem_set(con, 11, data * (sin_data(i) + noise));
+    mdaqMemWrite(con, 1, data * sin_data(i));
+    mdaqMemWrite(con, 11, data * (sin_data(i) + noise));
     i = i + 1;
     sleep(5)
 end
 disp("Ending script...");
 // close connection with MicroDAQ
-mdaq_close(con)
+mdaqClose(con)

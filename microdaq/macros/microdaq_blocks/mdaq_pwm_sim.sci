@@ -7,7 +7,7 @@ function block=mdaq_pwm_sim(block,flag)
         case 0 // Derivative State Update
         case 1 // Output Update
             if %microdaq.private.connection_id > -1 then
-                mdaq_pwm_write(%microdaq.private.connection_id,..
+                mdaqPWMWrite(%microdaq.private.connection_id,..
                                block.ipar(1),..
                                block.inptr(1),..
                                block.inptr(2));
@@ -16,7 +16,7 @@ function block=mdaq_pwm_sim(block,flag)
         case 3 // OutputEventTiming
         case 4 // Initialization
             if %microdaq.private.connection_id > -1 then
-                mdaq_pwm_init(%microdaq.private.connection_id,..
+                mdaqPWMInit(%microdaq.private.connection_id,..
                               block.ipar(1),..
                               block.ipar(2),..
                               block.ipar(3));
@@ -24,7 +24,7 @@ function block=mdaq_pwm_sim(block,flag)
 
         case 5 // Ending
             if %microdaq.private.connection_id > -1 then
-                mdaq_pwm_write(%microdaq.private.connection_id,..
+                mdaqPWMWrite(%microdaq.private.connection_id,..
                                block.ipar(1), 0, 0);
             end
         case 6 // Re-Initialisation

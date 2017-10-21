@@ -1,7 +1,7 @@
 function [res] = load_mdaq_palette()
     is_generated = %F;
-    config_path = mdaq_toolbox_path() + "etc"+filesep()+"mblockstmpdir";
-    tbx_tmp_path = mdaq_toolbox_path() + "etc"+filesep()+"tmp";
+    config_path = mdaqToolboxPath() + "etc"+filesep()+"mblockstmpdir";
+    tbx_tmp_path = mdaqToolboxPath() + "etc"+filesep()+"tmp";
 
     //check if sod files were generated
     try
@@ -32,7 +32,7 @@ function [res] = load_mdaq_palette()
 
         //Bugfix 
         //replace mdaq .svg files in TMPDIR
-        svg_path = mdaq_toolbox_path() + filesep() + "images" +..
+        svg_path = mdaqToolboxPath() + filesep() + "images" +..
         filesep() + "svg" + filesep();
         copyfile(svg_path, TMPDIR+filesep());
 

@@ -6,15 +6,15 @@ xmlns:ns5="http://www.w3.org/1999/xhtml"
 xmlns:mml="http://www.w3.org/1998/Math/MathML" 
 xmlns:db="http://docbook.org/ns/docbook" 
 version="5.0-subset Scilab" 
-xml:id="mdaq_block_build">
+xml:id="mdaqBlockBuild">
   <refnamediv>
-    <refname>mdaq_block_build</refname>
+    <refname>mdaqBlockBuild</refname>
     <refpurpose>Build/Rebuild MicroDAQ custom block C/C++ source code</refpurpose>
   </refnamediv>
   <refsynopsisdiv>
 	<title>Description</title>
 	<para>This function rebuilds/builds all modified user blocks C source files. Function allows to compile library with debug symbols and with -o2 optimization. In order to recompile whole library all object files needs to be deleted 
-from userlib directory (mdaq_toolbox_path() + "src\c\userlib")	</para>
+from userlib directory (mdaqToolboxPath() + "src\c\userlib")	</para>
 <para>
 Function compiles every C source file from userlib directory. In order to compile external user C source code e.g. used in custom block, C source needs to be placed in userlib directory or Makefile (from userlib directory) needs to be modified to compile external code.
 </para>
@@ -25,7 +25,7 @@ In order to use this option the external C compiler is required. List of support
 </para>
     <title>Calling Sequence</title>
     <synopsis>
-      mdaq_block_build(debug);
+      mdaqBlockBuild(debug);
     </synopsis>
   </refsynopsisdiv>
   <refsection id="Parameters___FUNC_NAME__">
@@ -41,8 +41,8 @@ In order to use this option the external C compiler is required. List of support
         <title>Examples</title>
         <programlisting role="example"><![CDATA[
 
-// call mdaq_block to initialize block structure describing new MicroDAQ block		
-block = mdaq_block();
+// call mdaqBlock to initialize block structure describing new MicroDAQ block		
+block = mdaqBlock();
 block.name = "test"; // set block name 
 block.param_name = [ "param1" "param2" "param3" ]; // set block parameters
 block.param_size = [ 1 2 4 ]; // set block parameters sizes
@@ -58,21 +58,21 @@ block.in = [ 1 2 4 1];
 block.in = [ 1 1];
 
 // create block - generate block code and corresponding C source file
-mdaq_block_add(block);
+mdaqBlockAdd(block);
 
 // modify generated C source file
 
 // recompile modified files
-mdaq_block_build(); 
+mdaqBlockBuild(); 
  ]]></programlisting>
     </refsection>
 	
   <refsection id="SeeAlso___FUNC_NAME__">
     <title>See Also</title>
     <simplelist type="inline">
-  <member><link linkend="mdaq_block">mdaq_block</link> : Initialize MicroDAQ block structure</member>
-	  <member><link linkend="mdaq_block_add">mdaq_block_add</link> : Generate MicroDAQ block from provided block structure </member>
-      <member><link linkend="mdaq_block_delete">mdaq_block_delete</link> : Deletes MicroDAQ user block</member>
+  <member><link linkend="mdaqBlock">mdaqBlock</link> : Initialize MicroDAQ block structure</member>
+	  <member><link linkend="mdaqBlockAdd">mdaqBlockAdd</link> : Generate MicroDAQ block from provided block structure </member>
+      <member><link linkend="mdaqBlockDelete">mdaqBlockDelete</link> : Deletes MicroDAQ user block</member>
     </simplelist>
   </refsection>
 </refentry>

@@ -137,9 +137,9 @@ MicroDAQ module simplifies development of real-time control measurements applica
 		<title>Basic toolbox commands</title>
 		<para>
 			<simplelist type="inline">
-				<member>mdaq_ping - check connection with MicroDAQ device</member>
-				<member>mdaq_hwinfo -  prints connected MicroDAQ device hardware information</member>
-				<member>mdaq_set_ip - sets IP address used for communication with MicroDAQ device (doesn't change MicroDAQ IP address)</member>
+				<member>mdaqPing - check connection with MicroDAQ device</member>
+				<member>mdaqHWInfo -  prints connected MicroDAQ device hardware information</member>
+				<member>mdaqSetIP - sets IP address used for communication with MicroDAQ device (doesn't change MicroDAQ IP address)</member>
 				<member>mdaq_get_ip - gets IP address used for communication with MicroDAQ device </member>
 				<member>mdaq_webpanel - opens MicroDAQ Web Panel in web browser </member>
 				<member>mdaq_userdisk - opens MicroDAQ User Disk content in web browser </member>
@@ -226,7 +226,7 @@ MicroDAQ module simplifies development of real-time control measurements applica
 
 				<member>
 					Standalone mode - DSP executable is loaded on MicroDAQ and its execution is not controlled by Xcos. DSP application starts to execute on target 
-					and can not be stopped with 'Stop' simulation button. In order to stop DSP execution 'mdaq_dsp_terminate' function has to be called.
+					and can not be stopped with 'Stop' simulation button. In order to stop DSP execution 'mdaqDSPTerminate' function has to be called.
 				</member>
 			</simplelist>
 		</para>

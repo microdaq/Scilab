@@ -13,7 +13,7 @@
 		</synopsis>
 	</refsynopsisdiv>
 
-	<refsection id="Description_mdaq_dio_set_func">
+	<refsection id="Description_mdaqDIOFunc">
 		<title>Description</title>
 		<para>
 			This function sets alternative function for DIO channels. By default alternative DIO channel functions ENC1, ENC2, PWM1, PWM2, PWM3 and UART are enabled.  
@@ -33,7 +33,7 @@
 		</simplelist>
 	</refsection>   
 
-	<refsection id="Parameters_mdaq_dio_set_func">
+	<refsection id="Parameters_mdaqDIOFunc">
 		<title>Parameters</title>
 		<itemizedlist>
 			<listitem>
@@ -55,21 +55,21 @@
 		<programlisting role="example">
 			<![CDATA[
 				// disable Encoder1 function - set to DIO
-				linkID = mdaq_open(); 
+				linkID = mdaqOpen(); 
 				mdaq_dio_func(linkID, 1, 0);
-				mdaq_close(linkID);
+				mdaqClose(linkID);
 			 ]]>
 		</programlisting>
 	</refsection>
 
-	<refsection id="SeeAlso_mdaq_dio_set_func">
+	<refsection id="SeeAlso_mdaqDIOFunc">
 		<title>See Also</title>
 		<simplelist type="inline">
 			<member>
-				<link linkend="mdaq_dio_write">mdaq_dio_write</link>
+				<link linkend="mdaqDIOWrite">mdaqDIOWrite</link>
 			</member>
 			<member>
-				<link linkend="mdaq_dio_read">mdaq_dio_read</link>
+				<link linkend="mdaqDIORead">mdaqDIORead</link>
 			</member>
 			<member>
 				<link linkend="mdaq_dio_dir">mdaq_dio_dir</link>

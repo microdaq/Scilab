@@ -25,7 +25,7 @@ function [link_fd, hwid] = mlink_connect(ip, port)
 
                 adc_info = get_adc_info(hwid);
                 dac_info = get_dac_info(hwid);
-                save(mdaq_toolbox_path() + "etc"+filesep()+"mlink"+filesep()+"hwid", 'mdaq_hwid','adc_info','dac_info');
+                save(mdaqToolboxPath() + "etc"+filesep()+"mlink"+filesep()+"hwid", 'mdaq_hwid','adc_info','dac_info');
 
                 %microdaq.private.adc_info = adc_info;
                 %microdaq.private.dac_info = dac_info;

@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaq_ao_write">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaqAOWrite">
 	<refnamediv>
-		<refname>mdaq_ao_write</refname>
+		<refname>mdaqAOWrite</refname>
 		<refpurpose>Writes analog outputs</refpurpose>
 	</refnamediv>
 
 	<refsynopsisdiv>
 		<title>Calling Sequence</title>
 		<synopsis>
-			mdaq_ao_write(channels, range, data)
-			mdaq_ao_write(linkID, channels, range, data)
+			mdaqAOWrite(channels, range, data)
+			mdaqAOWrite(linkID, channels, range, data)
 		</synopsis>
 	</refsynopsisdiv>
 
-	<refsection id="Description_mdaq_ao_write">
+	<refsection id="Description_mdaqAOWrite">
 		<title>Description</title>
 		<para>
-		This function writes MicroDAQ analog outputs. The channels argument can be a scalar or vector and it should contain channels numbers according to MicroDAQ hardware configuration. The range argument specifies channel output range. Matrix n-by-2 where n is number of used channels shall be provided. If 1x2 matrix is provided, the range setting will be used for all channels. In order to obtain supported ranges use <link linkend="mdaq_hwinfo">mdaq_hwinfo()</link>.
+		This function writes MicroDAQ analog outputs. The channels argument can be a scalar or vector and it should contain channels numbers according to MicroDAQ hardware configuration. The range argument specifies channel output range. Matrix n-by-2 where n is number of used channels shall be provided. If 1x2 matrix is provided, the range setting will be used for all channels. In order to obtain supported ranges use <link linkend="mdaqHWInfo">mdaqHWInfo()</link>.
 		</para>
 	</refsection>  
 
-	<refsection id="Parameters_mdaq_ao_write">
+	<refsection id="Parameters_mdaqAOWrite">
 		<title>Input arguments</title>
 		<itemizedlist>
 			<listitem>
@@ -48,26 +48,26 @@
 		<programlisting role="example">
 			<![CDATA[
 				// set 1, 2, 3, 4V on 1, 2, 3, 4 channel with range 0 to 5V
-				mdaq_ao_write([2, 4, 6, 8], [0,5], [1, 2, 3, 4]);
+				mdaqAOWrite([2, 4, 6, 8], [0,5], [1, 2, 3, 4]);
 			 ]]>
 		</programlisting>
 
 		<para> Calling function with linkID for shorter access time </para>
 		<programlisting role="example">
 			<![CDATA[
-				linkID = mdaq_open();
+				linkID = mdaqOpen();
 				// set 1, 2, 3, 4V on 1, 2, 3, 4 channel with range 0 to 5V
-				mdaq_ao_write(linkID, [2, 4, 6, 8], [0,5], [1, 2, 3, 4]);
-				mdaq_close(linkID);
+				mdaqAOWrite(linkID, [2, 4, 6, 8], [0,5], [1, 2, 3, 4]);
+				mdaqClose(linkID);
 			 ]]>
 		</programlisting>
 	</refsection>
 
-	<refsection id="SeeAlso_mdaq_ao_write">
+	<refsection id="SeeAlso_mdaqAOWrite">
 		<title>See Also</title>
 		<simplelist type="inline">
 			<member>
-				<link linkend="mdaq_ai_read">mdaq_ai_read</link> 
+				<link linkend="mdaqAIRead">mdaqAIRead</link> 
 			</member>
 		</simplelist>
 	</refsection>

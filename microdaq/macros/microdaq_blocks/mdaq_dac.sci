@@ -18,7 +18,7 @@ function [x,y,typ] = mdaq_dac(job,arg1,arg2)
     "2 - Termination voltage value is used";
     "3 - Initial and termination voltage value is used";
     "";
-    "Use mdaq_hwinfo to get DAC parameters"
+    "Use mdaqHWInfo to get DAC parameters"
     "";
     "input - value in volts"
     "";
@@ -61,7 +61,7 @@ function [x,y,typ] = mdaq_dac(job,arg1,arg2)
                 dac_id = %microdaq.private.mdaq_hwid(3);
                 if find(dac_id == get_dac_list()) == [] then
                     ok = %f;
-                    message("Configuration not detected - run mdaq_hwinfo and try again!");
+                    message("Configuration not detected - run mdaqHWInfo and try again!");
                 end
 
                 n_channels = size(channels, 'c');
@@ -147,7 +147,7 @@ function [x,y,typ] = mdaq_dac(job,arg1,arg2)
                 end
             else
                 ok = %f;
-                error_msg = 'Unable to detect MicroDAQ analog outputs - run mdaq_hwinfo and try again!';
+                error_msg = 'Unable to detect MicroDAQ analog outputs - run mdaqHWInfo and try again!';
                 message(error_msg);
             end
 

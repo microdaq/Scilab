@@ -1,38 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaq_ao_scan_init">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaqAOScanInit">
 	<refnamediv>
-		<refname>mdaq_ao_scan_init</refname>
+		<refname>mdaqAOScanInit</refname>
 		<refpurpose>Initiates analog outputs scanning session</refpurpose>
 	</refnamediv>
 
 	<refsynopsisdiv>
 		<title>Calling Sequence</title>
 		<synopsis>
-			mdaq_ao_scan_init(channels, initialData, range, isStreamMode, rate, duration)
-			mdaq_ao_scan_init(linkID, channels, initialData, range, isStreamMode, rate, duration)
+			mdaqAOScanInit(channels, initialData, range, isStreamMode, rate, duration)
+			mdaqAOScanInit(linkID, channels, initialData, range, isStreamMode, rate, duration)
 		</synopsis>
 	</refsynopsisdiv>
 
-	<refsection id="Description_mdaq_ao_scan_init">
+	<refsection id="Description_mdaqAOScanInit">
 		<title>Description</title>
 
 		<para> This function is part of analog scan functionality and has to be called in the following sequence:
 			<orderedlist>
 				<listitem>
 					<para>
-						<emphasis role="bold">Initialize scanning session</emphasis> - <link linkend="mdaq_ao_scan_init">mdaq_ao_scan_init()</link>
+						<emphasis role="bold">Initialize scanning session</emphasis> - <link linkend="mdaqAOScanInit">mdaqAOScanInit()</link>
 					</para>
 				</listitem>
 				<listitem>
-					<para>Start scanning session - <link linkend="mdaq_ao_scan">mdaq_ao_scan()</link>
+					<para>Start scanning session - <link linkend="mdaqAOScan">mdaqAOScan()</link>
 					</para>
 				</listitem>
 				<listitem>
-					<para>Queue new data - <link linkend="mdaq_ao_scan_data">mdaq_ao_scan_data()</link>
+					<para>Queue new data - <link linkend="mdaqAOScanData">mdaqAOScanData()</link>
 					</para>
 				</listitem>
 				<listitem>
-					<para>Stop scanning session - <link linkend="mdaq_ao_scan_stop">mdaq_ao_scan_stop()</link>
+					<para>Stop scanning session - <link linkend="mdaqAOScanStop">mdaqAOScanStop()</link>
 					</para>
 				</listitem>
 			</orderedlist>
@@ -41,7 +41,7 @@
 
 
 		<para>
-			This function initiates analog output scanning session. The function must be called before acquisition is started. The channels argument can be a scalar or vector and it should contain channels numbers according to MicroDAQ hardware configuration. The range argument specifies channel measurement input range. Matrix n-by-2 where n is number of used channels shall be provided. If 1x2 matrix is provided, the range setting will be used for all channels. In order to obtain supported ranges use <link linkend="mdaq_hwinfo">mdaq_hwinfo()</link>. 
+			This function initiates analog output scanning session. The function must be called before acquisition is started. The channels argument can be a scalar or vector and it should contain channels numbers according to MicroDAQ hardware configuration. The range argument specifies channel measurement input range. Matrix n-by-2 where n is number of used channels shall be provided. If 1x2 matrix is provided, the range setting will be used for all channels. In order to obtain supported ranges use <link linkend="mdaqHWInfo">mdaqHWInfo()</link>. 
 
 		</para>
 		<para>
@@ -49,7 +49,7 @@
 		</para>
 
 		<para>
-			<emphasis role="bold">Important:</emphasis> The initialData argument determines size of data which can be queued with <link linkend="mdaq_ao_scan_data">mdaq_ao_scan_data()</link>. Queued data size must be the same size as data argument in <link linkend="mdaq_ao_scan_init">mdaq_ao_scan_init()</link>
+			<emphasis role="bold">Important:</emphasis> The initialData argument determines size of data which can be queued with <link linkend="mdaqAOScanData">mdaqAOScanData()</link>. Queued data size must be the same size as data argument in <link linkend="mdaqAOScanInit">mdaqAOScanInit()</link>
 		</para>
 
 
@@ -58,13 +58,13 @@
 		</para>
 
 		<para>
-			The duration argument specifies a duration of acquisition in seconds. When set to -1, the session will run continuously, acquiring data until stopped with <link linkend="mdaq_ao_scan_stop">mdaq_ai_scan_stop()</link> function.
+			The duration argument specifies a duration of acquisition in seconds. When set to -1, the session will run continuously, acquiring data until stopped with <link linkend="mdaqAOScanStop">mdaqAIScanStop()</link> function.
 		</para>
 		<para>
-			The isStreamMode argument determines scanning session behavior. Two modes are available - periodic and stream. The periodic mode (isStreamMode=%F) uses a single buffer which data is output from. When the end of the buffer is reached, data index is switched to the beginning of the buffer. This mode is suitable for generating periodic signals e.g sine waveform. The buffer can be changed during signal generation with <link linkend="mdaq_ao_scan_data">mdaq_ao_scan_data()</link> function.
+			The isStreamMode argument determines scanning session behavior. Two modes are available - periodic and stream. The periodic mode (isStreamMode=%F) uses a single buffer which data is output from. When the end of the buffer is reached, data index is switched to the beginning of the buffer. This mode is suitable for generating periodic signals e.g sine waveform. The buffer can be changed during signal generation with <link linkend="mdaqAOScanData">mdaqAOScanData()</link> function.
 		</para>
 		<para>
-			The stream mode (isStreamMode=%T) uses two buffers architecture to ensure uninterrupted analog signal generation. This mode of operation is suitable for stream data type e.g. generating audio stream, this mode requires from user to queue data with certain time constraints. If new data isn't queued on time, last value remains on analog output until new data has been queued. See <link linkend="mdaq_ao_scan_data">mdaq_ao_scan_data()</link> documentation for more details.
+			The stream mode (isStreamMode=%T) uses two buffers architecture to ensure uninterrupted analog signal generation. This mode of operation is suitable for stream data type e.g. generating audio stream, this mode requires from user to queue data with certain time constraints. If new data isn't queued on time, last value remains on analog output until new data has been queued. See <link linkend="mdaqAOScanData">mdaqAOScanData()</link> documentation for more details.
 
 		</para>
 		<para>
@@ -84,7 +84,7 @@
 		</para>
 	</refsection>  
 
-	<refsection id="Parameters_mdaq_ao_scan_init">
+	<refsection id="Parameters_mdaqAOScanInit">
 		<title>Input arguments</title>
 		<itemizedlist>
 			<listitem>
@@ -124,8 +124,8 @@
 			<![CDATA[
 			sineData = sin(linspace(0, 2*%pi, 1000)) + 1.0;
 			triangleData = linspace(0, 5, 1000);
-			mdaq_ao_scan_init(1:2, [sineData' triangleData'], [0,5], %F, 1000, 5);
-			mdaq_ao_scan();
+			mdaqAOScanInit(1:2, [sineData' triangleData'], [0,5], %F, 1000, 5);
+			mdaqAOScan();
 		 ]]>
 		</programlisting>
 
@@ -135,17 +135,17 @@
 		</para>
 	</refsection>
 
-	<refsection id="SeeAlso_mdaq_ao_scan_init">
+	<refsection id="SeeAlso_mdaqAOScanInit">
 		<title>See Also</title>
 		<simplelist type="inline">
 			<member>
-				<link linkend="mdaq_ao_data_update">mdaq_ao_scan_data</link>
+				<link linkend="mdaq_ao_data_update">mdaqAOScanData</link>
 			</member>
 			<member>
-				<link linkend="mdaq_ao_scan_stop">mdaq_ao_scan_stop</link>
+				<link linkend="mdaqAOScanStop">mdaqAOScanStop</link>
 			</member>
 			<member>
-				<link linkend="mdaq_ao_scan">mdaq_ao_scan</link>
+				<link linkend="mdaqAOScan">mdaqAOScan</link>
 			</member>
 
 		</simplelist>

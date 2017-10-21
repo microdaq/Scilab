@@ -6,7 +6,7 @@
 function MLink()
     
     global %microdaq;
-    etc_tlbx  = mdaq_toolbox_path();
+    etc_tlbx  = mdaqToolboxPath();
     etc_tlbx  = etc_tlbx + filesep()+'etc'+filesep()+'mlink'+..
                     filesep()+'MLink'+filesep();
     MLink_path = etc_tlbx + 'MLink';

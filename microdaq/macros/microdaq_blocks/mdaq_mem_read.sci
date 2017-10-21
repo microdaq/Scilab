@@ -1,6 +1,6 @@
 function [x,y,typ] = mdaq_mem_read(job,arg1,arg2)
     mem_write_desc = ["This block reads data from MicroDAQ memory.";
-    "Block with mdaq_mem_set function can be used to"; 
+    "Block with mdaqMemWrite function can be used to"; 
     "change Standalone and Ext model parameters. ";
     "Mode parameter sets block read behaviour.";
     "If Trigger input is enabled, rising";

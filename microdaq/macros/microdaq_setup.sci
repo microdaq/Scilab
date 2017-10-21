@@ -1,7 +1,7 @@
 function [] = microdaq_setup(arg1, arg2, arg3, arg4)
     sciVer = getversion('scilab');
     if isequal(sciVer(1:2), [5,5]) & argn(2) == 0 then
-        scriptPath = mdaq_toolbox_path()+'macros'+filesep()+'microdaq_setup_template.sce';
+        scriptPath = mdaqToolboxPath()+'macros'+filesep()+'microdaq_setup_template.sce';
         exec(scriptPath, -1);
         while STATE
             if findobj('Tag', 'edit2') == [] then
@@ -17,7 +17,7 @@ function [] = microdaq_setup(arg1, arg2, arg3, arg4)
             mprintf("Use microdaq_setup with IP address setting to configure toolbox e.g.:\n\tmicrodaq_setup(""10.10.1.1"")\n");
             return
         else
-            mdaq_set_ip(arg1)
+            mdaqSetIP(arg1)
             return
         end
     elseif isequal(sciVer(1:2), [5,5]) & argn(2) == 4 then
@@ -30,7 +30,7 @@ function [] = microdaq_setup(arg1, arg2, arg3, arg4)
     end
 
     try
-        mdaq_set_ip(ipAddress);
+        mdaqSetIP(ipAddress);
     catch
         mprintf("Wrong IP address!\n");
         mprintf("Usage:\n\t microdaq_setup(compilerPath, xdctoolsPath, sysbiosPath, ipAddress);\n");
@@ -44,13 +44,13 @@ function [] = microdaq_setup(arg1, arg2, arg3, arg4)
     elseif firmVer(1) < 2 then
         disp('Firmware version '+rawFrimVer+' is not supported.Please upgrade MicroDAQ firmware!');
     else
-        result = mdaq_open();
+        result = mdaqOpen();
         if result < 0  then
             disp('Unable to connect to MicroDAQ device!');
         else
             global %microdaq;
             disp(%microdaq.model + ' connected, firmware version: '+rawFrimVer);
-            mdaq_close(result);
+            mdaqClose(result);
         end
     end
 

@@ -4,10 +4,10 @@ function test()
     disp("SET DATA:")
     disp([data]);
     
-    mdaq_ao_write(1:8, [-10 10], data);
+    mdaqAOWrite(1:8, [-10 10], data);
     
     disp("READ DATA:")
-    disp(mdaq_ai_read(1:8, [-10.24 10.24], %F));
+    disp(mdaqAIRead(1:8, [-10.24 10.24], %F));
 endfunction
 
 test();

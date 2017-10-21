@@ -7,7 +7,7 @@
 	<refsection id="Description_uart_custom_block">
 		<para></para><emphasis role="bold">Defining block functionality</emphasis>
             <para>       
-            Frist step is an initialize MicroDAQ block structure with mdaq_block() function. Blocks for receiving and transmitting will be created. 
+            Frist step is an initialize MicroDAQ block structure with mdaqBlock() function. Blocks for receiving and transmitting will be created. 
             'UART Receive', 'UART Transmit' blocks won't have any additional paramters, only output and input port respectively. In this case C code 
             won't be used in simulation mode (use_sim_script = %T) since hardware acceess is used. If there is a need, compiled source can be also used in simulation 
             mode (without MicroDAQ hardware access) but code for simulation (e.g fake data) have to be placed in special #ifdef section* and block have
@@ -35,7 +35,7 @@
 				<programlisting role="example">
 					<![CDATA[ 
                 // Make 'UART Receive' block definition 
-                uartRead = mdaq_block() 
+                uartRead = mdaqBlock() 
                 uartRead.name = "UART Receive";
                 uartRead.param_name = [];
                 uartRead.in = [];
@@ -43,15 +43,15 @@
                 uartRead.use_sim_script = %T;
 
                 // Make 'UART Transmit' block definition  
-                uartWrite = mdaq_block() 
+                uartWrite = mdaqBlock() 
                 uartWrite.name = "UART Transmit";
                 uartWrite.param_name = [];
                 uartWrite.in = [1];
                 uartWrite.out = []; 
                 uartWrite.use_sim_script = %T;
 
-                mdaq_block_add(uartRead);
-                mdaq_block_add(uartWrite);
+                mdaqBlockAdd(uartRead);
+                mdaqBlockAdd(uartWrite);
                    ]]>
                 </programlisting>
             </para>    
@@ -242,8 +242,8 @@ void mdaq_uart_transmit(scicos_block *block,int flag)
              <para>
 				<programlisting role="example">
 					<![CDATA[ 
-                    mdaq_block_build(); //rebuild blocks 
-                    lib(mdaq_toolbox_path() + pathconvert("macros/user_blocks")); //update blocks library 
+                    mdaqBlockBuild(); //rebuild blocks 
+                    lib(mdaqToolboxPath() + pathconvert("macros/user_blocks")); //update blocks library 
                     ]]>
                 </programlisting>
             </para>      

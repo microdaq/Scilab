@@ -8,7 +8,7 @@ function []=post_xcos_simulate(%cpr, scs_m, needcompile)
                 client_disconnect(1);
                 %microdaq.dsp_loaded = %F;
 
-                connection_id = mdaq_open();
+                connection_id = mdaqOpen();
                 if connection_id < 0 then
                     return;
                 end
@@ -56,14 +56,14 @@ function []=post_xcos_simulate(%cpr, scs_m, needcompile)
                         end
                     end
                 end
-                mdaq_close(connection_id);
+                mdaqClose(connection_id);
             end
         end
     end
 end
 
-if %microdaq.private.connection_id > -1 & (%microdaq.private.has_mdaq_param_sim | %microdaq.private.has_mdaq_block) then
-    mdaq_close(%microdaq.private.connection_id);
+if %microdaq.private.connection_id > -1 & (%microdaq.private.has_mdaq_param_sim | %microdaq.private.has_mdaqBlock) then
+    mdaqClose(%microdaq.private.connection_id);
     %microdaq.private.connection_id = -1;
     %microdaq.private.has_mdaq_param_sim = %F;
 end

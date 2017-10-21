@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" 
-xml:id="mdaq_hwinfo">
+xml:id="mdaqHWInfo">
 	<refnamediv>
-		<refname>mdaq_hwinfo</refname>
+		<refname>mdaqHWInfo</refname>
 		<refpurpose>Checks MicroDAQ hardware configuration</refpurpose>
 	</refnamediv>
 	
 	<refsynopsisdiv>
 		<title>Calling Sequence</title>
 		<synopsis>
-			result = mdaq_hwinfo();
+			result = mdaqHWInfo();
 		</synopsis>
 	</refsynopsisdiv>
 	
-	<refsection id="Description_mdaq_hwinfo">
+	<refsection id="Description_mdaqHWInfo">
 		<title>Description</title>
 		<para>
 			This function prints MicroDAQ hardware configuration. 
@@ -23,17 +23,17 @@ xml:id="mdaq_hwinfo">
 	<refsection>
         <title>Examples</title>
         <programlisting role="example"><![CDATA[
-// mdaq_hwinfo usage example
-mdaq_hwinfo(); 
+// mdaqHWInfo usage example
+mdaqHWInfo(); 
  ]]></programlisting>
     </refsection>
 	
-  <refsection id="SeeAlso_mdaq_hwinfo">
+  <refsection id="SeeAlso_mdaqHWInfo">
 		<title>See Also</title>
 		<simplelist type="inline">
-			<member><link linkend="mdaq_open">mdaq_open</link></member>
-			<member><link linkend="mdaq_close">mdaq_close</link></member>
-			<member><link linkend="mdaq_set_ip">mdaq_set_ip</link></member>
+			<member><link linkend="mdaqOpen">mdaqOpen</link></member>
+			<member><link linkend="mdaqClose">mdaqClose</link></member>
+			<member><link linkend="mdaqSetIP">mdaqSetIP</link></member>
 		</simplelist>
   </refsection>
 </refentry>

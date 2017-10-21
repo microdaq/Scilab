@@ -57,7 +57,7 @@ xml:id="mdaq_param">
         <para>
             Simple DSP application running in external mode. Allows to control output voltage via TKSCALE block (GUI slider).
              <programlisting role="example"><![CDATA[
-                    xcos(mdaq_toolbox_path()+'/examples/mdaq_param_demo.zcos');
+                    xcos(mdaqToolboxPath()+'/examples/mdaq_param_demo.zcos');
                      ]]>
                 </programlisting>
         </para>

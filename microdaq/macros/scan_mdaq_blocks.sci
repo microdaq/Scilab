@@ -22,7 +22,7 @@ function obj=scan_mdaq_blocks(scs_m)
                         if scs_m.objs(i).model.sim(2) == 5 then
                             scs_m.objs(i).model.sim(2) = 4;
                             if find(mdaq_sim_blocks == scs_m.objs(i).model.sim(1)) ~= [] then
-                                %microdaq.private.has_mdaq_block = %T; 
+                                %microdaq.private.has_mdaqBlock = %T; 
                             end
                         end
                     end

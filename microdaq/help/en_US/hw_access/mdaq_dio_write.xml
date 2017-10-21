@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaq_dio_write">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaqDIOWrite">
 	<refnamediv>
-		<refname>mdaq_dio_write</refname>
+		<refname>mdaqDIOWrite</refname>
 		<refpurpose>Writes DIO channel output</refpurpose>
 	</refnamediv>
 
 	<refsynopsisdiv>
 		<title>Calling Sequence</title>
 		<synopsis>
-			mdaq_dio_write(dio, state)
-			mdaq_dio_write(linkID, dio, state)
+			mdaqDIOWrite(dio, state)
+			mdaqDIOWrite(linkID, dio, state)
 		</synopsis>
 	</refsynopsisdiv>
 
-	<refsection id="Description_mdaq_dio_write">
+	<refsection id="Description_mdaqDIOWrite">
 		<title>Description</title>
 		<para>
 			This function sets DIO channel output state. 
@@ -23,7 +23,7 @@
 		</para>
 	</refsection>  
 
-	<refsection id="Parameters_mdaq_dio_write">
+	<refsection id="Parameters_mdaqDIOWrite">
 		<title>Parameters</title>
 		<itemizedlist>
 			<listitem>
@@ -45,21 +45,21 @@
 		<title>Examples</title>
 		<programlisting role="example">
 			<![CDATA[
-				mdaq_dio_write(16, 1);
+				mdaqDIOWrite(16, 1);
 				sleep(5000);
-				mdaq_dio_write(16, 0);
+				mdaqDIOWrite(16, 0);
 			]]>
 		</programlisting>
 	</refsection>
 
-	<refsection id="SeeAlso_mdaq_dio_write">
+	<refsection id="SeeAlso_mdaqDIOWrite">
 		<title>See Also</title>
 		<simplelist type="inline">
 			<member>
 				<link linkend="mdaq_dio_func">mdaq_dio_func</link>
 			</member>
 			<member>
-				<link linkend="mdaq_dio_read">mdaq_dio_read</link>
+				<link linkend="mdaqDIORead">mdaqDIORead</link>
 			</member>
 			<member>
 				<link linkend="mdaq_dio_dir">mdaq_dio_dir</link>

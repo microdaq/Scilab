@@ -6,7 +6,7 @@ function block=mdaq_dio_set_sim(block,flag)
         case 0 // Derivative State Update
         case 1 // Output Update
             if %microdaq.private.connection_id > -1 then
-                mdaq_dio_write(%microdaq.private.connection_id,..
+                mdaqDIOWrite(%microdaq.private.connection_id,..
                                 block.ipar(1),..
                                 block.inptr(1));
             end
@@ -15,7 +15,7 @@ function block=mdaq_dio_set_sim(block,flag)
         case 4 // Initialization
         case 5 // Ending
             if %microdaq.private.connection_id > -1 then
-                mdaq_dio_write(%microdaq.private.connection_id,..
+                mdaqDIOWrite(%microdaq.private.connection_id,..
                                 block.ipar(1),..
                                 block.ipar(3));
             end

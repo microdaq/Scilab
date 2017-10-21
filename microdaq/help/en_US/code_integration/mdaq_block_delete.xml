@@ -6,9 +6,9 @@ xmlns:ns5="http://www.w3.org/1999/xhtml"
 xmlns:mml="http://www.w3.org/1998/Math/MathML" 
 xmlns:db="http://docbook.org/ns/docbook" 
 version="5.0-subset Scilab" 
-xml:id="mdaq_block_delete">
+xml:id="mdaqBlockDelete">
   <refnamediv>
-    <refname>mdaq_block_delete</refname>
+    <refname>mdaqBlockDelete</refname>
     <refpurpose>Deletes MicroDAQ user block</refpurpose>
   </refnamediv>
   <refsynopsisdiv>
@@ -17,12 +17,12 @@ xml:id="mdaq_block_delete">
 	<para>
 	If block was removed by accident, copy of source code can be found in backup folder. 
     <programlisting role="example"><![CDATA[
-    backupSourcePath = mdaq_toolbox_path()+pathconvert("src\c\userlib\.removed_code");
+    backupSourcePath = mdaqToolboxPath()+pathconvert("src\c\userlib\.removed_code");
  ]]></programlisting>
 	</para>
     <title>Calling Sequence</title>
     <synopsis>
-      mdaq_block_delete(block_name);
+      mdaqBlockDelete(block_name);
     </synopsis>
   </refsynopsisdiv>
   <refsection id="Parameters___FUNC_NAME__">
@@ -37,15 +37,15 @@ xml:id="mdaq_block_delete">
     	<refsection>
         <title>Examples</title>
         <programlisting role="example"><![CDATA[
-mdaq_block_delete("My_step");
+mdaqBlockDelete("My_step");
  ]]></programlisting>
     </refsection>
 	   
   <refsection id="SeeAlso___FUNC_NAME__">
     <title>See Also</title>
     <simplelist type="inline">
-        <member><link linkend="mdaq_block">mdaq_block</link> : Initializes MicroDAQ block structure with default values</member>
-        <member><link linkend="mdaq_block_add">mdaq_block_add</link> : Generates MicroDAQ block from provided block structure</member>    
+        <member><link linkend="mdaqBlock">mdaqBlock</link> : Initializes MicroDAQ block structure with default values</member>
+        <member><link linkend="mdaqBlockAdd">mdaqBlockAdd</link> : Generates MicroDAQ block from provided block structure</member>    
     </simplelist>
   </refsection>
 </refentry>

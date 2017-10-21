@@ -14,24 +14,24 @@
 	 Block code contains three functions which are executed depending on model stage execution. The init() function is executed after model is loaded on target. This function should be used to allocate memory, initialize hardware etc. 
 	 The most important function is inout() which is executed on every model step. The end() function is called at the end of model execution when user hit XCos Stop button. This function should free allocated resources and de-initialize hardware if is used.</para>  
 	 <para></para>
-	<member><para>Use mdaq_block() to initialize MicroDAQ block structure with default values</para></member>
+	<member><para>Use mdaqBlock() to initialize MicroDAQ block structure with default values</para></member>
 	<member><para>Modify structure to meet your input/output and block parameters requirements</para></member>
-	<member><para>Use mdaq_block_add() function to generate block macros and C source code</para></member>
+	<member><para>Use mdaqBlockAdd() function to generate block macros and C source code</para></member>
 	<member><para>Modify generated C source file by adding code to init(), inout() and end() functions</para></member>
-	<para>DSPLib library (installed with MicroDAQ toolbox) can be used to have access to MicroDAQ hardware e.g create custom ADC block. In order to do that header file needs to be include in a generated file. The DSPLib headers files are located in mdaq_toolbox_path() + "etc\mdaqlib\" toolbox directory.</para>
+	<para>DSPLib library (installed with MicroDAQ toolbox) can be used to have access to MicroDAQ hardware e.g create custom ADC block. In order to do that header file needs to be include in a generated file. The DSPLib headers files are located in mdaqToolboxPath() + "etc\mdaqlib\" toolbox directory.</para>
 	<para></para>
 	<member><para>If you use external code copy it to userlib directory</para></member>
 	<member><para>Modify generated block macros (e.g add event input/output, change block input/output port value type)</para></member>
-	<para>In order to modify block input/output ports and properties structure which describes block needs to modified and mdaq_block_add() shall be run again. In order to modify e.g. input port value type e.g. to int32 generated block macros needs to be modified. 
-	The mdaq_block_add() generated two block macros, the one with suffix '_sim' contains Scilab code which is executed during simulation. This code can be modified to reflect DSP C code and can be used in simulation.</para>
+	<para>In order to modify block input/output ports and properties structure which describes block needs to modified and mdaqBlockAdd() shall be run again. In order to modify e.g. input port value type e.g. to int32 generated block macros needs to be modified. 
+	The mdaqBlockAdd() generated two block macros, the one with suffix '_sim' contains Scilab code which is executed during simulation. This code can be modified to reflect DSP C code and can be used in simulation.</para>
 	<para></para>
-	<member><para>Use mdaq_block_build() to rebuild modified/added C/C++ sources</para></member>
-	<member><para>If you want to debug your code with Code Composer Studio use mdaq_block_build(%T)</para></member>
-	<para>The mdaq_block_build() called with %T argument will compile user block library with debug symbols and without optimization</para>
+	<member><para>Use mdaqBlockBuild() to rebuild modified/added C/C++ sources</para></member>
+	<member><para>If you want to debug your code with Code Composer Studio use mdaqBlockBuild(%T)</para></member>
+	<para>The mdaqBlockBuild() called with %T argument will compile user block library with debug symbols and without optimization</para>
 	<para></para>
 	<member><para>Restart Scilab to reload 'MicroDAQ User' palette</para></member>
 	<member><para>Place newly created block into XCos diagram</para></member>
-	<member><para>If block C/C++ code needs modification - modify code and use mdaq_block_build() (no neet to restart Scilab)</para></member>
+	<member><para>If block C/C++ code needs modification - modify code and use mdaqBlockBuild() (no neet to restart Scilab)</para></member>
 	<member><para>Build and deploy your model on MicroDAQ DSP</para></member>
 	</simplelist>
   </refsection>
@@ -39,8 +39,8 @@
         <title>Examples</title>
         <programlisting role="example"><![CDATA[
 
-// call mdaq_block to initialize block structure describing new MicroDAQ block		
-block = mdaq_block();
+// call mdaqBlock to initialize block structure describing new MicroDAQ block		
+block = mdaqBlock();
 block.name = "test"; // set block name 
 block.param_name = [ "param1" "param2" "param3" ]; // set block parameters
 block.param_size = [ 1 2 4 ]; // set block parameters sizes
@@ -55,7 +55,7 @@ block.in = [1 2 4 1];
 block.in = [1 1];
 
 // create block - generate block code and corresponding C source file
-mdaq_block_add(block);
+mdaqBlockAdd(block);
  ]]></programlisting>
 
  
@@ -149,9 +149,9 @@ void mdaq_test(scicos_block *block,int flag)
   <refsection id="SeeAlso_introduction">
     <title>See Also</title>
     <simplelist type="inline">
-		<member><link linkend="mdaq_block">mdaq_block</link> : Initialize MicroDAQ block structure</member>
-		<member><link linkend="mdaq_block_add">mdaq_block_add</link> : Generate MicroDAQ block from provided block structure </member>
-	  	<member><link linkend="mdaq_block_build">mdaq_block_build</link> : Build/Rebuild MicroDAQ custom block C/C++ source code</member>
+		<member><link linkend="mdaqBlock">mdaqBlock</link> : Initialize MicroDAQ block structure</member>
+		<member><link linkend="mdaqBlockAdd">mdaqBlockAdd</link> : Generate MicroDAQ block from provided block structure </member>
+	  	<member><link linkend="mdaqBlockBuild">mdaqBlockBuild</link> : Build/Rebuild MicroDAQ custom block C/C++ source code</member>
       <member>
         <link type="scilab" linkend="scilab.help/sum">Link to the Scilab help page</link>
       </member>

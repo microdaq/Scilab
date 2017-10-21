@@ -599,17 +599,17 @@ function [ok,values_res,exprs]=wfir_gui_demo(exprs)
     realtimeinit(0.1);
     t=0;
     
-    mdaq_close();
+    mdaqClose();
     
     while ret==0&or(winsid()==fig_id) then
         if START == %T then
             // Init analog input/output scanning 
-            mdaq_ai_scan_init(ChannelIN, aiRange, IsDifferential, Rate, -1);
-            mdaq_ao_scan_init(ChannelOUT, initialData, aoRange, IsContinuous, Rate, -1);
+            mdaqAIScanInit(ChannelIN, aiRange, IsDifferential, Rate, -1);
+            mdaqAOScanInit(ChannelOUT, initialData, aoRange, IsContinuous, Rate, -1);
             
-            audioData = mdaq_ai_scan(ChunkSize, %T);    
-            mdaq_ao_scan();
-            mdaq_ao_scan_data(ChannelOUT, audioData, %T);
+            audioData = mdaqAIScan(ChunkSize, %T);    
+            mdaqAOScan();
+            mdaqAOScanData(ChannelOUT, audioData, %T);
             
             mprintf("\nFiltering h as been started...\n");
             sample_count = 0;
@@ -618,7 +618,7 @@ function [ok,values_res,exprs]=wfir_gui_demo(exprs)
 
                 // Acquire data
                 pastAudioData = audioData;
-                audioData = mdaq_ai_scan(ChunkSize, %T);
+                audioData = mdaqAIScan(ChunkSize, %T);
                 audioDataExt = [pastAudioData(ChunkSize-SampleOffset+1:ChunkSize, :); audioData];
                 
                 // FIR Filter 
@@ -632,9 +632,9 @@ function [ok,values_res,exprs]=wfir_gui_demo(exprs)
                 
                 // Analog Output 
                 if NO_FILTER == %F then 
-                    mdaq_ao_scan_data( ChannelOUT, [(filtAudioDataLeft*GAIN) (filtAudioDataRight*GAIN)], %T);
+                    mdaqAOScanData( ChannelOUT, [(filtAudioDataLeft*GAIN) (filtAudioDataRight*GAIN)], %T);
                 else
-                    mdaq_ao_scan_data(ChannelOUT, (audioData*GAIN), %T);
+                    mdaqAOScanData(ChannelOUT, (audioData*GAIN), %T);
                 end
                       
                 sample_count = sample_count + size(audioData, '*');
@@ -643,8 +643,8 @@ function [ok,values_res,exprs]=wfir_gui_demo(exprs)
                 t=t+1;      
             end
     
-            mdaq_ao_scan_stop();
-            mdaq_ai_scan_stop();
+            mdaqAOScanStop();
+            mdaqAIScanStop();
                
             mprintf("Filtering has been stopped.\n");
         end

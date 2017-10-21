@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaq_mem_get">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaqMemRead">
 	<refnamediv>
-		<refname>mdaq_mem_get</refname>
+		<refname>mdaqMemRead</refname>
 		<refpurpose>Reads MEM Write block data</refpurpose>
 	</refnamediv>
 	
 	<refsynopsisdiv>
 		<title>Calling Sequence</title>
 		<synopsis>
-			data = mdaq_mem_get(start, size, vectorSize)
-			data = mdaq_mem_get(linkID, start, size, vectorSize)
+			data = mdaqMemRead(start, size, vectorSize)
+			data = mdaqMemRead(linkID, start, size, vectorSize)
 		</synopsis>
 	</refsynopsisdiv>
 	
@@ -36,9 +36,9 @@
 	<refsection>
         <title>Examples</title>
         <programlisting role="example"><![CDATA[
-// mdaq_mem_get usage example
+// mdaqMemRead usage example
 // read 10 values from memory index 5
-mdaq_mem_get(5, 10, 10);
+mdaqMemRead(5, 10, 10);
 
  ]]></programlisting>
     </refsection>
@@ -46,7 +46,7 @@ mdaq_mem_get(5, 10, 10);
   <refsection id="SeeAlso___FUNC_NAME__">
 		<title>See Also</title>
 		<simplelist type="inline">
-		<member><link linkend="mdaq_mem_set">mdaq_mem_set</link> : Writes MicroDAQ memory</member>
+		<member><link linkend="mdaqMemWrite">mdaqMemWrite</link> : Writes MicroDAQ memory</member>
 		<member>
 			<link type="scilab" linkend="scilab.help/sum">Link to the Scilab help page</link>
 		</member>

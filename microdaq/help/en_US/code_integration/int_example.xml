@@ -27,9 +27,9 @@
 			<para></para><emphasis role="bold">Custom 'Step' block step by step</emphasis>
 
 			<simplelist type="inline">
-				<member>Initialize MicroDAQ block structure with mdaq_block() function</member>
+				<member>Initialize MicroDAQ block structure with mdaqBlock() function</member>
 				<programlisting role="example">
-					<![CDATA[ block = mdaq_block() 
+					<![CDATA[ block = mdaqBlock() 
    // block  =
    //    name: "new_block"
    //    desc: "Set new_block parameters"
@@ -76,7 +76,7 @@
 				<para/>
 				<member>Generate and add block to MicroDAQ User palette</member>
 				<programlisting role="example">
-					<![CDATA[ mdaq_block_add(block);    ]]>
+					<![CDATA[ mdaqBlockAdd(block);    ]]>
 				</programlisting>
 				<para>This step will generate block C code. Also block macros defining block properties and block behaviour in simulation mode ()'_sim' postfix) are generated. 
 						Functions generate following files: 
@@ -109,9 +109,9 @@
 				<member>Build modified C code:
 					<para></para>
 					<programlisting role="example">
-						<![CDATA[ mdaq_block_build());    ]]>
+						<![CDATA[ mdaqBlockBuild());    ]]>
 					</programlisting>
-					<para>If errors found during compilation correct them and run mdaq_block_build() again.</para>
+					<para>If errors found during compilation correct them and run mdaqBlockBuild() again.</para>
 				</member>
 				<member>Restart Scilab - in order to reload 'MicroDAQ User' palette MicroDAQ toolbox for Scilab has to be reloaded.</member>
 				<member>Start Xcos and open palette browser and locate 'MicroDAQ User' block category.
@@ -158,7 +158,7 @@
 		<para>
 		Generated block files can be used to implement block code for standard simulation mode. 
 		In order to add code for simulation mode generated mdaq_my_step_sim.sci file needs to be edited. The mdaq_my_step_sim.sci
-		file contains code which will be executed in simulation mode. Function mdaq_block_add() generates file which contains 
+		file contains code which will be executed in simulation mode. Function mdaqBlockAdd() generates file which contains 
 		block parameters variables which has to be used to change block output. 
 		</para>
 
@@ -228,7 +228,7 @@ endfunction
 			<member>Compile modified file with: 
 				<para>
 					<programlisting role="example">
-						<![CDATA[ mdaq_block_build();    ]]>
+						<![CDATA[ mdaqBlockBuild();    ]]>
 					</programlisting>
 				</para>
 			</member>

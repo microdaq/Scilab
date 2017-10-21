@@ -6,9 +6,9 @@ xmlns:ns5="http://www.w3.org/1999/xhtml"
 xmlns:mml="http://www.w3.org/1998/Math/MathML" 
 xmlns:db="http://docbook.org/ns/docbook" 
 version="5.0-subset Scilab" 
-xml:id="mdaq_dsp_terminate">
+xml:id="mdaqDSPTerminate">
   <refnamediv>
-    <refname>mdaq_dsp_terminate</refname>
+    <refname>mdaqDSPTerminate</refname>
     <refpurpose>Force to terminate currently running DSP application</refpurpose>
   </refnamediv>
   <refsynopsisdiv>
@@ -16,23 +16,23 @@ xml:id="mdaq_dsp_terminate">
 	<para>This function forces termination of model execution on MicroDAQ DSP core. It allows Ext and Standalone model termination.</para>
     <title>Calling Sequence</title>
     <synopsis>
-      mdaq_dsp_terminate();
-	  mdaq_dsp_terminate(connection_id);
+      mdaqDSPTerminate();
+	  mdaqDSPTerminate(connection_id);
     </synopsis>
   </refsynopsisdiv>
   <refsection id="Parameters___FUNC_NAME__">
     <title>Arguments</title>
     <itemizedlist>
-	    <listitem><para><emphasis role="bold">connection_id : </emphasis> Connection ID returned by mdaq_open() (OPTIONAL)</para></listitem>
+	    <listitem><para><emphasis role="bold">connection_id : </emphasis> Connection ID returned by mdaqOpen() (OPTIONAL)</para></listitem>
     </itemizedlist>
   </refsection>
   <refsection id="SeeAlso___FUNC_NAME__">
     <title>See Also</title>
     <simplelist type="inline">
-      <member><link linkend="mdaq_dsp_start">mdaq_dsp_start</link> : Start DSP execution </member>
-	  <member><link linkend="mdaq_dsp_signal_read">mdaq_dsp_signal_read</link> : Read DSP signal data </member>
-	  <member><link linkend="mdaq_dsp_signal">mdaq_dsp_signal</link> : Register DSP Signal ID </member>
-	  <member><link linkend="mdaq_dsp_build">mdaq_dsp_build</link> : Builds DSP application from provided Xcos model </member>
+      <member><link linkend="mdaqDSPStart">mdaqDSPStart</link> : Start DSP execution </member>
+	  <member><link linkend="mdaqDSPSignallRead">mdaqDSPSignallRead</link> : Read DSP signal data </member>
+	  <member><link linkend="mdaqDSPSignal">mdaqDSPSignal</link> : Register DSP Signal ID </member>
+	  <member><link linkend="mdaqDSPBuild">mdaqDSPBuild</link> : Builds DSP application from provided Xcos model </member>
       <member>
         <link type="scilab" linkend="scilab.help/sum">Link to the Scilab help page</link>
       </member>

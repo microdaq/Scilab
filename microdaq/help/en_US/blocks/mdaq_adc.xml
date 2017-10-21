@@ -43,7 +43,7 @@
 				<para>
 					<emphasis role="bold">Range</emphasis>
 				</para>
-				<para>The range parameter specifies channel measurement input range. Matrix n-by-2 where n is number of used channels shall be provided. If 1x2 matrix is provided, the range setting will be used for all channels. In order to obtain supported ranges use <link linkend="mdaq_hwinfo">mdaq_hwinfo()</link>. Range matrix - single row matrix e.g. [-10,10] sets -10 to 10V input range which will be used for all channels. If multi-range used, row number must match selected channels e.g. range matrix for 3 channels [-10,10; -5,5; -2,2]</para>
+				<para>The range parameter specifies channel measurement input range. Matrix n-by-2 where n is number of used channels shall be provided. If 1x2 matrix is provided, the range setting will be used for all channels. In order to obtain supported ranges use <link linkend="mdaqHWInfo">mdaqHWInfo()</link>. Range matrix - single row matrix e.g. [-10,10] sets -10 to 10V input range which will be used for all channels. If multi-range used, row number must match selected channels e.g. range matrix for 3 channels [-10,10; -5,5; -2,2]</para>
 				<para />
 			</listitem>
 			<listitem>
@@ -91,7 +91,7 @@
 		<title>See Also</title>
 		<simplelist type="inline">
 			<member>
-				<link linkend="mdaq_ai_read">mdaq_ai_read</link> : Reads MicroDAQ analog inputs (AI) from Scilab script
+				<link linkend="mdaqAIRead">mdaqAIRead</link> : Reads MicroDAQ analog inputs (AI) from Scilab script
 			</member>
 			<member>
 				<link linkend="mdaq_dac">mdaq_dac</link> : Sets MicroDAQ analog outputs
