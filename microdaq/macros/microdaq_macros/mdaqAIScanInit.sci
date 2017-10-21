@@ -166,7 +166,7 @@ function  mdaqAIScanInit(arg1, arg2, arg3, arg4, arg5, arg6)
             else 
                 rangeStr = "0-" + string(aiRange_t(j, 2))+"V";
             end
-            rows = [rows; string(channels(j)), measure_type, rangeStr, resolution+"mV"]
+            rows = [rows; "AI"+string(channels(j)), measure_type, rangeStr, resolution+"mV"]
         end
 
         mprintf("\nAnalog input scanning session settings:\n");
@@ -174,28 +174,32 @@ function  mdaqAIScanInit(arg1, arg2, arg3, arg4, arg5, arg6)
         str2table(rows, ["Channel", "Measurement type", "Range", "Resolution"], 3)
         mprintf("\t--------------------------------------------------\n")
         if scan_freq >= 1000
-            mprintf("\tScan frequency:\t\t%.4fkHz\n", scan_freq/1000);
-            mprintf("\tActual scan frequency:\t%.4fkHz\n", real_freq/1000);
+            mprintf("\tScan frequency:\t\t%.5f kHz\n", scan_freq/1000);
+            mprintf("\tActual scan frequency:\t%.5f kHz\n", real_freq/1000);
         else
-            mprintf("\tScan frequency:\t\t%.4fHz\n", scan_freq);
-            mprintf("\tActual scan frequency:\t%.4fHz\n", real_freq);
+            mprintf("\tScan frequency:\t\t%.5f Hz\n", scan_freq);
+            mprintf("\tActual scan frequency:\t%.5f Hz\n", real_freq);
         end
         if 1 /real_freq > 0.001 then
-            mprintf("\tScan period: \t\t%fs\n", 1 / real_freq);
+            mprintf("\tScan period: \t\t%.5f seconds\n", 1 / real_freq);
         end
         
         if 1 /real_freq <= 0.001 then
-            mprintf("\tScan period: \t\t%fms\n", 1 / real_freq * 1000);
+            mprintf("\tScan period: \t\t%.5f ms\n", 1 / real_freq * 1000);
         end
 
         if scan_time < 0
-            mprintf("\tDuration:\t\tInf\n");
+            mprintf("\tNumber of channels:\t%d\n", ch_count)
             mprintf("\tNumber of scans:\tInf\n");
-            mprintf("\tNumber of channels:\t%d\n", ch_count)
+            mprintf("\tDuration:\t\tInf\n");
         else
-            mprintf("\tDuration:\t\t%.2fs\n", scan_time);
-            mprintf("\tNumber of scans:\t%d\n", scan_time * scan_freq);
             mprintf("\tNumber of channels:\t%d\n", ch_count)
+            mprintf("\tNumber of scans:\t%d\n", scan_time * scan_freq);
+            if scan_time == 1 
+                mprintf("\tDuration:\t\t%.2f second\n", scan_time);
+            else
+                mprintf("\tDuration:\t\t%.2f seconds\n", scan_time);
+            end
         end
         mprintf("\t--------------------------------------------------\n")
     end
