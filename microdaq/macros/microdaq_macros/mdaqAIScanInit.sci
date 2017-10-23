@@ -45,7 +45,9 @@ function  mdaqAIScanInit(arg1, arg2, arg3, arg4, arg5, arg6)
         error('Unable to detect MicroDAQ confituration - run mdaqHWInfo and try again!');
         return;
     end
-
+    
+    ch_count = size(channels, 'c');
+    
     if scan_time < 0 then
         scan_time = -1;
     end
@@ -58,15 +60,19 @@ function  mdaqAIScanInit(arg1, arg2, arg3, arg4, arg5, arg6)
         error('Wrong range - matrix range [low,high;low,high;...] expected')
     end
 
-    if size(aiMode, 'r') > 1 then
-        error('Wrong mode - scalar or single row vector expected')
-    end
-    
-    ch_count = size(channels, 'c');
-    
     aiRangeSize = size(aiRange, 'r');
     if aiRangeSize <> 1 & aiRangeSize <> ch_count then
         error('Range vector should match selected AI channels')
+    end
+    
+    if type(aiMode) == 1 then
+        if size(find(aiMode>1), '*') > 0
+            error('Wrong mode - boolean value expected (%T/1, %F/0)')
+        end 
+    end
+    
+    if size(aiMode, 'r') > 1 then
+        error('Wrong mode - scalar or single row vector expected')
     end
     
     aiModeSize = size(aiMode, 'c');
