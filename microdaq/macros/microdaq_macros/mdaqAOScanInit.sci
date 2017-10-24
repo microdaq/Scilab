@@ -54,43 +54,13 @@ function  mdaqAOScanInit(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
         return;
     end
     
-    if continuous == %T then
-        continuous = 1;
-    else 
-        continuous = 0; 
-    end
-
-    if scan_time < 0 & scan_time <> -1 then
-        mprintf("WARNING: For infinite scan session as a duration parameter use -1 value instead!\n"); 
-        scan_time = -1;
-    end
+    ch_count = size(channels, "c");  
+    dac_ch_count = strtod(dac_info.channel);  
     
     if size(channels, 'r') > 1 then
         error("Wrong channel - single row vector expected!")
     end
     
-    if size(ao_range, 'c') <> 2 then
-        error("Vector range [low,high;low,high;...] expected!")
-        return;
-    end
-    
-    ch_count = size(channels, "c");    
-    
-    if size(ao_range, 'r') == 1 then
-        range_tmp = ao_range;
-        ao_range = ones(ch_count,2);
-        ao_range(:,1) = range_tmp(1);
-        ao_range(:,2) = range_tmp(2);
-    end
-    ao_range = matrix(ao_range', 1, ch_count*2);
-    dac_ch_count = strtod(dac_info.channel);
-    
-    if size(data, "c") <> ch_count then
-        error("Wrong output data - colums should match selected channels!")
-    end
-    
-    data_size = size(data, "*"); 
-
     if ch_count < 1 | ch_count > dac_ch_count then
         error("Wrong AO channel selected!")
     end
@@ -99,10 +69,41 @@ function  mdaqAOScanInit(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
         error("Wrong AO channel selected!")
     end
     
+    if size(data, "c") <> ch_count then
+        error("Wrong output data - colums should match selected channels!")
+    end
+    
+    if size(ao_range, 'c') <> 2 then
+        error("Vector range [low,high;low,high;...] expected!")
+        return;
+    end
+    
+    if size(ao_range, 'r') == 1 then
+        range_tmp = ao_range;
+        ao_range = ones(ch_count,2);
+        ao_range(:,1) = range_tmp(1);
+        ao_range(:,2) = range_tmp(2);
+    end
+    range_tmp = ao_range;
+    ao_range = matrix(ao_range', 1, ch_count*2);
+    
+    data_size = size(data, "*"); 
+    
+    if type(continuous) == 1 then
+        if size(find(continuous>1), '*') > 0
+            error('Wrong isContinuous - boolean value expected (%T/1, %F/0)');
+        end 
+    end
+    
     if continuous == %T | continuous == 1 then
         continuous = 1;
     else
         continuous = 0;
+    end
+    
+    if scan_time < 0 & scan_time <> -1 then
+        mprintf("WARNING: For infinite scan session as a duration parameter use -1 value instead!\n"); 
+        scan_time = -1;
     end
     
     %microdaq.private.ao_scan_ch_count = ch_count;
