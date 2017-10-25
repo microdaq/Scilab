@@ -3,17 +3,19 @@
 // to control DC motor. The DC motor is driven by H-bridge 
 // which is controlled by PWM and DIO. 
 //
-// MicroDAQ DIO20, DIO22 are used to control H-bridge 
+// MicroDAQ DIO15, DIO16 are used to control H-bridge 
 // enable and direction pins. MicroDAQ PWM is used to 
 // control H-bridge voltage. DC motor is equipped with 
 // quadrature encoder. MicroDAQ encoder module is used 
 // to read DC motor shaft position. 
 
 function dc_motor_controller(data_color,command, Kp, Ki, Kd)
-pwm_module = 3; 
+mdaqClose();
+
+pwm_module = 1; 
 pwm_period = 200; // in microseconds
-dio_enable = 20; 
-dio_direction = 22; 
+dio_enable = 15; 
+dio_direction = 16; 
 enc = 2; 
 dt = 0.0041;
 prev_err = 0; 
@@ -27,10 +29,14 @@ time = [];
 // argument for MicroDAQ hardware access macros
 con = mdaqOpen();
 if con > -1 then
+    // disable PWM module 2/3   
+    mdaqDIOFunc(con, 4, %F);
+    mdaqDIOFunc(con, 5, %F);
     
-    // configure MicroDAQ PWM module 3 with period 200us
+    // configure MicroDAQ PWM module 1 with period 200us
     // and non-inverted PWM waveform
-    mdaqPWMInit(con, pwm_module, pwm_period, %F); 
+    mdaqDIOFunc(con, 3, %T);
+    mdaqPWMInit(con, pwm_module, pwm_period, %F, 0, 0); 
     
     // initialize MicroDAQ Encoder 2 module with 0 value
     mdaqEncoderInit(con, enc, 0);

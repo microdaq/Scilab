@@ -1,16 +1,12 @@
-// Acquire data from AI channels: 1,2,3,4 with 10kHz frequency
-// Duration: 10sec
-
-duration = 5; 
-sample_freq = 10000;
-buffer_size = 1000; 
-
 aiData = [];
-mdaqAIScanInit([1:4], 1, %f, sample_freq, duration)
-
-tic()
-for i=1:(sample_freq * duration) / buffer_size
-    aiData = [aiData; mdaqAIScan(buffer_size, %T) ];
+dataCount = 0;
+mdaqAIScanInit(1:8, [-10,10], %F, 10000, 1)
+for i=1:10
+    [data result] = mdaqAIScan(1000, %T);
+    aiData = [aiData; data];
+    dataCount = dataCount + result;
+    mprintf('Acquired %d scans (total: %d scans)\n', result, dataCount);
 end
+mdaqAIScanStop();
 plot(aiData);
 clear aiData;

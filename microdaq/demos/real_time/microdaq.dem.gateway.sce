@@ -7,9 +7,10 @@
 function subdemolist = demo_gateway()
   demopath = get_absolute_file_path("MicroDAQ.dem.gateway.sce");
 
-  subdemolist = ["Data acquisition",   pathconvert("data_acquisition/microdaq.dem.gateway.sce", %F);
-                 "Real-time processing",  pathconvert("real_time/microdaq.dem.gateway.sce", %F) ;
-                 "Other",              pathconvert("other/microdaq.dem.gateway.sce", %F) ;
+  subdemolist = [ "FFT (script + XCOS - external mode)", "fft_demo.dem.sce" ;
+                  "DC motor control (XCOS - external mode)", "dc_motor_demo.dem.sce" ;
+                  "PID control (script)", "pid_demo.dem.sce" ;
+                  "Audio effects (script)", "audio_demo.dem.sce" ;
                 ];
 
   subdemolist(:,2) = demopath + subdemolist(:,2);

@@ -599,6 +599,13 @@ function [ok,values_res,exprs]=wfir_gui_demo(exprs)
     realtimeinit(0.1);
     t=0;
     
+    info_msg = ["This example shows simple audio processing using MicroDAQ device and Scilab software.";
+                "Source of audio stream connect to analog input channels: AI1, AI2. You can adjust ";
+                "demo parameters in real time during processing. Filtered signal will be available on" ;
+                "output channels: AO1, AO2.";
+                "";
+                "WARNING: On some platforms, GUI sliders cause Scilab random crashes."];
+    messagebox(info_msg, "Demo usage", "info");
     mdaqClose();
     
     while ret==0&or(winsid()==fig_id) then
