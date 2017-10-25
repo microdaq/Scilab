@@ -10,7 +10,7 @@ function result = mdaqPing()
             mprintf(' ERROR!\nUnable to connect to MicroDAQ device, check your configuration!\n');
             mprintf('Scilab is configured with following settings:\n');
             mprintf('IP address: %s, port %d\n', mdaq_ip_addr, 4343);
-            mprintf('If MicroDAQ has different IP address use mdaq_ip_set to set correct IP address.\n\n');
+            mprintf('If MicroDAQ has different IP address use mdaqSetIP function to set correct IP address.\n\n');
             result = %F;
         else
             mprintf('OK!\n');
