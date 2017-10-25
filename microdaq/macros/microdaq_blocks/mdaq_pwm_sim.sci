@@ -19,7 +19,9 @@ function block=mdaq_pwm_sim(block,flag)
                 mdaqPWMInit(%microdaq.private.connection_id,..
                               block.ipar(1),..
                               block.ipar(2),..
-                              block.ipar(3));
+                              block.ipar(3),..
+                              block.inptr(1),..
+                              block.inptr(2));
             end
 
         case 5 // Ending
