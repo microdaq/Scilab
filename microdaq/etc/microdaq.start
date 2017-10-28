@@ -219,7 +219,12 @@ if (sci_ver_str == 'scilab-5.5.2') | (sci_ver_str == 'scilab-5.5.2.1') then
     %microdaq.ip_address = mdaq_get_ip();
     if check_mdaq_compiler() == %F then
         mprintf("\nFor more help on MicroDAQ toolbox, DSP managment functions, C code integration\ntools and other MicroDAQ toolbox features see help (help microdaq).\n\n");
-        mprintf("WARNING: MicroDAQ toolbox ver 1.2.x requires firmware ver 2.0.0 or higher.\n\t Make sure that latest firmware has been installed. Link to latest\n\t firmware version https://github.com/microdaq/Firmware\n\n\t TI Code Composer Studio 5.x is no longer supported. Please install\n\t proper C6000 compiler, XDC tools and SYS/BIOS according to \n\t microdaq_setup installer (help button).\n")
+        mprintf("WARNING: MicroDAQ toolbox ver 1.2.x requires firmware ver 2.0.0 or higher.\n\t Make sure that latest firmware has been installed. Link to latest\n\t firmware version https://github.com/microdaq/Firmware\n\n\t TI Code Composer Studio 5.x is no longer supported. Please install\n\t proper C6000 compiler, XDC tools and SYS/BIOS according to \n\t following links:\n\n")
+        mprintf("\t - C6000 compiler, ver. 7.4.21:              http://software-dl.ti.com/codegen/non-esd/downloads/download.htm#C6000\n");
+        mprintf("\t - XDCTools, ver. 3.50.00.10 (with a JRE):   http://software-dl.ti.com/dsps/dsps_public_sw/sdo_sb/targetcontent/rtsc/\n");
+        mprintf("\t - SYS/BIOS, ver. 6.50.01.12:                http://software-dl.ti.com/dsps/dsps_public_sw/sdo_sb/targetcontent/sysbios/\n\n");
+
+        mprintf("WARNING: Replace  all MicroDAQ blocks in your existing models with blocks from release 1.2v.\n");
         if sci_ver(1) == 5 then 
             mprintf("\nRun microdaq_setup to configure toolbox:\n\tmicrodaq_setup() - GUI mode\n\tmicrodaq_setup(compilerPath, xdctoolsPath, sysbiosPath, ipAddress) - non-GUI mode");
         end
