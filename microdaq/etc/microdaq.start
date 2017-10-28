@@ -172,7 +172,7 @@ if (sci_ver_str == 'scilab-5.5.2') | (sci_ver_str == 'scilab-5.5.2.1') then
             deletefile(TMPDIR + filesep() + img_files(img_files_index(i)));
         end
     end
-    
+end
     // ---- Load MicroDAQ User blocks ----
     // This feature is not available on Scilab 6, yet 
     if getversion() <> "scilab-6.0.0" then
