@@ -73,8 +73,8 @@
 		<para>
 
 			<simplelist type="inline">
-				<member> stream mode - 524288 values / number of used channels</member>
-				<member> periodic mode - 1048576 values / number of used channels</member>
+				<member> stream mode - 1048576 values / number of used channels</member>
+				<member> periodic mode - 2097152 values / number of used channels</member>
 			</simplelist>
 		</para>
 
