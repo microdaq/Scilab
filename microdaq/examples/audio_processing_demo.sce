@@ -1,17 +1,17 @@
 // Data acqisition parameters
 Rate = 44100;
 Channel = 1; 
-aiRange = 2; // analog input range: ±5V
-aoRange = 3; // analog output range: ±2.5V
-aoTrigger = 0; 
-IsContinuous = %T;
-IsDifferential = %F; 
+aiRange = [-1, 1];    // analog input range: ±1V
+aoRange = [-2.5, 2.5]; // analog output range: ±2.5V
+isContinuous = %T;
+isDifferential = %F; 
+initialAOData = zeros(Rate / 10, 1);
 
 Gain = 1.5;
 
 // Init analog input/output scanning 
-mdaqAIScanInit(Channel, aiRange, IsDifferential, Rate, -1);      
-mdaqAOScanInit(Channel, zeros(Rate / 10,1), aoRange, IsContinuous, Rate, -1);
+mdaqAIScanInit(Channel, aiRange, isDifferential, Rate, -1);      
+mdaqAOScanInit(Channel, initialAOData, aoRange, isContinuous, Rate, -1);
 
 // Start scanning - analog input and output
 mdaqAOScan();
