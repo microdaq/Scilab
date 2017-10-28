@@ -11,8 +11,7 @@ function [] = microdaq_setup(arg1, arg2, arg3, arg4)
             end
         end
         return
-    elseif isequal(sciVer(1:3), [6,0,0]) then
-        mprintf("\nMicroDAQ toolbox on Scilab 6.0 has limited functionality. \nCode generation from Xcos diagram, DSP management functions\nand legacy C code integration in not supported.\nUse Scilab 5.5.2 to have full-featured MicroDAQ toolbox for Scilab\n");
+    elseif sciVer(1) == 6 then
         if argn(2) <> 1 then
             mprintf("Use microdaq_setup with IP address setting to configure toolbox e.g.:\n\tmicrodaq_setup(""10.10.1.1"")\n");
             return
