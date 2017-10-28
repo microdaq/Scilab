@@ -5,7 +5,7 @@
 
 
 function subdemolist = demo_gateway()
-  demopath = get_absolute_file_path("MicroDAQ.dem.gateway.sce");
+  demopath = get_absolute_file_path("microdaq.dem.gateway.sce");
 
   subdemolist = ["Data acquisition",   pathconvert("data_acquisition/microdaq.dem.gateway.sce", %F);
                  "Real-time processing",  pathconvert("real_time/microdaq.dem.gateway.sce", %F) ;
