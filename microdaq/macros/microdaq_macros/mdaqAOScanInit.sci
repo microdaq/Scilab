@@ -29,10 +29,9 @@ function  mdaqAOScanInit(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
     global %microdaq;
     if %microdaq.private.mdaq_hwid <> [] then
         if  %microdaq.private.mdaq_hwid(3) == 0 then
-            disp("ERROR: Unable to detect DAC configuration!");
-            return;
+            error("Unable to detect MicroDAQ configuration. Run mdaqHWInfo() function.");
         end
-        dac_info = %microdaq.private.dac_info;
+        dac_info = get_dac_info(%microdaq.private.mdaq_hwid);
         if argn(2) > 7 | argn(2) < 6 then
         mprintf("Description:\n");
         mprintf("\Initiates AO scanning session\n");
@@ -50,8 +49,7 @@ function  mdaqAOScanInit(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
             return;
         end
     else
-        error('Unable to detect MicroDAQ confituration - run mdaqHWInfo and try again!');
-        return;
+        error('Unable to detect MicroDAQ configuration. Run mdaqHWInfo() function.');
     end
     
     ch_count = size(channels, "c");  
@@ -144,10 +142,10 @@ function  mdaqAOScanInit(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
         
         rows = [];
         row = '';
-        adc_res = strtod(part(adc_info.resolution, 1:2))
+        dac_res = strtod(part(dac_info.resolution, 1:2))
         for j=1:ch_count
             dac_range = range_tmp(j, 2) - range_tmp(j, 1); 
-            resolution = string((int(dac_range/2^adc_res * 1000000)) / 1000);
+            resolution = string((int(dac_range/2^dac_res * 1000000)) / 1000);
             rangeStr="";
             if range_tmp(j, 1) < 0 then
                 rangeStr = "±" + string(range_tmp(j, 2))+"V";
