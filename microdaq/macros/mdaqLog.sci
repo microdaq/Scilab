@@ -21,7 +21,7 @@ function mdaqLog(filepath)
         mprintf('---- MLink log:\n%s\n\n', mlog);
         mprintf('---- Scilab environment info:\n');
         mprintf('Scilab architecture: %s\n', opts(2));
-        for i=1:size(sci, 'r') 
+        for i=1:6
             mprintf('%s %s\n', sci(i, 1), sci(i, 2));
         end
     else
@@ -32,7 +32,7 @@ function mdaqLog(filepath)
         mfprintf(fd,'---- MLink log:\n%s\n\n', mlog);
         mfprintf(fd,'---- Scilab environment info:\n');
         mfprintf(fd,'Scilab architecture: %s\n', opts(2));
-        for i=1:size(sci, 'r') 
+        for i=1:6
             mfprintf(fd,'%s %s\n', sci(i, 1), sci(i, 2));
         end
         
