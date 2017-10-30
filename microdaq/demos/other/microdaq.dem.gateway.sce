@@ -17,7 +17,7 @@ function subdemolist = demo_gateway()
                  "UDP send (XCOS - external mode)", "udp_send_demo.dem.sce" ;
                  "Param block (XCOS - external mode)", "param_demo.dem.sce" ;
                  "LabVIEW demo (XCOS)", "labview_demo.dem.sce" ;
-                 "MicroDAQ utils guide (XCOS)", "mdaq_utils_demo.dem.sce" ;
+                 "MicroDAQ utils guide", "mdaq_utils_demo.dem.sce" ;
                 ];
     else
         subdemolist = ["Blinking LED   (script)",   "led_script_demo.dem.sce" ;

@@ -14,7 +14,7 @@ function subdemolist = demo_gateway()
          "Analog output scanning - periodic (script)", "ao_scan_periodic.dem.sce" ;
          "Analog output scanning - stream (script)", "ao_scan_stream.dem.sce" ;
          "Analog loop scanning (script)", "aio_scan.dem.sce";
-         "Analog loop demo (XCOS - external mode)", "ext_analog_demo.dem.sce" ;
+         "Analog loop demo (XCOS - external/simulation mode)", "ext_analog_demo.dem.sce" ;
          "Write to file (XCOS - external mode)", "to_seq_file.dem.sce" ;
          //"Analog loop demo (XCOS - standalone mode)", "standalone_analog_demo.dem.sce" ;
         ];  

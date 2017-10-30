@@ -9,6 +9,6 @@ if (%microdaq.private.mdaq_hwid(1) == 1000) then
     return;
 end
 
-filePath = pathconvert(mdaqToolboxPath() + "examples/led_demo.zcos", %F);
+filePath = pathconvert(mdaqToolboxPath() + "examples/button_led_demo.zcos", %F);
 xcos(filePath);
 clear filePath;
