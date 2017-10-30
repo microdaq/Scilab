@@ -14,10 +14,12 @@ function subdemolist = demo_gateway()
                   "DC motor control (XCOS - external mode)", "dc_motor_demo.dem.sce" ;
                   "PID control (script)", "pid_demo.dem.sce" ;
                   "Audio effects (script)", "audio_demo.dem.sce" ;
+                  "Audio gain (script)", "audio_gain.dem.sce";
                 ];
     else
     subdemolist = ["PID control (script)", "pid_demo.dem.sce" ;
                   "Audio effects (script)", "audio_demo.dem.sce" ;
+                  "Audio gain (script)", "audio_gain.dem.sce";
                 ];
     end
 

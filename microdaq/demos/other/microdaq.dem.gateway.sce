@@ -22,6 +22,7 @@ function subdemolist = demo_gateway()
     else
         subdemolist = ["Blinking LED   (script)",   "led_script_demo.dem.sce" ;
                        "Button and LED (script)",   "button_led_script_demo.dem.sce" ;
+                       "MicroDAQ utils guide", "mdaq_utils_demo.dem.sce" ;
                 ];
     end
   
