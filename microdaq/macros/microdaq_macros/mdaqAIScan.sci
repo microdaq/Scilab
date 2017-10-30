@@ -42,6 +42,10 @@ function [data, result] = mdaqAIScan(arg1, arg2, arg3)
         blocking = 0; 
     end
     
+    if scan_count < 0 then
+        error("scanCount parameter has to be equal or grater than 0");
+    end
+    
     [ data result ] = call("sci_mlink_ai_scan",..
                 scan_count, 2, "i",..
                 blocking, 3, "i",..
