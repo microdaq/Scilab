@@ -18,7 +18,6 @@ function subdemolist = demo_gateway()
                 ];
     else
     subdemolist = ["PID control (script)", "pid_demo.dem.sce" ;
-                  "Audio effects (script)", "audio_demo.dem.sce" ;
                   "Audio gain (script)", "audio_gain.dem.sce";
                 ];
     end
