@@ -48,7 +48,7 @@
 		<programlisting role="example">
 			<![CDATA[
 				// set 1, 2, 3, 4V on 1, 2, 3, 4 channel with range 0 to 5V
-				mdaqAOWrite([2, 4, 6, 8], [0,5], [1, 2, 3, 4]);
+				mdaqAOWrite([1, 2, 3, 4], [0,5], [1, 2, 3, 4]);
 			 ]]>
 		</programlisting>
 
@@ -57,7 +57,7 @@
 			<![CDATA[
 				linkID = mdaqOpen();
 				// set 1, 2, 3, 4V on 1, 2, 3, 4 channel with range 0 to 5V
-				mdaqAOWrite(linkID, [2, 4, 6, 8], [0,5], [1, 2, 3, 4]);
+				mdaqAOWrite(linkID, [1, 2, 3, 4], [0,5], [1, 2, 3, 4]);
 				mdaqClose(linkID);
 			 ]]>
 		</programlisting>

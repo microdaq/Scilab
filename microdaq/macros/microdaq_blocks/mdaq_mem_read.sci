@@ -5,7 +5,7 @@ function [x,y,typ] = mdaq_mem_read(job,arg1,arg2)
     "Mode parameter sets block read behaviour.";
     "If Trigger input is enabled, rising";
     "edge on trigger input will reset data ";
-    "index to index 0. ";  
+    "index to defined start index.";  
     "";
     "Start index:";
     " points to beginning of memory area, range 1-(500000/vector size)";

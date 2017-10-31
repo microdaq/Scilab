@@ -42,8 +42,7 @@ function  mdaqAIScanInit(arg1, arg2, arg3, arg4, arg5, arg6)
             return;
         end
     else
-        error('Unable to detect MicroDAQ confituration - run mdaqHWInfo and try again!');
-        return;
+        error('Unable to detect MicroDAQ configuration. Run mdaqHWInfo() function.');
     end
     
     ch_count = size(channels, 'c');

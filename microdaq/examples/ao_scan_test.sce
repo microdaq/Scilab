@@ -31,4 +31,3 @@ end
 // acquire rest of samples
 aiData = [aiData; mdaqAIScan(scanDataSize, %T)];
 plot(aiData)
-clear aiData;

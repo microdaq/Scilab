@@ -80,7 +80,6 @@ This function starts analog input scanning session and reads acquired data. A fu
 			end
 			mdaqAIScanStop();
 			plot(aiData);
-			clear aiData;
 			 ]]>
 		</programlisting>
 
@@ -100,7 +99,6 @@ This function starts analog input scanning session and reads acquired data. A fu
 			end
 			mdaqAIScanStop();
 			plot(aiData);
-			clear aiData;
 			 ]]>
 		</programlisting>
 	</refsection>

@@ -3,7 +3,6 @@
 
 // This file is released under the 3-clause BSD license. See COPYING-BSD.
 
-mode(-1)
 global STATE
 STATE = 1
 
@@ -259,9 +258,10 @@ help_desc = [
 'checked by cliking '"Check firmware'" button.';
 'If your firmware version is obsolete, please make an upgrade by doing';
 'the following steps:'
-'1. Download latest upgrade package from: https://github.com/microdaq';
-'2. Connect USB cable and copy package to ''upgrade'' folder on MicroDAQ';
-'storage.';
+'1. Download latest upgrade package from:';
+'   https://github.com/microdaq/Firmware/releases';
+'2. Connect USB cable, unpack archive, and copy *opk file to ''upgrade'' ';
+'folder on MicroDAQ storage.';
 '3. Click ''upgrade'' button on web interface.';
 '';
 'During installation point where required components are located.';
@@ -280,9 +280,10 @@ help_desc = [
 'Example directory structure:';
 help_paths;
 '';
-'Make sure that correct version of component is installed.';
+'Make sure that correct version of components are installed.';
 '';
 'More info is available on website: ';
+'http://microdaq.org';
 'https://github.com/microdaq/Scilab';
 '';
 'For non-GUI microdaq_setup use: ";

@@ -63,7 +63,6 @@
 			end
 			mdaqAIScanStop();
 			plot(aiData);
-			clear aiData;
 			 ]]>
 		</programlisting>
 		
@@ -81,7 +80,6 @@
 			end
 			mdaqAIScanStop();
 			plot(aiData);
-			clear aiData;
 			 ]]>
 		</programlisting>
 		
@@ -99,7 +97,6 @@
 			end
 			mdaqAIScanStop();
 			plot(aiData);
-			clear aiData;
 			 ]]>
 		</programlisting>
 		

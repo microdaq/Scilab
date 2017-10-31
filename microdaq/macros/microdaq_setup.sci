@@ -1,18 +1,9 @@
 function [] = microdaq_setup(arg1, arg2, arg3, arg4)
     sciVer = getversion('scilab');
     if isequal(sciVer(1:2), [5,5]) & argn(2) == 0 then
-        scriptPath = mdaqToolboxPath()+'macros'+filesep()+'microdaq_setup_template.sce';
-        exec(scriptPath, -1);
-        while STATE
-            if findobj('Tag', 'edit2') == [] then
-                global STATE
-                STATE = 0
-                sleep(100)
-            end
-        end
+        mprintf("\nInfo : To run GUI installer enter following command in Scilab console:\n\t--> exec(mdaqToolboxPath()+pathconvert('"/macros/microdaq_setup_gui.sce'", %s), -1);", "%F");
         return
-    elseif isequal(sciVer(1:3), [6,0,0]) then
-        mprintf("\nMicroDAQ toolbox on Scilab 6.0 has limited functionality. \nCode generation from Xcos diagram, DSP management functions\nand legacy C code integration in not supported.\nUse Scilab 5.5.2 to have full-featured MicroDAQ toolbox for Scilab\n");
+    elseif sciVer(1) == 6 then
         if argn(2) <> 1 then
             mprintf("Use microdaq_setup with IP address setting to configure toolbox e.g.:\n\tmicrodaq_setup(""10.10.1.1"")\n");
             return
