@@ -114,6 +114,9 @@ function mdaqBlockAdd(block_def)
 
     name_converted = convstr(block_def.name,'l');
     name_converted = strsubst(name_converted, ' ', '_');
+    if strstr(name_converted, 'sim') <> "" then
+        error("Cannot create block with '"*sim*'" word (known issue). Choose another block name.");
+    end
     name_converted = 'mdaq_' + name_converted;
 
     for i = 1:params_size
@@ -220,6 +223,8 @@ function mdaqBlockAdd(block_def)
         '           model.ipar = [];';
         '           model.dstate = [];';
         '           x.graphics = graphics;';
+
+
         '           x.model = model;';
         '           break';
         '       end';
@@ -430,7 +435,8 @@ function mdaqBlockAdd(block_def)
     gen_svg(svg_path, name_converted, block_def.name);
 
     // build macros and compile C code
-    mdaqBlockBuild(~block_def.use_sim_script);
+    mdaqBlockBuild(%F, ~block_def.use_sim_script);
+    mprintf("\tRestart Scilab to use new block\n");
 endfunction
 
 function res = save_string(filename, content)
