@@ -1,9 +1,10 @@
 sci_ver = getversion("scilab");
 
+start_script_path = get_absolute_file_path("microdaq.start");
 if sci_ver(1)  == 5 then
-    exec("microdaq_start_sci5.sce", -1);
+    exec(start_script_path+"microdaq_start_sci5.sce", -1);
 elseif sci_ver(1)  == 6 then
-    exec("microdaq_start_sci6.sce", -1);
+    exec(start_script_path+"microdaq_start_sci6.sce", -1);
 else
     mprintf("ERROR: Cannot load MicroDAQ toolbox. Wrong Scilab version.")
 end

@@ -61,7 +61,7 @@ end
 // force to load some libraries (dependancies)
 loadScicos();
 // =============================================================================
-etc_tlbx  = get_absolute_file_path("microdaq.start");
+etc_tlbx  = get_absolute_file_path("microdaq_start_sci5.sce");
 etc_tlbx  = getshortpathname(etc_tlbx);
 root_tlbx = strncpy( etc_tlbx, length(etc_tlbx)-length("\etc\") );
 
