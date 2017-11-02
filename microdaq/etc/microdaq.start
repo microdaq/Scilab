@@ -173,7 +173,7 @@ if (sci_ver_str == 'scilab-5.5.2') | (sci_ver_str == 'scilab-5.5.2.1') then
 end
     // ---- Load MicroDAQ User blocks ----
     // This feature is not available on Scilab 6, yet 
-    if getversion() <> "scilab-6.0.0" then
+    if sci_ver(1) <> 6 then
         if isfile(userblock_path+'lib') == %T then
             microdaqUserBlocks = lib(userblock_path);
         else
@@ -184,21 +184,21 @@ end
     
         if isfile(userblock_path+'lib') == %T then
             mprintf("\tLoad MicroDAQ User blocks\n");
-    
+
             blocks = [];
             tmp_path = pwd();
-            userblock_path = root_tlbx + pathconvert("/macros/user_blocks/");
             cd(userblock_path);
             macros = ls("mdaq_*.bin");
             cd(tmp_path);
             for b=1:size(macros, "r")
                 macros(b) = part(macros(b), 1:length(macros(b)) - 4);
-                if strstr(macros(b), "_sim") == ""
+                if part(macros(b), length(macros(b)) - 3:length(macros(b))) <> "_sim"
                     if isfile(userblock_path + macros(b) + '.sci')  == %T then
                         blocks = [blocks, macros(b)];
                     end
                 end
             end
+      
             pal = xcosPal("MicroDAQ User");
     
             for i=1:size(blocks, "*")

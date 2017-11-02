@@ -19,20 +19,23 @@ from userlib directory (mdaqToolboxPath() + "src\c\userlib")	</para>
 Function compiles every C source file from userlib directory. In order to compile external user C source code e.g. used in custom block, C source needs to be placed in userlib directory or Makefile (from userlib directory) needs to be modified to compile external code.
 </para>
 <para>
-If block.use_sim_script is set to false then C source will be compiled to shared library which will be used in simulation mode. It guarantees the same code on host (simulation mode) and target (code generation) side. 
+If <emphasis role="bold">block.use_sim_script</emphasis> is set to false (%F) then C source will be compiled to shared library which will be used in simulation mode. It guarantees the same code on host (simulation mode) and target (code generation) side. 
 In order to use this option the external C compiler is required. List of supported compilers can be found at: 
 <ulink url="https://help.scilab.org/doc/5.5.2/en_US/supported_compilers.html">https://help.scilab.org/doc/5.5.2/en_US/supported_compilers.html</ulink>
 </para>
     <title>Calling Sequence</title>
     <synopsis>
+      mdaqBlockBuild();
       mdaqBlockBuild(debug);
+      mdaqBlockBuild(debug, buildHost);
     </synopsis>
   </refsynopsisdiv>
   <refsection id="Parameters___FUNC_NAME__">
     <title>Arguments</title>
     <itemizedlist>
       <listitem>
-	    <para><emphasis role="bold">debug : </emphasis> if %T library will be compiled with debug symbols without optimization</para>
+	    <para><emphasis role="bold">debug : </emphasis> if %T library will be compiled with debug symbols without optimization. False (%F) by default.</para>
+      <para><emphasis role="bold">buildHost : </emphasis> if %T library will be compiled into sharded library used by host machine. True (%T) by default.</para>
       </listitem>	  
     </itemizedlist>
   </refsection>
@@ -62,7 +65,7 @@ mdaqBlockAdd(block);
 
 // modify generated C source file
 
-// recompile modified files
+// recompile modified files (debug=%F, hostBuild=%T)
 mdaqBlockBuild(); 
  ]]></programlisting>
     </refsection>

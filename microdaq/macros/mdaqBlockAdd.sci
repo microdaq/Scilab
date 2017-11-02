@@ -114,6 +114,10 @@ function mdaqBlockAdd(block_def)
 
     name_converted = convstr(block_def.name,'l');
     name_converted = strsubst(name_converted, ' ', '_');
+    if name_converted == 'sim' then
+        name_converted = name_converted + '1';
+        error("Block name '"sim'" is reserved.");
+    end
     name_converted = 'mdaq_' + name_converted;
 
     for i = 1:params_size
@@ -430,7 +434,8 @@ function mdaqBlockAdd(block_def)
     gen_svg(svg_path, name_converted, block_def.name);
 
     // build macros and compile C code
-    mdaqBlockBuild(~block_def.use_sim_script);
+    mdaqBlockBuild(%F, ~block_def.use_sim_script);
+    mprintf("\tRestart Scilab to use new block");
 endfunction
 
 function res = save_string(filename, content)

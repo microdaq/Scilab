@@ -1,4 +1,4 @@
-function mdaqBlockBuild(host_build, debug_build)
+function mdaqBlockBuild(debug_build, host_build)
     // Check version compatibility 
     [is_supp vers] = mdaq_is_working('mdaqBlockBuild');
     if is_supp == %F then
@@ -11,8 +11,12 @@ function mdaqBlockBuild(host_build, debug_build)
         return;
     end
     
-    if argn(2) < 1 then
+    if argn(2) < 2 then
         host_build = %T;
+    end 
+    
+    if argn(2) < 1 then
+        debug_build = %F;
     end 
 
     root_path = mdaqToolboxPath();
