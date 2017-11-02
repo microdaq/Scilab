@@ -114,9 +114,8 @@ function mdaqBlockAdd(block_def)
 
     name_converted = convstr(block_def.name,'l');
     name_converted = strsubst(name_converted, ' ', '_');
-    if name_converted == 'sim' then
-        name_converted = name_converted + '1';
-        error("Block name '"sim'" is reserved.");
+    if strstr(name_converted, 'sim') <> "" then
+        error("Cannot create block with '"*sim*'" word (known issue). Choose another block name.");
     end
     name_converted = 'mdaq_' + name_converted;
 
@@ -224,6 +223,7 @@ function mdaqBlockAdd(block_def)
         '           model.ipar = [];';
         '           model.dstate = [];';
         '           x.graphics = graphics;';
+
 
         '           x.model = model;';
         '           break';
