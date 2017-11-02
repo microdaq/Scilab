@@ -224,6 +224,7 @@ function mdaqBlockAdd(block_def)
         '           model.ipar = [];';
         '           model.dstate = [];';
         '           x.graphics = graphics;';
+
         '           x.model = model;';
         '           break';
         '       end';
@@ -435,7 +436,7 @@ function mdaqBlockAdd(block_def)
 
     // build macros and compile C code
     mdaqBlockBuild(%F, ~block_def.use_sim_script);
-    mprintf("\tRestart Scilab to use new block");
+    mprintf("\tRestart Scilab to use new block\n");
 endfunction
 
 function res = save_string(filename, content)

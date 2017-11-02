@@ -1,4 +1,6 @@
 function mdaqBlockBuild(debug_build, host_build)
+    global %microdaq;
+    
     // Check version compatibility 
     [is_supp vers] = mdaq_is_working('mdaqBlockBuild');
     if is_supp == %F then
