@@ -18,7 +18,7 @@ function mdaqDSPStop(arg1)
         end
 
         if %microdaq.dsp_ext_mode then
-            client_disconnect(1);
+            client_disconnect();
         end
 
         %microdaq.dsp_loaded = %F;

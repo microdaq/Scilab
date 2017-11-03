@@ -5,9 +5,10 @@ function []=post_xcos_simulate(%cpr, scs_m, needcompile)
         curObj= scs_m.objs(i);
         if (typeof(curObj) == "Block" & curObj.gui == "mdaq_setup")
             if  %microdaq.dsp_loaded == %T then
-                client_disconnect(1);
+                client_disconnect();
                 %microdaq.dsp_loaded = %F;
-
+                
+                mdaqClose();
                 connection_id = mdaqOpen();
                 if connection_id < 0 then
                     return;

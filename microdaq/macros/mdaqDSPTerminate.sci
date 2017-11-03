@@ -26,7 +26,7 @@ function mdaqDSPTerminate(arg1)
     
     res = mlink_set_obj(link_id, 'ext_mode', 1 );
     if res == 0 then
-        client_disconnect(1);
+        client_disconnect();
     end
     %microdaq.dsp_loaded = %F;
     
