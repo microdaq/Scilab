@@ -14,12 +14,12 @@ channel = 1;
 AIRange = [-5 5];
 isDifferential = %F;
 numOfSmaples = scanFreq/divFac;
-duration = 120;
+duration = -1;
 
 // Initialize analog input scanning
 mdaqAIScanInit(channel, AIRange, isDifferential, scanFreq, duration);
 
-for i=1:(duration*divFac)
+while %T
     // Acquire data
     [data result] = mdaqAIScan(numOfSmaples, %T);
     
@@ -35,7 +35,7 @@ for i=1:(duration*divFac)
             clf();
             plot(f,abs(y(1:n)));
             title("FFT", "fontsize", 3);
-            xlabel("scanFrequency [Hz]","fontsize", 3);
+            xlabel("Frequency [Hz]","fontsize", 3);
             notInitialized = 0;
             axisH = gca();
         else
