@@ -28,7 +28,7 @@ function  mdaqAIScanInit(arg1, arg2, arg3, arg4, arg5, arg6)
         adc_info = get_adc_info(%microdaq.private.mdaq_hwid);
         if argn(2) > 6 | argn(2) < 5 then
             mprintf("Description:\n");
-            mprintf("\tInit AI scan\n");
+            mprintf("\tInitiates AI scanning session\n");
             mprintf("Usage:\n");
             mprintf("\tmdaqAIScanInit(linkID, channels, range, isDifferential, rate, duration)\n");
 			mprintf("\tlinkID - connection id returned by mdaqOpen() (OPTIONAL)\n");
