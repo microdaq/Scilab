@@ -21,7 +21,7 @@ function test()
     end
     // initialize analog input/output scanning sessions
     mdaqAOScanInit(channels, AOdata, [-10 10], %T, scanFrequency, duration);
-    mdaqAIScanInit(channels, [-10.24 10.24], %F, scanFrequency, duration);
+    mdaqAIScanInit(channels, [-10 10], %F, scanFrequency, duration);
     
     // start AI scanning without waiting for data
     mdaqAIScan(0, %T);

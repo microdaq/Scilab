@@ -1,4 +1,5 @@
 // ------ CONSTATNTS ------
+global %microdaq;
 mprintf("Loading test defines...\n")
 AI10_24 = [-10.24 10.24];
 AI5_12 = [-5.12 5.12];

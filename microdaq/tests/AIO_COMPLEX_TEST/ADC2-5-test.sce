@@ -1,7 +1,8 @@
 clc;
 mdaqClose();
 if exists("mdaq_ao_test") == 0 then
-exec(mdaqToolboxPath() + "tests\AIO_COMPLEX_TEST\mdaq_aio_test_utils.sci");
+path = get_absolute_file_path("ADC2-5-test.sce");
+exec(path + "\mdaq_aio_test_utils.sci");
 end 
 
 SCRIPT_MODE = 0;

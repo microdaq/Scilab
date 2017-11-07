@@ -7,7 +7,7 @@ function test()
     mdaqAOWrite(1:8, [-10 10], data);
     
     disp("READ DATA:")
-    disp(mdaqAIRead(1:8, [-10.24 10.24], %F));
+    disp(mdaqAIRead(1:8, [-10 10], %F));
 endfunction
 
 test();
