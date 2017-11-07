@@ -55,7 +55,7 @@
 	<refsection>
 		<title>Examples</title>
 		<para> 
-		Generate sine and triangle waveform in periodic mode. Sample update frequency 1000Hz, duration - Inf - interrupted by user code.
+		Generate sine and sawtooth waveform in periodic mode. Sample update frequency 1000Hz, duration - Inf - interrupted by user code.
 		</para>
 		<programlisting role="example">
 			<![CDATA[

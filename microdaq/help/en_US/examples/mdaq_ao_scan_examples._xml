@@ -8,19 +8,19 @@
 	<refsection id="Examples_mdaq_ao_scan_examples">
 		<title>Example 1: Single mode</title>
 		 <para> 
-		This example generates sine waveform on AO channel 1 and triangle waveform on AO channel 2 for 5 sec.  
+		This example generates sine waveform on AO channel 1 and sawtooth waveform on AO channel 2 for 5 sec.  
 		Output signal ferquency is 1 Hz. Functions are called without link_id.
 		</para>
         <programlisting role="example"><![CDATA[
 			//generate dataset
 			sinus_data = sin(linspace(0, 2*%pi, 1000)) + 1.0;
-			triangle_data = linspace(0, 5, 1000);
+			sawtooth_data = linspace(0, 5, 1000);
 
 			//init scan and load first dataset for each channel
 			//in single mode
 			mdaq_ao_scan_init([1:2], 1, %F, 0, 1000, 5);
 				mdaq_ao_data_update(1, sinus_data);
-				mdaq_ao_data_update(2, triangle_data);
+				mdaq_ao_data_update(2, sawtooth_data);
 				
 			//run scan 
 			mdaq_ao_scan();
@@ -29,7 +29,7 @@
  
 		<title>Example 2: Continuous mode</title>
 		<para> 
-		This example generates changing (during scan process) sine waveform on AO channel 1 and triangle waveform on AO channel 2 for 5 sec. 
+		This example generates changing (during scan process) sine waveform on AO channel 1 and sawtooth waveform on AO channel 2 for 5 sec. 
 		Note that all data is uploaded throuth one function call and have to be organised in column order (column per channel).
 		
 		Functions are called without link_id.
@@ -41,7 +41,7 @@
 
 				//generate dataset 
 				ch_data_size = 1000;
-				ref_triangle = linspace(0, 1, ch_data_size);
+				ref_sawtooth = linspace(0, 1, ch_data_size);
 				ref_sinus = sin(linspace(0, 2*%pi, ch_data_size));
 				sinus_bias = 2.5;
 				exp_val = -3.0;
@@ -54,7 +54,7 @@
 				mdaq_ao_scan_init([1:2], 1, %T, 0, frequency, time);
 					exp_wave = exp(linspace(exp_val, exp_val+0.8, ch_data_size));
 					sine_wave = ref_sinus. * exp_wave  + sinus_bias;
-					trianlge_wave = ref_triangle. * exp_wave;
+					trianlge_wave = ref_sawtooth. * exp_wave;
 					
 					mdaq_ao_data_queue([sine_wave; trianlge_wave]', %T);
 					
@@ -66,7 +66,7 @@
 					exp_val = exp_val+0.8;
 					exp_wave = exp(linspace(exp_val, exp_val+0.8, ch_data_size));
 					sine_wave = ref_sinus. * exp_wave + sinus_bias;
-					trianlge_wave = ref_triangle. * exp_wave;
+					trianlge_wave = ref_sawtooth. * exp_wave;
 					
 					mdaq_ao_data_queue([sine_wave; trianlge_wave]', %T);
 				end
