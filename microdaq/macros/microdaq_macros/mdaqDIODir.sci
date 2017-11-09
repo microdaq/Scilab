@@ -1,10 +1,4 @@
 function mdaqDIODir(arg1, arg2, arg3)
-
-    global %microdaq;
-    if %microdaq.private.mdaq_hwid(1) <> 1100 then
-        error("This function is not supported on this device.")
-    end
-    
     if argn(2) == 2 then
         bank = arg1; 
         direction = arg2; 
