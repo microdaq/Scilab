@@ -66,17 +66,17 @@ function  mdaqAIScanInit(arg1, arg2, arg3, arg4, arg5, arg6)
     
     if type(aiMode) == 1 then
         if size(find(aiMode>1), '*') > 0
-            error('Wrong mode - boolean value expected (%T/1, %F/0)')
+            error('Wrong mode (isDifferential parameter) - boolean value expected (%T/1, %F/0)')
         end 
     end
     
     if size(aiMode, 'r') > 1 then
-        error('Wrong mode - scalar or single row vector expected')
+        error('Wrong mode (isDifferential parameter) - scalar or single row vector expected')
     end
     
     aiModeSize = size(aiMode, 'c');
     if aiModeSize <> 1 & aiModeSize <> ch_count then
-        error('Mode vector should match selected AI channels')
+        error('Mode (isDifferential parameter) vector should match selected AI channels')
     end
     
     if aiRangeSize == 1 then

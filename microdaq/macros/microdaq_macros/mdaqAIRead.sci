@@ -79,7 +79,7 @@ function data = mdaqAIRead(arg1, arg2, arg3, arg4)
     
     aiModeSize = size(aiMode, 'c');
     if aiModeSize <> 1 & aiModeSize <> ch_count then
-        error("Mode vector should match selected AI channels!")
+        error("Mode (isDifferential parameter) vector should match selected AI channels!")
         return; 
     end
 
