@@ -1,21 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaq_get_file_data">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaqFileData">
   <refnamediv>
-    <refname>mdaq_get_file_data</refname>
+    <refname>mdaqFileData</refname>
     <refpurpose>Reads data from MicroDAQ user disk</refpurpose>
   </refnamediv>
   <refsynopsisdiv>
 	<title>Description</title>
-	<para>This function reads data from file created with MicroDAQ 'To File' block. In order to read data from MicroDAQ device user has to provide file name (same as in 'To file' block). This function only works if data is written as a text, binary format isn't supported.</para>
+	<para>This function reads data from file created with MicroDAQ 'To File' block. In order to read data from MicroDAQ device user has to provide file name (same as in 'To file' block).</para>
     <title>Calling Sequence</title>
     <synopsis>
-      data = mdaq_get_file_data(file);
+      data = mdaqFileData(name, type);
+      data = mdaqFileData(name, type, rows, cols);
     </synopsis>
   </refsynopsisdiv>
-  <refsection id="Parameters_mdaq_get_file_data">
+  <refsection id="Parameters_mdaqFileData">
     <title>Arguments</title>
     <itemizedlist>
       <listitem><para><emphasis role="bold">file: </emphasis> File name created with 'To File' block</para></listitem>
+      <listitem><para><emphasis role="bold">type: </emphasis> type of file ( 1 - text | 2 - binary )</para></listitem>
+      <listitem><para><emphasis role="bold">rows: </emphasis> number of rows to read (optional for text filetype)</para></listitem>
+      <listitem><para><emphasis role="bold">rows: </emphasis> number of columns to read (optional for text filetype)</para></listitem>
       <listitem><para><emphasis role="bold">data: </emphasis> File data</para></listitem>
     </itemizedlist>
   </refsection>
@@ -23,16 +27,22 @@
   <refsection>
         <title>Examples</title>
         <programlisting role="example"><![CDATA[
-// mdaq_mdaq_get_file_data usage example
-data = mdaq_get_file_data("data.txt")
+// read entire text file 
+data = mdaqFileData("data.txt", 1)
+
+//read 100 rows / 1 column from text file 
+data1 = mdaqFileData("data.txt", 1, 100, 1)
+
+//read 100 rows / 1 column from binary file 
+data2 = mdaqFileData("data.bin", 2, 100, 1)
  ]]></programlisting>
     </refsection>
 
-  <refsection id="SeeAlso_mdaq_ping">
+  <refsection id="SeeAlso_mdaqFileData">
     <title>See Also</title>
     <simplelist type="inline">
-			<member><link linkend="mdaq_open">mdaq_open</link></member>
-			<member><link linkend="mdaq_set_ip">mdaq_set_ip</link></member>
+			<member><link linkend="mdaqOpen">mdaqOpen</link></member>
+			<member><link linkend="mdaqSetIP">mdaqSetIP</link></member>
     </simplelist>
   </refsection>
 </refentry>

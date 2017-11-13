@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaqAOScanData">
+	<refnamediv>
+		<refname>mdaqAOScanData</refname>
+		<refpurpose>Queues data to be output</refpurpose>
+	</refnamediv>
+
+	<refsynopsisdiv>
+		<title>Calling Sequence</title>
+		<synopsis>
+			result = mdaqAOScanData(channels, data, opt)
+			result = mdaqAOScanData(linkID, channels data, opt)
+		</synopsis>
+	</refsynopsisdiv>
+
+	<refsection id="Description_mdaq_ao_data_queue">
+		<title>Description</title>
+
+		<para> This function is part of analog scan functionality and has to be called in the following sequence:
+			<orderedlist>
+				<listitem>
+					<para>Initialize scanning session - <link linkend="mdaqAOScanInit">mdaqAOScanInit()</link>
+					</para>
+				</listitem>
+				<listitem>
+					<para>Start scanning session - <link linkend="mdaqAOScan">mdaqAOScan()</link>
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						<emphasis role="bold">Queue new data</emphasis> - <link linkend="mdaqAOScanData">mdaqAOScanData()</link>
+					</para>
+				</listitem>
+				<listitem>
+					<para>Stop scanning session - <link linkend="mdaqAOScanStop">mdaqAOScanStop()</link>
+					</para>
+				</listitem>
+			</orderedlist>
+		</para> 
+
+		<para>
+			This function queues data to be output. A function call has to be preceded with <link linkend="mdaqAOScanInit">mdaqAOScanInit()</link>. Function queues data in the stream and periodic mode and its behavior depends on selected scan mode. In periodic mode, the function can queue data for every channel combination from used channels (defined in <link linkend="mdaqAOScanInit">mdaqAOScanInit()</link>). If e.g. in scanning session four channels are used: 1, 2, 3, 4 <link linkend="mdaqAOScanData">mdaqAOScanData()</link> can be called to queue data for 1 or 4 or 1,2 or 1,4, or 3,4 etc. channel or queue data for all selected channels. In periodic mode channels argument can contain every combination of used channels, while in stream mode channel argument must be the same as used in <link linkend="mdaqAOScanInit">mdaqAOScanInit()</link>. The data argument in stream mode must have the same size as the data argument in function <link linkend="mdaqAOScanInit">mdaqAOScanInit()</link>. The <link linkend="mdaqAOScanInit">mdaqAOScanInit()</link> perform initial data queue operation. The periodic mode uses a single buffer which data is output from. When the end of the buffer is reached, data index is switched to the beginning of the buffer. The <link linkend="mdaqAOScanData">mdaqAOScanData()</link> function overwrites the whole buffer with new data. Depending on the scanning mode opt argument has a different meaning. When the periodic mode is used opt argument allows controlling data index after queuing data. When opt=%T data index will be set to the beginning of the buffer. If opt=%F queue operation doesn't affect data index. 
+		</para>
+		<para>
+			<inlinemediaobject>
+				<imageobject>
+					<imagedata align="center" fileref="../../../help/en_US/images/periodic_mode_queue.png" valign="middle" />
+				</imageobject>
+			</inlinemediaobject>
+		</para>
+		<para>
+			When stream mode is used opt argument determines blocking or non-blocking operation of <link linkend="mdaqAOScanData">mdaqAOScanData()</link>. The blocking operation (opt=%T) will block Scilab console until data is queued. The stream mode uses two buffers to ensure uninterrupted analog signal generation. Queuing data is only possible when one buffer is empty, if both are queued function will wait(opt=%T) or return negative result(opt=%F). In blocking mode <link linkend="mdaqAOScanData">mdaqAOScanData()</link> has 1 second time-out. If non-blocking operation (opt=%F) is used function will return immediately with result containing a number of queued data.
+		</para> 
+		<para>
+			<inlinemediaobject>
+				<imageobject>
+					<imagedata align="center" fileref="../../../help/en_US/images/stream_blocking.png" valign="middle" />
+				</imageobject>
+			</inlinemediaobject>
+		</para>
+
+		<para>
+	  Data has to be queued before data index reaches the end of previously queued data. Otherwise, last value will remain on analog output. 
+		</para>
+		<para>
+			<inlinemediaobject>
+				<imageobject>
+					<imagedata align="center" fileref="../../../help/en_US/images/stream_not_queue.png" valign="middle" />
+				</imageobject>
+			</inlinemediaobject>
+		</para>
+
+	</refsection>  
+
+	<refsection id="Parameters_mdaq_ao_data_queue">
+		<title>Input arguments</title>
+		<itemizedlist>
+			<listitem>
+				<para>
+					<emphasis role="bold">linkID: </emphasis> Valid connection link ID (optional)</para>
+			</listitem>
+			<listitem>
+				<para>
+					<emphasis role="bold">channels: </emphasis> channel vector</para>
+			</listitem>
+			<listitem>
+				<para>
+					<emphasis role="bold">data: </emphasis> Output data values, specified as an m-by-n matrix, where m is the number of scans to generate, and n is the number of used output channels. Must be same size as initial data argument in <link linkend="mdaqAOScanInit">mdaqAOScanInit()</link></para>
+			</listitem>
+			<listitem>
+				<para>
+					<emphasis role="bold">opt:</emphasis> Reset data index after upload (Periodic mode). Blocking / non-blocking operation (Stream mode) (%T / %F)</para>
+			</listitem>
+		</itemizedlist>
+	</refsection>
+
+	<refsection>
+		<title>Examples</title>
+
+
+		<para> Queue output data (initial data) for a single channel in periodic mode</para>
+
+		<programlisting role="example">
+			<![CDATA[
+			data0 = linspace(0,2,1000)';
+			mdaqAOScanInit(1, data0, [0,5], %F, 1000, 10);
+			mdaqAOScan();
+			 ]]>
+		</programlisting>
+
+		<para> Queue output data (initial data) for multiple channel in periodic mode</para>
+
+		<programlisting role="example">
+			<![CDATA[
+			data0 = linspace(0,1,1000)';
+			data1 = linspace(0,2,1000)';
+			mdaqAOScanInit(1:2, [data0 data1], [0,5], %F, 1000, 10);
+			mdaqAOScan();
+			 ]]>
+		</programlisting>
+		<para> 
+		Generate sine waveform (AO1) with increasing amplitude and acquire data from analog input (AI1) simultaneously. In this example analog output session uses stream mode. Analog output data (sine waveform) is queued in the loop. Using blocking mode for analog output and input sessions ensures function call synchronization.
+
+		</para>
+		<programlisting role="example">
+			<![CDATA[
+		aiData = [];
+		channels = 1
+		rate = 1000;
+		scanDataSize = 1000;
+		duration = 5;
+		expValue = -3;
+		sineBias = 2.5;
+		sineBase = sin(linspace(0, 2*%pi, scanDataSize));
+		expWave = exp(linspace(expValue, expValue + 0.8, scanDataSize));
+		sineWave = sineBase. * expWave + sineBias;
+
+		// initialize analog input/output scanning sessions
+		mdaqAOScanInit(channels, sineWave', [-10,10], %T, rate, duration);
+		mdaqAIScanInit(channels, [-10,10], %F, rate, duration);
+
+		// start AI scanning without waiting for data
+		mdaqAIScan(0, %T);
+		// start signal generation
+		mdaqAOScan();
+		n = (rate  * duration) / scanDataSize;
+
+		for i=1:n-1
+			expValue = expValue + 0.8;
+			expWave = exp(linspace(expValue, expValue + 0.8, scanDataSize));
+			sineWave = sineBase. * expWave + sineBias;
+			// queue new data 
+			mdaqAOScanData(channels, sineWave', %T);
+			// start and acquire data from analog inputs
+			aiData = [aiData; mdaqAIScan(scanDataSize, %T)];
+		end
+		// acquire rest of samples
+		aiData = [aiData; mdaqAIScan(scanDataSize, %T)];
+		plot(aiData)
+ ]]>
+		</programlisting>
+		<para>
+	Results:
+			<imagedata align="center" fileref="../images/cotinuous_waveforms.png" valign="middle"/>
+		</para>
+	</refsection>
+
+	<refsection id="SeeAlso_mdaq_ao_data_queue">
+		<title>See Also</title>
+		<simplelist type="inline">
+			<member>
+				<link linkend="mdaqAOScanInit">mdaqAOScanInit</link>
+			</member>
+			<member>
+				<link linkend="mdaqAOScan">mdaqAOScan</link>
+			</member>
+			<member>
+				<link linkend="mdaqAOScanStop">mdaqAOScanStop</link>
+			</member>
+
+		</simplelist>
+	</refsection>
+</refentry>

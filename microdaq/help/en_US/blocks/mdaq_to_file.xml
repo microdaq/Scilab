@@ -30,19 +30,17 @@ xml:id="mdaq_to_file">
         <para>
 		
 		This block saves data to file. Resulting file is located on MicroDAQ user disk in the 'dsp/data/' directory. 
-		Block supports binary and text mode. In text mode, data is written as CSV format and can be imported from 
-		MicroDAQ user disk with mdaq_get_file_data() function. MicroDAQ user disk can be accessed with Xcos tools menu 
+		Block supports binary and text mode. Data can be imported from 
+		MicroDAQ user disk with mdaqFileData() function. MicroDAQ user disk can be accessed with Xcos tools menu 
 		'Tools -> MicroDAQ user disk'. 'File type' block parameter is used to select between text and binary file. 
 		Data can be written to file in text of binary format. Depending on selected option data can appended to 
-		previous content of the file or data will be written to empty file (Create option). To avoid time time 
-		consuming wirte operations during every simulation step block can buffer data.
-
-		Block parameter 'Vector buffer size' indicates how many vectors will be buffered. For example sample rate 
-		of block is 0.001sec, when user sets buffer size to 100, effective write to file will be performed
-		every 0.1sec
+		previous content of the file or data will be written to empty file (Create option).
+       </para> 
+        <para>
+        Rising edge on Trigger input(2) will create new file. To define sequential file name use '%d' in block filename paramter e.g 'data_%d.txt'. 
+        It will produces files: data_0.txt, data_1.txt, data_2.txt etc. If '%d' isn't included in file name data will be written to one file.
+	  </para> 
 		
-		
-		</para>
     </refsection>
 	
 	<refsection id="InputOutput_mdaq_to_file">

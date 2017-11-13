@@ -1,12 +1,14 @@
 function continueSimulation=pre_xcos_simulate(scs_m, needcompile)
     global %microdaq;
-    %microdaq.private.has_mdaq_block = %F;
+    %microdaq.private.has_mdaqBlock = %F;
     continueSimulation = %T;
-    look_for_mdaq_blocks = %T; 
+    look_for_mdaqBlocks = %T; 
+    runFromMainScheme = %F;
 
     for i = 1:size(scs_m.objs)
         curObj= scs_m.objs(i);
         if (typeof(curObj) == "Block" & curObj.gui == "mdaq_setup")
+            runFromMainScheme = %T;
 
             if scs_m.objs(i).model.rpar(1) == (-1) then
                 scs_m.props.tf= 1.000D+12;
@@ -18,12 +20,12 @@ function continueSimulation=pre_xcos_simulate(scs_m, needcompile)
             tmp = scs_m;
             
             perform_scan(tmp);
-            if %microdaq.private.has_mdaq_block then
+            if %microdaq.private.has_mdaqBlock then
                 scs_m.props.tol(5) = 1;
             end
 
             if %microdaq.dsp_loaded == %T then
-                look_for_mdaq_blocks = %F; 
+                look_for_mdaqBlocks = %F; 
                 // if dsp is loaded set real-time scaling to 1
                 scs_m.props.tol(5) = 1;
 
@@ -37,13 +39,13 @@ function continueSimulation=pre_xcos_simulate(scs_m, needcompile)
 
                 result = client_connect(mdaq_ip_addr, 4344);
                 if result < 0 then
-                    con = mdaq_open(); 
+                    con = mdaqOpen(); 
                     result = mlink_set_obj(con, "ext_mode", 1);
-                    mdaq_close(con);
+                    mdaqClose(con);
                     if result == -25 then
                         message("ERROR: Unable to connect - your are running model in Standalone mode!");
                     else
-                        message("ERROR: Unable to connect to MicroDAQ - reboot device!")
+                        message("ERROR: Unable to connect to MicroDAQ device!")
                         %microdaq.dsp_loaded = %F;
                     end
                     continueSimulation = %F;
@@ -53,7 +55,7 @@ function continueSimulation=pre_xcos_simulate(scs_m, needcompile)
                    
                 perform_scan(tmp);
                 if %microdaq.private.has_mdaq_param_sim then
-                    result = mdaq_open();
+                    result = mdaqOpen();
                     if result > -1 then
                         %microdaq.private.connection_id = result; 
                     else
@@ -62,16 +64,23 @@ function continueSimulation=pre_xcos_simulate(scs_m, needcompile)
                         %microdaq.private.connection_id = -1; 
                     end
                 end
-            end
+            end        
         end
     end
+    
+    if runFromMainScheme == %F then
+        messagebox("Please start model from root diagram (the one which contains mdaq_setup block).");
+        continueSimulation = %F;
+        return;
+    end
 
-    if look_for_mdaq_blocks then
+    if look_for_mdaqBlocks then
         tmp = scs_m;
         perform_scan(tmp);
-        if %microdaq.private.has_mdaq_block then
+        if %microdaq.private.has_mdaqBlock then
             disp("### Running model in simulation mode... ")
-            result = mdaq_open();
+            close_last_connection();       
+            result = mdaqOpen();
             if result > -1 then
                 %microdaq.private.connection_id = result; 
             else

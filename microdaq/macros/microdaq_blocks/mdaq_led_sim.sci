@@ -6,7 +6,7 @@ function block=mdaq_led_sim(block,flag)
         case 0 // Derivative State Update
         case 1 // Output Update
             if %microdaq.private.connection_id > -1 then
-                mdaq_led_write(%microdaq.private.connection_id,..
+                mdaqLEDWrite(%microdaq.private.connection_id,..
                                 block.ipar(1),..
                                 block.inptr(1));
             end

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<refentry xmlns="http://docbook.org/ns/docbook" 
+xmlns:xlink="http://www.w3.org/1999/xlink" 
+xmlns:svg="http://www.w3.org/2000/svg" 
+xmlns:ns5="http://www.w3.org/1999/xhtml" 
+xmlns:mml="http://www.w3.org/1998/Math/MathML" 
+xmlns:db="http://docbook.org/ns/docbook" 
+version="5.0-subset Scilab" 
+xml:id="mdaqBlockDelete">
+  <refnamediv>
+    <refname>mdaqBlockDelete</refname>
+    <refpurpose>Deletes MicroDAQ user block</refpurpose>
+  </refnamediv>
+  <refsynopsisdiv>
+	<title>Description</title>
+	<para>This function deletes all files (C source, macros, images) related to given block name.</para>
+	<para>
+	If block was removed by accident, copy of source code can be found in backup folder. 
+    <programlisting role="example"><![CDATA[
+    backupSourcePath = mdaqToolboxPath()+pathconvert("src\c\userlib\.removed_code");
+ ]]></programlisting>
+	</para>
+    <title>Calling Sequence</title>
+    <synopsis>
+      mdaqBlockDelete(block_name);
+    </synopsis>
+  </refsynopsisdiv>
+  <refsection id="Parameters___FUNC_NAME__">
+    <title>Arguments</title>
+    <itemizedlist>
+      <listitem>
+	    <para><emphasis role="bold">block_name : </emphasis> Valid user block name.</para>
+      </listitem>	  
+    </itemizedlist>
+  </refsection>
+  
+    	<refsection>
+        <title>Examples</title>
+        <programlisting role="example"><![CDATA[
+mdaqBlockDelete("My_step");
+ ]]></programlisting>
+    </refsection>
+	   
+  <refsection id="SeeAlso___FUNC_NAME__">
+    <title>See Also</title>
+    <simplelist type="inline">
+        <member><link linkend="mdaqBlock">mdaqBlock</link> : Initializes MicroDAQ block structure with default values</member>
+        <member><link linkend="mdaqBlockAdd">mdaqBlockAdd</link> : Generates MicroDAQ block from provided block structure</member>    
+    </simplelist>
+  </refsection>
+</refentry>

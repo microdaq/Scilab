@@ -1,3 +1,3 @@
 function mdaq_ver = mdaq_version()
-    mdaq_ver = "1.1.";
+    mdaq_ver = mgetl(mdaqToolboxPath() + filesep() + "VERSION", 1);
 endfunction

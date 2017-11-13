@@ -34,7 +34,7 @@ xml:id="mdaq_mem_write">
 		</para>
 		
 		<para>
-		In order to read data written by this block mdaq_mem_get() toolbox function can be used.
+		In order to read data written by this block mdaqMemRead() toolbox function can be used.
 		</para>
     </refsection>
 	
@@ -100,7 +100,7 @@ xml:id="mdaq_mem_write">
         <title>See Also</title>
         <simplelist type="inline">
 			<member> <link linkend="mdaq_mem_read">mdaq_mem_read</link> : Reads data from MicroDAQ memory</member>
-			<member> <link linkend="mdaq_mem_get">mdaq_mem_get</link> :  Reads data from MicroDAQ memory</member>
+			<member> <link linkend="mdaqMemRead">mdaqMemRead</link> :  Reads data from MicroDAQ memory</member>
         </simplelist>
     </refsection>
 </refentry>

@@ -1,13 +1,13 @@
 function [x,y,typ] = mdaq_mem_write(job,arg1,arg2)
     mem_write_desc = ["This block writes data to MicroDAQ memory.";
-    "Block with mdaq_mem_get function can be used ";
+    "Block with mdaqMemRead function can be used ";
     "to get data from Standalone and Ext model.";
     "";
     "Start index:";
-    "points to beginning of memory area, range 0-4000000";
+    "points to beginning of memory area, range 1-(500000/vector size)";
     "";
     "Size:";
-    "size of memory area, range 0-4000000";
+    "size of memory area, range 1-(500000/vector size)";
     "";
     "Vector size:";
     "size of input vector.";
@@ -48,8 +48,8 @@ function [x,y,typ] = mdaq_mem_write(job,arg1,arg2)
                 break
             end
 
-            //~16MB = 16 000 000B = 4 000 000 floats
-            max_index = 4000000;
+            //~2MB = 2 000 000B = 500 000  floats
+            max_index = 500000/vec_size;
 
             if data_size == -1 then
                 data_size = max_index - start_idx;
@@ -63,16 +63,9 @@ function [x,y,typ] = mdaq_mem_write(job,arg1,arg2)
 
             if data_size < 1 | data_size > (max_index-start_idx) then
                 ok = %f;
-                message("Incorrect size (max "+string(max_index-start_idx)+")");
+                message("Incorrect size (max "+string(max_index-(start_idx-1))+")");
             end
             
-            size_mod = modulo(data_size, vec_size)
-            if size_mod <> 0  then
-                ok = %f;
-                message("Incorrect size. Size is not multiple of array size!");
-            end
-
-
             if overwrite > 1 | overwrite < 0 then
                 ok = %f;
                 message("Use values 0 or 1 to set increment option.");
@@ -82,7 +75,7 @@ function [x,y,typ] = mdaq_mem_write(job,arg1,arg2)
                 [model,graphics,ok] = check_io(model,graphics, vec_size, [], 1, []);
                 graphics.exprs = exprs;
                 model.rpar = [];
-                model.ipar = [(start_idx-1);data_size;vec_size;overwrite];
+                model.ipar = [(start_idx-1);(data_size*vec_size);vec_size;overwrite];
                 model.dstate = [];
                 x.graphics = graphics;
                 x.model = model;

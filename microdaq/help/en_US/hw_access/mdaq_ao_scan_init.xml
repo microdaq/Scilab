@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaqAOScanInit">
+	<refnamediv>
+		<refname>mdaqAOScanInit</refname>
+		<refpurpose>Initiates analog outputs scanning session</refpurpose>
+	</refnamediv>
+
+	<refsynopsisdiv>
+		<title>Calling Sequence</title>
+		<synopsis>
+			mdaqAOScanInit(channels, initialData, range, isStreamMode, rate, duration)
+			mdaqAOScanInit(linkID, channels, initialData, range, isStreamMode, rate, duration)
+		</synopsis>
+	</refsynopsisdiv>
+
+	<refsection id="Description_mdaqAOScanInit">
+		<title>Description</title>
+
+		<para> This function is part of analog scan functionality and has to be called in the following sequence:
+			<orderedlist>
+				<listitem>
+					<para>
+						<emphasis role="bold">Initialize scanning session</emphasis> - <link linkend="mdaqAOScanInit">mdaqAOScanInit()</link>
+					</para>
+				</listitem>
+				<listitem>
+					<para>Start scanning session - <link linkend="mdaqAOScan">mdaqAOScan()</link>
+					</para>
+				</listitem>
+				<listitem>
+					<para>Queue new data - <link linkend="mdaqAOScanData">mdaqAOScanData()</link>
+					</para>
+				</listitem>
+				<listitem>
+					<para>Stop scanning session - <link linkend="mdaqAOScanStop">mdaqAOScanStop()</link>
+					</para>
+				</listitem>
+			</orderedlist>
+		</para> 
+
+
+
+		<para>
+			This function initiates analog output scanning session. The function must be called before acquisition is started. The channels argument can be a scalar or vector and it should contain channels numbers according to MicroDAQ hardware configuration. The range argument specifies channel measurement input range. Matrix n-by-2 where n is number of used channels shall be provided. If 1x2 matrix is provided, the range setting will be used for all channels. In order to obtain supported ranges use <link linkend="mdaqHWInfo">mdaqHWInfo()</link>. 
+
+		</para>
+		<para>
+			The initialData argument contains data to be output and is specified as an m-by-n matrix, where m is the number of scans to generate, and n is the number of used output channels. 
+		</para>
+
+		<para>
+			<emphasis role="bold">Important:</emphasis> The initialData argument determines size of data which can be queued with <link linkend="mdaqAOScanData">mdaqAOScanData()</link>. Queued data size must be the same size as data argument in <link linkend="mdaqAOScanInit">mdaqAOScanInit()</link>
+		</para>
+
+
+		<para>
+			The rate argument determines scans per second rate for selected analog input channels. Minimum value is 1 scan per second, maximum depends on MicroDAQ analog output type.
+		</para>
+
+		<para>
+			The duration argument specifies a duration of acquisition in seconds. When set to -1, the session will run continuously, acquiring data until stopped with <link linkend="mdaqAOScanStop">mdaqAIScanStop()</link> function.
+		</para>
+		<para>
+			The isStreamMode argument determines scanning session behavior. Two modes are available - periodic and stream. The periodic mode (isStreamMode=%F) uses a single buffer which data is output from. When the end of the buffer is reached, data index is switched to the beginning of the buffer. This mode is suitable for generating periodic signals e.g sine waveform. The buffer can be changed during signal generation with <link linkend="mdaqAOScanData">mdaqAOScanData()</link> function.
+		</para>
+		<para>
+			The stream mode (isStreamMode=%T) uses two buffers architecture to ensure uninterrupted analog signal generation. This mode of operation is suitable for stream data type e.g. generating audio stream, this mode requires from user to queue data with certain time constraints. If new data isn't queued on time, last value remains on analog output until new data has been queued. See <link linkend="mdaqAOScanData">mdaqAOScanData()</link> documentation for more details.
+
+		</para>
+		<para>
+			<emphasis role="bold">Maximum data size for stream and periodic mode:</emphasis>
+		</para>
+		<para>
+
+			<simplelist type="inline">
+				<member> stream mode - 1048576 values / number of used channels</member>
+				<member> periodic mode - 2097152 values / number of used channels</member>
+			</simplelist>
+		</para>
+
+		<para>
+			<emphasis role="bold">Limitations:</emphasis> On MicroDAQ ADC01-DAC01 hardware configuration running AI and AO scanning simultaneously is not supported.
+
+		</para>
+	</refsection>  
+
+	<refsection id="Parameters_mdaqAOScanInit">
+		<title>Input arguments</title>
+		<itemizedlist>
+			<listitem>
+				<para>
+					<emphasis role="bold">linkID: </emphasis> Valid connection link ID (optional)</para>
+			</listitem>
+			<listitem>
+				<para>
+					<emphasis role="bold">channels: </emphasis> Single channel or array of channels to use</para>
+			</listitem>
+			<listitem>
+				<para>
+					<emphasis role="bold">range: </emphasis> Range matrix - single row matrix e.g. [-10,10] sets -10 to 10V input range which will be used for all channels. If multi-range used, row number must match selected channels e.g. range matrix for 3 channels [-10,10; -5,5; -2,2] </para>
+			</listitem>
+			<listitem>
+				<para>
+					<emphasis role="bold">isStreamMode: </emphasis> Scanning mode (%T=stream, %F=periodic)</para>
+			</listitem>
+			<listitem>
+				<para>
+					<emphasis role="bold">rate:  </emphasis> Analog output per second update rate</para>
+			</listitem>
+			<listitem>
+				<para>
+					<emphasis role="bold">duration:  </emphasis> Analog output scan duration [sec], (-1) - continuous</para>
+			</listitem>
+		</itemizedlist>
+	</refsection>
+
+	<refsection>
+		<title>Examples</title>
+
+		<para> 
+		Generate sine and sawtooth waveform in periodic mode. Sample update frequency 1000Hz, duration 5 seconds.
+		</para>
+		<programlisting role="example">
+			<![CDATA[
+			sineData = sin(linspace(0, 2*%pi, 1000)) + 1.0;
+			sawtoothData = linspace(0, 5, 1000);
+			mdaqAOScanInit(1:2, [sineData' sawtoothData'], [0,5], %F, 1000, 5);
+			mdaqAOScan();
+		 ]]>
+		</programlisting>
+
+		<para>
+	Results:
+			<imagedata align="center" fileref="../images/single_result.png" valign="middle"/>
+		</para>
+	</refsection>
+
+	<refsection id="SeeAlso_mdaqAOScanInit">
+		<title>See Also</title>
+		<simplelist type="inline">
+			<member>
+				<link linkend="mdaq_ao_data_update">mdaqAOScanData</link>
+			</member>
+			<member>
+				<link linkend="mdaqAOScanStop">mdaqAOScanStop</link>
+			</member>
+			<member>
+				<link linkend="mdaqAOScan">mdaqAOScan</link>
+			</member>
+
+		</simplelist>
+	</refsection>
+</refentry>

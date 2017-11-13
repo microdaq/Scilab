@@ -45,11 +45,24 @@ enum mdaq_adc_ids
     ADC07,
     ADC08,
     ADC09,
-    ADC10,
-    ADC11,
-    ADC12
+    ADC10 
 };
 
+enum mdaq_ai_error_id
+{
+    ERR_CHANNEL_NO          = 1,
+    ERR_RANGE               = 2,
+    ERR_MODE                = 3,
+    ERR_POLARITY            = 4,
+    ERR_MULTI_RANGE         = 5,
+    ERR_CONSEC_CHANNEL      = 6,
+    ERR_FIRST_CHANNEL       = 7,
+    ERR_DIFF_MODE           = 8,
+    ERR_DIFF_CHANNEL        = 9,
+    ERR_SINGLE_MODE         = 10,
+    ERR_SINGLE_CHANNEL      = 11,
+    ERR_FREQ                = 12 
+}; 
 
 /* AI range */
 #define AI_10V 		(1 << 0)
@@ -66,10 +79,14 @@ enum mdaq_adc_ids
 #define AI_SINGLE  	(1 << 28)
 #define AI_DIFF    	(1 << 29)
 
-int mdaq_ai_init( uint8_t converter, uint32_t range, uint32_t polarity, uint32_t mode );
-int mdaq_ai_config_ch( uint8_t ch[], uint8_t ch_count );
-int mdaq_ai_read( uint8_t ch[], uint8_t ch_count, uint16_t *adc_value, float *value );
-int mdaq_ai_scan_init(uint8_t ch[], uint8_t ch_count, uint32_t mode, uint32_t scan_count, float freq);
-int mdaq_ai_scan(uint32_t scan_count, uint16_t *adc_value);
+#define AI_NONE     (0)
+
+int mdaq_ai_init(uint32_t range, uint32_t polarity, uint32_t mode);
+int mdaq_ai_config_ch(uint8_t ch[], uint8_t ch_count, float range[], uint8_t mode[]);
+int mdaq_ai_read( uint8_t ch[], uint8_t ch_count, double *data);
+int mdaq_ai_read2(uint8_t ch[], uint8_t ch_count, uint32_t oversampling, double *data);
+int mdaq_ai_scan_init(uint8_t ch[], uint8_t ch_count, float *range, uint8_t *mode, int32_t scan_count, float *freq);
+
+int mdaq_ai_id(void);
 
 #endif /* MDAQ_AI_H */

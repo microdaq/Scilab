@@ -1,45 +1,31 @@
 function [x,y,typ] = mdaq_adc(job,arg1,arg2)
     global %microdaq;
-    if %microdaq.private.mdaq_hwid <> [] then
-        adc_info = get_adc_info(%microdaq.private.mdaq_hwid);
-        adc_converter = adc_info.id;
-        channel_desc = adc_info.channel;
-        rate_desc = adc_info.rate;
-        resolution_desc = adc_info.resolution;
-        range_desc = adc_info.c_params.c_range_desc;
-        range_spec_opt = [];
-        range_desc = "";
-        for i = 1:size(adc_info.c_params.c_range_desc, "r")
-            range_spec_opt = [range_spec_opt; string(i) + ": " + adc_info.c_params.c_range_desc(i)];
-        end
-    else
-        adc_converter = 1;
-        channel_desc = "Unknown";
-        rate_desc = "Unknown";
-        resolution_desc = "Unknown";
-        range_desc = "Unknown";
-        range_spec_opt = "Unknown";
-    end
 
-    adc_desc = ["This block reads MicroDAQ analog inputs (AI).";
-    "Block detects MicroDAQ analog inputs type and allows";
-    "channel, input range and measurement type selection.";
-    "Single or multiply channels can be selected by providing";
-    "vector with channel numbers. Input range can be selected";
-    "and will be applied for all selected channels."
+    adc_desc = ["This block reads MicroDAQ analog inputs (AI). Block detects";
+    "MicroDAQ analog inputs type and allows channel, range";
+    "and measurement type selection.";
+    "In order to select analog input channels scalar or vector";
+    "containing channel number have to be provided.";
+    "Input range can be selected by providing scalar or vector";
+    "with range identifiers. If single range provided it will";
+    "be applied for all selected channels."
     "Single-ended or differential measurement type can be selected.";
-    "In order to select differential mode ''Differential'' parameter";
-    "has to be set to 1.";
+    "Scalar or vector with 1 and 0 values can be provided to enable";
+    "and disable differential mode.";
+    "If scalar is provided it will be applied for all used channels";
     "";
-    "output - value in volts";
+    "Averaging allows to increase measurement accuracy by calculating";
+    "average from 4-256 ADC samples. ";
+    "Averaging factor: ";
+    "0 - averaging disabled";
+    "1 - 4 ADC reads per channel";
+    "2 - 16 ADC reads per channel";
+    "3 - 64 ADC reads per channel";
+    "4 - 256 ADC reads per channel";
     "";
-    "Analog inputs parameters:";
-    "Channels: "+channel_desc;
-    "Max sample rate: "+rate_desc;
-    "Resolution: "+resolution_desc;
+    "Use mdaqHWInfo to get ADC parameters"
     "";
-    "Input range:";
-    range_spec_opt;
+    "output - ADC value scaled to selected range";
     "";
     "Set block parameters:"];
     x=[];y=[];typ=[];
@@ -52,81 +38,95 @@ function [x,y,typ] = mdaq_adc(job,arg1,arg2)
         while %t do
             try
                 getversion('scilab');
-                [ok, adc_channels, adc_range, adc_mode,exprs]=..
-                scicos_getvalue(adc_desc,..
-                ['Channels:';
-                'Input range:';
-                'Differential:'],..
-                list('vec',-1,'vec',1,'vec',1),exprs)
+                [ok, channels, aiRange, aiMode, averaging,exprs]=..
+                        scicos_getvalue(adc_desc,..
+                            ['Channels:';
+                            'Range:';
+                            'Differential:';
+                            'Averaging:'],..
+                            list('row',-1,'mat',[-1,-1],'row',-1,'vec',1),exprs)
             catch
-                [ok, adc_channels, adc_range,adc_mode,exprs]=..
+                [ok, channels, aiRange, aiMode, averaging, exprs]=..
                 scicos_getvalue(adc_desc,..
                 ['Channels:';
-                'Input range:';
-                'Differential:'],..
-                list('vec',-1,'vec',1,'vec',1),exprs)
+                'Range:';
+                'Differential:';
+                'Averaging:'],..
+                list('row',-1,'mat',[-1,-1],'row',-1,'vec',1),exprs)
             end
 
-            oversamp_count = 1;
-            
             if ~ok then
                 break
             end
-
-            no_selected_ch = size(adc_channels,"*");
             
+            ch_count = size(channels, 'c');
             if %microdaq.private.mdaq_hwid <> [] then
                 adc_id = %microdaq.private.mdaq_hwid(2);
-
-
-                if adc_range > size(adc_info.c_params.c_range) | adc_range == 0 then
+                if ok & (find(adc_id == get_adc_list()) == []) then
                     ok = %f;
-                    message("Wrong range selected");
-                else
-                    if adc_mode == 1 & adc_info.c_params.c_diff(adc_range) <> 1 then
+                    message("Configuration not detected - run mdaqHWInfo and try again!");
+                end
+
+                if ok & size(channels, 'r') > 1 then
+                    message("Single row channel vector expected!")
+                    ok = %f;
+                end
+
+                if ok & size(aiRange, 'c') <> 2 then
+                    message("Vector range [low,high;low,high;...] expected!")
+                    ok = %f;
+                end
+
+                if ok & size(aiMode, 'r') > 1 then
+                    message("Single row measurement mode vector expected!")
+                    ok = %f;
+                end
+
+                aiRangeSize = size(aiRange, 'r');
+                if ok &  (aiRangeSize <> 1 & aiRangeSize <> ch_count) then
+                    message("Range vector should match selected channels!")
+                    ok = %f;
+                end
+
+                aiModeSize = size(aiMode, 'c');
+                if ok & (aiModeSize <> 1 & aiModeSize <> ch_count) then
+                    message("Mode vector should match selected channels!")
+                    ok = %f;
+                end
+
+                if ok & (averaging < 0) | (averaging > 4) then
+                    ok = %f;
+                    message("Wrong averaging facator selected!");
+                end
+
+                if aiRangeSize == 1 & ok then
+                    range_tmp = aiRange;
+                    aiRange = ones(ch_count,2);
+                    aiRange(:,1) = range_tmp(1);
+                    aiRange(:,2) = range_tmp(2);
+                end
+                
+                if aiModeSize == 1 & ok then
+                    aiMode = ones(1, ch_count)*aiMode;
+                end
+                
+                if ok & ~exists("%scicos_prob") then
+                    result = adc_check_params(channels, aiRange, aiMode);
+                    if result < 0 then
+                        message(mdaq_error2(result));
                         ok = %f;
-                        message("Converter does not support differential mode!");
                     end
                 end
-
-                if adc_mode <> 0 & adc_mode <> 1 then
-                    ok = %f;
-                    message("Wrong mode selected - use 0 or 1 to set single-ended or differential mode!");
-                end
-
-                adc_ch_count = strtod(adc_info.channel);
-                if adc_mode == 1 then
-                    adc_ch_count = adc_ch_count / 2;
-                end
-
-                if no_selected_ch > adc_ch_count then
-                    ok = %f;
-                    message("Too many selected channels!");
-                end
-
-                if max(adc_channels) > adc_ch_count | min(adc_channels) < 1  then
-                    ok = %f;
-                    message("Wrong channel number selected");
-                end
-
             else
                 ok = %f;
-                message('Unable to detect MicroDAQ confituration - run mdaq_hwinfo and try again!');
+                message('Unable to detect MicroDAQ confituration - run mdaqHWInfo and try again!');
             end
 
             if ok then
-                adc_polarity_sim = adc_range;
-                adc_polarity = adc_info.c_params.c_bipolar(adc_range);
-                adc_range = adc_info.c_params.c_range(adc_range);
-                if adc_mode == 1 then
-                    adc_mode = 29;
-                else
-                    adc_mode = 28;
-                end
-                [model,graphics,ok] = check_io(model,graphics, [], no_selected_ch, 1, []);
+                [model,graphics,ok] = check_io(model,graphics, [], ch_count, 1, []);
                 graphics.exprs = exprs;
-                model.rpar = [];
-                model.ipar = [adc_converter;adc_range;adc_polarity;adc_mode;adc_polarity_sim;no_selected_ch;adc_channels'];
+                model.ipar=[ch_count; averaging; channels'; aiMode'];            
+                model.rpar= matrix(aiRange', 1, ch_count*2)';
                 model.dstate = [];
                 x.graphics = graphics;
                 x.model = model;
@@ -134,27 +134,24 @@ function [x,y,typ] = mdaq_adc(job,arg1,arg2)
             end
         end
     case 'define' then
-        adc_converter_str = [];
-        adc_channels = 1;
-        n_channels = 1;
-        adc_polarity = 1;
-        adc_polarity_sim = 1;
-        adc_range = 1;
-        adc_converter = 1;
-        adc_mode = 0;
-        oversamp_count=1;
+        aiRange = [-10,10];
+        aiMode = 0;
+        adc_range_sim = 1;
+        averaging= 0;
+        ch_count = 1;
+        channels = 1;
         model=scicos_model()
         model.sim=list('mdaq_adc_sim',5)
         model.out=[1]
         model.outtyp=[1]
         model.evtin=1
-        model.rpar=[]
-        model.ipar=[adc_converter; adc_range;adc_polarity;adc_mode;adc_polarity_sim;1;adc_channels]
+        model.rpar=aiRange;
+        model.ipar=[ch_count; averaging; channels; aiRange'; aiMode];
         model.dstate=[];
         model.blocktype='d'
         model.dep_ut=[%t %f]
-        exprs=[sci2exp(adc_channels);sci2exp(1); sci2exp(adc_mode)]
-        gr_i=['xstringb(orig(1),orig(2),[''CH: '' ; string(adc_channels)],sz(1),sz(2),''fill'');']
+        exprs=[sci2exp(channels); sci2exp(aiRange); sci2exp(aiMode); sci2exp(averaging)];
+        gr_i=['xstringb(orig(1),orig(2),[''CH: '' ; string(channels)],sz(1),sz(2),''fill'');']
         x=standard_define([4 3],model,exprs,gr_i)
         x.graphics.in_implicit=[];
         x.graphics.exprs=exprs;

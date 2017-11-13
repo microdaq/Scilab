@@ -6,9 +6,9 @@ xmlns:ns5="http://www.w3.org/1999/xhtml"
 xmlns:mml="http://www.w3.org/1998/Math/MathML" 
 xmlns:db="http://docbook.org/ns/docbook" 
 version="5.0-subset Scilab" 
-xml:id="mdaq_toolbox_path">
+xml:id="mdaqToolboxPath">
   <refnamediv>
-    <refname>mdaq_toolbox_path</refname>
+    <refname>mdaqToolboxPath</refname>
     <refpurpose>Returns MicroDAQ toolbox install path</refpurpose>
   </refnamediv>
   <refsynopsisdiv>
@@ -17,25 +17,22 @@ xml:id="mdaq_toolbox_path">
 	</para>
     <title>Calling Sequence</title>
     <synopsis>
-      path = mdaq_toolbox_path();
+      path = mdaqToolboxPath();
     </synopsis>
   </refsynopsisdiv>
+  
+  	<refsection id="Description_mdaqToolboxPath">
+		<title>Description</title>
+		<para>
+			This function returns directory path where microdaq toolbox is installed.
+		</para>
+	</refsection>  
   <refsection id="Parameters___FUNC_NAME__">
-    <title>Arguments</title>
+    <title>Output arguments</title>
     <itemizedlist>
       <listitem>
         <para><emphasis role="bold">path : </emphasis> MicroDAQ toolbox installation path</para>
       </listitem>	  
     </itemizedlist>
-  </refsection>
-  <refsection id="SeeAlso___FUNC_NAME__">
-    <title>See Also</title>
-    <simplelist type="inline">
-  <member><link linkend="mdaq_toolbox_path">mdaq_toolbox_path</link> : Initialize MicroDAQ block structure</member>
-	  <member><link linkend="mdaq_block_build">mdaq_block_build</link> : Generate new MicroDAQ block      </member>
-      <member>
-        <link type="scilab" linkend="scilab.help/sum">Link to the Scilab help page</link>
-		</member>
-    </simplelist>
   </refsection>
 </refentry>

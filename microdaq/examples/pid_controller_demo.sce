@@ -3,17 +3,19 @@
 // to control DC motor. The DC motor is driven by H-bridge 
 // which is controlled by PWM and DIO. 
 //
-// MicroDAQ DIO20, DIO22 are used to control H-bridge 
+// MicroDAQ DIO15, DIO16 are used to control H-bridge 
 // enable and direction pins. MicroDAQ PWM is used to 
 // control H-bridge voltage. DC motor is equipped with 
 // quadrature encoder. MicroDAQ encoder module is used 
 // to read DC motor shaft position. 
 
 function dc_motor_controller(data_color,command, Kp, Ki, Kd)
-pwm_module = 3; 
+mdaqClose();
+
+pwm_module = 1; 
 pwm_period = 200; // in microseconds
-dio_enable = 20; 
-dio_direction = 22; 
+dio_enable = 15; 
+dio_direction = 16; 
 enc = 2; 
 dt = 0.0041;
 prev_err = 0; 
@@ -25,27 +27,31 @@ time = [];
 
 // connect to MicroDAQ device, con will be used as a first 
 // argument for MicroDAQ hardware access macros
-con = mdaq_open();
+con = mdaqOpen();
 if con > -1 then
+    // disable PWM module 2/3   
+    mdaqDIOFunc(con, 4, %F);
+    mdaqDIOFunc(con, 5, %F);
     
-    // configure MicroDAQ PWM module 3 with period 200us
+    // configure MicroDAQ PWM module 1 with period 200us
     // and non-inverted PWM waveform
-    mdaq_pwm_init(con, pwm_module, pwm_period, %F); 
+    mdaqDIOFunc(con, 3, %T);
+    mdaqPWMInit(con, pwm_module, pwm_period, %F, 0, 0); 
     
     // initialize MicroDAQ Encoder 2 module with 0 value
-    mdaq_enc_init(con, enc, 0);
+    mdaqEncoderInit(con, enc, 0);
     
     // set initial state of DIO20, DIO20 and PWM module to 0 duty
-    mdaq_dio_write(con, dio_enable, %T)
-    mdaq_dio_write(con, dio_direction, %T);
-    mdaq_pwm_write(con, pwm_module, 0, 0);
+    mdaqDIOWrite(con, dio_enable, %T)
+    mdaqDIOWrite(con, dio_direction, %T);
+    mdaqPWMWrite(con, pwm_module, 0, 0);
     
     // PID control loop
     for i=1:1000
         tic();
         
         // get position
-        position = mdaq_enc_read(con, enc); 
+        position = mdaqEncoderRead(con, enc); 
         
         // calculate PID algorithm
         err = command - position; 
@@ -62,19 +68,19 @@ if con > -1 then
         // depending on control value (negative/positive)
         // set DIO22 to %T (for positive) or %F (negative)
         if control > 0 then
-            mdaq_dio_write(con, dio_direction, %T);
+            mdaqDIOWrite(con, dio_direction, %T);
             if control > 100 then
                 control = 100; 
             end
         else
-            mdaq_dio_write(con, dio_direction, %F);
+            mdaqDIOWrite(con, dio_direction, %F);
             if control < -100 then
                 control = -100; 
             end
         end
         
         // set PWM value (0-100 range)
-        mdaq_pwm_write(con, pwm_module, abs(control), abs(control));
+        mdaqPWMWrite(con, pwm_module, abs(control), abs(control));
         
         // store experiment data
         control_data = [control_data, control];
@@ -93,8 +99,8 @@ if con > -1 then
     mprintf("Loop time (dt) statistics: \n\tMean: %f\n\tMax: %f\n\tMin: %f\n", loop_time, max(time), min(time));
 
     // set PWM to 0 and close connection with MicroDAQ
-    mdaq_pwm_write(con, pwm_module, 0,0)
-    mdaq_close(con);
+    mdaqPWMWrite(con, pwm_module, 0,0)
+    mdaqClose(con);
     
     data_color = data_color + 1;
     plot2d(t, response_data,data_color);    

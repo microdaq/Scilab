@@ -6,16 +6,20 @@ function block=mdaq_adc_sim(block,flag)
         case 0 // Derivative State Update
         case 1 // Output Update
             if %microdaq.private.connection_id > -1 then
-                if block.ipar(4) == 29 then
-                    differential = %T
-                else
-                    differential = %F
-                end
-                
-                block.outptr(1) = mdaq_ai_read(%microdaq.private.connection_id,..
-                                                block.ipar(7:size(block.ipar,'r')),..
-                                                block.ipar(5),..
-                                                differential);
+                channels = block.ipar(3:3+block.ipar(1)-1)';
+                aiRange = matrix(block.rpar, 2, size(channels, 'c'))';
+                aiMode_t = block.ipar(3+block.ipar(1):3+2*block.ipar(1)-1)';
+                aiMode = [];
+                for i = 1:size(aiMode_t, 'c')
+                  if aiMode_t(i) == 0 then
+                      aiMode(i)= %F;
+                  else
+                      aiMode(i)= %T;
+                  end
+               end
+               
+               block.outptr(1) = mdaqAIRead(%microdaq.private.connection_id, channels, aiRange, aiMode');
+               clear aiMode;
             end
         case 2 // State Update
         case 3 // OutputEventTiming
@@ -26,5 +30,4 @@ function block=mdaq_adc_sim(block,flag)
         else // Unknown flag
         end
     end
-
 endfunction

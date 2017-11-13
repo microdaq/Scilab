@@ -1,0 +1,54 @@
+Toolbox: microdaq
+
+Title: MicroDAQ Toolbox
+
+Summary: Toolbox for MicroDAQ real-time DSP control measurement system
+
+Version: 1.2.0
+
+Author: Embedded Solutions
+
+Maintainer: Majewski Krzysztof <info@embedded-solutions.pl>
+
+Category: Instruments Control
+
+Entity: Embedded Solutions
+
+WebSite: http://microdaq.org/
+
+URL: http://atoms.scilab.org/toolboxes/microdaq/1.0
+
+License: BSD
+
+ScilabVersion: >= 5.5.2
+
+Depends: 
+
+Date: 2017-10-31 00:00:00
+
+Description: MicroDAQ toolbox for Scilab can be used to develop advanced data 
+ acquisitions applications. Toolbox lets you make a variety of measurements 
+ directly from Scilab without the need to convert the data or import from 
+ other software. Software includes functions for controlling analog inputs, 
+ analog outputs, digital I/O (quadrature encoders, PWM). You can visualize 
+ and analyze data, automate measurements, create wireless measurement 
+ applications and a lot more with MicroDAQ toolbox for Scilab.
+ 
+ MicroDAQ toolbox for Scilab features automatic code generation from Xcos diagram. 
+ The user can build block diagram and generate DSP application in minutes without 
+ having in-depth knowledge about hardware. Generated DSP application can be 
+ loaded on MicroDAQ with WiFi or Ethernet automatically. Toolbox generates 
+ periodic applications with a frequency defined by the user. Depending on the 
+ model complexity and used blocks, a generated application can be executed with
+ up to 200kHz on MicroDAQ DSP core giving user possibility to create advanced 
+ digital signal processing, control, and measurement application.
+ 
+ MicroDAQ toolbox for Scilab allows easy integration of custom C/C++ code making 
+ Xcos model development more flexible. The user can automatically generate Xcos 
+ blocks which executes custom C/C++ code. The user can optimize some parts of 
+ Xcos model by replacing standard Xcos block with a custom block which contains 
+ optimized C code for faster execution.
+
+ MicroDAQ toolbox for Scilab provides tools for target execution profiling. 
+ This tool gives a clear answer about model execution times which in a real-time 
+ application is very crucial. 

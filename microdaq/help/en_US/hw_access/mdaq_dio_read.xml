@@ -1,55 +1,78 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaq_dio_read">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaqDIORead">
 	<refnamediv>
-		<refname>mdaq_dio_read</refname>
-		<refpurpose>Sets MicroDAQ digital I/O channel state</refpurpose>
+		<refname>mdaqDIORead</refname>
+		<refpurpose>Reads DIO channel</refpurpose>
 	</refnamediv>
-	
+
 	<refsynopsisdiv>
 		<title>Calling Sequence</title>
 		<synopsis>
-		    mdaq_dio_read();
-			state = mdaq_dio_read(dio);
-			state = mdaq_dio_read(link_id, dio);
+			state = mdaqDIORead(dio)
+			state = mdaqDIORead(linkID, dio)
 		</synopsis>
 	</refsynopsisdiv>
-	
-	<refsection id="Description_mdaq_dio_read">
+
+	<refsection id="Description_mdaqDIORead">
 		<title>Description</title>
-		<para>
-			This function sets DIO channel output state. </para>
+		<para>This function reads DIO channel input state. </para>
 		<para>
 			Function will return an error if DIO channel is configured as input or has alternative function (ENC1, ENC2, PWM1, PWM2, PWM3, UART). 
-			DIO Bank containing selected DIO channel should be configured as an output with mdaq_dio_dir function. Selected DIO channel should be configured as a DIO function, if ENC1, ENC2, PWM1, PWM2, PWM3 or UART function is enabled on selected DIO channel, mdaq_dio_func function should be used to disable it.
+			DIO Bank containing selected DIO channel should be configured as an output with mdaq_dio_dir function. Selected DIO channel should be configured as a DIO function, if ENC1, ENC2, PWM1, PWM2, PWM3 or UART function is enabled on selected DIO channel, <link linkend="mdaqDIOFunc">mdaqDIOFunc</link> function should be used to disable it.
 		</para>
 	</refsection>  
-  
-	<refsection id="Parameters_mdaq_dio_read">
+
+	<refsection id="Parameters_mdaqDIORead">
 		<title>Parameters</title>
 		<itemizedlist>
-			<listitem><para><emphasis role="bold">link_id: </emphasis> Valid connection link ID (optional)</para></listitem>
-			<listitem><para><emphasis role="bold">dio: </emphasis> DIO pin number (E1xxx series 1 to 32, E2xxx series 1 to 16 ) </para></listitem>
-			<listitem><para><emphasis role="bold">state: </emphasis> DIO pin state</para></listitem>
+			<listitem>
+				<para>
+					<emphasis role="bold">linkID: </emphasis> Valid connection link ID (optional)</para>
+			</listitem>
+			<listitem>
+				<para>
+					<emphasis role="bold">dio: </emphasis>DIO channel number</para>	
+			</listitem>
+
 		</itemizedlist>
 	</refsection>
-	
+	<refsection id="outParameters_mdaqDIORead">
+		<title>Output arguments</title>
+		<itemizedlist>
+			<listitem>
+				<para>
+					<emphasis role="bold">state: </emphasis> DIO channel state</para>
+			</listitem>
+		</itemizedlist>
+	</refsection>
+
 	<refsection>
-        <title>Examples</title>
-        <programlisting role="example"><![CDATA[
-// mdaq_dio_read usage example
-link_id = mdaq_open();
-// read and show DIO1 state
-mprintf("DIO 1 state: %d\n", mdaq_dio_read(link_id, 1));
-mdaq_close(link_id);
- ]]></programlisting>
-    </refsection>
-	
-  <refsection id="SeeAlso_mdaq_dio_read">
+		<title>Examples</title>
+		<programlisting role="example">
+			<![CDATA[
+				// disable Encoder 1 function
+				mdaqDIOFunc(1, %f);    
+				// read DIO1 state			
+				disp("DIO 1 state:");
+				disp(mdaqDIORead(1))
+				// enable Encoder 1 function
+				mdaqDIOFunc(1, %t);
+			 ]]>
+		</programlisting>
+	</refsection>
+
+	<refsection id="SeeAlso_mdaqDIORead">
 		<title>See Also</title>
 		<simplelist type="inline">
-		<member><link linkend="mdaq_dio_write">mdaq_dio_write</link></member>
-		<member><link linkend="mdaq_dio_func">mdaq_dio_func</link></member>
-		<member><link linkend="mdaq_dio_dir">mdaq_dio_dir</link></member>
+			<member>
+				<link linkend="mdaqDIOWrite">mdaqDIOWrite</link>
+			</member>
+			<member>
+				<link linkend="mdaqDIOFunc">mdaqDIOFunc</link>
+			</member>
+			<member>
+				<link linkend="mdaq_dio_dir">mdaq_dio_dir</link>
+			</member>
 		</simplelist>
-  </refsection>
+	</refsection>
 </refentry>

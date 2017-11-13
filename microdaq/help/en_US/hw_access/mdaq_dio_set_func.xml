@@ -1,27 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaq_dio_func">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaqDIOFunc">
 	<refnamediv>
-		<refname>mdaq_dio_func</refname>
-		<refpurpose>Sets alternative DIO function</refpurpose>
+		<refname>mdaqDIOFunc</refname>
+		<refpurpose>Controls alternative DIO function</refpurpose>
 	</refnamediv>
-	
+
 	<refsynopsisdiv>
 		<title>Calling Sequence</title>
 		<synopsis>
-			mdaq_dio_func();
-			mdaq_dio_func(func, enable);
-			mdaq_dio_func(link_id, func, enable);
+			mdaqDIOFunc(dioFunction, isEnabled)
+			mdaqDIOFunc(linkID, dioFunction, isEnabled)
 		</synopsis>
 	</refsynopsisdiv>
-	
-	<refsection id="Description_mdaq_dio_set_func">
+
+	<refsection id="Description_mdaqDIOFunc">
 		<title>Description</title>
 		<para>
 			This function sets alternative function for DIO channels. By default alternative DIO channel functions ENC1, ENC2, PWM1, PWM2, PWM3 and UART are enabled.  
-			This function will return error if direction of DIO channels does not allow to set selected function (e.g DIO channel configured as an output, user wants to configure ENC1). 
+			This function will return error if direction of DIO channels does not allow to set selected function (e.g DIO channel configured as an output can't be configured as ENC1 (input direction)).
 		</para>
 		<para>
-			DIO alternative functions ('func' parameter): 
+			DIO alternative functions ('dioFunction' argument): 
 		</para>
 		<simplelist type="inline">
 			<member>0 - NONE (doesn't set anything)</member>
@@ -33,33 +32,48 @@
 			<member>6 - UART</member>
 		</simplelist>
 	</refsection>   
-  
-	<refsection id="Parameters_mdaq_dio_set_func">
+
+	<refsection id="Parameters_mdaqDIOFunc">
 		<title>Parameters</title>
 		<itemizedlist>
-			<listitem><para><emphasis role="bold">link_id: </emphasis> Valid connection link ID (optional)</para></listitem>
-			<listitem><para><emphasis role="bold">func: </emphasis> Alternative DIO function </para></listitem>
-			<listitem><para><emphasis role="bold">enable: </emphasis> Alternative DIO function state (%T/%F to enable or disable) </para></listitem>
+			<listitem>
+				<para>
+					<emphasis role="bold">linkID: </emphasis> Valid connection link ID (optional)</para>
+			</listitem>
+			<listitem>
+				<para>
+					<emphasis role="bold">func: </emphasis> Alternative DIO function </para>
+			</listitem>
+			<listitem>
+				<para>
+					<emphasis role="bold">enable: </emphasis> %T/%F to enable or disable </para>
+			</listitem>
 		</itemizedlist>
 	</refsection>
-	
 	<refsection>
-        <title>Examples</title>
-        <programlisting role="example"><![CDATA[
-// mdaq_dio_set_func usage example
-link_id = mdaq_open(); 
-// disable UART function
-mdaq_dio_func(link_id, 6, 0);
-mdaq_close(link_id);
- ]]></programlisting>
-    </refsection>
-	
-  <refsection id="SeeAlso_mdaq_dio_set_func">
+		<title>Examples</title>
+		<programlisting role="example">
+			<![CDATA[
+				// disable Encoder1 function - set to DIO
+				linkID = mdaqOpen(); 
+				mdaqDIOFunc(linkID, 1, 0);
+				mdaqClose(linkID);
+			 ]]>
+		</programlisting>
+	</refsection>
+
+	<refsection id="SeeAlso_mdaqDIOFunc">
 		<title>See Also</title>
 		<simplelist type="inline">
-		<member><link linkend="mdaq_dio_write">mdaq_dio_write</link></member>
-		<member><link linkend="mdaq_dio_read">mdaq_dio_read</link></member>
-		<member><link linkend="mdaq_dio_dir">mdaq_dio_dir</link></member>
+			<member>
+				<link linkend="mdaqDIOWrite">mdaqDIOWrite</link>
+			</member>
+			<member>
+				<link linkend="mdaqDIORead">mdaqDIORead</link>
+			</member>
+			<member>
+				<link linkend="mdaq_dio_dir">mdaq_dio_dir</link>
+			</member>
 		</simplelist>
-  </refsection>
+	</refsection>
 </refentry>

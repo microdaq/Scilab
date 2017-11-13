@@ -1126,35 +1126,40 @@ function  [ok,XX,alreadyran,flgcdgen,szclkINTemp,freof] = do_compile_superblock_
 
     if load_dsp_app == %t then
         disp('### Connecting to MicroDAQ...');
-        connection_id = mdaq_open();
+        close_last_connection();
+        connection_id = mdaqOpen();
         if connection_id < 0 then
-            message('Unable to connect to MicroDAQ device - check cable and IP settings!');
+            message("ERROR: Unable to connect to MicroDAQ device!");
             return;
         end
-
-        disp('### Loading ' + dsp_binary + ' to MicroDAQ...');
+    
         res = mlink_dsp_load(connection_id, rpat + filesep() + dsp_binary, '');
         if res < 0 then
-            message('Unable to load model!');
-            mdaq_close(connection_id);
-            return;
+            res = mlink_dsp_load(connection_id, rpat + filesep() + dsp_binary, '');
+            if res < 0 then
+                message(mdaq_error2(res));                
+                mdaqClose(connection_id);
+                return
+            end
         end
-
-        if standalone == %t then
-            disp('### Starting model in Standalone mode...');
-        end
+        
+        disp('### ' + dsp_binary + ' has been loaded to MicroDAQ.');
 
         res = mlink_dsp_start(connection_id,-1);
         if res < 0 then
             message("Unable to start DSP application!");
-            mdaq_close(connection_id);
+            mdaqClose(connection_id);
             return;
+        end
+        
+        if standalone == %t then
+            disp('### Model has been started in Standalone mode.');
         end
 
         %microdaq.dsp_loaded = %T;
 
         beep();
-        mdaq_close(connection_id);
+        mdaqClose(connection_id);
 
     end
 
@@ -2801,9 +2806,11 @@ function Makename=rt_gen_make(name,files,libs,standalone,debug_build,SMCube_file
     T=strsubst(T,'$$DSPLIB$$',DSPLIB);
     T=strsubst(T,'$$MATHLIB$$',MATHLIB);
     T=strsubst(T,'$$SMCUBE_FILES$$',SMCube_mk_files(SMCube_filelist));
+    if %microdaq.private.mdaq_hwid(1) <> 1000 & %microdaq.private.mdaq_hwid(1) <> 1100 & %microdaq.private.mdaq_hwid(1) <> 2000 then
+        error('Unable to detect CPU frequency - run mdaqHWInfo()');
+    end
 	T=strsubst(T,'$$CPUOPT$$','cpu' + string(%microdaq.private.mdaq_hwid(4)));
     
-
     if( debug_build == %T)
         T=strsubst(T,'$$BUILD_MODE%%','-g');
     else

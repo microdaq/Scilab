@@ -7,7 +7,7 @@ function block=mdaq_dio_get_sim(block,flag)
         case 1 // Output Update
             if %microdaq.private.connection_id > -1 then
                 
-                distate = mdaq_dio_read(%microdaq.private.connection_id,..
+                distate = mdaqDIORead(%microdaq.private.connection_id,..
                                                 block.ipar(1));
                                                 
                 if distate then 

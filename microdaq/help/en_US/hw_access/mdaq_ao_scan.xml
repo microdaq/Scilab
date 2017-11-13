@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaqAOScan">
+	<refnamediv>
+		<refname>mdaqAOScan</refname>
+		<refpurpose>Starts analog output scanning</refpurpose>
+	</refnamediv>
+
+	<refsynopsisdiv>
+		<title>Calling Sequence</title>
+		<synopsis>
+			mdaqAOScan()
+			mdaqAOScan(linkID)
+		</synopsis>
+	</refsynopsisdiv>
+
+	<refsection id="Description_mdaqAOScan">
+		<title>Description</title>
+
+		<para> This function is part of analog scan functionality and has to be called in the following sequence:
+			<orderedlist>
+				<listitem>
+					<para>Initialize scanning session - <link linkend="mdaqAOScanInit">mdaqAOScanInit()</link>
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						<emphasis role="bold">Start scanning session</emphasis> - <link linkend="mdaqAOScan">mdaqAOScan()</link>
+					</para>
+				</listitem>
+				<listitem>
+					<para>Queue new data - <link linkend="mdaqAOScanData">mdaqAOScanData()</link>
+					</para>
+				</listitem>
+				<listitem>
+					<para>Stop scanning session - <link linkend="mdaqAOScanStop">mdaqAOScanStop()</link>
+					</para>
+				</listitem>
+			</orderedlist>
+		</para> 
+
+		<para>
+			This function starts analog output scanning. A function call has to be preceded with <link linkend="mdaqAOScanInit">mdaqAOScanInit()</link> which initiates analog output scanning session parameters. Function enables MicroDAQ hardware to output data on selected AO channels and returns immediately (doesn't block Scilab console). In order to stop scanning, function <link linkend="mdaqAOScanStop">mdaqAOScanStop()</link> has to be called.
+
+		</para>
+		<para>
+			<emphasis role="bold">Limitation:</emphasis> ADC1-DAC01 MicroDAQ configuration doesn't support running simultaneously AI and AO scanning sessions.
+		</para>
+	</refsection>  
+
+	<refsection id="Parameters_mdaqAOScan">
+		<title>Input arguments</title>
+		<itemizedlist>
+			<listitem>
+				<para>
+					<emphasis role="bold">linkID: </emphasis> Valid connection link ID (optional)</para>
+			</listitem>
+		</itemizedlist>
+	</refsection>
+
+	<refsection>
+		<title>Examples</title>  
+		<para> 
+		Generate 10Hz sine waveform on AO1 for 5 sec.
+		</para>
+		<programlisting role="example">
+			<![CDATA[
+			sineData = sin(linspace(0, 2*%pi, 100)) + 2;
+			// initialize scanning session
+			mdaqAOScanInit(1, sineData', [0,5], %F, 1000, 5);
+			// start sine waveform generation
+			mdaqAOScan();
+ ]]>
+		</programlisting>
+	</refsection>
+
+
+	<refsection id="SeeAlso_mdaqAOScan">
+		<title>See Also</title>
+		<simplelist type="inline">
+			<member>
+				<link linkend="mdaqAOScanInit">mdaqAOScanInit</link>
+			</member>
+			<member>
+				<link linkend="mdaqAOScanData">mdaqAOScanData</link>
+			</member>
+			<member>
+				<link linkend="mdaqAOScanStop">mdaqAOScanStop</link>
+			</member>
+
+		</simplelist>
+	</refsection>
+</refentry>

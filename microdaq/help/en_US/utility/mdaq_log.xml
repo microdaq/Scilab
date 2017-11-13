@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" 
+xml:id="mdaqLog">
+	<refnamediv>
+		<refname>mdaqLog</refname>
+		<refpurpose>Prints or saves MicroDAQ system logs.</refpurpose>
+	</refnamediv>
+	
+	<refsynopsisdiv>
+		<title>Calling Sequence</title>
+		<synopsis>
+			mdaqLog();
+            mdaqLog(filepath);
+		</synopsis>
+	</refsynopsisdiv>
+	
+	<refsection id="Description_mdaqLog">
+		<title>Description</title>
+		<para>
+			This function prints MicroDAQ system logs to Scilab console or writes to file if additional parameter has been provided. 
+		</para>
+	</refsection>
+
+    <refsection id="Parameters_mdaqLog">
+		<title>Parameters</title>
+		<itemizedlist>
+			<listitem><para><emphasis role="bold">filepath: </emphasis> path to file where logs will be saved</para></listitem>
+		</itemizedlist>
+	</refsection>    
+ 
+	
+	<refsection>
+        <title>Examples</title>
+        <programlisting role="example"><![CDATA[
+// print to console
+mdaqLog(); 
+
+// save to file 
+mdaqLog("C:\mdaqLog.txt"); 
+
+ ]]></programlisting>
+    </refsection>
+	
+  <refsection id="SeeAlso_mdaqLog">
+		<title>See Also</title>
+		<simplelist type="inline">
+			<member><link linkend="mdaqPing">mdaqPing</link></member>
+		</simplelist>
+  </refsection>
+</refentry>

@@ -1,5 +1,5 @@
 function [res] = build_mdaq_palette(palette_path)
-    toolbox_dir = mdaq_toolbox_path();  
+    toolbox_dir = mdaqToolboxPath();  
     xpal = list();
 
     //Create complete mdaq palette
@@ -15,6 +15,7 @@ function [res] = build_mdaq_palette(palette_path)
     "mdaq_sinus"
     "mdaq_square"
     "mdaq_step"
+    "mdaq_pid_z"
     ];
     xpal_temp = tbx_build_pal(toolbox_dir, "temp_blocks", blocks);
     xcosPalAdd( xpal_temp, ['temp']);
@@ -31,8 +32,6 @@ function [res] = build_mdaq_palette(palette_path)
     "mdaq_led"
     "mdaq_mem_read"
     "mdaq_mem_write"
-    "mdaq_pru_reg_get"
-    "mdaq_pru_reg_set"
     "mdaq_pwm"
     "mdaq_signal"
     "mdaq_param"
@@ -41,16 +40,26 @@ function [res] = build_mdaq_palette(palette_path)
     "mdaq_udp_recv"
     "mdaq_udp_send"
     "mdaq_to_file"
-    "mdaq_uart_config"
-    "mdaq_uart_read"
-    "mdaq_uart_write"
-    "mdaq_webscope"
     "mdaq_time"
     "mdaq_stop"
     "mdaq_setup"
     ];
     xpal($+1) = tbx_build_pal(toolbox_dir, "MicroDAQ", blocks);
 
+ // MicroDAQ Simulation 
+    blocks = ["mdaq_adc"
+    "mdaq_dac"
+    "mdaq_dio_config"
+    "mdaq_dio_get"
+    "mdaq_dio_set"
+    "mdaq_encoder"
+    "mdaq_func_key"
+    "mdaq_led"
+    "mdaq_pwm"
+    "mdaq_setup"
+    ];
+    xpal($+1) = tbx_build_pal(toolbox_dir, "MicroDAQ sim", blocks);
+    
     // Commonly Used Blocks
     blocks = ["mdaq_setup"
     "mdaq_signal"
@@ -62,6 +71,7 @@ function [res] = build_mdaq_palette(palette_path)
     "SUMMATION"
     "mdaq_step"
     "mdaq_sinus"
+    "mdaq_square"
     "DOLLAR"
     "CLOCK_c"
     "IFTHEL_f"
@@ -103,9 +113,12 @@ function [res] = build_mdaq_palette(palette_path)
     xpal($+1) = tbx_compose_pal('Discrete time systems', blocks);
 
     //Lookup Tables
-    //    blocks = [];
-    //    xpal($+1) = tbx_compose_pal('Lookup Tables', blocks);
-    //   
+//    blocks = ["INTRP2BLK_f"
+//    "INTRPLBLK_f"
+//    "LOOKUP_f"
+//    ];
+//    xpal($+1) = tbx_compose_pal('Lookup Tables', blocks);
+//       
 
     //Event handling
     blocks = ["CLOCK_c"
@@ -219,7 +232,9 @@ function [res] = build_mdaq_palette(palette_path)
     "CONST"
     "mdaq_sinus"
     "mdaq_square"
-    "mdaq_step"];
+    "mdaq_step"
+    "TKSCALE"
+    "RAND_m"];
     xpal($+1) = tbx_compose_pal('Sources', blocks);    
 
     //User-Defined Functions

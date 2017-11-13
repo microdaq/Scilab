@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaqAIScanStop">
+	<refnamediv>
+		<refname>mdaqAIScanStop</refname>
+		<refpurpose>Stops analog input acquisition</refpurpose>
+	</refnamediv>
+
+	<refsynopsisdiv>
+		<title>Calling Sequence</title>
+		<synopsis>
+			mdaqAIScanStop()
+			mdaqAIScanStop(linkID)
+		</synopsis>
+	</refsynopsisdiv>
+
+	<refsection id="Description_mdaqAIScanStop">
+		<title>Description</title>
+		<para>
+			This function stops analog input acquisition. Function can be used to interrupt acquisition (when duration > 0), or to stop continuous acquisition (when duration=-1). After calling <link linkend="mdaqAIScanStop">mdaqAIScanStop()</link> function scanning session has to be re-initialized.
+		</para> 
+
+	</refsection>  
+
+	<refsection id="Parameters_mdaqAIScanStop">
+		<title>Input arguments</title>
+		<itemizedlist>
+			<listitem>
+				<para>
+					<emphasis role="bold">linkID: </emphasis> Valid connection link ID (optional)</para>
+			</listitem>
+		</itemizedlist>
+	</refsection>
+
+	<refsection>
+
+		<para> Data acquisition from 8 single-ended analog input channels, one analog input range, scan frequency of 10kHz and 1 second duration.</para>
+		<programlisting role="example">
+			<![CDATA[
+			aiData = [];
+			dataCount = 0;
+			mdaqAIScanInit(1:8, [-10,10], %F, 10000, 1)
+			for i=1:10
+				[data result] = mdaqAIScan(1000, %T);
+				aiData = [aiData; data];
+				dataCount = dataCount + result;
+				mprintf('Acquired %d scans (total: %d scans)\n', result, dataCount);
+			end
+			mdaqAIScanStop();
+			plot(aiData);
+			 ]]>
+		</programlisting>
+
+		<para> Continuous data acquisition from 8 single-ended analog input channels, one analog input range, scan frequency of 1kHz. Stop when MicroDAQ F1 button pressed.</para>
+		<para>NOTE: For long acquisition Scilab stack can be exceeded!</para>
+		<programlisting role="example">
+			<![CDATA[
+			aiData = [];
+			dataCount = 0;
+			mdaqAIScanInit(1:8, [-10,10], %F, 1000, -1)
+			while(mdaqKeyRead(1) == %F)
+				[data result] = mdaqAIScan(100, %T);
+				aiData = [aiData; data];
+				dataCount = dataCount + result;
+				mprintf('Acquired %d scans (total: %d scans)\n', result, dataCount);
+			end
+			mdaqAIScanStop();
+			plot(aiData);
+			 ]]>
+		</programlisting>
+
+	</refsection>
+
+	<refsection id="SeeAlso_mdaqAIScanStop">
+		<title>See Also</title>
+		<simplelist type="inline">
+			<member>
+				<link linkend="mdaqAIScanInit">mdaqAIScanInit</link>
+			</member>
+			<member>
+				<link linkend="mdaqAIScan">mdaqAIScan</link>
+			</member>
+
+		</simplelist>
+	</refsection>
+</refentry>

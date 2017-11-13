@@ -34,11 +34,13 @@ xml:id="mdaq_signal">
 		from DSP application running on MicroDAQ. Block works only in Ext mode where data exchange between MicroDAQ and Scilab is 
 		done. In order to read signal data from application running on MicroDAQ DSP 'SIGNAL' block has to be placed before 
 		block sink block e.g. scope block. User has to provide unique 'Signal ID' block parameter for every 'SIGNAL' block 
-		placed on Xcos diagram. If Xcos generated DSP application is used with DSP managment macros or LabVIEW 'Signal ID' parameter
+		placed on Xcos diagram (max. 16). If Xcos generated DSP application is used with DSP managment macros or LabVIEW 'Signal ID' parameter
 		value is used.
-		
+			
 		</para>
     </refsection>
+    
+
 	
 	<refsection id="InputOutput_mdaq_signal">
         <title>Block Input/Output ports</title>
@@ -54,7 +56,7 @@ xml:id="mdaq_signal">
         <title>See Also</title>
         <simplelist type="inline">
             <member>
-                <link linkend="mdaq_setup">mdaq_setup</link> : configures Xcos model for MicroDAQ
+                <link linkend="mdaq_param">mdaq_param</link> : Sets data to MicroDAQ DSP application
             </member>
         </simplelist>
     </refsection>

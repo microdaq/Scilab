@@ -5,14 +5,11 @@
 
 
 function subdemolist = demo_gateway()
-  demopath = get_absolute_file_path("MicroDAQ.dem.gateway.sce");
+  demopath = get_absolute_file_path("microdaq.dem.gateway.sce");
 
-  subdemolist = ["LED example", "led_demo.dem.sce" ;
-                 "FFT script example", "fft_demo.dem.sce" ;
-                 "DC motor demo", "dc_motor_demo.dem.sce" ;
-                 "Analog loop demo (Ext)", "ext_analog_demo.dem.sce" ;
-                 "Analog loop demo (standalone)", "standalone_analog_demo.dem.sce" ;
-                 "LabVIEW demo", "labview_demo.dem.sce" ;
+  subdemolist = ["Data acquisition",   pathconvert("data_acquisition/microdaq.dem.gateway.sce", %F);
+                 "Real-time processing",  pathconvert("real_time/microdaq.dem.gateway.sce", %F) ;
+                 "Other",              pathconvert("other/microdaq.dem.gateway.sce", %F) ;
                 ];
 
   subdemolist(:,2) = demopath + subdemolist(:,2);

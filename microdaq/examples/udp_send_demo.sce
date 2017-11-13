@@ -1,4 +1,4 @@
-mdaq_dsp_start("udp_send_demo_scig\udp_send_demo.out", 0.001);
+mdaqDSPStart("udp_send_demo_scig\udp_send_demo.out", 0.001);
 
 data = [];
 udp_open(mdaq_get_ip(), 9090)
@@ -7,5 +7,5 @@ for i=1:10
 
 end
 plot(data)
-mdaq_dsp_stop()
+mdaqDSPStop()
 udp_close()

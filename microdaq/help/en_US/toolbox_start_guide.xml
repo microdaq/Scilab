@@ -18,11 +18,8 @@ MicroDAQ module simplifies development of real-time control measurements applica
 	<title>MicroDAQ resources</title>
 		<para> MicroDAQ useful links: 
 			<simplelist type="inline">
-			<para><ulink url="https://github.com/microdaq">MicroDAQ software on GitHub</ulink></para>
-			<para><ulink url="https://github.com/microdaq/MLink">MicroDAQ firmware and host software</ulink></para>
-			<para><ulink url="https://github.com/microdaq/LabVIEW">LabVIEW support package</ulink></para>
-			<para><ulink url="https://github.com/microdaq/Matlab">Matlab support package</ulink></para>
-			<para><ulink url="https://www.youtube.com/channel/UCpfNdP1JK0mM0zr2pJkuYIA">MicroDAQ YouTube channel</ulink></para>
+			<para><ulink url="https://github.com/microdaq">MicroDAQ software on GitHub</ulink> - https://github.com/microdaq</para>
+			<para><ulink url="https://www.youtube.com/channel/UCpfNdP1JK0mM0zr2pJkuYIA">MicroDAQ YouTube channel</ulink> - https://www.youtube.com/channel/UCpfNdP1JK0mM0zr2pJkuYIA</para>
 			</simplelist>
 		</para>
 		<para> MicroDAQ toolbox combines Scilab/XCos environment with Embedded Solutions MicroDAQ real-time control measurement system equipped with TI C6000 DSP. Module extends Scilab by allowing user to automatically generate DSP applications directly from XCos scheme. User can use custom XCos blocks which gives access to MicroDAQ hardware (ADC, DAC, DIO, PWM, UART, Quadrature Encoder). Generated DSP application utilizes SYS/BIOS real-time operating system combined with code generated from XCos scheme. </para>
@@ -55,8 +52,6 @@ MicroDAQ module simplifies development of real-time control measurements applica
 		<simplelist type="inline">
 			<member>Ethernet IP address range: 10.10.1.2 - 10.10.1.254 </member>
 			<member>Ethernet network mask:     255.255.255.0 </member>
-			<member>Wi-Fi IP address range:    10.10.2.1 - 10.10.2.254</member>
-			<member>Wi-Fi network mask:        255.255.255.0 </member>
 		</simplelist>
 		<para>
 			<emphasis role="bold">Setting MicroDAQ IP address</emphasis>
@@ -103,63 +98,36 @@ MicroDAQ module simplifies development of real-time control measurements applica
 				<member>XDCTools - Texas Instruments tools which allows SYS/BIOS RTOS usage and configuration</member>
 			</simplelist>
 			<para>
-		All mentioned components are part of standard Texas Instruments Code Composer Studio 4/5 installation which 
-		in case of toolbox use is available for free. External toolbox components are also available as separate install packages and can be installed separately - this is recommended for advanced users. 
+            All mentioned components are available on Texas Instruments website which in case of toolbox it could be use for free. Make sure that correct version of components will be used.
+            Use the following links to download necessary components:
 			</para>
-			<para>
-				<emphasis role="bold">Texas Instruments Code Composer Studio 4/5 installation</emphasis>
-			</para>
-			<para>
-		Standard and recommended install procedure uses Texas Instruments Code Composer Studio 4/5 as a bundle which contains all required components. 
-		The TI Code Composer Studio 4/5 (called CCS5) can be downloaded for free from ti.com website. 
-			</para>
-
-			<para>
-		Use the following link to download CCS5 install package: 
-				<ulink url="http://processors.wiki.ti.com/index.php/Download_CCS#Code_Composer_Studio_Version_5_Downloads">Texas Instruments Code Composer Studio 5 download page</ulink>
-			</para>
-			<para>
-		It is recommended to use 5.5.0.00077 CCS5 build and user off-line installer. Download and install CCS5. During installation select support
-		for OMAPL13x processors, install C6000 compiler and SYS/BIOS RTOS. By selecting this components user will install all component needed by MicroDAQ toolbox for Scilab. This selection
-		also allows using CCS5 as a IDE for DSP code development and debugging Xcos generated DSP applications.
-				<para><imagedata align="center" fileref="images\processor_support.png" valign="middle"/></para>
-				<para><imagedata align="center" fileref="images\components_selection.png" valign="middle"/></para>
-			</para>
-
-			<para>
-			After installation when you are asked to setup license - select XDS100 license. This license type will allow you use CCS5 for free with XDS100 class emulator.
-			If CCS5 installation went without errors next setup step can be performed.
-			</para>
+            <simplelist type="inline">
+				<member><ulink url="http://software-dl.ti.com/codegen/non-esd/downloads/download.htm#C6000">C6000 compiler (ver. 7.4.21)</ulink> - http://software-dl.ti.com/codegen/non-esd/downloads/download.htm#C6000</member>
+                <member><ulink url="http://software-dl.ti.com/dsps/dsps_public_sw/sdo_sb/targetcontent/sysbios/">SYS/BIOS (ver. 6.50.01.12)</ulink> - http://software-dl.ti.com/dsps/dsps_public_sw/sdo_sb/targetcontent/sysbios/</member>
+				<member><ulink url="http://software-dl.ti.com/dsps/dsps_public_sw/sdo_sb/targetcontent/rtsc/">XDCTools (ver. 3.50.00.10)</ulink> - http://software-dl.ti.com/dsps/dsps_public_sw/sdo_sb/targetcontent/rtsc/</member>
+			</simplelist>
 		</para>
 	</refsection>
 	
 	<refsection id="SeeAlso_introduction">
 		<title>MicroDAQ toolbox for Scilab configuration</title>
 		<para>
-		Installed CCS5 with required components and MicroDAQ device configured to work in IP network steps has to be performed to perform this configuration step.
+		Installed required components and MicroDAQ device configured to work in IP network steps has to be performed to perform this configuration step.
 		MicroDAQ toolbox for Scilab provides function which configures toolbox to work with installed software components (compiler, RTOS). The 'microdaq_setup' script
-		configures installed components to work with toolbox, detects MicroDAQ device, compiles SYS/BIOS RTOS for toolbox usage.
+		configures installed components to work with toolbox, detects MicroDAQ device, compiles SYS/BIOS RTOS for toolbox usage. Toolbox version 1.2 and higher is not compatible with
+        MicroDAQ firmware below 2.0.0 release.
 		</para>
-		<para><imagedata align="center" fileref="images\microdaq_setup.png" valign="middle"/></para>
+		<para><imagedata align="center" fileref="images/microdaq_setup.png" valign="middle"/></para>
 		<para>
 			<emphasis role="bold">Configuring toolbox with 'microdaq_setup' setup wizard</emphasis>
 			<simplelist type="inline">
 				<member>Make sure MicroDAQ device is connected and IP connection is valid.</member>
 				<member>Execute 'microdaq_setup' command from Scilab</member>
-				<member>Provide external components (CCS5 root directory, compiler, XDCTools, SYS/BIOS) install paths</member>
-				<para> 
-				Example directory structure (same for Linux) with standard CCS5 installation:
-					<simplelist type="inline">
-						<member>Code Composer Studio 4/5 install path → C:\ti\ccsv5</member>
-						<member>C6000 compiler install path → C:\ti\ccsv5\tools\compiler\c6000_7.4.4</member>
-						<member>XDCTools install path → C:\ti\xdctools_3_25_03_72</member>
-						<member>SYS/BIOS RTOS install path → C:\ti\bios_6_35_04_50</member>
-					</simplelist>
-				</para>
+				<member>Provide external components (compiler, XDCTools, SYS/BIOS) install paths</member>
 				<member>Enter MicroDAQ device IP address - this address will be used by toolbox to communicate with the device</member>
-				<member>Press 'Detect MicroDAQ' button to detect connected MicroDAQ device</member>
+				<member>Press 'Check firmware' button to detect connected MicroDAQ device and check firmware compatibility</member>
 				<member>Device should be detected - detected MicroDAQ device model should be presented</member>
-				<para><imagedata align="center" fileref="images\microdaq_detect.png" valign="middle"/></para>
+				<para><imagedata align="center" fileref="images/microdaq_detect.png" valign="middle"/></para>
 				<member>If MicroDAQ device is detected by 'microdaq_setup' press 'OK' button to confirm and build SYS/BIOS RTOS.</member>
 				<member>If compilation of SYS/BIOS went without problems MicroDAQ toolbox for Scilab is ready to use.</member>
 			</simplelist>
@@ -169,12 +137,11 @@ MicroDAQ module simplifies development of real-time control measurements applica
 		<title>Basic toolbox commands</title>
 		<para>
 			<simplelist type="inline">
-				<member>mdaq_ping - check connection with MicroDAQ device</member>
-				<member>mdaq_hwinfo -  prints connected MicroDAQ device hardware information</member>
-				<member>mdaq_set_ip - sets IP address used for communication with MicroDAQ device (doesn't change MicroDAQ IP address)</member>
+				<member>mdaqPing - check connection with MicroDAQ device</member>
+				<member>mdaqHWInfo -  prints connected MicroDAQ device hardware information</member>
+				<member>mdaqSetIP - sets IP address used for communication with MicroDAQ device (doesn't change MicroDAQ IP address)</member>
 				<member>mdaq_get_ip - gets IP address used for communication with MicroDAQ device </member>
 				<member>mdaq_webpanel - opens MicroDAQ Web Panel in web browser </member>
-				<member>mdaq_open_webscope - opens MicroDAQ Web Scope in web browser </member>
 				<member>mdaq_userdisk - opens MicroDAQ User Disk content in web browser </member>
 			</simplelist>
 		</para>
@@ -185,7 +152,7 @@ MicroDAQ module simplifies development of real-time control measurements applica
 		<para>
 		If MicroDAQ toolbox for Scilab is configured we can create first Xcos model which utilizes MicorDAQ device. MicroDAQ toolbox for Scilab allows
 		code generation from Xcos scheme, user can create Xcos diagram which contains MicroDAQ blocks which communicate with the device peripherals.
-		After code generation from Xcos diagram resulting C code is compiled with C6000 compiler installed with CCS5. Resulting DSP binary application 
+		After code generation from Xcos diagram resulting C code is compiled with C6000 compiler. Resulting DSP binary application 
 		can be loaded on target via Ethernet or Wi-Fi connection.  
 		In order to show main toolbox features and guide user how to user toolbox to generate DSP application from created Xcos diagram we will simple model which uses MicroDAQ LED block do blink D1 LED.
 		</para>
@@ -200,11 +167,11 @@ MicroDAQ module simplifies development of real-time control measurements applica
 			<member>From MicroDAQ palette SQUARE (mdaq_square) and LED (mdaq_led) blocks on Xcos diagram</member>
 			<member>In order to setup model sample time place CLOCK_c block (from MicroDAQ-&gt;Commonly Used Blocks) on Xcos diagram</member>
 			<member>Connect blocks on Xcos diagram</member>
-			<para><imagedata align="center" fileref="images\intro_scheme1.png" valign="middle"/></para>
+			<para><imagedata align="center" fileref="images/intro_scheme1.png" valign="middle"/></para>
 			<member>By using mouse select part of diagram for Superblock creation. Superblock will contain part of the Xcos diagram which will be used for code generation. After selecting blocks for code generation create superblock with 'Edit-&gt;Section to superblock' option from Xcos menu. Xcos diagram structure for MicroDAQ code generation must consists three block SETUP, CLOCK and Superblock containing diagram for code generation. </member>
-			<para><imagedata align="center" fileref="images\intro_scheme2.png" valign="middle"/></para>
+			<para><imagedata align="center" fileref="images/intro_scheme2.png" valign="middle"/></para>
 			<member>Save Xcos diagram - diagram name will be used for name of generated DSP application</member>
-			<para><imagedata align="center" fileref="images\intro_scheme3.png" valign="middle"/></para>
+			<para><imagedata align="center" fileref="images/intro_scheme3.png" valign="middle"/></para>
 		</simplelist>
 		<emphasis role="bold">Code generation from Xcos model</emphasis>
 		<para> 
@@ -259,7 +226,7 @@ MicroDAQ module simplifies development of real-time control measurements applica
 
 				<member>
 					Standalone mode - DSP executable is loaded on MicroDAQ and its execution is not controlled by Xcos. DSP application starts to execute on target 
-					and can not be stopped with 'Stop' simulation button. In order to stop DSP execution 'mdaq_dsp_terminate' function has to be called.
+					and can not be stopped with 'Stop' simulation button. In order to stop DSP execution 'mdaqDSPTerminate' function has to be called.
 				</member>
 			</simplelist>
 		</para>
@@ -319,12 +286,12 @@ MicroDAQ module simplifies development of real-time control measurements applica
 			<member>Connect blocks on Xcos diagram</member>
 			<member>Change amplitude of sine waveform generator (Sin block) to 14</member>
 			<member>Change duration of model simulation to 30 seconds by editing 'Duration' parameter in SETUP block</member>
-			<para><imagedata align="center" fileref="images\intro_scheme4.png" valign="middle"/></para>
+			<para><imagedata align="center" fileref="images/intro_scheme4.png" valign="middle"/></para>
 			<member>By using mouse select part of diagram for Superblock creation. Superblock will contain part of the Xcos diagram which will be used for code generation. After selecting blocks for code generation create superblock with 'Edit-&gt;Section to superblock' option from Xcos menu. Xcos diagram structure for MicroDAQ code generation must consists three block SETUP, CLOCK and Superblock containing diagram for code generation. </member>
 			<member>Save Xcos diagram - diagram name will be used for name of generated DSP application</member>
 			<member>Use Tools-&gt;MicroDAQ build and load model option to build and load DSP application on MicroDAQ device</member>
 			<member>Start model with Xcos 'Start' button</member>
-			<para><imagedata align="center" fileref="images\data_exchange1.png" valign="middle"/></para>
+			<para><imagedata align="center" fileref="images/data_exchange1.png" valign="middle"/></para>
 		</simplelist>
 	</refsection>
 

@@ -157,15 +157,15 @@ Void rt_task(UArg arg0)
 #ifdef MODEL_PROFILING
         t_begin = mdaq_profile_read_timer32(); 
 #endif 
-            NAME(MODEL, _end)();        
+
+            NAME(MODEL, _end)();   
 
 #ifdef MODEL_PROFILING
-        t_end = mdaq_profile_read_timer32(); 
-        mdaq_profile_save( t_end - t_begin,1);
+            t_end = mdaq_profile_read_timer32();
+            mdaq_profile_save( t_end - t_begin,1);
 #endif
-
+            signal_task_terminate();
             end_called = 1; 
-
         }
     }
 }

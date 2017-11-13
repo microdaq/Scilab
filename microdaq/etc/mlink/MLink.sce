@@ -6,7 +6,7 @@
 function MLink()
     
     global %microdaq;
-    etc_tlbx  = mdaq_toolbox_path();
+    etc_tlbx  = mdaqToolboxPath();
     etc_tlbx  = etc_tlbx + filesep()+'etc'+filesep()+'mlink'+..
                     filesep()+'MLink'+filesep();
     MLink_path = etc_tlbx + 'MLink';
@@ -31,13 +31,14 @@ function MLink()
        disp("Solaris is not supported!");
     end
     if (getos() == "Darwin") then
-       disp("MacOS is not supported!");
+       MLink_path = strcat([MLink_path, ".dylib"])
     end
 
     // Link library
     %microdaq.private.mlink_link_id = link(MLink_path, ["sci_mlink_error"..
                                "sci_mlink_connect"..
                                "sci_mlink_disconnect"..
+                               "sci_mlink_disconnect_all"..
                                "sci_mlink_dsp_load"..
                                "sci_mlink_dsp_start"..
                                "sci_mlink_dsp_upload"..
@@ -58,9 +59,7 @@ function MLink()
                                "sci_mlink_ai_scan_init"..
                                "sci_mlink_ai_scan_get_ch_count"..
                                "sci_mlink_ai_scan"..
-                               "mlink_ai_scan_stop"..
-                               "sci_mlink_hs_ai_init"..
-                               "sci_mlink_hs_ai_read"..
+                               "sci_mlink_ai_scan_stop"..
                                "sci_mlink_dio_set"..
                                "sci_mlink_dio_get"..
                                "sci_mlink_dio_set_dir"..
@@ -83,6 +82,8 @@ function MLink()
                                "sci_mlink_ao_scan"..
                                "sci_mlink_ao_scan_stop"..
                                "sci_mlink_ao_scan_data"..
+                               "sci_mlink_ao_check_params"..
+                               "sci_mlink_ai_check_params"..
                                ], 'c');
 endfunction
 

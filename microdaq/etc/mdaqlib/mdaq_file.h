@@ -27,7 +27,9 @@ int mdaq_file_init( void );
 int mdaq_file_open(const char *name, int flags);
 int mdaq_file_close(int fd);
 int mdaq_file_write(int fd, const void *buf, size_t len);
+int mdaq_file_writeb(int fd, const void *buf, size_t len); 	/* blocking version of mdaq_file_write */
 int mdaq_file_lseek(int fd, long offset, int whence);
 int mdaq_file_flush(int sockfd);
+int mdaq_file_flush2(int fd); /* Wait for end of last operation i.e file_write (nonblocking) */
 
 #endif /* MDAQFILE_H_ */

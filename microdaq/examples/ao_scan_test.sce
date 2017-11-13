@@ -1,18 +1,33 @@
-sin_waveform_point_count = 26
-scan_freq = 8000 * sin_waveform_point_count; 
-ch_count = 4;
+aiData = [];
+channels = 1
+scanFrequency = 1000;
+scanDataSize = 1000;
+duration = 5;
+expValue = -3;
+sineBias = 2.5;
+sineBase = sin(linspace(0, 2*%pi, scanDataSize));
+expWave = exp(linspace(expValue, expValue + 0.8, scanDataSize));
+sineWave = sineBase. * expWave + sineBias;
 
-duration = 10;
-sin_amp = 5;
-bias = 0; 
+// initialize analog input/output scanning sessions
+mdaqAOScanInit(channels, sineWave', 1, %T, scanFrequency, duration);
+mdaqAIScanInit(channels, 1, %F, scanFrequency, duration);
 
-ao_data = sin(linspace(0,2*%pi,sin_waveform_point_count + 1)') * sin_amp; 
-ao_data = ao_data + bias; 
+// start AI scanning without waiting for data
+mdaqAIScan(0, %T);
+// start signal generation
+mdaqAOScan();
+n = (scanFrequency  * duration) / scanDataSize;
 
-mdaq_ao_scan_init(1:ch_count, 3, 0, scan_freq, duration)
-
-for ch=1:ch_count
-    mdaq_ao_scan_data(ch, ch*100, ao_data(1:sin_waveform_point_count));
+for i=1:n-1
+    expValue = expValue + 0.8;
+    expWave = exp(linspace(expValue, expValue + 0.8, scanDataSize));
+    sineWave = sineBase. * expWave + sineBias;
+    // queue new data 
+    mdaqAOScanData(channels, sineWave', %T);
+    // start and acquire data from analog inputs
+    aiData = [aiData; mdaqAIScan(scanDataSize, %T)];
 end
-
-mdaq_ao_scan()
+// acquire rest of samples
+aiData = [aiData; mdaqAIScan(scanDataSize, %T)];
+plot(aiData)

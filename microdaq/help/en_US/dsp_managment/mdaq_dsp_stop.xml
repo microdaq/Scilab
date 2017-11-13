@@ -6,25 +6,27 @@ xmlns:ns5="http://www.w3.org/1999/xhtml"
 xmlns:mml="http://www.w3.org/1998/Math/MathML" 
 xmlns:db="http://docbook.org/ns/docbook" 
 version="5.0-subset Scilab" 
-xml:id="mdaq_dsp_stop">
+xml:id="mdaqDSPStop">
   <refnamediv>
-    <refname>mdaq_dsp_stop</refname>
-    <refpurpose>Terminate currently running DSP application</refpurpose>
+    <refname>mdaqDSPStop</refname>
+    <refpurpose>Stop currently running DSP application</refpurpose>
   </refnamediv>
   <refsynopsisdiv>
 	<title>Description</title>
 	<para>This function terminates model execution on MicroDAQ DSP core. It has to be called after DSP processing is done.</para>
-	<para>WARNING: TCP/IP protocol is used for data exchange - make sure that after DSP work is done the mdaq_dsp_stop() is called - otherwise next attempt to start DSP application with mdaq_dsp_start() will fail and MicroDAQ device reboot will be needed!  	</para>
+	<para></para>
+	<para>WARNING: TCP/IP protocol is used for data exchange in Ext mode - make sure that the mdaqDSPStop() is called after/during DSP execution, otherwise next mdaqDSPStart() call will fail!
+	</para>
     <title>Calling Sequence</title>
     <synopsis>
-      mdaq_dsp_stop();
-	  mdaq_dsp_stop(connection_id);
+      mdaqDSPStop();
+	  mdaqDSPStop(connection_id);
     </synopsis>
   </refsynopsisdiv>
   <refsection id="Parameters___FUNC_NAME__">
     <title>Arguments</title>
     <itemizedlist>
-	    <listitem><para><emphasis role="bold">connection_id : </emphasis> Connection ID returned by mdaq_open() (OPTIONAL)</para></listitem>
+	    <listitem><para><emphasis role="bold">connection_id : </emphasis> Connection ID returned by mdaqOpen() (OPTIONAL)</para></listitem>
     </itemizedlist>
   </refsection>
   
@@ -34,61 +36,79 @@ xml:id="mdaq_dsp_stop">
 // Script execution duration in seconds
 TIME = 20;
 
-// build DSP binary from Xcos model 
-mdaq_dsp_build(mdaq_toolbox_path() + filesep() + "examples" + filesep() +"fft_demo.zcos");
+// Model execution frequency in Hertz
+FREQ = 5000;
+
+// Build DSP binary from Xcos model
+mdaqDSPBuild(mdaqToolboxPath() + filesep() + "examples" + filesep() +"fft_demo.zcos");
 
 // Start DSP application
-result = mdaq_dsp_start('fft_demo_scig\fft_demo.out'); 
+result = mdaqDSPStart('fft_demo_scig\fft_demo.out', 1.0/FREQ);
 if result < 0 then
     abort;
 end
 
 // Register signal ID and signal size
-result = mdaq_dsp_signal(123, 1); 
+result = mdaqDSPSignal(1, 1);
 if result < 0 then
-    disp("ERROR: unable to register signal"); 
+    disp("ERROR: unable to register signal");
     abort;
 end
 
-first_time = 1; 
+first_time = 1;
 a = [];
-// Process data from DSP 
-sample_count = 500;
-for i=1:(10 * TIME)
-    [result, s] = mdaq_dsp_signal_read(sample_count);
+
+// Process data from DSP
+sample_count = FREQ/10;
+fig = figure("Figure_name","MicroDAQ FFT demo");
+
+for i=1:(TIME*10)
+    [result, s] = mdaqDSPSignalRead(sample_count);
     if result < 0 then
-        disp("ERROR: unable to read signal data!"); 
+        disp("ERROR: unable to read signal data!");
         abort;
     end
-
-    t = 0:1/sample_count:1;
-    N=size(t,'*'); //number of samples
+    
+    N=size(s,'*');  //number of samples
+    s = s - mean(s);//cut DC
     y=fft(s');
 
-    f=sample_count*(0:(N/2))/N; //associated frequency vector
+    f= FREQ*(0:(N/10))/N; //associated frequency vector
     n=size(f,'*');
-    if first_time == 1 then
-        clf()
-        plot(f,abs(y(1:n)))
-        first_time = 0;
-        a = gca();
+
+    if is_handle_valid(fig) then
+        if first_time == 1 then
+            clf();
+            plot(f,abs(y(1:n)));
+            title("FFT", "fontsize", 3);
+            xlabel("frequency [Hz]","fontsize", 3);
+            first_time = 0;
+            a = gca();
+        else
+            a.children.children.data(:,2) = abs(y(1:n))';
+        end
     else
-        a.children.children.data(:,2) = abs(y(1:n))';
+        break;
     end
 end
 
 // Stop DSP execution
-mdaq_dsp_stop(); 
+mdaqDSPStop();
 
+// Close plot
+mprintf("\nFFT demo has been stopped.");
+if is_handle_valid(fig) then
+    close(fig);
+end
  ]]></programlisting>
  </refsection>
   <refsection id="SeeAlso___FUNC_NAME__">
     <title>See Also</title>
     <simplelist type="inline">
-      <member><link linkend="mdaq_dsp_start">mdaq_dsp_start</link> : Start DSP execution </member>
-	  <member><link linkend="mdaq_dsp_signal_read">mdaq_dsp_signal_read</link> : Read DSP signal data </member>
-	  <member><link linkend="mdaq_dsp_signal">mdaq_dsp_signal</link> : Register DSP Signal ID </member>
-	  <member><link linkend="mdaq_dsp_build">mdaq_dsp_build</link> : Builds DSP application from provided Xcos model </member>
+      <member><link linkend="mdaqDSPStart">mdaqDSPStart</link> : Start DSP execution </member>
+	  <member><link linkend="mdaqDSPSignalRead">mdaqDSPSignalRead</link> : Read DSP signal data </member>
+	  <member><link linkend="mdaqDSPSignal">mdaqDSPSignal</link> : Register DSP Signal ID </member>
+	  <member><link linkend="mdaqDSPBuild">mdaqDSPBuild</link> : Builds DSP application from provided Xcos model </member>
       <member>
         <link type="scilab" linkend="scilab.help/sum">Link to the Scilab help page</link>
       </member>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaqAOScanStop">
+	<refnamediv>
+		<refname>mdaqAOScanStop</refname>
+		<refpurpose>Stops analog output scanning</refpurpose>
+	</refnamediv>
+
+	<refsynopsisdiv>
+		<title>Calling Sequence</title>
+		<synopsis>
+			mdaqAOScanStop(linkID)
+			mdaqAOScanStop()
+		</synopsis>
+	</refsynopsisdiv>
+
+	<refsection id="Description_mdaqAOScanStop">
+		<title>Description</title>
+
+		<para> This function is part of analog scan functionality and has to be called in the following sequence:
+			<orderedlist>
+				<listitem>
+					<para>Initialize scanning session - <link linkend="mdaqAOScanInit">mdaqAOScanInit()</link>
+					</para>
+				</listitem>
+				<listitem>
+					<para>Start scanning session - <link linkend="mdaqAOScan">mdaqAOScan()</link>
+					</para>
+				</listitem>
+				<listitem>
+					<para>Queue new data - <link linkend="mdaqAOScanData">mdaqAOScanData()</link>
+					</para>
+				</listitem>
+				<listitem>
+					<para>
+						<emphasis role="bold">Stop scanning session</emphasis> - <link linkend="mdaqAOScanStop">mdaqAOScanStop()</link>
+					</para>
+				</listitem>
+			</orderedlist>
+		</para> 
+		<para>
+				This function stops analog output scanning session. Function can be used to interrupt acquisition (duration > 0), or to stop continuous acquisition (duration=-1). After calling <link linkend="mdaqAOScanStop">mdaqAOScanStop()</link> function, scanning session has to be re-initialized.
+
+		</para> 
+	</refsection>  
+
+	<refsection id="Parameters_mdaqAOScanStop">
+		<title>Input arguments</title>
+		<itemizedlist>
+			<listitem>
+				<para>
+					<emphasis role="bold">linkID: </emphasis> Valid connection link ID (optional)</para>
+			</listitem>
+		</itemizedlist>
+	</refsection>
+	<refsection>
+		<title>Examples</title>
+		<para> 
+		Generate sine and sawtooth waveform in periodic mode. Sample update frequency 1000Hz, duration - Inf - interrupted by user code.
+		</para>
+		<programlisting role="example">
+			<![CDATA[
+			sineData = sin(linspace(0, 2*%pi, 1000)) + 1.0;
+			sawtoothData = linspace(0, 5, 1000);
+			mdaqAOScanInit(1:2, [sineData' sawtoothData'], [0,5], %F, 1000, -1);
+			mdaqAOScan();
+			sleep(5000);
+			mdaqAOScanStop();
+		 ]]>
+		</programlisting>
+
+		<para>
+			Results:
+			<imagedata align="center" fileref="../images/single_result.png" valign="middle"/>
+		</para>
+	</refsection>  			
+	<refsection id="SeeAlso_mdaqAOScanStop">
+		<title>See Also</title>
+		<simplelist type="inline">
+			<member>
+				<link linkend="mdaqAOScanInit">mdaqAOScanInit</link>
+			</member>
+			<member>
+				<link linkend="mdaq_ao_data_update">mdaq_ao_data_data</link>
+			</member>
+			<member>
+				<link linkend="mdaqAOScan">mdaqAOScan</link>
+			</member>
+
+		</simplelist>
+	</refsection>
+</refentry>

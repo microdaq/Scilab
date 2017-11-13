@@ -1,76 +1,101 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<refentry xmlns="http://docbook.org/ns/docbook" 
-xmlns:xlink="http://www.w3.org/1999/xlink" 
-xmlns:svg="http://www.w3.org/2000/svg" 
-xmlns:ns5="http://www.w3.org/1999/xhtml" 
-xmlns:mml="http://www.w3.org/1998/Math/MathML" 
-xmlns:db="http://docbook.org/ns/docbook" 
-version="5.0-subset Scilab" 
-xml:id="mdaq_adc">
-    <refnamediv>
-        <refname>mdaq_adc</refname>
-        <refpurpose>
-		
-		Reads MicroDAQ analog inputs (AI)
-		
-		</refpurpose>
-    </refnamediv>
-    <refsection>
-        <title>Block Screenshot</title>
-        <para>
-            <inlinemediaobject>
-                <imageobject>
-                    <imagedata align="center" fileref="../../../images/gif/mdaq_adc.gif" valign="middle"/>
-                </imageobject>
-            </inlinemediaobject>
-        </para>
-    </refsection>
-    <refsection id="Description_mdaq_adc">
-        <title>Description</title>
-        <para>
-		
-		This block reads MicroDAQ analog inputs (AI).
-		Block detects MicroDAQ analog inputs type and allows
-		channel, input range and measurement type selection.
-		Single or multiply channels can be selected by providing
-		vector with channel numbers. Input range can be selected
-		and will be applied for all selected channels.
-		Single-ended or differential measurement type can be selected.
-		In order to select differential mode 'Differential' parameter
-		has to be set to 1.
-		
-		</para>
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:db="http://docbook.org/ns/docbook" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0-subset Scilab" xml:id="mdaq_adc">
+	<refnamediv>
+		<refname>mdaq_adc</refname>
+		<refpurpose>Reads MicroDAQ analog inputs (AI)</refpurpose>
+	</refnamediv>
+	<refsection>
+		<title>Block Screenshot</title>
 		<para>
-		Only one block is allowed in the Xcos diagram. 
+			<inlinemediaobject>
+				<imageobject>
+					<imagedata align="center" fileref="../../../images/gif/mdaq_adc.gif" valign="middle" />
+				</imageobject>
+			</inlinemediaobject>
 		</para>
-
+	</refsection>
+	<refsection id="Description_mdaq_adc">
+		<title>Description</title>
+		<para>This block reads MicroDAQ analog inputs (AI). Block detects MicroDAQ analog inputs type and allows channel, input range and measurement type selection. Single or multiply channels can be selected by providing vector with channel numbers. Input range can be selected and will be applied for all selected channels. Single-ended or differential measurement type can be selected. In order to select differential mode 'Differential' parameter
+		has to be set to 1. Blocks supports software oversampling and averaging to increase measurement resolution.</para>
+		<para>Only one block is allowed in the Xcos diagram.</para>
 		<para>This block can be used in host simulation mode and for code generation.</para>
-
+	</refsection>
+	<refsection id="Dialogbox_mdaq_adc">
+		<title>Dialog box</title>
 		<para>
-		Analog input channel selection in differential mode: 
-		<simplelist type="inline">
-            <member><para>Channel 1 - AI1(+), AI2(-)</para></member>
-            <member><para>Channel 2 - AI3(+), AI4(-)</para></member>
-            <member><para>Channel 3 - AI5(+), AI6(-)</para></member>
-            <member><para>Channel 4 - AI7(+), AI8(-)</para></member>
-        </simplelist>
+			<inlinemediaobject>
+				<imageobject>
+					<imagedata align="center" fileref="../../../help/en_US/images/adc_params.png" valign="middle" />
+				</imageobject>
+			</inlinemediaobject>
 		</para>
-    </refsection>
-	
+		<itemizedlist>
+			<listitem>
+				<para>
+					<emphasis role="bold">Channels</emphasis>
+				</para>
+				<para>Scalar or vector containing channel numbers</para>
+				<para>Properties : Type int, Range - depending on ADC converter 1..8 or 1..16.</para>
+				<para />
+			</listitem>
+			<listitem>
+				<para>
+					<emphasis role="bold">Range</emphasis>
+				</para>
+				<para>The range parameter specifies channel measurement input range. Matrix n-by-2 where n is number of used channels shall be provided. If 1x2 matrix is provided, the range setting will be used for all channels. In order to obtain supported ranges use <link linkend="mdaqHWInfo">mdaqHWInfo()</link>. Range matrix - single row matrix e.g. [-10,10] sets -10 to 10V input range which will be used for all channels. If multi-range used, row number must match selected channels e.g. range matrix for 3 channels [-10,10; -5,5; -2,2]</para>
+				<para />
+			</listitem>
+			<listitem>
+				<para>
+					<emphasis role="bold">Differential</emphasis>
+				</para>
+				<para>Differential parameter determines ADC measurement mode - if is set to 1 differential measurement mode is used, if set to 0 (default) single-ended measurement is used.
+				</para>
+				<para>When differential mode is used, the following channel numbering scheme shall be used:</para>
+				<para>Channel 1 - AI1(+), AI2(-)</para>
+				<para>Channel 2 - AI3(+), AI4(-)</para>
+				<para>Channel 3 - AI5(+), AI6(-)</para>
+				<para>Channel 4 - AI7(+), AI8(-)</para>
+				<para>Channel 5 - AI9(+), AI10(-)</para>
+				<para>Channel 6 - AI11(+), AI12(-)</para>
+				<para>Channel 7 - AI13(+), AI14(-)</para>
+				<para>Channel 8 - AI15(+), AI16(-)</para>
+				<para />
+			</listitem>
+			<listitem>
+				<para>
+					<emphasis role="bold">Averaging</emphasis>
+				</para>
+				<para>Averaging allows to increase measurement resolution by acquiring and averaging a higher amount of samples and averaging. These extra samples are achieved by oversampling the analog signal. This affects ADC block execution time, if higher averaging factor selected ADC block execution time will be longer. Averaging factor is related to measurement resolution increment:</para>
+				<para>1 - 4 ADC readings </para>
+				<para>2 - 16 ADC readings</para>
+				<para>3 - 64 ADC readings </para>
+				<para>4 - 256 ADC readings </para>
+				<para />
+				<para>If Averaging is set to 0 (default) averaging is disabled</para>
+			</listitem>
+		</itemizedlist>
+	</refsection>
 	<refsection id="InputOutput_mdaq_adc">
-        <title>Block Input/Output ports</title>
+		<title>Block Input/Output ports</title>
 		<para>
 			<simplelist type="inline">
-				<member><para>output(1) - value in volts</para></member>
+				<member>
+					<para>output(1) - value in volts</para>
+				</member>
 			</simplelist>
 		</para>
 	</refsection>
-    <refsection id="SeeAlso_mdaq_adc">
-        <title>See Also</title>
-        <simplelist type="inline">
-            <member> <link linkend="mdaq_ai_read">mdaq_ain_read</link> : Reads MicroDAQ analog inputs (AI) from Scilab script</member>
-			<member> <link linkend="mdaq_dac">mdaq_dac</link> : Sets MicroDAQ analog outputs</member>
-            <member><link type="scilab" linkend="scilab.help/sum">Link to the Scilab help page</link></member>
-        </simplelist>
-    </refsection>
+	<refsection id="SeeAlso_mdaq_adc">
+		<title>See Also</title>
+		<simplelist type="inline">
+			<member>
+				<link linkend="mdaqAIRead">mdaqAIRead</link> : Reads MicroDAQ analog inputs (AI) from Scilab script
+			</member>
+			<member>
+				<link linkend="mdaq_dac">mdaq_dac</link> : Sets MicroDAQ analog outputs
+			</member>
+		</simplelist>
+	</refsection>
 </refentry>

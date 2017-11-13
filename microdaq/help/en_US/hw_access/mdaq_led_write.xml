@@ -1,54 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaq_led_write">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaqLEDWrite">
 	<refnamediv>
-		<refname>mdaq_led_write</refname>
-		<refpurpose>Sets MicroDAQ LED (D1, D2) state</refpurpose>
+		<refname>mdaqLEDWrite</refname>
+		<refpurpose>Sets MicroDAQ LED state</refpurpose>
 	</refnamediv>
-	
+
 	<refsynopsisdiv>
 		<title>Calling Sequence</title>
 		<synopsis>
-			mdaq_led_write()
-			mdaq_led_write(led, state)
-			mdaq_led_write(link_id, led, state)
+			mdaqLEDWrite(led, state)
+			mdaqLEDWrite(linkID, led, state)
 		</synopsis>
 	</refsynopsisdiv>
-	
-	<refsection id="Description_mdaq_led_write">
+
+	<refsection id="Description_mdaqLEDWrite">
 		<title>Description</title>
 		<para>
-			This function sets state of MicroDAQ LEDs (D1, D2).
+			This function sets MicroDAQ D1/D2 LED state.
 		</para>
 	</refsection>  
-  
-	<refsection id="Parameters_mdaq_led_write">
-		<title>Parameters</title>
+
+	<refsection id="Parameters_mdaqLEDWrite">
+		<title>Input parameters</title>
 		<itemizedlist>
-			<listitem><para><emphasis role="bold">link_id: </emphasis> Valid connection link ID (optional)</para></listitem>
-			<listitem><para><emphasis role="bold">led: </emphasis> LED number (1 or 2)</para></listitem>
-			<listitem><para><emphasis role="bold">state: </emphasis> LED state (value different than 0 will ON selected LED)</para></listitem>
+			<listitem>
+				<para>
+					<emphasis role="bold">linkID: </emphasis> Valid connection link ID (optional)</para>
+			</listitem>
+			<listitem>
+				<para>
+					<emphasis role="bold">led: </emphasis> LED number (1|2)</para>
+			</listitem>
+			<listitem>
+				<para>
+					<emphasis role="bold">state: </emphasis> LED state (%T/%F or 1/0)</para>
+			</listitem>
 		</itemizedlist>
 	</refsection>
-	
+
 	<refsection>
-        <title>Examples</title>
-        <programlisting role="example"><![CDATA[
-// mdaq_led_write usage example
-link_id = mdaq_open(); 
-while mdaq_key_read(link_id, 1) == 0
-	// keep led on until F1 isn't pressed
-	mdaq_led_write(link_id, 1, 1)
-	sleep(100);
-end
-mdaq_led_write(link_id, 1, 0)
-mdaq_close(link_id)
- ]]></programlisting>
-    </refsection>
-	
-  <refsection id="SeeAlso_mdaq_led_write">
+		<title>Examples</title>
+		<programlisting role="example">
+			<![CDATA[
+				mdaqLEDWrite(1, 1);
+				sleep(500);
+				mdaqLEDWrite(2, 1);
+				sleep(500);
+				mdaqLEDWrite(1, 0);
+				sleep(500);
+				mdaqLEDWrite(2, 0);
+			 ]]>
+		</programlisting>
+	</refsection>
+
+	<refsection id="SeeAlso_mdaqLEDWrite">
 		<title>See Also</title>
 		<simplelist type="inline">
-			<member><link linkend="mdaq_key_read">mdaq_key_read</link></member>
+			<member>
+				<link linkend="mdaqKeyRead">mdaqKeyRead</link>
+			</member>
 		</simplelist>
-  </refsection>
+	</refsection>
 </refentry>

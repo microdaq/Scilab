@@ -6,7 +6,7 @@ if isfile(host_lib) then
     scicos_libpath = "";
     if os == 'Windows' then 
         scicos_libpath = SCI + "\bin\scicos";
-    elseif os == 'Linux' then 
+    elseif (os == 'Linux') | (os == 'Darwin') then 
         scicos_libpath = SCI+"/../../lib/scilab/libsciscicos";
     end
 

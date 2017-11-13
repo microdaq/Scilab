@@ -1,52 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaq_key_read">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaqKeyRead">
 	<refnamediv>
-		<refname>mdaq_key_read</refname>
+		<refname>mdaqKeyRead</refname>
 		<refpurpose>Reads MicroDAQ function key state</refpurpose>
 	</refnamediv>
-	
+
 	<refsynopsisdiv>
 		<title>Calling Sequence</title>
 		<synopsis>
-			mdaq_key_read()
-		    state = mdaq_key_read(func_key)
-			state = mdaq_key_read(link_id, func_key)
+		    state = mdaqKeyRead(functionKey)
+			state = mdaqKeyRead(linkID, functionKey)
 		</synopsis>
 	</refsynopsisdiv>
-	
-	<refsection id="Description_mdaq_key_read">
+
+	<refsection id="Description_mdaqKeyRead">
 		<title>Description</title>
 		<para>
 			This function reads MicroDAQ function key (F1, F2) state. 
 		</para>
 	</refsection>  
-  
-	<refsection id="Parameters_mdaq_key_read">
-		<title>Parameters</title>
+
+	<refsection id="Parameters_mdaqKeyRead">
+		<title>Input arguments</title>
 		<itemizedlist>
-			<listitem><para><emphasis role="bold">link_id: </emphasis> Valid connection link ID (optional)</para></listitem>
-			<listitem><para><emphasis role="bold">func_key: </emphasis> Function key number (1 or 2)</para></listitem>
-			<listitem><para><emphasis role="bold">state: </emphasis> Function key state</para></listitem>
+			<listitem>
+				<para>
+					<emphasis role="bold">linkID: </emphasis> Valid connection link ID (optional)</para>
+			</listitem>
+			<listitem>
+				<para>
+					<emphasis role="bold">button: </emphasis> Function key (1|2)</para>
+			</listitem>
+			<listitem>
+				<para>
+					<emphasis role="bold">state: </emphasis> Function key state</para>
+			</listitem>
 		</itemizedlist>
 	</refsection>
-	
+	<refsection id="Parameters_mdaqKeyRead">
+		<title>Output arguments</title>
+		<itemizedlist>
+			<listitem>
+				<para>
+					<emphasis role="bold">state: </emphasis> Function key state</para>
+			</listitem>
+		</itemizedlist>
+	</refsection>
 	<refsection>
-        <title>Examples</title>
-        <programlisting role="example"><![CDATA[
-// mdaq_key_read usage example
-while mdaq_key_read(link_id, 1) == %F
-	// keep led on until F1 isn't pressed
-	mdaq_led_write(1, %T)
-	sleep(100);
-end
-mdaq_led_write(1, %F)
- ]]></programlisting>
-    </refsection>
-	
-  <refsection id="SeeAlso_mdaq_key_read">
+		<title>Examples</title>
+		<programlisting role="example">
+			<![CDATA[
+				disp('Press MicroDAQ F1 to stop...')
+				ledState = %T; 
+				while mdaqKeyRead(1) == %F
+					// keep led blinking until F1 isn't pressed
+					mdaqLEDWrite(1, ~ledState);
+					sleep(100); 
+					ledState = ~ledState;
+				end
+				mdaqLEDWrite(1, 0)
+			 ]]>
+		</programlisting>
+	</refsection>
+
+	<refsection id="SeeAlso_mdaqKeyRead">
 		<title>See Also</title>
 		<simplelist type="inline">
-		<member><link linkend="mdaq_led_write">mdaq_led_write</link></member>
+			<member>
+				<link linkend="mdaqLEDWrite">mdaqLEDWrite</link>
+			</member>
 		</simplelist>
-  </refsection>
+	</refsection>
 </refentry>

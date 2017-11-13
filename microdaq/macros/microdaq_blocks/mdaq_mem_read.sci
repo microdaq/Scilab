@@ -1,17 +1,17 @@
 function [x,y,typ] = mdaq_mem_read(job,arg1,arg2)
     mem_write_desc = ["This block reads data from MicroDAQ memory.";
-    "Block with mdaq_mem_set function can be used to"; 
+    "Block with mdaqMemWrite function can be used to"; 
     "change Standalone and Ext model parameters. ";
     "Mode parameter sets block read behaviour.";
     "If Trigger input is enabled, rising";
     "edge on trigger input will reset data ";
-    "index to index 0. ";  
+    "index to defined start index.";  
     "";
     "Start index:";
-    " points to beginning of memory area, range 0-4000000";
+    " points to beginning of memory area, range 1-(500000/vector size)";
     "";
     "Size:";
-    "size of memory area, range 0-4000000";
+    "size of memory area, range 1-(500000/vector size)";
     "";
     "Vector size:";
     "size of input vector.";
@@ -65,8 +65,8 @@ function [x,y,typ] = mdaq_mem_read(job,arg1,arg2)
                 break
             end
 
-            //~4MB = 1 000 000 floats
-            max_index = 1000000;
+            //~2MB = 2 000 000B = 500 000  floats
+            max_index = 500000/vec_size;
 
             if  start_idx < 1 | start_idx > max_index then
                 ok = %f;
@@ -78,15 +78,9 @@ function [x,y,typ] = mdaq_mem_read(job,arg1,arg2)
                 message("Wrong vector size - use 10000 max!");
             end
 
-            size_mod = modulo(data_size, vec_size)
-            if size_mod <> 0  then
-                ok = %f;
-                message("Incorrect size. Size is not multiple of array size!");
-            end
-
             if data_size < 1 | data_size > (max_index-start_idx) then
                 ok = %f;
-                message("Incorrect size (max "+string(max_index-start_idx)+")");
+                message("Incorrect size (max "+string(max_index-(start_idx-1))+")");
             end
 
 
@@ -128,7 +122,7 @@ function [x,y,typ] = mdaq_mem_read(job,arg1,arg2)
                 [model,graphics,ok] = check_io(model,graphics, trigger_input_size, vec_size, 1, []);
                 graphics.exprs = exprs;
                 model.rpar = init_value;
-                model.ipar = [(start_idx-1);vec_size;read_mode;data_size;0;init_data_size;trigger_input];
+                model.ipar = [(start_idx-1);vec_size;read_mode;(data_size*vec_size);0;init_data_size;trigger_input];
                 model.dstate = [];
                 x.graphics = graphics;
                 x.model = model;

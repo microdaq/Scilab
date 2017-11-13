@@ -18,28 +18,47 @@ Key Features
 * Windows and Linux support
 * Block generator for custom/legacy user code 
 
+Required software (dependencies)
+================================
+* [Scilab 5.5.2](http://www.scilab.org) or Scilab 6.0 (free)
+* [C6000 compiler (ver. 7.4.21)](http://software-dl.ti.com/codegen/non-esd/downloads/download.htm#C6000) 
+* [SYS/BIOS (ver. 6.50.01.12)](http://software-dl.ti.com/dsps/dsps_public_sw/sdo_sb/targetcontent/sysbios/6_50_01_12/index_FDS.html)
+* [XDCTools (ver. 3.50.00.10)](http://software-dl.ti.com/dsps/dsps_public_sw/sdo_sb/targetcontent/rtsc/3_50_00_10/index_FDS.html)
+
 Installation
 ============
-This package is integrated with Scilab Atoms installer. In order to use toolbox download Scilab software (version 5.4 or newer) and run atomsInstall('microdaq') from Scilab console. After MicroDAQ toolbox start run microdaq_setup to configure compiler and IP settings.
+This package is integrated with Scilab Atoms installer. In order to use toolbox download Scilab software (version 5.5.2 or newer) and run atomsInstall('microdaq') from Scilab console. After MicroDAQ toolbox start run microdaq_setup to configure compiler and IP settings.
 
 * [MicroDAQ toolbox Atoms website](http://atoms.scilab.org/toolboxes/microdaq)
 
 Known Issues
 ============
-
-* Xcos context doesn't work with code generation
 * Only one Signal block supported when running model from external application or Scilab script
-* Missing help for blocks and functions
-* Demos for MicroDAQ blocks
 
-Support
-=======
 
-This package is support by Embedded Solutions. Issues and problems with software can be raported on: 
+Release Notes
+==============
+Added:
+* Analog input/output scan functions for data acquisition
+* Custom blocks host compilation 
+* Hardware detection in XCos blocks and HW access functions 
+* Partial support for Scilab 6.0.0 (without XCos features, DSP management)
+* Mac OS support X
 
-        support@embedded-solutions.pl
+Fixed:
+* Windows 10 support 
+* E1100 ADC02 configuration
+* Gaps in MicroDAQ help 
 
-Required software (dependencies)
-================================
-* [Scilab 5.4](http://www.scilab.org) or Scilab 6.0 (free)
-* [Texas Instruments Code Composer Studio 5.5](http://processors.wiki.ti.com/index.php/Download_CCS#Code_Composer_Studio_Version_5_Downloads) with SYS/BIOS and C6000 compiler installed (free with XDX100 emulator license)
+
+Full changelog can be found  in [here](http://software-dl.ti.com/codegen/non-esd/downloads/download.htm#C6000").
+
+How to report bugs?
+===========
+If you find a bug, please report it on our [issue section](https://github.com/microdaq/Scilab/issues) with a short description how to reproduce it. To help us to identify source of the problem attach MicorDAQ log file in your report. 
+
+Exmaple: 
+* Generate log file in provided path using `mdaq_log(pathToLogFile)` command in Scilab console. 
+
+* Write a short description and attach a log file
+![alt text](https://raw.githubusercontent.com/microdaq/Scilab/1.2v/microdaq/help/en_US/images/bug-report.png)

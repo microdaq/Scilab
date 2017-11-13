@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaq_enc_read">
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaqEncoderRead">
 	<refnamediv>
-		<refname>mdaq_enc_read</refname>
-		<refpurpose>Reads MicroDAQ quadrature encoder module</refpurpose>
+		<refname>mdaqEncoderRead</refname>
+		<refpurpose>Reads quadrature encoder</refpurpose>
 	</refnamediv>
-	
+
 	<refsynopsisdiv>
 		<title>Calling Sequence</title>
 		<synopsis>
-			mdaq_enc_read();
-			[position, direction] = mdaq_enc_read(module);
-			[position, direction] = mdaq_enc_read(link_id, module);
+			[position, direction] = mdaqEncoderRead(module)
+			[position, direction] = mdaqEncoderRead(linkID, module)
 		</synopsis>
 	</refsynopsisdiv>
-	
-	<refsection id="Description_mdaq_enc_read">
+
+	<refsection id="Description_mdaqEncoderRead">
 		<title>Description</title>
 		<para>
 			This function reads current value of quadrature encoder (ENC1, ENC2) position register on selected ENC module. Function returns current position and rotation direction. 
@@ -24,34 +23,58 @@
 			The  quadrature encoder pulse (ENC) module is used for direct interface with a linear or rotary incremental encoder to get position, direction, and speed information from a rotating machine for use in a high-performance motion and position-control systems. 
 		</para>
 	</refsection>  
-  
-	<refsection id="Parameters_mdaq_enc_read">
-		<title>Parameters</title>
+
+	<refsection id="Parameters_mdaqEncoderRead">
+		<title>Input arguments</title>
 		<itemizedlist>
-			<listitem><para><emphasis role="bold">link_id: </emphasis> Valid connection link ID (optional)</para></listitem>
-			<listitem><para><emphasis role="bold">module: </emphasis> MicroDAQ quadrature encoder module number (1 or 2) </para></listitem>
-			<listitem><para><emphasis role="bold">position: </emphasis> Current quadrature encoder position value </para></listitem>
-			<listitem><para><emphasis role="bold">direction: </emphasis> Current rotation direction (0 - no motion, 1 - CW, 2 - CCW)</para></listitem>
+			<listitem>
+				<para>
+					<emphasis role="bold">linkID: </emphasis> Valid connection link ID (optional)</para>
+			</listitem>
+			<listitem>
+				<para>
+					<emphasis role="bold">module: </emphasis> Quadrature encoder module (1|2) </para>
+			</listitem>
 		</itemizedlist>
 	</refsection>
-	
+	<refsection id="Parameters_mdaqEncoderRead">
+		<title>Output arguments</title>
+		<itemizedlist>
+			<listitem>
+				<para>
+					<emphasis role="bold">linkID: </emphasis> Valid connection link ID (optional)</para>
+			</listitem>
+			<listitem>
+				<para>
+					<emphasis role="bold">position: </emphasis> Current quadrature encoder position value </para>
+			</listitem>
+			<listitem>
+				<para>
+					<emphasis role="bold">direction: </emphasis> Current rotation direction (0 - no motion, 1 - CW, 2 - CCW)</para>
+			</listitem>
+		</itemizedlist>
+	</refsection>
 	<refsection>
-        <title>Examples</title>
-        <programlisting role="example"><![CDATA[
-// mdaq_enc_read usage example
-link_id =  mdaq_open(); 
-// initialize quadrature encoder with 0 
-mdaq_enc_init(link_id, 1, 0); 
-// read quadrature encoder module 1
-mdaq_enc_read(link_id, 1)
-mdaq_close(link_id);
- ]]></programlisting>
-    </refsection>
-	
-  <refsection id="SeeAlso_mdaq_enc_read">
+		<title>Examples</title>
+		<programlisting role="example">
+			<![CDATA[
+				// mdaqEncoderRead usage example
+				link_id =  mdaqOpen(); 
+				// initialize quadrature encoder with 0 
+				mdaqEncoderInit(link_id, 1, 0); 
+				// read quadrature encoder module 1
+				mdaqEncoderRead(link_id, 1)
+				mdaqClose(link_id);
+			 ]]>
+		</programlisting>
+	</refsection>
+
+	<refsection id="SeeAlso_mdaqEncoderRead">
 		<title>See Also</title>
 		<simplelist type="inline">
-		<member><link linkend="mdaq_enc_init">mdaq_enc_init</link></member>
+			<member>
+				<link linkend="mdaqEncoderInit">mdaqEncoderInit</link>
+			</member>
 		</simplelist>
-  </refsection>
+	</refsection>
 </refentry>
