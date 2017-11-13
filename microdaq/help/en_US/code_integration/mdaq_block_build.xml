@@ -35,7 +35,7 @@ In order to use this option the external C compiler is required. List of support
     <itemizedlist>
       <listitem>
 	    <para><emphasis role="bold">debug : </emphasis> if %T library will be compiled with debug symbols without optimization. False (%F) by default.</para>
-      <para><emphasis role="bold">buildHost : </emphasis> if %T library will be compiled into sharded library used by host machine. True (%F) by default.</para>
+      <para><emphasis role="bold">buildHost : </emphasis> if %T library will be compiled into sharded library used by host machine. False (%F) by default.</para>
       </listitem>	  
     </itemizedlist>
   </refsection>
