@@ -38,7 +38,7 @@
    //    param_def_val: list
    //    in: 1
    //    out: 1
-   //    use_sim_script: %f
+   //    use_sim_script: %T
    ]]>
 				</programlisting>
 				<member>
@@ -51,7 +51,7 @@
 						<member>param_def_val - default block parameters values are organized as a list and have to be defined in the same order as 'param_name' </member>
 						<member>in - in case of our block we should provide an empty array - block doesn't have input ports</member>
 						<member>out - our block will have one output port and its size will be 1 - scalar</member>
-                        <member>use_sim_script - if false (%F - by default), our block will use compiled C source in simulation mode. It guarantees the same code on host (simulation mode) and target (code generation) side.
+                        <member>use_sim_script - if false (%T - by default), our block will use compiled C source in simulation mode. It guarantees the same code on host (simulation mode) and target (code generation) side.
                         If parameter is set to true (%T) then (block.name)_sim.sci script will be executed during simulation mode. 
                         </member>
 						<programlisting role="example">
@@ -65,7 +65,7 @@
 	block.param_def_val(4) = 0; // 'Terminate value' default value 
 	block.in = []; // block doesnt'have input port
 	block.out = [ 1 ]; // one output port - size 1
-    block.use_sim_script = %F; // Use compiled C source instead of Scilab script                        	   
+	block.use_sim_script = %T; // Use Scilab script instead of compiled C source in simulation mode
    ]]>
 						</programlisting>
 
@@ -106,10 +106,12 @@
 					<para></para>
 				</member>
 
-				<member>Build modified C code:
+				<member>Build modified C code. First parameter is for enable/disable debug compilation, second parameter is for setting up compilation on host machine (need a supported compiler):
 					<para></para>
 					<programlisting role="example">
-						<![CDATA[ mdaqBlockBuild());    ]]>
+						<![CDATA[ 
+						mdaqBlockBuild(%F, %F);     
+						]]>
 					</programlisting>
 					<para>If errors found during compilation correct them and run mdaqBlockBuild() again.</para>
 				</member>
@@ -149,7 +151,7 @@
 
 		<emphasis role="bold">'My_step' block in simulation mode</emphasis>
         <para>
-        If block.use_sim_script is set to false (%F - by default) then C source will be compiled to shared library which will be used in simulation mode. It guarantees the same code on host (simulation mode) and target (code generation) side. 
+        If block.use_sim_script is set to false (%T - by default) then C source will be compiled to shared library which will be used in simulation mode. It guarantees the same code on host (simulation mode) and target (code generation) side. 
         In order to use this option the external C compiler is required. List of supported compilers can be found at: 
         <ulink url="https://help.scilab.org/doc/5.5.2/en_US/supported_compilers.html">https://help.scilab.org/doc/5.5.2/en_US/supported_compilers.html. </ulink>
         If compiler cannot be provided or user want to have different behaviour in simulation mode, the _sim.sci script can be used instead. 
