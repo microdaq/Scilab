@@ -14,7 +14,7 @@ function mdaqBlockBuild(debug_build, host_build)
     end
     
     if argn(2) < 2 then
-        host_build = %T;
+        host_build = %F;
     end 
     
     if argn(2) < 1 then
@@ -69,6 +69,10 @@ function mdaqBlockBuild(debug_build, host_build)
     macros = ls("*_sim.sci")
     for i=1:size(macros,'*')
         blocks(i) = part(macros(i), 1:length(macros(i)) - 8);
+    end
+    if blocks == [] then
+        chdir(p_dir);  
+        error("Nothing to build. Add new block first.")
     end
     chdir(userlib_src_path);
 
@@ -195,6 +199,11 @@ function mdaqBlockBuild(debug_build, host_build)
                     blocks = [blocks, macros(b)];
                 end
             end
+        end
+        
+        try
+            xcosPalDelete("MicroDAQ User");
+        catch
         end
         pal = xcosPal("MicroDAQ User");
         

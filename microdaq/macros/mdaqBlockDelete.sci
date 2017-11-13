@@ -44,5 +44,5 @@ function mdaqBlockDelete(block_name)
     mdelete(srcPath+name_converted+'.c');
     mdelete(srcPath+name_converted+'.o');
     
-    mprintf("Block has been deleted.\n");
+    mprintf("Block has been deleted. Please restart Scilab software.\n");
 endfunction
