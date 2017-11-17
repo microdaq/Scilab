@@ -8,7 +8,7 @@ function [x,y,typ] = mdaq_to_file(job,arg1,arg2)
     "mass storage interface. ";
     "";
     "In order to import file data to Scilab mdaqFileData script can be used.";
-    "See mdaqFileData help for more.";
+    "See mdaqFileData help for more info.";
     "";
     "Data can be written to file in text of binary format. Depending ";
     "on selected option data can appended to previous content of the file";
@@ -19,6 +19,9 @@ function [x,y,typ] = mdaq_to_file(job,arg1,arg2)
     "Rising edge on Trigger input(2) will create new file. To define sequential file";
     "name use ''%d'' e.g. data_%d.txt will produce files data_0.txt, data_1.txt,...";
     "If ''%d'' isn''t included in file name data will be written to one file.";
+    "";
+    "Trigger input has to be connected with a signal, if a sequential file is ";
+    "not used, the constant block with value 1 shall be connected."; 
     "";
     "D input - data input"
     "T input - trigger new sequential file creation"

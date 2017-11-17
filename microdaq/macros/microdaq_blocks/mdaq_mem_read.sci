@@ -6,15 +6,9 @@ function [x,y,typ] = mdaq_mem_read(job,arg1,arg2)
     "If Trigger input is enabled, rising";
     "edge on trigger input will reset data ";
     "index to defined start index.";  
-    "";
-    "Start index:";
-    " points to beginning of memory area, range 1-(500000/vector size)";
-    "";
-    "Size:";
-    "size of memory area, range 1-(500000/vector size)";
-    "";
-    "Vector size:";
-    "size of input vector.";
+    "Block can read up to 500000 values. Block "; 
+    "memory read size can be calculated by:";  
+    "Number of vectors * Vector Size ";  
     "";
     "Init value:";
     "Initializes memory with provided value";
@@ -43,7 +37,7 @@ function [x,y,typ] = mdaq_mem_read(job,arg1,arg2)
                 [ok,start_idx, data_size, vec_size,init_value,read_mode,trigger_input,exprs]=..
                                 scicos_getvalue(mem_write_desc,..
                                 ['Start index:';
-                                'Size:';
+                                'Number of vectors:';
                                 'Vector size:';
                                 'Init value:';
                                 'Mode:';
@@ -53,7 +47,7 @@ function [x,y,typ] = mdaq_mem_read(job,arg1,arg2)
                 [ok,start_idx, data_size, vec_size,init_value,read_mode,trigger_input,exprs]=..
                 scicos_getvalue(mem_write_desc,..
                                 ['Start index:';
-                                'Size:';
+                                'Number of vectors:';
                                 'Vector size:';
                                 'Init value:';
                                 'Mode:';
