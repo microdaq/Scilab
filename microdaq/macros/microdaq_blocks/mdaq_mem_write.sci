@@ -4,10 +4,10 @@ function [x,y,typ] = mdaq_mem_write(job,arg1,arg2)
     "to get data from Standalone and Ext model.";
     "";
     "Start index:";
-    "points to beginning of memory area, range 1-(500000/vector size)";
+    "points to beginning of memory area, range 1-(300000-vector size)";
     "";
-    "Size:";
-    "size of memory area, range 1-(500000/vector size)";
+    "Number of vectors:";
+    "size of memory area, range 1-(300000/vector size)";
     "";
     "Vector size:";
     "size of input vector.";
@@ -30,7 +30,7 @@ function [x,y,typ] = mdaq_mem_write(job,arg1,arg2)
                 [ok,start_idx,data_size,vec_size,overwrite,exprs]=..
                 scicos_getvalue(mem_write_desc,..
                 ['Start index:';
-                'Size';
+                'Number of vectors:';
                 'Vector size:';
                 'FIFO:'],..
                 list('vec',1,'vec',1,'vec',1,'vec',1),exprs)
@@ -49,7 +49,7 @@ function [x,y,typ] = mdaq_mem_write(job,arg1,arg2)
             end
 
             //~2MB = 2 000 000B = 500 000  floats
-            max_index = 500000/vec_size;
+            max_index = 300000-vec_size;
 
             if data_size == -1 then
                 data_size = max_index - start_idx;
