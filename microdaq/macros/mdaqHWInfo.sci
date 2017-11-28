@@ -31,7 +31,7 @@
                 %microdaq.private.dac_info = dac_info;
 
             if hwid(4) == 0 then
-                cpu = 375;
+                cpu = 300;
             else
                 cpu = 456;
             end
