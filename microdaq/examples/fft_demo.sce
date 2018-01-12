@@ -1,4 +1,4 @@
-// Copyright (c) 2015, Embedded Solutions
+// Copyright (c) 2018, Embedded Solutions
 // All rights reserved.
 // This file is released under the 3-clause BSD license. See COPYING-BSD.
 
@@ -12,35 +12,21 @@ TIME = 20;
 FREQ = 5000;
 
 // Build DSP binary from Xcos model
-mdaqDSPBuild(mdaqToolboxPath() + filesep() + "examples" + filesep() +"fft_demo.zcos");
+mdaqDSPBuild(mdaqToolboxPath() + filesep() + "examples" + filesep() +"fft_demo_placeholder.zcos");
 
 // Start DSP application
-result = mdaqDSPStart('fft_demo_scig\fft_demo.out', 1.0/FREQ);
-if result < 0 then
-    abort;
-end
-
-// Register signal ID and signal size
-result = mdaqDSPSignal(1, 1);
-if result < 0 then
-    disp("ERROR: unable to register signal");
-    abort;
-end
+mdaqDSPStart('fft_demo_placeholder_scig\fft_demo.out', 1.0/FREQ);
 
 first_time = 1;
-a = [];
+a = []; s = [];
 
 // Process data from DSP
 sample_count = FREQ/10;
 fig = figure("Figure_name","MicroDAQ FFT demo");
 
 for i=1:(TIME*10)
-    [result, s] = mdaqDSPSignalRead(sample_count);
-    if result < 0 then
-        disp("ERROR: unable to read signal data!");
-        abort;
-    end
-    
+    s = mdaqDSPSignalRead(1, 1, sample_count, 1000);
+   
     N=size(s,'*');  //number of samples
     s = s - mean(s);//cut DC
     y=fft(s');

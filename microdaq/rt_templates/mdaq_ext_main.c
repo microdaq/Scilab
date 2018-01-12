@@ -43,6 +43,8 @@ void rt_task(UArg arg0);
 volatile double model_exec_timer = 0.0; 
 volatile double model_stop_flag = 0.0;
 volatile double ext_mode = 1.0;
+volatile double model_is_running = 0.0;
+
 #pragma NOINIT(model_tsamp);
 double model_tsamp;
 
@@ -84,6 +86,7 @@ Int main()
     /* Create timer for user system tick */
     Timer_Params_init(&user_sys_tick_params);
 
+    model_is_running = 0.0;
 
     if(model_tsamp <= 0.0)
 		model_tsamp = MODEL_TSAMP;
@@ -118,6 +121,7 @@ Int main()
 
     /* Open mdaqnet and wait for connection */ 
     mdaqnet_open();
+    model_is_running = 1.0;
 
     BIOS_start();
 }
@@ -166,6 +170,7 @@ Void rt_task(UArg arg0)
 #endif
             signal_task_terminate();
             end_called = 1; 
+            model_is_running = 0.0;
         }
     }
 }

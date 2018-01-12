@@ -20,18 +20,16 @@ xml:id="mdaqDSPStart">
 	After DSP application is started (in Ext mode) it starts to send data to host and Scilab script can receive data with mdaqDSPSignalRead() function.
 	</para>
 
-	<para>WARNING: TCP/IP protocol is used for data exchange in Ext mode - make sure that the mdaqDSPStop() is called after/during DSP execution, otherwise next mdaqDSPStart() call will fail!
-	</para>
     <title>Calling Sequence</title>
     <synopsis>
       result = mdaqDSPStart(path, sampleTime);
-	  result = mdaqDSPStart(connectionId, path, sampleTime);
+	  result = mdaqDSPStart(linkID, path, sampleTime);
     </synopsis>
   </refsynopsisdiv>
   <refsection id="Parameters___FUNC_NAME__">
     <title>Arguments</title>
     <itemizedlist>
-	    <listitem><para><emphasis role="bold">connection_id : </emphasis> Connection ID returned by mdaqOpen() (OPTIONAL)</para></listitem>
+	    <listitem><para><emphasis role="bold">linkID: </emphasis> Valid connection link id (optional)</para></listitem>
 	    <listitem><para><emphasis role="bold">path : </emphasis> DSP application path</para></listitem>
         <listitem><para><emphasis role="bold">result : </emphasis> dsp_start() execution result</para></listitem>	  
     </itemizedlist>
@@ -46,35 +44,21 @@ TIME = 20;
 FREQ = 5000;
 
 // Build DSP binary from Xcos model
-mdaqDSPBuild(mdaqToolboxPath() + filesep() + "examples" + filesep() +"fft_demo.zcos");
+mdaqDSPBuild(mdaqToolboxPath() + filesep() + "examples" + filesep() +"fft_demo_placeholder.zcos");
 
 // Start DSP application
-result = mdaqDSPStart('fft_demo_scig\fft_demo.out', 1.0/FREQ);
-if result < 0 then
-    abort;
-end
-
-// Register signal ID and signal size
-result = mdaqDSPSignal(1, 1);
-if result < 0 then
-    disp("ERROR: unable to register signal");
-    abort;
-end
+mdaqDSPStart('fft_demo_placeholder_scig\fft_demo.out', 1.0/FREQ);
 
 first_time = 1;
-a = [];
+a = []; s = [];
 
 // Process data from DSP
 sample_count = FREQ/10;
 fig = figure("Figure_name","MicroDAQ FFT demo");
 
 for i=1:(TIME*10)
-    [result, s] = mdaqDSPSignalRead(sample_count);
-    if result < 0 then
-        disp("ERROR: unable to read signal data!");
-        abort;
-    end
-    
+    s = mdaqDSPSignalRead(1, 1, sample_count, 1000);
+   
     N=size(s,'*');  //number of samples
     s = s - mean(s);//cut DC
     y=fft(s');
@@ -112,10 +96,9 @@ end
   <refsection id="SeeAlso___FUNC_NAME__">
     <title>See Also</title>
     <simplelist type="inline">
+	  <member><link linkend="mdaqDSPBuild">mdaqDSPBuild</link> : Builds DSP application from provided Xcos model </member>
 	  <member><link linkend="mdaqDSPStop">mdaqDSPStop</link> : Terminate DSP execution </member>
 	  <member><link linkend="mdaqDSPSignalRead">mdaqDSPSignalRead</link> : Read DSP signal data </member>
-	  <member><link linkend="mdaqDSPSignal">mdaqDSPSignal</link> : Register DSP Signal ID </member>
-	  <member><link linkend="mdaqDSPBuild">mdaqDSPBuild</link> : Builds DSP application from provided Xcos model </member>
       <member>
         <link type="scilab" linkend="scilab.help/sum">Link to the Scilab help page</link>
       </member>

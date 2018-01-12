@@ -14,19 +14,19 @@ xml:id="mdaqDSPStop">
   <refsynopsisdiv>
 	<title>Description</title>
 	<para>This function terminates model execution on MicroDAQ DSP core. It has to be called after DSP processing is done.</para>
-	<para></para>
-	<para>WARNING: TCP/IP protocol is used for data exchange in Ext mode - make sure that the mdaqDSPStop() is called after/during DSP execution, otherwise next mdaqDSPStart() call will fail!
-	</para>
     <title>Calling Sequence</title>
     <synopsis>
       mdaqDSPStop();
-	  mdaqDSPStop(connection_id);
+	  mdaqDSPStop(linkID);
     </synopsis>
   </refsynopsisdiv>
   <refsection id="Parameters___FUNC_NAME__">
     <title>Arguments</title>
     <itemizedlist>
-	    <listitem><para><emphasis role="bold">connection_id : </emphasis> Connection ID returned by mdaqOpen() (OPTIONAL)</para></listitem>
+			<listitem>
+				<para>
+					<emphasis role="bold">linkID: </emphasis> Valid connection link id (optional)</para>
+			</listitem>
     </itemizedlist>
   </refsection>
   
@@ -105,10 +105,9 @@ end
   <refsection id="SeeAlso___FUNC_NAME__">
     <title>See Also</title>
     <simplelist type="inline">
+	  <member><link linkend="mdaqDSPBuild">mdaqDSPBuild</link> : Builds DSP application from provided Xcos model </member>
       <member><link linkend="mdaqDSPStart">mdaqDSPStart</link> : Start DSP execution </member>
 	  <member><link linkend="mdaqDSPSignalRead">mdaqDSPSignalRead</link> : Read DSP signal data </member>
-	  <member><link linkend="mdaqDSPSignal">mdaqDSPSignal</link> : Register DSP Signal ID </member>
-	  <member><link linkend="mdaqDSPBuild">mdaqDSPBuild</link> : Builds DSP application from provided Xcos model </member>
       <member>
         <link type="scilab" linkend="scilab.help/sum">Link to the Scilab help page</link>
       </member>
