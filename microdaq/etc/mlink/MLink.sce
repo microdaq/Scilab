@@ -47,10 +47,6 @@ function MLink()
                                "sci_mlink_dsp_param"..
                                "sci_mlink_set_obj"..
                                "sci_client_connect"..
-                               "sci_signal_get"..
-                               "sci_signals_get"..
-                               "sci_signals_get_config"..
-                               "sci_signal_register"..
                                "sci_client_disconnect"..
                                "sci_mlink_mem_set2"..
                                "sci_mlink_mem_get2"..
@@ -84,6 +80,9 @@ function MLink()
                                "sci_mlink_ao_scan_data"..
                                "sci_mlink_ao_check_params"..
                                "sci_mlink_ai_check_params"..
+                               "sci_mlink_dsp_run"..
+                               "sci_mlink_dsp_signal_read"..
+                               "sci_mlink_dsp_mem_write"..
                                ], 'c');
 endfunction
 

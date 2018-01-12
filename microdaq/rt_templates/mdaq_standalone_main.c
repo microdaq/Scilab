@@ -39,6 +39,8 @@ void rt_task(UArg arg0);
 
 volatile double model_exec_timer = 0.0; 
 volatile double model_stop_flag = 0.0; 
+volatile double model_is_running = 0.0;
+
 #pragma NOINIT(model_tsamp);
 double model_tsamp;
 
@@ -72,6 +74,8 @@ Int main()
     /* Create timer for user system tick */
     Timer_Params_init(&user_sys_tick_params);
 
+    model_is_running = 0.0;
+
     if(model_tsamp <= 0.0)
 		model_tsamp = MODEL_TSAMP;
 
@@ -85,6 +89,8 @@ Int main()
 
     if (user_sys_tick_timer == NULL) 
         System_abort("Unable to create user system tick timer!");
+
+    model_is_running = 1.0;
 
     /* Init model */ 
     NAME(MODEL, _init)();
@@ -106,9 +112,10 @@ Void rt_task(UArg arg0)
     {
 	if(!end_called)
 	{
-       	    /* Call model end function */ 
-       	    NAME(MODEL, _end)();    
+        /* Call model end function */ 
+        NAME(MODEL, _end)();    
 	    end_called = 1; 
+        model_is_running = 0.0;
 	}
 
     }
