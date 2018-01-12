@@ -39,6 +39,7 @@ mdaqDSPStop();
 disp("make sure if pass.")
 
 // -- USE-CASE02
+figure();
 disp("use-case02 read 4 signals (different sizes) + MEM BLOCK...")
 vec_size = 100;
 mdaqDSPStart('dsp_test_apps\use-case.out', 0.05);
@@ -48,18 +49,19 @@ mdaqMemWrite(1, [9 10 11 12]);
 [data3] = mdaqDSPSignalRead(3, 1, vec_size, 1500);
 [data4] = mdaqDSPSignalRead(4, 4, vec_size, 1500);
 plot(data1); plot(data2); plot(data3); 
-plot(data4(1, :)); plot(data4(2, :)); plot(data4(3, :));
+plot(data4(:, 1)); plot(data4(:, 2)); plot(data4(:, 3));
 mdaqDSPStop();
 disp("make sure if pass.")
 
 // -- USE-CASE03
+figure();
 disp("use-case03 one signal read...")
 vec_size = 100;
 mdaqDSPStart('dsp_test_apps\use-case.out', 0.001);
 data3 = []
 mdaqMemWrite(1, [9 10 11 12]);
 for i=1:10
-    [data3] = [data3 mdaqDSPSignalRead(3, 1, vec_size, 1500)];
+    [data3] = [data3; mdaqDSPSignalRead(3, 1, vec_size, 1500)];
 end
 plot(data3);
 
@@ -67,20 +69,20 @@ mdaqDSPStop();
 disp("make sure if pass.")
 
 // -- USE-CASE04
-disp("use-case03 random read...")
+disp("use-case04 random read...")
 vec_size = 5;
 mdaqDSPStart('dsp_test_apps\use-case.out', 0.1);
 data1 = []
 data2 = []
 data3 = []
-[data1] = [data1 mdaqDSPSignalRead(1, 1, vec_size, 1500)];
-[data1] = [data1 mdaqDSPSignalRead(1, 1, vec_size, 1500)];
-[data2] = [data2 mdaqDSPSignalRead(2, 1, vec_size, 1500)];
-[data3] = [data3 mdaqDSPSignalRead(3, 1, vec_size, 1500)];
+[data1] = [data1; mdaqDSPSignalRead(1, 1, vec_size, 1500)];
+[data1] = [data1; mdaqDSPSignalRead(1, 1, vec_size, 1500)];
+[data2] = [data2; mdaqDSPSignalRead(2, 1, vec_size, 1500)];
+[data3] = [data3; mdaqDSPSignalRead(3, 1, vec_size, 1500)];
 
-[data1] = [data1 mdaqDSPSignalRead(1, 1, vec_size, 1500)];
-[data2] = [data2 mdaqDSPSignalRead(2, 1, vec_size*2, 1500)];
-[data3] = [data3 mdaqDSPSignalRead(3, 1, vec_size, 1500)];
+[data1] = [data1; mdaqDSPSignalRead(1, 1, vec_size, 1500)];
+[data2] = [data2; mdaqDSPSignalRead(2, 1, vec_size*2, 1500)];
+[data3] = [data3; mdaqDSPSignalRead(3, 1, vec_size, 1500)];
 disp(data1);disp(data2);disp(data3);
 mdaqDSPStop();
 disp("make sure if pass.")
