@@ -10,13 +10,13 @@ function result = mdaqDSPStart( arg1, arg2, arg3 )
     result = -1;
 
     if argn(2) == 2 then
-        dsp_firmware = arg1; 
+        dsp_firmware = pathconvert(arg1, %F); 
         model_freq = arg2;
     end
 
     if argn(2) == 3 then
         link_id = arg1;   
-        dsp_firmware = arg2; 
+        dsp_firmware = pathconvert(arg2, %F); 
         model_freq = arg3; 
         if link_id < 0 then
             disp("ERROR: Invalid link ID!")

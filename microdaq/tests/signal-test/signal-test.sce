@@ -26,14 +26,15 @@ disp("pass.")
 // --- STRESS TEST ---
 disp("stress test (load DSP app multiple times)...")
 for i=1:10
-    mdaqDSPStart('signalmodel_scig\signalmodel.out', 0.0001);   
+    mdaqDSPStart('dsp_test_apps/use-case.out', 0.0001);   
     mdaqDSPStop()
 end
 disp("pass.")
 
 // -- USE-CASE01 
 disp("use-case01 read 3 signals (same sizes)...")
-mdaqDSPStart('dsp_test_apps\use-case.out', 0.1);
+//mdaqDSPStart(' /home/witczenko/git/Scilab/microdaq/tests/signal-test/dsp_test_apps/use-case.out', 0.1);
+mdaqDSPStart('dsp_test_apps/use-case.out', 0.1);
 vec_size = 10
 for i=1:3
     [data] = mdaqDSPSignalRead(i, 1, vec_size, 1500);
@@ -47,7 +48,7 @@ disp("make sure if pass.")
 figure();
 disp("use-case02 read 4 signals (different sizes) + MEM BLOCK...")
 vec_size = 100;
-mdaqDSPStart('dsp_test_apps\use-case.out', 0.05);
+mdaqDSPStart('dsp_test_apps/use-case.out', 0.05);
 mdaqMemWrite(1, [9 10 11 12]);
 [data1] = mdaqDSPSignalRead(1, 1, vec_size, 1500);
 [data2] = mdaqDSPSignalRead(2, 1, vec_size, 1500);
