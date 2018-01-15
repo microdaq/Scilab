@@ -12,10 +12,10 @@ TIME = 20;
 FREQ = 5000;
 
 // Build DSP binary from Xcos model
-mdaqDSPBuild(mdaqToolboxPath() + filesep() + "examples" + filesep() +"fft_demo_placeholder.zcos");
+mdaqDSPBuild(mdaqToolboxPath() + filesep() + "examples" + filesep() +"fft_demo.zcos");
 
 // Start DSP application
-mdaqDSPStart('fft_demo_placeholder_scig\fft_demo.out', 1.0/FREQ);
+mdaqDSPStart('fft_demo_scig\fft_demo.out', 1.0/FREQ);
 
 first_time = 1;
 a = []; s = [];

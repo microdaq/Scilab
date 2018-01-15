@@ -3,7 +3,12 @@ disp("Start signal-test:")
 
 // --- ERRORS ----
 disp("check errors handling...")
-mdaqDSPStop();
+try
+    mdaqDSPStop(); 
+catch
+    //if dsp wasn't loaded, then 'Unable to access DSP variable' error will occur 
+end
+
 assert_checkerror("mdaqDSPSignalRead(1, 1, 10, 1500)", "Request timeout");
 assert_checkerror("mdaqDSPStart(''notExistingFirmware.out'', 0.1)"  , "Firmware file not found")
 assert_checkerror("mdaqDSPStart(''dsp_test_apps\signalmodel_ext.out'', 4300)"  , "Period for DSP application is to long  (max 70 minutes)")
@@ -20,7 +25,7 @@ disp("pass.")
 
 // --- STRESS TEST ---
 disp("stress test (load DSP app multiple times)...")
-for i=1:100
+for i=1:10
     mdaqDSPStart('signalmodel_scig\signalmodel.out', 0.0001);   
     mdaqDSPStop()
 end
