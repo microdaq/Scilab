@@ -15,7 +15,7 @@ assert_checkerror("mdaqDSPStart(''dsp_test_apps\signalmodel_ext.out'', 4300)"  ,
 assert_checkerror("mdaqDSPStart(''dsp_test_apps\signalmodel_ext.out'', 0.0000001)"  , "Period for DSP application is to short (min 1 us)")
 mdaqDSPStart('dsp_test_apps\signalmodel_ext.out', 0.1);
 assert_checkerror("mdaqDSPSignalRead(1, 9, 10, 1500)", "Wrong signal size or size of data is not multipy of signal size")
-assert_checkerror("mdaqDSPSignalRead(5, 1, 10, 1500)", "Wrong signal id (not found in data stream)")
+assert_checkerror("mdaqDSPSignalRead(5, 1, 10, 1500)", "Signal ID not found")
 mdaqDSPStart('dsp_test_apps\signalmodel_stand.out', 0.1);
 assert_checkerror("mdaqDSPSignalRead(1, 1, 10, 1500)", "Cannot read signal data (model is running in standalone mode)");
 mdaqDSPStart('dsp_test_apps\signalmodel_ext.out', 1);
@@ -33,7 +33,6 @@ disp("pass.")
 
 // -- USE-CASE01 
 disp("use-case01 read 3 signals (same sizes)...")
-//mdaqDSPStart(' /home/witczenko/git/Scilab/microdaq/tests/signal-test/dsp_test_apps/use-case.out', 0.1);
 mdaqDSPStart('dsp_test_apps/use-case.out', 0.1);
 vec_size = 10
 for i=1:3
