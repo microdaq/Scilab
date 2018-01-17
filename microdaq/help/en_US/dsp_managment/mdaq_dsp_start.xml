@@ -22,8 +22,8 @@ xml:id="mdaqDSPStart">
 
     <title>Calling Sequence</title>
     <synopsis>
-      result = mdaqDSPStart(path, sampleTime);
-	  result = mdaqDSPStart(linkID, path, sampleTime);
+      mdaqDSPStart(path, sampleTime);
+	  mdaqDSPStart(linkID, path, sampleTime);
     </synopsis>
   </refsynopsisdiv>
   <refsection id="Parameters___FUNC_NAME__">
@@ -31,7 +31,7 @@ xml:id="mdaqDSPStart">
     <itemizedlist>
 	    <listitem><para><emphasis role="bold">linkID: </emphasis> Valid connection link id (optional)</para></listitem>
 	    <listitem><para><emphasis role="bold">path : </emphasis> DSP application path</para></listitem>
-        <listitem><para><emphasis role="bold">result : </emphasis> dsp_start() execution result</para></listitem>	  
+	    <listitem><para><emphasis role="bold">sampleTime: </emphasis> DSP application sample rate (in seconds)</para></listitem>
     </itemizedlist>
   </refsection>
     	<refsection>
