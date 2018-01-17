@@ -1,9 +1,9 @@
-function fw_ver = mdaq_fw_version()
+function fw_ver = mdaq_lib_version()
     connection_id = mdaqOpen();
     fw_ver = [];
     if connection_id > -1  then
         result = [];
-        [major_ver, minor_ver, fix_ver, build_ver, result] = call("sci_mlink_fw_version",..
+        [major_ver, minor_ver, fix_ver, build_ver, result] = call("sci_mlink_lib_version",..
                                 connection_id, 1, "i",..
                             "out",..
                                 [1,1], 2, "i",..

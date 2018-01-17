@@ -69,7 +69,8 @@ function MLink()
                                "sci_mlink_pru_reg_get"..
                                "sci_mlink_pru_reg_set"..
                                "sci_mlink_hwid"..
-                               "sci_mlink_version"..
+                               "sci_mlink_fw_version"..
+                               "sci_mlink_lib_version"..
                                "sci_mlink_fw_upload"..
                                "sci_mlink_udp_open"..
                                "sci_mlink_udp_recv"..
