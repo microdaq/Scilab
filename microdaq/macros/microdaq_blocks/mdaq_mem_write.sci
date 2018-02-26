@@ -1,9 +1,10 @@
 function [x,y,typ] = mdaq_mem_write(job,arg1,arg2)
     mem_write_desc = ["This block writes data to MicroDAQ memory.";
-    "Block with mdaqMemRead function can be used ";
-    "to get data from Standalone and Ext model.";
-    "Block can write up to 250000 values. Block "; 
-    "memory write size can be calculated by:";  
+    "Data written by this block must be accessed with ";
+    "mdaqMemRead function. It can be used in Ext and";
+    "Standalone mode to access DSP data. Up to 250000";
+    "values can be stored with this block. Memory used";
+    "by this block can be calculated with the formula: "; 
     "Number of vectors * Vector Size ";  
     "";
     "Start index:";
@@ -15,9 +16,11 @@ function [x,y,typ] = mdaq_mem_write(job,arg1,arg2)
     "Vector size:";
     "size of input vector.";
     "";
-    "FIFO:";
-    "0 - disabled";
-    "1 - enabled";
+    "Rewind:";
+    "0 - do not write data when when end of";
+    "    used memory area reached";
+    "1 - when the end of used memory area reached,";
+    "    write from the start index";
     "";
     "Set block parameters:"];
 
@@ -35,7 +38,7 @@ function [x,y,typ] = mdaq_mem_write(job,arg1,arg2)
                 ['Start index:';
                 'Number of vectors:';
                 'Vector size:';
-                'FIFO:'],..
+                'Rewind:'],..
                 list('vec',1,'vec',1,'vec',1,'vec',1),exprs)
             catch
                 [ok,start_idx,vec_num,vec_size,overwrite,exprs]=..
@@ -43,7 +46,7 @@ function [x,y,typ] = mdaq_mem_write(job,arg1,arg2)
                 ['Start index:';
                 'Size:';
                 'Vector size:';
-                'FIFO:'],..
+                'Rewind:'],..
                 list('vec',1,'vec',1,'vec',1,'vec',1),exprs)
             end;
 
