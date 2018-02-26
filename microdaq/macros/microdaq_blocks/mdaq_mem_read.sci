@@ -6,7 +6,7 @@ function [x,y,typ] = mdaq_mem_read(job,arg1,arg2)
     "If Trigger input is enabled, rising";
     "edge on trigger input will reset data ";
     "index to defined start index.";  
-    "Block can read up to 300000 values. Block "; 
+    "Block can read up to 250000 values. Block "; 
     "memory read size can be calculated by:";  
     "Number of vectors * Vector Size ";  
     "";
@@ -59,8 +59,8 @@ function [x,y,typ] = mdaq_mem_read(job,arg1,arg2)
                 break
             end
 
-            //~2MB = 2 000 000B = 500 000  floats
-            max_index = 300000-vec_size;
+            //~1MB = 1 000 000B = 250 000  floats
+            max_index = 250000-vec_size;
 
             if  start_idx < 1 | start_idx > max_index then
                 ok = %f;

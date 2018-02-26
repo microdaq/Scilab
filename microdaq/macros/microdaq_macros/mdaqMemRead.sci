@@ -40,8 +40,8 @@ function [data] = mdaqMemRead(arg1, arg2, arg3, arg4)
 		error("Incorrect data vector size!");
     end
 
-    if  start_index < 1 | start_index > 300000-data_size then
-        error("Incorrect start index - use values from 1 to 300000-(data size)!")
+    if  start_index < 1 | start_index > 250000-data_size then
+        error("Incorrect start index - use values from 1 to 250000-(data size)!")
     end
 
     size_mod = modulo(data_size, vector_size)
