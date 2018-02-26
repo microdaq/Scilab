@@ -1133,9 +1133,9 @@ function  [ok,XX,alreadyran,flgcdgen,szclkINTemp,freof] = do_compile_superblock_
             return;
         end
     
-        res = mlink_dsp_load(connection_id, rpat + filesep() + dsp_binary, '');
+        res = mlink_dsp_load(connection_id, rpat + filesep() + dsp_binary, 'l');
         if res < 0 then
-            res = mlink_dsp_load(connection_id, rpat + filesep() + dsp_binary, '');
+            res = mlink_dsp_load(connection_id, rpat + filesep() + dsp_binary, 'l');
             if res < 0 then
                 message(mdaq_error2(res));                
                 mdaqClose(connection_id);
