@@ -2,9 +2,12 @@ function [x,y,typ] = mdaq_mem_write(job,arg1,arg2)
     mem_write_desc = ["This block writes data to MicroDAQ memory.";
     "Block with mdaqMemRead function can be used ";
     "to get data from Standalone and Ext model.";
+    "Block can write up to 250000 values. Block "; 
+    "memory write size can be calculated by:";  
+    "Number of vectors * Vector Size ";  
     "";
     "Start index:";
-    "points to beginning of memory area, range 1-(250000-vector size)";
+    "points to beginning of memory area, range 1-250000";
     "";
     "Number of vectors:";
     "size of memory area, range 1-(250000/vector size)";
@@ -27,7 +30,7 @@ function [x,y,typ] = mdaq_mem_write(job,arg1,arg2)
         exprs=graphics.exprs;
         while %t do
             try
-                [ok,start_idx,data_size,vec_size,overwrite,exprs]=..
+                [ok,start_idx,vec_num,vec_size,overwrite,exprs]=..
                 scicos_getvalue(mem_write_desc,..
                 ['Start index:';
                 'Number of vectors:';
@@ -35,7 +38,7 @@ function [x,y,typ] = mdaq_mem_write(job,arg1,arg2)
                 'FIFO:'],..
                 list('vec',1,'vec',1,'vec',1,'vec',1),exprs)
             catch
-                [ok,start_idx,data_size,vec_size,overwrite,exprs]=..
+                [ok,start_idx,vec_num,vec_size,overwrite,exprs]=..
                 getvalue(mem_write_desc,..
                 ['Start index:';
                 'Size:';
@@ -49,21 +52,22 @@ function [x,y,typ] = mdaq_mem_write(job,arg1,arg2)
             end
 
             //1MB = 1 000 000B = 250 000  floats
-            max_index = 250000-vec_size;
+            MEM_MAX_DATA_SIZE = 250000; 
+            max_data_size = MEM_MAX_DATA_SIZE-start_idx+1;
+            data_size = vec_size*vec_num;
 
-            if data_size == -1 then
-                data_size = max_index - start_idx;
+            if vec_num == -1 then
+                vec_num = max_index - start_idx;
             end
 
-            if  start_idx < 1 | start_idx > max_index then
+            if  start_idx < 1 | start_idx > MEM_MAX_DATA_SIZE then
                 ok = %f;
-                message("Incorrect start index. Shared memory is idexing from 1 to "+string(max_index));
+                message("Incorrect memory start index - use index from 1 to "+string(MEM_MAX_DATA_SIZE));
             end
-
-
-            if data_size < 1 | data_size > (max_index-start_idx) then
+            
+            if data_size < 1 | data_size > max_data_size then
                 ok = %f;
-                message("Incorrect size (max "+string(max_index-(start_idx-1))+")");
+                message("Incorrect data size (min 1 / max "+string(max_data_size)+")");
             end
             
             if overwrite > 1 | overwrite < 0 then
@@ -75,7 +79,7 @@ function [x,y,typ] = mdaq_mem_write(job,arg1,arg2)
                 [model,graphics,ok] = check_io(model,graphics, vec_size, [], 1, []);
                 graphics.exprs = exprs;
                 model.rpar = [];
-                model.ipar = [(start_idx-1);(data_size*vec_size);vec_size;overwrite];
+                model.ipar = [(start_idx-1);(data_size);vec_size;overwrite];
                 model.dstate = [];
                 x.graphics = graphics;
                 x.model = model;
@@ -86,7 +90,7 @@ function [x,y,typ] = mdaq_mem_write(job,arg1,arg2)
     case 'define' then
         vec_size = 1;
         start_idx = 1;
-        data_size = 100;
+        vec_num = 100;
         overwrite = 0;
         model=scicos_model()
         model.sim=list('mdaq_mem_write_sim',5)
@@ -95,11 +99,11 @@ function [x,y,typ] = mdaq_mem_write(job,arg1,arg2)
         model.out=[]
         model.evtin=1
         model.rpar=[];
-        model.ipar = [(start_idx-1);data_size;vec_size;overwrite];
+        model.ipar = [(start_idx-1);vec_num;vec_size;overwrite];
         model.dstate=[];
         model.blocktype='d'
         model.dep_ut=[%t %f]
-        exprs=[sci2exp(start_idx);sci2exp(data_size);sci2exp(vec_size);sci2exp(overwrite)]
+        exprs=[sci2exp(start_idx);sci2exp(vec_num);sci2exp(vec_size);sci2exp(overwrite)]
         gr_i=['xstringb(orig(1),orig(2),['''' ; ],sz(1),sz(2),''fill'');']
         x=standard_define([4 3],model,exprs,gr_i)
         x.graphics.in_implicit=[];
