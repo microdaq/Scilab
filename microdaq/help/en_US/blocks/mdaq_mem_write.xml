@@ -57,12 +57,13 @@ xml:id="mdaq_mem_write">
             </listitem>
             <listitem>
                 <para>
-                    <emphasis role="bold">Size</emphasis>
+                    <emphasis role="bold">Number of vectors</emphasis>
                 </para>
                 <para>
-                    Defines overall size of the memory which block reads data from. Value must be a multiple of <emphasis role="bold">Vector size.</emphasis>
+                    Defines overall size of the memory which block reads data from. That size can be calculated with the formula:
+                    Number of vectors * Vector Size.
                 </para>
-                <para>Properties : Type int, range 1-250000.</para>
+                <para>Properties : Type int, range 1-(250000/Vector size).</para>
             </listitem>
             <listitem>
                 <para>
@@ -71,7 +72,7 @@ xml:id="mdaq_mem_write">
                 <para>
                      Defines size of signal read by block.
                 </para>
-                <para>Properties : Type int, range 1-250000.</para>
+                <para>Properties : Type int, range 1-10000.</para>
             </listitem>
 			<listitem>
                 <para>
