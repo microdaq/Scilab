@@ -17,7 +17,9 @@
 		<title>Description</title>
 		<para>
 			This function download data written by 'MEM Write' block. It gives possibility to download data from Standalone application generated from XCos diagram.
-			In order to download data function parameters start_index and vector size needs to be the same as defined in 'MEM Write' block in XCos diagram.
+			In order to download data function parameters start_index and vector size need to be the same as defined in 'MEM Write' block in XCos diagram. Function 
+			can only be used with 'MEM Write' block and read data written by this block. If Rewind 'MEM Write' block option is used function size parameter must be the same as 
+			defined in the block.
 		</para>
 	</refsection>  
   
