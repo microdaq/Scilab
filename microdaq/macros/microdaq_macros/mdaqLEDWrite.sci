@@ -23,7 +23,7 @@ function mdaqLEDWrite(arg1, arg2, arg3)
         mprintf("\tmdaqLEDWrite(linkID, led, state);\n")
         mprintf("\tlinkID - connection id returned by mdaqOpen() (OPTIONAL)\n");
         mprintf("\tled - LED number (1 or 2)\n");
-        mprintf("\tstate - LED state (%%T or %%F)\n");
+        mprintf("\tstate - LED state (%s or %s)\n", "%T", "%F");
         return;
     end
 

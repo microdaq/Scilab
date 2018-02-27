@@ -43,7 +43,7 @@ function  mdaqAOScanInit(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
 		mprintf("\trange - analog output range matrix e.g.\n");
 		mprintf("\t        [-10,10] - single range argument applied for all used channels\n");
 		mprintf("\t        [-10,10; -5,5] - multi-range argument for two channels\n");
-        mprintf("\tisStreamMode - mode of operation (%%T - stream, %%F - periodic)\n");
+        mprintf("\tisStreamMode - mode of operation (%s - stream, %s - periodic)\n", "%T", "%F");
         mprintf("\trate - scans per second rate (scan frequency)\n");
         mprintf("\tduration - analog output scan duration in seconds\n");
             return;

@@ -32,7 +32,7 @@ function [data, result] = mdaqAIScan(arg1, arg2, arg3)
         mprintf("\t[data, result] = mdaqAIScan(linkID, scanCount, isBlocking\n")
         mprintf("\tlinkID - connection id returned by mdaqOpen() (OPTIONAL)\n");
         mprintf("\tscanCount - number of scans to read, when 0 - start acquisition only\n");
-        mprintf("\tisBlocking - blocking or non-blocking read (%%T/%%F)\n");
+        mprintf("\tisBlocking - blocking or non-blocking read (%s/%s)\n", "%T", "%F");
         return;
     end
     

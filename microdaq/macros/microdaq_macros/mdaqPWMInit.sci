@@ -30,7 +30,7 @@ function mdaqPWMInit(arg1, arg2, arg3, arg4, arg5, arg6)
         mprintf("\tlink_id - connection id returned by mdaqOpen() (OPTIONAL)\n");
         mprintf("\tmodule - PWM module (1, 2 or 3)\n");
         mprintf("\tperiod - PWM module period in microseconds(2-500000)\n");
-        mprintf("\tactiveLow - PWM waveform polarity (%%F or %%T)\n");
+        mprintf("\tactiveLow - PWM waveform polarity (%s or %s)\n", "%T", "%F");
         mprintf("\tdutyChannelA - initial PWM channel A duty (0-100)\n");
         mprintf("\tdutyChannelB - initial PWM channel B duty (0-100)\n");
         return;
