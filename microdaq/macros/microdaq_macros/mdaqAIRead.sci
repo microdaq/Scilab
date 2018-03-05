@@ -32,7 +32,7 @@ function data = mdaqAIRead(arg1, arg2, arg3, arg4)
             mprintf("\trange - analog input range matrix e.g.\n");
             mprintf("\t        [-10,10] - single range argument applied for all used channels\n");
             mprintf("\t        [-10,10; -5,5] - multi-range argument for two channels\n");
-            mprintf("\tisDifferential - scalar or vector defining measurement type (%%T - differential, %%F - single-ended)\n");
+            mprintf("\tisDifferential - scalar or vector defining measurement type (%s - differential, %s - single-ended)\n", "%T", "%F");
             return;
         end
     else

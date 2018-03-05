@@ -63,11 +63,6 @@ function [x,y,typ] = mdaq_dio_config(job,arg1,arg2)
                     message("Bank 2 configured as an INPUT - unable set selected DIO alternative functions!")
                 end
             end
-            
-            if %microdaq.private.mdaq_hwid(1) == 2000 then 
-                bank_1_direction = 1;
-                bank_2_direction = 0;
-            end 
 
             if ok then
                 [model,graphics,ok] = check_io(model,graphics, [], [], [], []);

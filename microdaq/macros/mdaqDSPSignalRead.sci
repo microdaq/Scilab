@@ -1,4 +1,4 @@
-function [result, data] = mdaqDSPSignalRead(arg1, arg2)
+function [data] = mdaqDSPSignalRead(arg1, arg2, arg3, arg4)
     // Check version compatibility 
     [is_supp vers] = mdaq_is_working('mdaqDSPSignalRead');
     if is_supp == %F then
@@ -6,37 +6,38 @@ function [result, data] = mdaqDSPSignalRead(arg1, arg2)
         return;
     end
     
-    global %microdaq; 
+    data = [];
     result = -1;
-
-    if argn(2) == 1 then
-        samples = arg1; 
-    end
-
-    if argn(2) == 2 then
-        link_id = arg1;   
-        samples = arg2; 
-        if link_id < 0 then
-            disp("ERROR: Invalid link ID!")
-            return;
-        end
-    end
-
-    if argn(2) > 2 | argn(2) < 1 then
+    
+    if argn(2) <> 4 then
         mprintf("Description:\n");
         mprintf("\tReads DSP signal\n");
         mprintf("Usage:\n");
-        mprintf("\tmdaqDSPSignalRead(link_id, sample_count);\n")
-        mprintf("\tlink_id - connection id returned by mdaqOpen() (OPTIONAL)\n");
-        mprintf("\tsample_count - number of samples to be read\n");
+        mprintf("\tmdaqDSPSignalRead(signalID, vectorSize, vectorCount, timeout);\n")
+        mprintf("\tsignalID - signal block identification number from XCOS model.\n");
+        mprintf("\tvectorSize - SIGNAL block data size.\n");
+        mprintf("\tvectorCount - vectors to read.\n");
+        mprintf("\ttimeout - maximum amount of time to wait for data in miliseconds\n");        
         return;
     end
 
-    if %microdaq.dsp_ext_mode then
-        [result, data] = signals_get(samples);
-    else
-        disp("Unable to read signal - loaded DSP application isn''t Ext mode");
-        result = []; 
-        data = [];
+    signalID = arg1;
+    vectorSize = arg2;
+    vectorCount = arg3;
+    timeout  = arg4;
+
+    [data result] = call("sci_mlink_dsp_signal_read",..
+            signalID, 1, "i",..
+            vectorSize, 2, "i",..
+            vectorSize*vectorCount, 4, "i",..
+            timeout, 5, "i",..
+        "out",..
+            [vectorSize, vectorCount], 3, "d",..
+            [1, 1], 6, "i");
+            
+    data = data';
+            
+    if result < 0  then
+        error(mdaq_error2(result), 10000 + abs(result)); 
     end
 endfunction

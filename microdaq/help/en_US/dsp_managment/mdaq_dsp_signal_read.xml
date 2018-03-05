@@ -13,23 +13,35 @@ xml:id="mdaqDSPSignalRead">
   </refnamediv>
   <refsynopsisdiv>
 	<title>Description</title>
-	<para>This function reads data from running DSP application generated from XCos model. Xcos model has to contain SIGNAL block with defined ID. Function blocks execution until it gathers all requested samples. In order to use function SIGNAL block needs to be registered with mdaqDSPSignal() function. </para>
-	<para>User has to provide number of scalars/vectors to read. </para>
-	<para></para>
-    <para>WARNING: Current mdaqDSPSignalRead() implementation allows reading only single XCos signal - use MUX block to gather signals into one signal vector.  </para>
+	<para>This function reads data from running DSP application generated from XCos model in external mode. Xcos model has to contain SIGNAL block with defined ID. Function blocks execution until it gathers all requested samples or 'timeout' is reached. For example, if a user wants to read data from DSP application where SIGNAL block with ID=13 is connected to MUX block which is passing 4 doubles (data size = 4), the function call will be as follows: mdaqDSPSignalRead(13, 4, 1, 1000). In that case, timeout is set to 1 second. </para>
+    <para>
+        Signals reading mechanism is buffering data for all signal ONLY from one data request. The data request is performed when there is no data available at specific signal ID. 
+        To keep data coherency over the time there is a recommendation to read all signals. Example below: 
+          <programlisting role="example"><![CDATA[
+          //------ NO DATA LOSS ----
+          t0 = mdaqDSPSignalRead(1, vectorSize, vectorCount, timeout); <-- first data request, recv samples from time t0, for all signals  
+          t0 = mdaqDSPSignalRead(2, vectorSize, vectorCount, timeout); <-- samples from time t0 
+          t0 = mdaqDSPSignalRead(3, vectorSize, vectorCount, timeout); <-- samples from time t0
+          
+          //------ DATA LOSS ----
+          t0 = mdaqDSPSignalRead(1, vectorSize, vectorCount, timeout); <-- first data request, recv samples from time t0, for all signals  
+          t1 = mdaqDSPSignalRead(1, vectorSize, vectorCount, timeout); <-- second data request, recv samples from time t1, for all signals  
+          t1 = mdaqDSPSignalRead(2, vectorSize, vectorCount, timeout); <-- samples from time t1 
+          t1 = mdaqDSPSignalRead(3, vectorSize, vectorCount, timeout); <-- samples from time t1
+          ]]></programlisting>
+    </para>
 	<title>Calling Sequence</title>
     <synopsis>
-      [result, data] = mdaqDSPSignalRead(sample_count);
-      [result, data] = mdaqDSPSignalRead(connection_id, sample_count);
+      [data] = mdaqDSPSignalRead(signalID, vectorSize, vectorCount, timeout);
     </synopsis>
   </refsynopsisdiv>
   <refsection id="Parameters___FUNC_NAME__">
     <title>Arguments</title>
     <itemizedlist>
-      <listitem><para><emphasis role="bold">connection_id : </emphasis> Connection ID returned by mdaqOpen() (OPTIONAL)</para></listitem>
-	  <listitem><para><emphasis role="bold">sample_count : </emphasis> number of signal reads</para></listitem>
-      <listitem><para><emphasis role="bold">result : </emphasis> function call result</para></listitem>
-	  <listitem><para><emphasis role="bold">data : </emphasis> resulting data</para></listitem>	  
+      <listitem><para><emphasis role="bold">signalID: </emphasis> SIGNAL block identification number from XCOS model</para></listitem>
+	  <listitem><para><emphasis role="bold">vectorSize: </emphasis> SIGNAL block data size</para></listitem>
+      <listitem><para><emphasis role="bold">vectorCount: </emphasis> number of vectors to read</para></listitem>
+	  <listitem><para><emphasis role="bold">timeout: </emphasis> maximum amount of time to wait for data in miliseconds</para></listitem>	  
     </itemizedlist>
   </refsection>
   	<refsection>
@@ -45,32 +57,18 @@ FREQ = 5000;
 mdaqDSPBuild(mdaqToolboxPath() + filesep() + "examples" + filesep() +"fft_demo.zcos");
 
 // Start DSP application
-result = mdaqDSPStart('fft_demo_scig\fft_demo.out', 1.0/FREQ);
-if result < 0 then
-    abort;
-end
-
-// Register signal ID and signal size
-result = mdaqDSPSignal(1, 1);
-if result < 0 then
-    disp("ERROR: unable to register signal");
-    abort;
-end
+mdaqDSPStart('fft_demo_scig\fft_demo.out', 1.0/FREQ);
 
 first_time = 1;
-a = [];
+a = []; s = [];
 
 // Process data from DSP
 sample_count = FREQ/10;
 fig = figure("Figure_name","MicroDAQ FFT demo");
 
 for i=1:(TIME*10)
-    [result, s] = mdaqDSPSignalRead(sample_count);
-    if result < 0 then
-        disp("ERROR: unable to read signal data!");
-        abort;
-    end
-    
+    s = mdaqDSPSignalRead(1, 1, sample_count, 1000);
+   
     N=size(s,'*');  //number of samples
     s = s - mean(s);//cut DC
     y=fft(s');
@@ -107,10 +105,9 @@ end
   <refsection id="SeeAlso___FUNC_NAME__">
     <title>See Also</title>
     <simplelist type="inline">
-     <member><link linkend="mdaqDSPStart">mdaqDSPStart</link> : Start DSP execution </member>
-	  <member><link linkend="mdaqDSPStop">mdaqDSPStop</link> : Terminate DSP execution </member>
-	  <member><link linkend="mdaqDSPSignal">mdaqDSPSignal</link> : Register DSP Signal ID </member>
 	  <member><link linkend="mdaqDSPBuild">mdaqDSPBuild</link> : Builds DSP application from provided Xcos model </member>
+      <member><link linkend="mdaqDSPStart">mdaqDSPStart</link> : Start DSP execution </member>
+	  <member><link linkend="mdaqDSPStop">mdaqDSPStop</link> : Terminate DSP execution </member>
       <member>
         <link type="scilab" linkend="scilab.help/sum">Link to the Scilab help page</link>
       </member>

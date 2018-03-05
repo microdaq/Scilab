@@ -55,16 +55,17 @@ xml:id="mdaq_mem_read">
                     <emphasis role="bold">Start index</emphasis>
                 </para>
                 <para>Points to beginning of memory area.</para>
-                <para>Properties : Type int, range 1-4000000.</para>
+                <para>Properties : Type int, range 1-250000.</para>
             </listitem>
             <listitem>
                 <para>
-                    <emphasis role="bold">Size</emphasis>
+                    <emphasis role="bold">Number of vectors</emphasis>
                 </para>
                 <para>
-                    Defines overall size of the memory which block reads data from. Value must be a multiple of <emphasis role="bold">Vector size.</emphasis>
+                    Defines overall size of the memory which block reads data from. That size can be calculated with the formula:
+                    Number of vectors * Vector Size.
                 </para>
-                <para>Properties : Type int, range 1-4000000.</para>
+                <para>Properties : Type int, range 1-(250000/Vector size).</para>
             </listitem>
             <listitem>
                 <para>
@@ -73,19 +74,19 @@ xml:id="mdaq_mem_read">
                 <para>
                      Defines size of signal read by block.
                 </para>
-                <para>Properties : Type int, range 1-4000000.</para>
+                <para>Properties : Type int, range 1-10000.</para>
             </listitem>
             <listitem>
                 <para>
                     <emphasis role="bold">Init value</emphasis>
                 </para>
                 <para>
-                   Allows user to initialize memory with provided value. If single number is provided then whole memory will be initialized with that number. 
-				   When vector of numbers is provided then only first indexes of memory are initialized. Vector type is only allowed with <emphasis role="bold">Mode 1</emphasis>
-				   (circular read, use init value) and <emphasis role="bold">Size</emphasis> equal to <emphasis role="bold">Vector Size</emphasis> parameter, it could be used in order to set PID regulator settings through single mdaq_mem_read block. 
+                   Allows the user to initialize memory with the provided value in Mode=1 and Mode=2. If a single number is provided then whole memory will be initialized with that number. 
+                   Otherwise lenght of <emphasis role="bold">Init value vector</emphasis> has to be equal to <emphasis role="bold">(Vector size * Number of vectors)</emphasis>.
+                   
 				   <para>Example usage:</para>
-				   <para>Size: 6, Vector size: 3, Init value: 3.14    - result: memory = [3.14 3.14 3.14 3.14 3.14 3.14]</para>
-				   <para>Size: 3, Vector size: 3, Init value: [1 2 3] - result: memory = [1 2 3]</para>
+				   <para>Number of vectors: 2, Vector size: 3, Init value: 3.14    - result: memory = [3.14 3.14 3.14 3.14 3.14 3.14]</para>
+				   <para>Number of vectors: 2, Vector size: 3, Init value: [1 2 3 4 5 6]    - result: memory = [1 2 3 4 5 6]</para>
                 </para>
                 <para>Properties : Type float or vector.</para>
             </listitem>

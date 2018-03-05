@@ -34,7 +34,7 @@ xml:id="mdaq_mem_write">
 		</para>
 		
 		<para>
-		In order to read data written by this block mdaqMemRead() toolbox function can be used.
+		In order to read data written by this block mdaqMemRead() toolbox function have to be used.
 		</para>
     </refsection>
 	
@@ -53,16 +53,17 @@ xml:id="mdaq_mem_write">
                     <emphasis role="bold">Start index</emphasis>
                 </para>
                 <para>Points to beginning of memory area.</para>
-                <para>Properties : Type int, range 1-4000000.</para>
+                <para>Properties : Type int, range 1-250000.</para>
             </listitem>
             <listitem>
                 <para>
-                    <emphasis role="bold">Size</emphasis>
+                    <emphasis role="bold">Number of vectors</emphasis>
                 </para>
                 <para>
-                    Defines overall size of the memory which block reads data from. Value must be a multiple of <emphasis role="bold">Vector size.</emphasis>
+                    Defines overall size of the memory which block reads data from. That size can be calculated with the formula:
+                    Number of vectors * Vector Size.
                 </para>
-                <para>Properties : Type int, range 1-4000000.</para>
+                <para>Properties : Type int, range 1-(250000/Vector size).</para>
             </listitem>
             <listitem>
                 <para>
@@ -71,16 +72,14 @@ xml:id="mdaq_mem_write">
                 <para>
                      Defines size of signal read by block.
                 </para>
-                <para>Properties : Type int, range 1-4000000.</para>
+                <para>Properties : Type int, range 1-10000.</para>
             </listitem>
 			<listitem>
                 <para>
-                    <emphasis role="bold">FIFO</emphasis>
+                    <emphasis role="bold">Rewind</emphasis>
                 </para>
                 <para>
-                      Determines if memory data will be stored like FIFO queue.  
-					  If 'FIFO' parameters is disabled block writes data until the end of the 
-					  buffer is reached.
+                      If set to 1, a block will store values, when the end of block memory reached, data will be written from start index. Data will be overwritten. If set to 0, data will be written until the end of block memory. 
                 </para>
                 <para>Properties : Type int, 0 or 1.</para>
             </listitem>

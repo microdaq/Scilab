@@ -143,12 +143,12 @@ if (sci_ver_str == 'scilab-5.5.2') | (sci_ver_str == 'scilab-5.5.2.1') then
 
     // Add MicroDAQ toolbox options to XCos menu
     xcosAddToolsMenu("MicroDAQ web panel", "mdaq_webpanel()");
-    xcosAddToolsMenu("MicroDAQ user disk", "mdaq_userdisk()");
     xcosAddToolsMenu("MicroDAQ execution profile", "mdaq_exec_profile_show()");
-    xcosAddToolsMenu("MicroDAQ upload model", "mdaq_dsp_upload()");
+    xcosAddToolsMenu("MicroDAQ upload model", "mdaq_dsp_upload(%F)");
+    xcosAddToolsMenu("MicroDAQ set as startup model", "mdaq_dsp_upload(%T)");
     xcosAddToolsMenu("MicroDAQ build model", "mdaq_code_gen(%F)");
-    xcosAddToolsMenu("MicroDAQ load model", "load_last_dsp_image()");
-    xcosAddToolsMenu("MicroDAQ build and load model", "mdaq_code_gen(%T)");
+    xcosAddToolsMenu("MicroDAQ run model", "load_last_dsp_image()");
+    xcosAddToolsMenu("MicroDAQ build and run model", "mdaq_code_gen(%T)");
 
 
     // Add blocks to the Xcos palette

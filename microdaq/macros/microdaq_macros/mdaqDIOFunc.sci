@@ -28,7 +28,7 @@ function mdaqDIOFunc(arg1, arg2, arg3)
         mprintf("\t\t4 - PWM2: DIO12 - Channel A, DIO13 - Channel B (enabled by default)\n");
         mprintf("\t\t5 - PWM3: DIO14 - Channel A, DIO15 - Channel B (enabled by default)\n");
         mprintf("\t\t6 - UART: DIO8 - Rx, DIO9 - Tx (enabled by default)\n");
-        mprintf("\tisEnabled - function state (%%T/%%F to enable/disable function)\n");
+        mprintf("\tisEnabled - function state (%s/%s to enable/disable function)\n", "%T", "%F");
         return;
     end
 

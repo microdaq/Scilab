@@ -130,7 +130,7 @@ function mdaqBlockAdd(block_def)
 
         params_string1 = params_string1 + params_converted(i)+',';
         params_string2 = params_string2 + ''''+block_def.param_name(i)+':'';';
-        disp(params_string2)
+
         params_string3 = params_string3 + '''vec'','+ string(block_def.param_size(i)) + ',';
         params_string4 = params_string4 + 'sci2exp(' + params_converted(i) + ');';
         params_string5 = params_string5 + params_converted(i)+';';

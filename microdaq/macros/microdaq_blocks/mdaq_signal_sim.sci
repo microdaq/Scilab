@@ -7,12 +7,11 @@ function block=mdaq_signal_sim(block,flag)
     case 1 // Output Update
         global %microdaq;
         if %microdaq.dsp_loaded == %T then
-            sig_size = block.insz(1) * block.insz(block.nin+1);
-            [res data] = signal_get(block.ipar(1), block.insz(1), block.insz(block.nin+1))
-            if res == sig_size then
+            try
+                data = mdaqDSPSignalRead(block.ipar(1), block.insz(1), block.insz(block.nin+1), 4200000);
                 block.outptr(1) = data;
-            else
-                // TODO: handle this state
+            catch
+                warning("Cannot read signal data.")
             end
         else
             // Simply copy input to output
@@ -24,11 +23,7 @@ function block=mdaq_signal_sim(block,flag)
     case 3 // OutputEventTiming
 
     case 4 // Initialization
-        global %microdaq;
-        if %microdaq.dsp_loaded == %T then
-            sig_size = block.insz(1) * block.insz(block.nin+1);
-            signal_register(block.ipar(1), sig_size);
-        end
+     
     case 5 // Ending
 
     case 6 // Re-Initialisation

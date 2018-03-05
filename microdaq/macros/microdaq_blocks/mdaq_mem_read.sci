@@ -6,15 +6,9 @@ function [x,y,typ] = mdaq_mem_read(job,arg1,arg2)
     "If Trigger input is enabled, rising";
     "edge on trigger input will reset data ";
     "index to defined start index.";  
-    "";
-    "Start index:";
-    " points to beginning of memory area, range 1-(500000/vector size)";
-    "";
-    "Size:";
-    "size of memory area, range 1-(500000/vector size)";
-    "";
-    "Vector size:";
-    "size of input vector.";
+    "Block can read up to 250000 values. Block "; 
+    "memory read size can be calculated by:";  
+    "Number of vectors * Vector Size ";  
     "";
     "Init value:";
     "Initializes memory with provided value";
@@ -40,20 +34,20 @@ function [x,y,typ] = mdaq_mem_read(job,arg1,arg2)
         while %t do
             try
 
-                [ok,start_idx, data_size, vec_size,init_value,read_mode,trigger_input,exprs]=..
+                [ok,start_idx, vec_num, vec_size,init_value,read_mode,trigger_input,exprs]=..
                                 scicos_getvalue(mem_write_desc,..
                                 ['Start index:';
-                                'Size:';
+                                'Number of vectors:';
                                 'Vector size:';
                                 'Init value:';
                                 'Mode:';
                                 'Trigger input:'],..
                                 list('vec',1,'vec',1,'vec',1,'vec',-1,'vec',1,'vec',1),exprs)
             catch
-                [ok,start_idx, data_size, vec_size,init_value,read_mode,trigger_input,exprs]=..
+                [ok,start_idx, vec_num, vec_size,init_value,read_mode,trigger_input,exprs]=..
                 scicos_getvalue(mem_write_desc,..
                                 ['Start index:';
-                                'Size:';
+                                'Number of vectors:';
                                 'Vector size:';
                                 'Init value:';
                                 'Mode:';
@@ -65,12 +59,14 @@ function [x,y,typ] = mdaq_mem_read(job,arg1,arg2)
                 break
             end
 
-            //~2MB = 2 000 000B = 500 000  floats
-            max_index = 500000/vec_size;
+            //~1MB = 1 000 000B = 250 000  floats
+            MEM_MAX_DATA_SIZE = 250000; 
+            max_data_size = MEM_MAX_DATA_SIZE-start_idx+1;
+            data_size = vec_size*vec_num;
 
-            if  start_idx < 1 | start_idx > max_index then
+            if  start_idx < 1 | start_idx > MEM_MAX_DATA_SIZE then
                 ok = %f;
-                message("Incorrect memory start index - use index from 1 to "+string(max_index));
+                message("Incorrect memory start index - use index from 1 to "+string(MEM_MAX_DATA_SIZE));
             end
 
             if vec_size > 10000 | vec_size < 1 then
@@ -78,11 +74,10 @@ function [x,y,typ] = mdaq_mem_read(job,arg1,arg2)
                 message("Wrong vector size - use 10000 max!");
             end
 
-            if data_size < 1 | data_size > (max_index-start_idx) then
+            if data_size < 1 | data_size > max_data_size then
                 ok = %f;
-                message("Incorrect size (max "+string(max_index-(start_idx-1))+")");
+                message("Incorrect data size (min 1 / max "+string(max_data_size)+")");
             end
-
 
             if read_mode > 3 | read_mode < 0 then
                 ok = %f;
@@ -92,8 +87,8 @@ function [x,y,typ] = mdaq_mem_read(job,arg1,arg2)
             if ok then
                 init_data_size = size(init_value, '*');
                 if  init_data_size > 1 then
-                    if  init_data_size <> vec_size  then
-                        message('Initial values don''t mach vector data!')
+                    if  init_data_size <> data_size then
+                        message('Initial values don''t mach vector data size (vector number * vector size)!')
                         ok = %f;
                     end
                     init_value = init_value';
@@ -104,11 +99,6 @@ function [x,y,typ] = mdaq_mem_read(job,arg1,arg2)
                 if read_mode <> 1 then
                     ok = %f;
                     message("To use Init Value as a vec type change mode paramter to 1.");
-                end
-                
-                if data_size <> vec_size then
-                    ok = %f;
-                    message("Size and Vector size have to be equal to use Init Value as a vec type.");
                 end
             end 
             
@@ -122,7 +112,7 @@ function [x,y,typ] = mdaq_mem_read(job,arg1,arg2)
                 [model,graphics,ok] = check_io(model,graphics, trigger_input_size, vec_size, 1, []);
                 graphics.exprs = exprs;
                 model.rpar = init_value;
-                model.ipar = [(start_idx-1);vec_size;read_mode;(data_size*vec_size);0;init_data_size;trigger_input];
+                model.ipar = [(start_idx-1);vec_size;read_mode;data_size;0;init_data_size;trigger_input];
                 model.dstate = [];
                 x.graphics = graphics;
                 x.model = model;
@@ -134,7 +124,7 @@ case 'define' then
         start_idx = 1;
         vec_size = 1;
         init_value = 0; 
-        data_size = 1;
+        vec_num = 1;
         read_mode = 1;
         init_data_size = 1; 
         trigger_input = 0;
@@ -146,11 +136,11 @@ case 'define' then
         model.outtyp=1
         model.evtin=1
         model.rpar=[];
-        model.ipar=[(start_idx-1);vec_size;read_mode;data_size;0;init_data_size;0]
+        model.ipar=[(start_idx-1);vec_size;read_mode;vec_num;0;init_data_size;0]
         model.dstate=[];
         model.blocktype='d'
         model.dep_ut=[%t %f]
-        exprs=[sci2exp(start_idx);sci2exp(data_size);sci2exp(vec_size);sci2exp(init_value);sci2exp(read_mode);sci2exp(trigger_input)]
+        exprs=[sci2exp(start_idx);sci2exp(vec_num);sci2exp(vec_size);sci2exp(init_value);sci2exp(read_mode);sci2exp(trigger_input)]
         gr_i=['xstringb(orig(1),orig(2),['''' ; ],sz(1),sz(2),''fill'');']
         x=standard_define([4 3],model,exprs,gr_i)
         x.graphics.in_implicit=[];

@@ -56,7 +56,7 @@ block.use_sim_script = %T;  // Use Scilab script instead of compiled C source in
 block.in = [ 1 2 4 1];
 
 // define block outputs (two outputs both with vector size 1)
-block.in = [ 1 1];
+block.out = [ 1 1];
 
 // create block - generate block code and corresponding C source file
 mdaqBlockAdd(block);

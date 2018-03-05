@@ -25,9 +25,10 @@ function mdaqMemWrite(arg1, arg2, arg3)
         mprintf("\tdata - data to be written\n");
         return;
     end
-
-    if  start_idx < 1 | start_idx > 4000000 then
-        error("Incorrect start index - use values from 1 to 4000000!")
+    
+    len = size(data, "*");
+    if  start_idx < 1 | start_idx > 250000-len then
+        error("Incorrect start index - use values from 1 to 250000-(data size)!")
     end
 
     if argn(2) == 2 then
@@ -36,8 +37,7 @@ function mdaqMemWrite(arg1, arg2, arg3)
             error("Unable to connect to MicroDAQ device!");
         end
     end
-    
-    len = size(data, "*");
+
     [result] = call("sci_mlink_mem_set2",..
             link_id, 1, 'i',..
             start_idx, 2, 'i',..

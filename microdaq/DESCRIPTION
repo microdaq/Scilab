@@ -4,7 +4,7 @@ Title: MicroDAQ Toolbox
 
 Summary: Toolbox for MicroDAQ real-time DSP control measurement system
 
-Version: 1.2.0
+Version: 1.2.1
 
 Author: Embedded Solutions
 
@@ -52,3 +52,16 @@ Description: MicroDAQ toolbox for Scilab can be used to develop advanced data
  MicroDAQ toolbox for Scilab provides tools for target execution profiling. 
  This tool gives a clear answer about model execution times which in a real-time 
  application is very crucial. 
+ 
+ Release notes
+ www.microdaq.org/scilab/toolbox/MicroDAQ%20toolbox%20for%20Scilab%201.2v%20-%20release%20notes.pdf
+ 
+ Toolbox overview
+ https://www.youtube.com/watch?v=p9ed3iIV_Ug&t=0s (video)
+ http://www.microdaq.org/software/scilab/microdaq-toolbox-for-scilab-overview-2.html
+ 
+ Data acquisition - examples:
+ http://www.microdaq.org/software/scilab/data-acquisition-with-scilab.html
+
+ Embedded Solutions Team
+ 
