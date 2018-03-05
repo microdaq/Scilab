@@ -38,6 +38,7 @@ vec_size = 10
 for i=1:3
     [data] = mdaqDSPSignalRead(i, 1, vec_size, 1500);
     plot(data);
+    disp(data);
 end
 
 mdaqDSPStop();
