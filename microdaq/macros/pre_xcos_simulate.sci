@@ -7,6 +7,11 @@ function continueSimulation=pre_xcos_simulate(scs_m, needcompile)
 
     for i = 1:size(scs_m.objs)
         curObj= scs_m.objs(i);
+        if (typeof(curObj) == "Block" & curObj.gui == "CLOCK_c")
+            sTsamp=curObj.model.rpar.objs(2).graphics.exprs(1);
+            %microdaq.private.model_tsamp=strtod(sci2exp(eval(sTsamp)));
+        end
+        
         if (typeof(curObj) == "Block" & curObj.gui == "mdaq_setup")
             runFromMainScheme = %T;
 
@@ -26,8 +31,7 @@ function continueSimulation=pre_xcos_simulate(scs_m, needcompile)
 
             if %microdaq.dsp_loaded == %T then
                 look_for_mdaqBlocks = %F; 
-                // if dsp is loaded set real-time scaling to 1
-                scs_m.props.tol(5) = 1;
+                scs_m.props.tol(5) = 0;
 
                 [mdaq_ip_addr, result] = mdaq_get_ip();
                 if result < 0 then

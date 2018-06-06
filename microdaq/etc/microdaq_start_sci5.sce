@@ -47,7 +47,11 @@ global %microdaq;
                             "ao_scan_ch_count", -1,..
                             "mdaq_hwid",..
                             "adc_info",..
-                            "dac_info", [])..
+                            "dac_info", [],..
+                            "model_tsamp", -1,..
+                            "signal_buffer", list(),..
+                            "signal_buffer_size", list(),..
+                            "signal_buffer_index", list())..
                             );
 
 // check minimal version (xcosPal required)

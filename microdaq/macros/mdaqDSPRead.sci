@@ -1,4 +1,4 @@
-function [data] = mdaqDSPSignalRead(arg1, arg2, arg3, arg4)
+function [data] = mdaqDSPRead(arg1, arg2, arg3, arg4)
     // Check version compatibility 
     [is_supp vers] = mdaq_is_working('mdaqDSPSignalRead');
     if is_supp == %F then
@@ -13,10 +13,10 @@ function [data] = mdaqDSPSignalRead(arg1, arg2, arg3, arg4)
         mprintf("Description:\n");
         mprintf("\tReads DSP signal\n");
         mprintf("Usage:\n");
-        mprintf("\tmdaqDSPSignalRead(signalID, vectorSize, vectorCount, timeout);\n")
+        mprintf("\tmdaqDSPRead(signalID, vectorSize, vectorCount, timeout);\n")
         mprintf("\tsignalID - signal block identification number from XCOS model.\n");
         mprintf("\tvectorSize - SIGNAL block data size.\n");
-        mprintf("\tvectorCount - vectors to read.\n");
+        mprintf("\tvectorCount - number of vectors to read.\n");
         mprintf("\ttimeout - maximum amount of time to wait for data in miliseconds\n");        
         return;
     end
