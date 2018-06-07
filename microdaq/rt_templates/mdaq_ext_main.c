@@ -44,9 +44,13 @@ volatile double model_exec_timer = 0.0;
 volatile double model_stop_flag = 0.0;
 volatile double ext_mode = 1.0;
 volatile double model_is_running = 0.0;
+volatile int32_t model_step_cycle_cnt = 0; 
 
 #pragma NOINIT(model_tsamp);
 double model_tsamp;
+
+#pragma NOINIT(model_duration);
+double model_duration;
 
 double get_scicos_time( void )
 {
@@ -90,6 +94,9 @@ Int main()
 
     if(model_tsamp <= 0.0)
 		model_tsamp = MODEL_TSAMP;
+
+    if(model_duration <= 0.0)
+		model_duration = MODEL_DURATION;
 
 	user_sys_tick_params.period = (uint32_t)(model_tsamp * USEC_PER_SEC);
 
@@ -136,7 +143,7 @@ Void rt_task(UArg arg0)
 #endif 
 
     /* This condition determine if model step/isr is executed */ 
-    if( model_stop_flag == 0.0 && ( model_exec_timer <= MODEL_DURATION || MODEL_DURATION == -1 ))
+    if( model_stop_flag == 0.0 && ( model_exec_timer <= model_duration || model_duration == -1 ))
     {
 
 #ifdef MODEL_PROFILING
@@ -148,6 +155,7 @@ Void rt_task(UArg arg0)
 
 #ifdef MODEL_PROFILING
         t_end = mdaq_profile_read_timer32(); 
+	model_step_cycle_cnt = t_end - t_begin; 
         mdaq_profile_save( t_end - t_begin,0);
 #endif
         /* increment execution timer */ 

@@ -41,6 +41,7 @@ function [res] = build_mdaq_palette(palette_path)
     "mdaq_udp_send"
     "mdaq_to_file"
     "mdaq_time"
+    "mdaq_profiler"
     "mdaq_stop"
     "mdaq_setup"
     ];

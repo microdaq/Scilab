@@ -40,9 +40,13 @@ void rt_task(UArg arg0);
 volatile double model_exec_timer = 0.0; 
 volatile double model_stop_flag = 0.0; 
 volatile double model_is_running = 0.0;
+volatile int32_t model_step_cycle_cnt = 0; 
 
 #pragma NOINIT(model_tsamp);
 double model_tsamp;
+
+#pragma NOINIT(model_duration);
+double model_duration;
 
 double get_scicos_time( void )
 {
@@ -79,7 +83,10 @@ Int main()
     if(model_tsamp <= 0.0)
 		model_tsamp = MODEL_TSAMP;
 
-	user_sys_tick_params.period = (uint32_t)(model_tsamp * USEC_PER_SEC);
+    if(model_duration <= 0.0)
+		model_duration = MODEL_DURATION;
+
+    user_sys_tick_params.period = (uint32_t)(model_tsamp * USEC_PER_SEC);
 
     user_sys_tick_params.periodType = Timer_PeriodType_MICROSECS;
     user_sys_tick_params.arg = 1;
@@ -103,7 +110,7 @@ Void rt_task(UArg arg0)
 {
     static int end_called = 0; 
 
-	if( model_stop_flag == 0.0 && ( model_exec_timer <= MODEL_DURATION || MODEL_DURATION == -1 ))
+	if( model_stop_flag == 0.0 && ( model_exec_timer <= model_duration || model_duration == -1 ))
     {
         /* Call model isr function */ 
         NAME(MODEL, _isr)(model_exec_timer);    
