@@ -33,6 +33,7 @@ src/c/userlib/Release/
 src/c/userlib/*.c
 release/
 bin/
+*_backup
 
 #
 # Generated files (Linux/MacOs)
