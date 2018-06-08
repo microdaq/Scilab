@@ -1111,11 +1111,16 @@ function  [ok,XX,alreadyran,flgcdgen,szclkINTemp,freof] = do_compile_superblock_
     Makename=rt_gen_make(rdnom,files,archname,standalone,debug_build,SMCube_filelist);
 
     rt_gen_main(Tsamp, Sim_duration, profiling, standalone)
-
+    try
+        gen_config_file(strtod(Tsamp), Sim_duration, rdnom);
+    catch
+        warning("Unable to create CFG file - skipping."); 
+    end
+    
     disp('### Generating binary file...');
     ok=compile_standalone();
 
-    result = isfile(rpat + '/' + dsp_binary);
+    result = isfile(rpat + filesep() + dsp_binary);
     if result == %f then
         disp('ERROR: file ' + dsp_binary + ' in ' + rpat + ' not found' );
         return;
@@ -1752,6 +1757,7 @@ function [Code,Code_common]=make_standalone42(sample_time)
             flex_str = rdnom +'_'+string(kf-1)+'_outsz'
             Code2=[Code2;
             '  block_'+rdnom+'['+string(kf-1)+'].outsz = '+'(int *)'+flex_str+';';
+
             ];
 
             //** outptr **//
@@ -2746,6 +2752,48 @@ endfunction
 
 //==========================================================================
 
+function gen_config_file(model_tsamp, model_duration, model_name)
+    cfg_fd = mopen(model_name + '_scig' + filesep() + model_name + '.cfg', 'w');
+    mfprintf(cfg_fd, "{\n  ""duration"": %f,\n  ""period"": %f,\n", model_duration, model_tsamp); 
+
+    global %microdaq;
+    if %microdaq.private.mem_read_idx > 0 then
+        if %microdaq.private.mem_read_idx == 1 then
+            mfprintf(cfg_fd, "  ""memory"": {\n"); 
+        end
+
+        if %microdaq.private.mem_read_idx > 1 then
+            mfprintf(cfg_fd, "  ""memory"": [{\n"); 
+        end
+        
+        blk_index = 0;
+        for blk_index = 1:%microdaq.private.mem_read_idx
+            if %microdaq.private.mem_read_file(blk_index) == "" then 
+                mfprintf(cfg_fd, "    ""index"": %d,\n    ""values"": {\n", %microdaq.private.mem_read_begin(blk_index) );      
+                for i = 1:%microdaq.private.mem_read_size(blk_index)-1
+                    mfprintf(cfg_fd, "      ""val%d"": 0,\n", i);
+                end
+                mfprintf(cfg_fd, "      ""val%d"": 0\n      }", %microdaq.private.mem_read_size(blk_index));
+            else
+                mfprintf(cfg_fd, "    ""index"": %d,\n    ""file"": """+%microdaq.private.mem_read_file(blk_index)+"""", %microdaq.private.mem_read_begin(blk_index));
+            end
+
+            if %microdaq.private.mem_read_idx == 1 then
+                mfprintf(cfg_fd, "\n  }\n");
+                
+            else
+                if %microdaq.private.mem_read_idx == blk_index then 
+                    mfprintf(cfg_fd, "\n    }]\n");
+                else
+                    mfprintf(cfg_fd, "\n    },\n    {\n");
+                end
+            end
+        end
+    end
+    mfprintf(cfg_fd, "}\n");    
+    mclose(cfg_fd);
+endfunction
+
 function rt_gen_main(model_tsamp, model_duration, model_profile, standalone)
 
     if standalone == %t then
@@ -2816,6 +2864,7 @@ function Makename=rt_gen_make(name,files,libs,standalone,debug_build,SMCube_file
     else
         T=strsubst(T,'$$BUILD_MODE%%','-O2');        
     end
+
     
     if standalone == %t then
         mdaq_main = 'mdaq_standalone_main.c';

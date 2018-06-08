@@ -34,6 +34,9 @@ global %microdaq;
                             "has_mdaq_param_sim", %F,..
                             "mem_write_idx", 0,..
                             "mem_read_idx", 0,..
+                            "mem_read_begin", [],..
+                            "mem_read_size", [],..
+                            "mem_read_file", [],..
                             "to_file_idx", 0,..
                             "dac_idx", 0,..
                             "adc_idx", 0,..

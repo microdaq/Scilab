@@ -58,6 +58,18 @@ function obj=scan_mdaq_blocks(scs_m)
                 if scs_m.objs(i).model.sim(1) == "mdaq_mem_read_sim"
                     scs_m.objs(i).model.ipar(5) = %microdaq.private.mem_read_idx;
                     %microdaq.private.mem_read_idx = %microdaq.private.mem_read_idx + 1;
+                    %microdaq.private.mem_read_begin($+1) = scs_m.objs(i).model.ipar(1) + 1;
+                    %microdaq.private.mem_read_size($+1) = scs_m.objs(i).model.ipar(4);
+                    
+                    if scs_m.objs(i).model.label <> "" then
+                        if strindex(scs_m.objs(i).model.label,'file=') == 1;
+                            %microdaq.private.mem_read_file($+1) = msscanf(scs_m.objs(i).model.label, "file=%s")
+                        else
+                            %microdaq.private.mem_read_file($+1) = "";    
+                        end
+                    else 
+                        %microdaq.private.mem_read_file($+1) = "";
+                    end
                     
                     if  %microdaq.private.mem_read_idx > 16 then
                         messagebox('Error: There is more than 16 mdaq_mem_read blocks.');

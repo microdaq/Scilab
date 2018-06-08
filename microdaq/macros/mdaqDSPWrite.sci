@@ -45,7 +45,7 @@ function mdaqDSPWrite(arg1, arg2, arg3)
             len, 4, 'i',..
         "out",..
             [1,1], 5, 'i');
-            
+            disp("dupa");
     if argn(2) == 2 then
         mdaqClose(link_id);
     end
