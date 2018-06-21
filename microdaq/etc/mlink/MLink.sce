@@ -84,6 +84,11 @@ function MLink()
                                "sci_mlink_dsp_run"..
                                "sci_mlink_dsp_signal_read"..
                                "sci_mlink_dsp_mem_write"..
+                               "sci_mlink_scan_trigger_clear"..
+                               "sci_mlink_scan_trigger_dio"..
+                               "sci_mlink_scan_trigger_dio_pattern"..
+                               "sci_mlink_scan_trigger_encoder"..
+                               "sci_mlink_scan_trigger_external_start"..
                                ], 'c');
 endfunction
 

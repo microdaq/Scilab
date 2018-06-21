@@ -130,6 +130,8 @@ Int main()
     mdaqnet_open();
     model_is_running = 1.0;
 
+    notyfy_dsp_start(); 
+
     BIOS_start();
 }
 

@@ -102,6 +102,8 @@ Int main()
     /* Init model */ 
     NAME(MODEL, _init)();
 
+    notyfy_dsp_start(); 
+
     BIOS_start();
 }
 
