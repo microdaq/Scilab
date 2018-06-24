@@ -3,18 +3,22 @@ function continueSimulation=pre_xcos_simulate(scs_m, needcompile)
     %microdaq.private.has_mdaqBlock = %F;
     continueSimulation = %T;
     look_for_mdaqBlocks = %T; 
-    runFromMainScheme = %F;
 
     for i = 1:size(scs_m.objs)
         curObj= scs_m.objs(i);
+
+        if (typeof(curObj) == "Block" & curObj.gui == "CLKINV_f")
+            messagebox("Starting simulation inside of a superblock is not possible", "Simulation problem", "error");
+            continueSimulation = %F;
+            return;
+        end
+
         if (typeof(curObj) == "Block" & curObj.gui == "CLOCK_c")
             sTsamp=curObj.model.rpar.objs(2).graphics.exprs(1);
             %microdaq.private.model_tsamp=strtod(sci2exp(eval(sTsamp)));
         end
-        
-        if (typeof(curObj) == "Block" & curObj.gui == "mdaq_setup")
-            runFromMainScheme = %T;
 
+        if (typeof(curObj) == "Block" & curObj.gui == "mdaq_setup")
             if scs_m.objs(i).model.rpar(1) == (-1) then
                 scs_m.props.tf= 1.000D+12;
             else
@@ -70,12 +74,6 @@ function continueSimulation=pre_xcos_simulate(scs_m, needcompile)
                 end
             end        
         end
-    end
-    
-    if runFromMainScheme == %F then
-        messagebox("Please start model from root diagram (the one which contains mdaq_setup block).");
-        continueSimulation = %F;
-        return;
     end
 
     if look_for_mdaqBlocks then
