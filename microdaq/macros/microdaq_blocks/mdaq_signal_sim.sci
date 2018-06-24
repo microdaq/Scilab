@@ -7,10 +7,15 @@ function block=mdaq_signal_sim(block,flag)
         global %microdaq;
         if %microdaq.dsp_loaded == %T then
                 if %microdaq.private.signal_buffer_index(block.ipar(1)) < 1 then
-
+                    try
                     %microdaq.private.signal_buffer(block.ipar(1)) = mdaqDSPRead(block.ipar(1), block.insz(1), %microdaq.private.signal_buffer_size(block.ipar(1)), 5000);
 
                     %microdaq.private.signal_buffer_index(block.ipar(1)) = %microdaq.private.signal_buffer_size(block.ipar(1)); 
+                    catch
+                        warning("Unable to receive DSP data from MicroDAQ device"); 
+                        return;
+                    end
+                    
                 end
                 block.outptr(1) = %microdaq.private.signal_buffer(block.ipar(1))(%microdaq.private.signal_buffer_size(block.ipar(1)) + 1 - %microdaq.private.signal_buffer_index(block.ipar(1)),:);
                 %microdaq.private.signal_buffer_index(block.ipar(1)) = %microdaq.private.signal_buffer_index(block.ipar(1)) - 1; 
@@ -32,8 +37,6 @@ function block=mdaq_signal_sim(block,flag)
         
         %microdaq.private.signal_buffer(block.ipar(1)) = zeros(%microdaq.private.signal_buffer_size(block.ipar(1)), block.insz(1));
         %microdaq.private.signal_buffer_index(block.ipar(1)) = 0;
-        
-//        mprintf("Signal -> buffer_size: %d, signal_index: %d\n", %microdaq.private.signal_buffer_size(block.ipar(1)), %microdaq.private.signal_buffer_index(block.ipar(1))); 
     case 5 // Ending
     case 6 // Re-Initialisation
     case 9 // ZeroCrossing
