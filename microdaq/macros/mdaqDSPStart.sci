@@ -5,7 +5,7 @@ function mdaqDSPStart( arg1, arg2, arg3, arg4 )
         error('ERROR: ' + vers)
         return;
     end
-    
+
     global %microdaq;
     result = -1;
 
@@ -40,8 +40,8 @@ function mdaqDSPStart( arg1, arg2, arg3, arg4 )
 
     if argn(2) == 3 then
         link_id = mdaqOpen();
-        if result < 0  then
-            error(mdaq_error2(result), 10000 + abs(result)); 
+        if link_id < 0  then
+            error(mdaq_error2(link_id), 10000 + abs(link_id)); 
         end
     end
 
@@ -52,7 +52,7 @@ function mdaqDSPStart( arg1, arg2, arg3, arg4 )
             duration, 4, "d",...
         "out",..
             [1,1], 5, "i");
-    
+
     if argn(2) == 3 then
         mdaqClose(link_id);
     end
@@ -60,5 +60,4 @@ function mdaqDSPStart( arg1, arg2, arg3, arg4 )
     if result < 0  then
         error(mdaq_error2(result), 10000 + abs(result)); 
     end
-
 endfunction
