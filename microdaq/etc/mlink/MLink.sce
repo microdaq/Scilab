@@ -45,6 +45,8 @@ function MLink()
                                "sci_mlink_dsp_stop"..
                                "sci_mlink_dsp_profile_get"..
                                "sci_mlink_dsp_param"..
+                               "sci_mlink_dsp_is_done"..
+                               "sci_mlink_dsp_wait_until_done"..
                                "sci_mlink_set_obj"..
                                "sci_client_connect"..
                                "sci_client_disconnect"..
@@ -79,6 +81,8 @@ function MLink()
                                "sci_mlink_ao_scan"..
                                "sci_mlink_ao_scan_stop"..
                                "sci_mlink_ao_scan_data"..
+                               "sci_mlink_ao_is_done"..
+                               "sci_mlink_ao_wait_until_done"..
                                "sci_mlink_ao_check_params"..
                                "sci_mlink_ai_check_params"..
                                "sci_mlink_dsp_run"..
