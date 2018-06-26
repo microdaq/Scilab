@@ -24,21 +24,21 @@ function [data, result] = mdaqAIScan(arg1, arg2, arg3)
         end
     end
 
-    if type(timeout) == 4 then
-        error("isBlocking boolean argument is obsolete, provide timeout in seconds instead"); 
-    end
-
     if argn(2) > 3 | argn(2) < 2 then
         mprintf("Description:\n");
         mprintf("\tStarts scanning operation and reads acquired data\n");
         mprintf("Usage:\n");
-        mprintf("\t[data, result] = mdaqAIScan(linkID, scanCount, timeout\n")
+        mprintf("\t[data, result] = mdaqAIScan(linkID, scanCount, timeout)\n")
         mprintf("\tlinkID - connection id returned by mdaqOpen() (OPTIONAL)\n");
         mprintf("\tscanCount - number of scans to read, when 0 - start acquisition only\n");
         mprintf("\ttimeout - amount of time in seconds to wait for samples (-1 - wait indefinitely)\n");
         return;
     end
-      
+    
+    if type(timeout) == 4 then
+        error("isBlocking boolean argument is obsolete, provide timeout in seconds instead"); 
+    end
+    
     if timeout < 0 then
         timeout = -1;
     end
