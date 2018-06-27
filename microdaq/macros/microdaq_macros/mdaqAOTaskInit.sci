@@ -1,4 +1,4 @@
-function  mdaqAOScanInit(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
+function mdaqAOTaskInit(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
     global %microdaq;
     
     link_id = -1;
@@ -34,18 +34,18 @@ function  mdaqAOScanInit(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
         dac_info = get_dac_info(%microdaq.private.mdaq_hwid);
         if argn(2) > 7 | argn(2) < 6 then
         mprintf("Description:\n");
-        mprintf("\Initiates AO scanning session\n");
+        mprintf("\Initiates AO task\n");
         mprintf("Usage:\n");
-        mprintf("\tmdaqAOScanInit(linkID, channels, initialData, range, isStreamMode, rate, duration\n")
+        mprintf("\tmdaqAOTaskInit(linkID, channels, initialData, range, isStreamMode, rate, duration\n")
         mprintf("\tlinkID - connection id (optional)\n");
         mprintf("\tchannels - analog output channels to write\n");
-        mprintf("\tinitialData - output data\n");
+        mprintf("\tinitialData - task initial output data\n");
 		mprintf("\trange - analog output range matrix e.g.\n");
 		mprintf("\t        [-10,10] - single range argument applied for all used channels\n");
 		mprintf("\t        [-10,10; -5,5] - multi-range argument for two channels\n");
         mprintf("\tisStreamMode - mode of operation (%s - stream, %s - periodic)\n", "%T", "%F");
-        mprintf("\trate - scans per second rate (scan frequency)\n");
-        mprintf("\tduration - analog output scan duration in seconds\n");
+        mprintf("\trate - output update per second rate\n");
+        mprintf("\tduration - task duration in seconds\n");
             return;
         end
     else
@@ -100,7 +100,7 @@ function  mdaqAOScanInit(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
     end
     
     if scan_time < 0 & scan_time <> -1 then
-        mprintf("WARNING: For infinite scan session as a duration parameter use -1 value instead!\n"); 
+        mprintf("WARNING: For infinite AO task use -1 as a duration parameter!\n"); 
         scan_time = -1;
     end
     
@@ -137,7 +137,7 @@ function  mdaqAOScanInit(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
         error(mdaq_error2(result), 10000 + abs(result)); 
     else
         if result == 1 then
-            mprintf("\nWARNING: Your MicroDAQ device does not allow running AI and AO scanning session simultaneously.\n")
+            mprintf("\nWARNING: Your MicroDAQ device does not allow running AI and AO tasks simultaneously.\n")
         end
         
         rows = [];
@@ -155,22 +155,18 @@ function  mdaqAOScanInit(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
             rows = [rows; "AO"+string(channels(j)), rangeStr, resolution+"mV"]
         end
         
-        mprintf("\nAnalog output scanning session settings:\n");
+        mprintf("\nAO task settings:\n");
         mprintf("\t--------------------------------------------------\n")
         str2table(rows, ["Channel",  "Range", "Resolution"], 12)
         mprintf("\t--------------------------------------------------\n")
-
-        if scan_freq >= 1000
-            mprintf("\tScan frequency:\t\t%.5f kHz\n", scan_freq/1000);
-        else
-            mprintf("\tScan frequency:\t\t%d Hz\n", scan_freq);
-        end
+        
+        mprintf("\tTask frequency:\t\t%d Hz\n", scan_freq);
         if 1 /scan_freq > 0.001 then
-            mprintf("\tScan period: \t\t%.5f seconds\n", 1 / scan_freq);
+            mprintf("\tTask period: \t\t%.5f seconds\n", 1 / scan_freq);
         end
         
         if 1 /scan_freq <= 0.001 then
-            mprintf("\tScan period: \t\t%.5f ms\n", 1 / scan_freq * 1000);
+            mprintf("\tTask period: \t\t%.5f ms\n", 1 / scan_freq * 1000);
         end
         if continuous == 1 then
             mprintf("\tMode:\t\t\tStream\n"); 
@@ -181,11 +177,11 @@ function  mdaqAOScanInit(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
         mprintf("\tQueue data size: \t%sx%s\n", string(size(data,"c")), string(size(data,"r")))
         if scan_time < 0
             mprintf("\tNumber of channels:\t%d\n", ch_count)
-            mprintf("\tNumber of scans:\tInf\n");
+            mprintf("\tNumber of ouput updates:\tInf\n");
             mprintf("\tDuration:\t\tInf\n");
         else
             mprintf("\tNumber of channels:\t%d\n", ch_count)
-            mprintf("\tNumber of scans:\t%d\n", scan_time * scan_freq);
+            mprintf("\tNumber of output update:\t%d\n", scan_time * scan_freq);
             if scan_time == 1 
                 mprintf("\tDuration:\t\t%.2f second\n", scan_time);
             else

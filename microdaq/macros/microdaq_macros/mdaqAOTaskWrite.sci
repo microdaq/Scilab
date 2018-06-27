@@ -1,4 +1,4 @@
-function mdaqAOScanData(arg1, arg2, arg3, arg4)
+function mdaqAOTaskWrite(arg1, arg2, arg3, arg4)
     global %microdaq;
     link_id = -1; 
 
@@ -22,9 +22,9 @@ function mdaqAOScanData(arg1, arg2, arg3, arg4)
 
     if argn(2) > 4 | argn(2) < 3 then
         mprintf("Description:\n");
-        mprintf("\tQueues data to be output\n");
+        mprintf("\tWrites data to AO task\n");
         mprintf("Usage:\n");
-        mprintf("\tresult = mdaqAOScanData(linkID, channels, data, opt)\n")
+        mprintf("\tresult = mdaqAOTaskWrite(linkID, channels, data, opt)\n")
         mprintf("\tlinkID - connection id returned by mdaqOpen() (OPTIONAL)\n");
         mprintf("\tchannels - analog output channels to write\n");
         mprintf("\tdata - data to be output\n");

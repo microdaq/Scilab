@@ -1,4 +1,4 @@
-function  mdaqAIScanInit(arg1, arg2, arg3, arg4, arg5, arg6)
+function  mdaqAITaskInit(arg1, arg2, arg3, arg4, arg5, arg6)
     link_id = -1;
 
     if argn(2) == 5 then
@@ -28,17 +28,17 @@ function  mdaqAIScanInit(arg1, arg2, arg3, arg4, arg5, arg6)
         adc_info = get_adc_info(%microdaq.private.mdaq_hwid);
         if argn(2) > 6 | argn(2) < 5 then
             mprintf("Description:\n");
-            mprintf("\tInitiates AI scanning session\n");
+            mprintf("\tInitiates AI task\n");
             mprintf("Usage:\n");
-            mprintf("\tmdaqAIScanInit(linkID, channels, range, isDifferential, rate, duration)\n");
+            mprintf("\tmdaqAITaskInit(linkID, channels, range, isDifferential, rate, duration)\n");
 			mprintf("\tlinkID - connection id returned by mdaqOpen() (OPTIONAL)\n");
             mprintf("\tchannels - analog input channels to read\n");
             mprintf("\trange - analog input range matrix e.g.\n");
             mprintf("\t        [-10,10] - single range argument applied for all used channels\n");
             mprintf("\t        [-10,10;-5,5] - multi-range argument for two channels\n");
 			mprintf("\tisDifferential - scalar or vector with measurement mode settings: %s - differential, %s - single-ended mode\n", "%T", "%F");
-            mprintf("\trate - scans per second rate (scan frequency)\n");
-            mprintf("\tduration - scan duration in seconds\n");
+            mprintf("\trate - scans per second rate\n");
+            mprintf("\tduration - task duration in seconds\n");
             return;
         end
     else
@@ -123,7 +123,7 @@ function  mdaqAIScanInit(arg1, arg2, arg3, arg4, arg5, arg6)
         error(mdaq_error2(result), 10000 + abs(result));
     else
         if result == -88 then
-            disp("Warninng: AI scanning interrupted!")
+            disp("Warninng: AI task interrupted!")
             mdaqAIScanStop()
 
             // time to terminate TCP connection
@@ -176,17 +176,10 @@ function  mdaqAIScanInit(arg1, arg2, arg3, arg4, arg5, arg6)
             rows = [rows; "AI"+string(channels(j)), measure_type, rangeStr, resolution+"mV"]
         end
 
-        mprintf("\nAnalog input scanning session settings:\n");
         mprintf("\t--------------------------------------------------\n")
         str2table(rows, ["Channel", "Measurement type", "Range", "Resolution"], 3)
         mprintf("\t--------------------------------------------------\n")
-        if scan_freq >= 1000
-            mprintf("\tScan frequency:\t\t%.5f kHz\n", scan_freq/1000);
-            mprintf("\tActual scan frequency:\t%.5f kHz\n", real_freq/1000);
-        else
-            mprintf("\tScan frequency:\t\t%.5f Hz\n", scan_freq);
-            mprintf("\tActual scan frequency:\t%.5f Hz\n", real_freq);
-        end
+
         if 1 /real_freq > 0.001 then
             mprintf("\tScan period: \t\t%.5f seconds\n", 1 / real_freq);
         end

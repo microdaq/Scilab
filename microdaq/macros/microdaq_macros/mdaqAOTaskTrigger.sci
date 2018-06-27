@@ -1,10 +1,9 @@
-function mdaqAIScanTrigger(varargin)
+function mdaqAOTaskTrigger(varargin)
     if argn(2) == 0 then
-        cmd = "scanTrigger(1"; 
+        cmd = "scanTrigger(2"; 
     else
-        cmd = "scanTrigger(1, "; 
+        cmd = "scanTrigger(2, "; 
     end
-    
     for i = 1:argn(2)
         if type(varargin(i)) == 10 then
             cmd = cmd + """" + varargin(i) + """";

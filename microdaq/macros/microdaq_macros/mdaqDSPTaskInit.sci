@@ -1,6 +1,6 @@
-function mdaqDSPStart( arg1, arg2, arg3, arg4 )
+function mdaqDSPTaskInit( arg1, arg2, arg3, arg4 )
      // Check version compatibility 
-    [is_supp vers] = mdaq_is_working('mdaqDSPStart');
+    [is_supp vers] = mdaq_is_working('mdaqDSPTaskInit');
     if is_supp == %F then
         error('ERROR: ' + vers)
         return;
@@ -28,7 +28,7 @@ function mdaqDSPStart( arg1, arg2, arg3, arg4 )
 
     if argn(2) > 4 | argn(2) < 3 then
         mprintf("Description:\n");
-        mprintf("\tStarts DSP execution\n");
+        mprintf("\tInitializes DSP task\n");
         mprintf("Usage:\n");
         mprintf("\tmdaqDSPStart(linkId, path, stepTime, duration);\n")
         mprintf("\tlinkId - connection id returned by mdaqOpen() (OPTIONAL)\n");
@@ -45,7 +45,7 @@ function mdaqDSPStart( arg1, arg2, arg3, arg4 )
         end
     end
 
-    result = call("sci_mlink_dsp_run",..
+    result = call("sci_mlink_dsp_load2",..
             link_id, 1, "i",..
             dsp_firmware, 2, "c",..
             model_freq, 3, "d",...
