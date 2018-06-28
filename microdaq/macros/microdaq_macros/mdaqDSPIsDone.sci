@@ -1,9 +1,9 @@
-function  mdaqDSPIsDone(arg1, arg2)
-	if argn(2) == 1 then
-        mdaqIsDone("dsp", arg1)
-    elseif argn(2) == 2 then
-        mdaqIsDone(arg1, "dsp", arg2)
+function result = mdaqDSPIsDone(arg1)
+	if argn(2) == 0 then
+        result = mdaqIsDone("dsp")
+    elseif argn(2) == 1 then
+        result = mdaqIsDone(arg1, "dsp")
     else
-        mdaqIsDone();
+        result = mdaqIsDone();
     end
 endfunction
