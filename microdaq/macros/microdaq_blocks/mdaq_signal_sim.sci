@@ -1,4 +1,4 @@
-cdfunction block=mdaq_signal_sim(block,flag)
+function block=mdaq_signal_sim(block,flag)
     select flag
     case -5 // Error
     case 0 // Derivative State Update
