@@ -28,7 +28,7 @@ function  mdaqAITaskInit(arg1, arg2, arg3, arg4, arg5, arg6)
         adc_info = get_adc_info(%microdaq.private.mdaq_hwid);
         if argn(2) > 6 | argn(2) < 5 then
             mprintf("Description:\n");
-            mprintf("\tInitiates AI task\n");
+            mprintf("\tInitializes analog input task\n");
             mprintf("Usage:\n");
             mprintf("\tmdaqAITaskInit(linkID, channels, range, isDifferential, rate, duration)\n");
 			mprintf("\tlinkID - connection id returned by mdaqOpen() (OPTIONAL)\n");
@@ -37,8 +37,8 @@ function  mdaqAITaskInit(arg1, arg2, arg3, arg4, arg5, arg6)
             mprintf("\t        [-10,10] - single range argument applied for all used channels\n");
             mprintf("\t        [-10,10;-5,5] - multi-range argument for two channels\n");
 			mprintf("\tisDifferential - scalar or vector with measurement mode settings: %s - differential, %s - single-ended mode\n", "%T", "%F");
-            mprintf("\trate - scans per second rate\n");
-            mprintf("\tduration - task duration in seconds\n");
+            mprintf("\trate - read per second rate for channels in use\n");
+            mprintf("\tduration - task duration in seconds (-1 - infinity)\n");
             return;
         end
     else

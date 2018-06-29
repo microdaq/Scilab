@@ -34,7 +34,7 @@ function mdaqAOTaskInit(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
         dac_info = get_dac_info(%microdaq.private.mdaq_hwid);
         if argn(2) > 7 | argn(2) < 6 then
         mprintf("Description:\n");
-        mprintf("\Initiates AO task\n");
+        mprintf("\tInitializes analog output task\n");
         mprintf("Usage:\n");
         mprintf("\tmdaqAOTaskInit(linkID, channels, initialData, range, isStreamMode, rate, duration\n")
         mprintf("\tlinkID - connection id (optional)\n");
@@ -44,9 +44,9 @@ function mdaqAOTaskInit(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
 		mprintf("\t        [-10,10] - single range argument applied for all used channels\n");
 		mprintf("\t        [-10,10; -5,5] - multi-range argument for two channels\n");
         mprintf("\tisStreamMode - mode of operation (%s - stream, %s - periodic)\n", "%T", "%F");
-        mprintf("\trate - output update per second rate\n");
-        mprintf("\tduration - task duration in seconds\n");
-            return;
+        mprintf("\trate - update per second rate for channels in use\n");
+        mprintf("\tduration - task duration in seconds (-1 - infinity)\n");
+        return;
         end
     else
         error('Unable to detect MicroDAQ configuration. Run mdaqHWInfo() function.');

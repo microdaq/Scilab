@@ -83,8 +83,10 @@ Int main()
     if(model_tsamp <= 0.0)
 		model_tsamp = MODEL_TSAMP;
 
-    if(model_duration <= 0.0)
+    
+    if(model_duration == 0.0)
 		model_duration = MODEL_DURATION;
+   
 
     user_sys_tick_params.period = (uint32_t)(model_tsamp * USEC_PER_SEC);
 

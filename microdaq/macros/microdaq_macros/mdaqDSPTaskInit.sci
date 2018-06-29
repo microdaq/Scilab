@@ -33,8 +33,8 @@ function mdaqDSPTaskInit( arg1, arg2, arg3, arg4 )
         mprintf("\tmdaqDSPTaskInit(linkId, path, rate, duration);\n")
         mprintf("\tlinkId - connection id returned by mdaqOpen() (OPTIONAL)\n");
         mprintf("\tpath - XCos generated DSP application path\n");
-        mprintf("\trate - model rate in Hz (-1 - do not overwrite model settings)\n");
-        mprintf("\tduration - model execution duration in seconds (-1 - do not overwrite model settings)\n");
+        mprintf("\trate - DSP application step per second rate (-1 - keep Xcos settings)\n");
+        mprintf("\tduration - task duration in seconds (-1 - infinity)\n");
         return;
     end
 
