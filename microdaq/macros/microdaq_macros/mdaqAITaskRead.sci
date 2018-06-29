@@ -26,7 +26,7 @@ function [data, result] = mdaqAITaskRead(arg1, arg2, arg3)
 
     if argn(2) > 3 | argn(2) < 2 then
         mprintf("Description:\n");
-        mprintf("\tReads data from AI task\n");
+        mprintf("\tReads AI task data\n");
         mprintf("Usage:\n");
         mprintf("\t[data, result] = mdaqAITaskRead(linkID, scanCount, timeout)\n")
         mprintf("\tlinkID - connection id returned by mdaqOpen() (OPTIONAL)\n");

@@ -85,8 +85,8 @@ function MLink()
                                "sci_mlink_ao_wait_until_done"..
                                "sci_mlink_ao_check_params"..
                                "sci_mlink_ai_check_params"..
-                               "sci_mlink_dsp_run2"..
-                               "sci_mlink_dsp_load2"..
+                               "sci_mlink_dsp_run"..
+                               "sci_mlink_dsp_init"..
                                "sci_mlink_dsp_signal_read"..
                                "sci_mlink_dsp_mem_write"..
                                "sci_mlink_scan_trigger_clear"..

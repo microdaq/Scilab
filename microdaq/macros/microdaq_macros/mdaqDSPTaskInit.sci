@@ -11,14 +11,14 @@ function mdaqDSPTaskInit( arg1, arg2, arg3, arg4 )
 
     if argn(2) == 3 then
         dsp_firmware = pathconvert(arg1, %F); 
-        model_freq = arg2;
+        rate = arg2;
         duration = arg3;
     end
 
     if argn(2) == 4 then
         link_id = arg1;   
         dsp_firmware = pathconvert(arg2, %F); 
-        model_freq = arg3; 
+        rate = arg3; 
         duration = arg4; 
         if link_id < 0 then
             disp("ERROR: Invalid link ID!")
@@ -30,12 +30,20 @@ function mdaqDSPTaskInit( arg1, arg2, arg3, arg4 )
         mprintf("Description:\n");
         mprintf("\tInitializes DSP task\n");
         mprintf("Usage:\n");
-        mprintf("\tmdaqDSPStart(linkId, path, stepTime, duration);\n")
+        mprintf("\tmdaqDSPTaskInit(linkId, path, rate, duration);\n")
         mprintf("\tlinkId - connection id returned by mdaqOpen() (OPTIONAL)\n");
         mprintf("\tpath - XCos generated DSP application path\n");
-        mprintf("\tstepTime - model step in seconds (-1 - do not overwrite model settings)\n");
+        mprintf("\trate - model rate in Hz (-1 - do not overwrite model settings)\n");
         mprintf("\tduration - model execution duration in seconds (-1 - do not overwrite model settings)\n");
         return;
+    end
+
+    if rate < 0 then
+        rate = -1; 
+    elseif rate >= 0 & rate < 0.1 then 
+        error("Wrong rate parameter")
+    else
+        rate = 1/rate;
     end
 
     if argn(2) == 3 then
@@ -45,10 +53,10 @@ function mdaqDSPTaskInit( arg1, arg2, arg3, arg4 )
         end
     end
 
-    result = call("sci_mlink_dsp_load2",..
+    result = call("sci_mlink_dsp_init",..
             link_id, 1, "i",..
             dsp_firmware, 2, "c",..
-            model_freq, 3, "d",...
+            rate, 3, "d",...
             duration, 4, "d",...
         "out",..
             [1,1], 5, "i");

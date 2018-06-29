@@ -1,6 +1,6 @@
 function scanTrigger(trigger, varargin)
     result = -1; 
-    supported_trig = {"none", "dioValue", "dioPattern", "encoderValue", "dspStart", "aiScan", "aoScan"};
+    supported_trig = {"none", "dioValue", "dioPattern", "encoderValue", "dspStart", "aiStart", "aoStart"};
 
     if trigger <> 1 & trigger <> 2 then
         error("Unsupported trigger"); 
@@ -9,13 +9,13 @@ function scanTrigger(trigger, varargin)
     if argn(2) == 1 then
         mprintf("Description:\n");
         if trigger == 1 then 
-            mprintf("\tSets AI scan start trigger\n");
+            mprintf("\tSets AI task start trigger\n");
             mprintf("Usage:\n");
-            mprintf("\tmdaqAIScanTrigger(linkID, triggerType, p1,...,pn);\n")
+            mprintf("\tmdaqAITaskTrigger(linkID, triggerType, p1,...,pn);\n")
         elseif trigger == 2 then
-            mprintf("\tSets AO scan start trigger\n");
+            mprintf("\tSets AO task start trigger\n");
             mprintf("Usage:\n");
-            mprintf("\tmdaqAOScanTrigger(linkID, triggerType, p1,...,pn);\n")
+            mprintf("\tmdaqAOTaskTrigger(linkID, triggerType, p1,...,pn);\n")
         end
       mprintf("\tlinkID - connection id returned by mdaqOpen() (OPTIONAL)\n");
         mprintf("\ttriggerType - string with trigger source type\n"); 
@@ -79,20 +79,20 @@ function scanTrigger(trigger, varargin)
 
 
 
-    if trig_type == "aiScan" | trig_type == "aoScan" | trig_type == "dspStart" then
+    if trig_type == "aiStart" | trig_type == "aoStart" | trig_type == "dspStart" then
         if trigger == 1 then
-            if trig_type == "aiScan" then
-                error("Unable to use ""aiScan"" trigger for AI scan"); 
+            if trig_type == "aiStart" then
+                error("Unable to use ""aiStart"" trigger for AI scan"); 
             end
         end
         
         if trigger == 2 then
-            if trig_type == "aoScan" then
-                error("Unable to use ""aoScan"" trigger for AO scan"); 
+            if trig_type == "aoStart" then
+                error("Unable to use ""aoStart"" trigger for AO scan"); 
             end
         end
 
-        if trig_type == "aiScan" | trig_type == "aoScan" then
+        if trig_type == "aiStart" | trig_type == "aoStart" then
             src = 2; 
         else
             src = 3; 
