@@ -58,7 +58,7 @@ function [data] = mdaqDSPTaskRead(arg1, arg2, arg3, arg4, arg5)
     end
 
     [data result] = call("sci_mlink_dsp_signal_read",..
-                            link_fd, 1, "i",..
+                            link_id, 1, "i",..
                             signalID, 2, "i",..
                             vectorSize, 3, "i",..
                             vectorSize*vectorCount, 5, "i",..
