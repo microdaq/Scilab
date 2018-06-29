@@ -40,10 +40,6 @@ function mdaqDSPTaskInit( arg1, arg2, arg3, arg4 )
 
     if rate < 0 then
         rate = -1; 
-    elseif rate >= 0 & rate < 0.1 then 
-        error("Wrong rate parameter")
-    else
-        rate = 1/rate;
     end
 
     if argn(2) == 3 then
