@@ -178,6 +178,7 @@ function  mdaqAITaskInit(arg1, arg2, arg3, arg4, arg5, arg6)
 
         mprintf("\nAnalog input task settings:\n");
         mprintf("\t--------------------------------------------------\n")
+        str2table(rows, ["Channel", "Terminal config", "Range", "Resolution"], 3)
         mprintf("\t--------------------------------------------------\n")
         mprintf("\tTask rate:\t\t%.1f scans per second\n", scan_freq);
         mprintf("\tActual task rate:\t%.1f scans per second\n", real_freq);
