@@ -1,4 +1,4 @@
-function mdaqDSPTaskInit( arg1, arg2, arg3, arg4 )
+function mdaqDSPInit( arg1, arg2, arg3, arg4 )
      // Check version compatibility 
     [is_supp vers] = mdaq_is_working('mdaqDSPTaskInit');
     if is_supp == %F then

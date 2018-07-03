@@ -1,4 +1,4 @@
-function [data] = mdaqDSPTaskRead(arg1, arg2, arg3, arg4, arg5)
+function [data] = mdaqDSPRead(arg1, arg2, arg3, arg4, arg5)
     // Check version compatibility
     [is_supp vers] = mdaq_is_working('mdaqDSPSignalRead');
     if is_supp == %F then
@@ -33,7 +33,7 @@ function [data] = mdaqDSPTaskRead(arg1, arg2, arg3, arg4, arg5)
         mprintf("Description:\n");
         mprintf("\tReads DSP task data\n");
         mprintf("Usage:\n");
-        mprintf("\tmdaqDSPTaskRead(linkId, signalId, vectorSize, vectorCount, timeout);\n")
+        mprintf("\tmdaqDSPRead(linkId, signalId, vectorSize, vectorCount, timeout);\n")
         mprintf("\tlinkId - connection id returned by mdaqOpen() (OPTIONAL)\n");
         mprintf("\tsignalId - signal block identification number from XCOS model.\n");
         mprintf("\tvectorSize - SIGNAL block input vector size.\n");

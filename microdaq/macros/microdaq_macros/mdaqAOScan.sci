@@ -1,4 +1,4 @@
-function mdaqAOTaskStart(arg1)
+function mdaqAOScan(arg1)
     if argn(2) == 1 then
         link_id = arg1;   
         if link_id < 0 then

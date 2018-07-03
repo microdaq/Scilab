@@ -1,4 +1,4 @@
-function mdaqAOTaskInit(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
+function mdaqAOScanInit(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
     global %microdaq;
     
     link_id = -1;
@@ -34,9 +34,9 @@ function mdaqAOTaskInit(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
         dac_info = get_dac_info(%microdaq.private.mdaq_hwid);
         if argn(2) > 7 | argn(2) < 6 then
         mprintf("Description:\n");
-        mprintf("\tInitializes analog output task\n");
+        mprintf("\tInitiates AO scanning session\n");
         mprintf("Usage:\n");
-        mprintf("\tmdaqAOTaskInit(linkID, channels, initialData, range, isStreamMode, rate, duration\n")
+        mprintf("\tmdaqAOScanInit(linkID, channels, initialData, range, isStreamMode, rate, duration\n")
         mprintf("\tlinkID - connection id (optional)\n");
         mprintf("\tchannels - analog output channels to write\n");
         mprintf("\tinitialData - task initial output data\n");

@@ -1,0 +1,11 @@
+dsp  = mdaqDSPTask();
+dsp.init("mdaqsignalmem.out", 100, -1);
+dsp.start();
+dsp.write(1, 3.14);
+disp(dsp.read(1, 1, 10, -1));
+disp(dsp.read(2, 1, 10, -1));
+dsp.write(1, 6.14);
+disp(dsp.read(1, 1, 10, -1));
+disp(dsp.read(2, 1, 10, -1));
+dsp.stop();
+return;

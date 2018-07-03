@@ -1,4 +1,4 @@
-function  mdaqAOWaitUntilDone(arg1, arg2)
+function  mdaqAOScanWait(arg1, arg2)
     if argn(2) == 1 then
         mdaqWaitUntilDone("ao", arg1)
     elseif argn(2) == 2 then

@@ -1,4 +1,4 @@
-function mdaqDSPTaskWrite(arg1, arg2, arg3)
+function mdaqDSPWrite(arg1, arg2, arg3)
     // Check version compatibility
     [is_supp vers] = mdaq_is_working('mdaqDSPTaskWrite');
     if is_supp == %F then
@@ -25,7 +25,7 @@ function mdaqDSPTaskWrite(arg1, arg2, arg3)
         mprintf("Description:\n");
         mprintf("\tWrites data to DSP task\n");
         mprintf("Usage:\n");
-        mprintf("\tmdaqDSPTaskWrite(linkID, index, data)\n")
+        mprintf("\tmdaqDSPWrite(linkID, index, data)\n")
         mprintf("\tlinkID - connection id returned by mdaqOpen() (OPTIONAL)\n");
         mprintf("\tindex - memory index to begin write from\n");
         mprintf("\tdata - data to be written\n");

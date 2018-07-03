@@ -1,4 +1,4 @@
-function  mdaqAITaskInit(arg1, arg2, arg3, arg4, arg5, arg6)
+function  mdaqAIScanInit(arg1, arg2, arg3, arg4, arg5, arg6)
     link_id = -1;
 
     if argn(2) == 5 then
@@ -28,9 +28,9 @@ function  mdaqAITaskInit(arg1, arg2, arg3, arg4, arg5, arg6)
         adc_info = get_adc_info(%microdaq.private.mdaq_hwid);
         if argn(2) > 6 | argn(2) < 5 then
             mprintf("Description:\n");
-            mprintf("\tInitializes analog input task\n");
+            mprintf("\tInitiates AI scanning session\n");
             mprintf("Usage:\n");
-            mprintf("\tmdaqAITaskInit(linkID, channels, range, isDifferential, rate, duration)\n");
+            mprintf("\tmdaqAIScanInit(linkID, channels, range, isDifferential, rate, duration)\n");
 			mprintf("\tlinkID - connection id returned by mdaqOpen() (OPTIONAL)\n");
             mprintf("\tchannels - analog input channels to read\n");
             mprintf("\trange - analog input range matrix e.g.\n");

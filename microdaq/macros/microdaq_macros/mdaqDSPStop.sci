@@ -1,6 +1,6 @@
-function mdaqDSPTaskStart( arg1)
+function mdaqDSPStop(arg1)
     // Check version compatibility
-    [is_supp vers] = mdaq_is_working('mdaqDSPTaskStart');
+    [is_supp vers] = mdaq_is_working('mdaqDSPTaskStop');
     if is_supp == %F then
         error('ERROR: ' + vers)
         return;
@@ -22,10 +22,7 @@ function mdaqDSPTaskStart( arg1)
         end
     end
 
-    result = call("sci_mlink_dsp_run",..
-                    link_id, 1, "i",..
-                "out",..
-                    [1,1], 2, "i");
+    result = mlink_dsp_stop(link_id);
 
     if argn(2) == 0 then
         mdaqClose(link_id);

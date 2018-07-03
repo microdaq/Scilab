@@ -1,12 +1,12 @@
 function task = mdaqDSPTask()
    task = tlist(["dsptlist","init","start","read","write","stop","isDone","waitUntilDone"],..
-                     mdaqDSPTaskInit,..
-                     mdaqDSPTaskStart,..
-                     mdaqDSPTaskRead,..
-                     mdaqDSPTaskWrite,..
-                     mdaqDSPTaskStop,..
+                     mdaqDSPInit,..
+                     mdaqDSPStart,..
+                     mdaqDSPRead,..
+                     mdaqDSPWrite,..
+                     mdaqDSPStop,..
                      mdaqDSPIsDone,..
-                     mdaqDSPWaitUntilDone);
+                     mdaqDSPWait);
 endfunction
 
 

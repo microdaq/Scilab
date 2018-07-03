@@ -1,4 +1,4 @@
-function [data, result] = mdaqAITaskRead(arg1, arg2, arg3)
+function [data, result] = mdaqAIScan(arg1, arg2, arg3)
     link_id = -1; 
     data = [];
     result = [];
@@ -26,9 +26,9 @@ function [data, result] = mdaqAITaskRead(arg1, arg2, arg3)
 
     if argn(2) > 3 | argn(2) < 2 then
         mprintf("Description:\n");
-        mprintf("\tReads AI task data\n");
+        mprintf("\tReads AI scan data\n");
         mprintf("Usage:\n");
-        mprintf("\t[data, result] = mdaqAITaskRead(linkID, scanCount, timeout)\n")
+        mprintf("\t[data, result] = mdaqAIScan(linkID, scanCount, timeout)\n")
         mprintf("\tlinkID - connection id returned by mdaqOpen() (OPTIONAL)\n");
         mprintf("\tscanCount - number of scans to read\n");
         mprintf("\ttimeout - amount of time in seconds to wait for samples (-1 - wait indefinitely)\n");
