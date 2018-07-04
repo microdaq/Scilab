@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaqAIScanTrigger">
+	<refnamediv>
+		<refname>mdaqAIScanTrigger</refname>
+		<refpurpose>Sets AI scan trigger</refpurpose>
+	</refnamediv>
+
+	<refsynopsisdiv>
+		<title>Calling Sequence</title>
+		<synopsis>
+			mdaqAIScanTrigger(triggerType, p1,...,pn);
+			mdaqAIScanTrigger(linkID, triggerType, p1,...,pn);
+		</synopsis>
+	</refsynopsisdiv>
+
+	<refsection id="Description_mdaqAIScanTrigger">
+		<title>Description</title>
+		<para>
+
+
+		This function configures and sets a trigger for analog input scan session. 
+		If a trigger is used, after starting analog input scanning with <link linkend="mdaqAIScanStart">mdaqAIScanStart()</link> 
+		scan operation is blocked until certain condition defined by trigger occurs. 
+		In this state, analog input samples are not acquired by MicroDAQ device. 
+		Blocked scanning session can be interrupted by calling <link linkend="mdaqAIScanStop">mdaqAIScanStop()</link>. 
+		The <link linkend="mdaqAIScanTrigger">mdaqAIScanTrigger()</link> function can be called only after scan initialization 
+		function  <link linkend="mdaqAIScanInit">mdaqAIScanInit()</link> call and before scan start function <link linkend="mdaqAIScanStart">mdaqAIScanStart()</link> call. 
+		When scanning session uses a trigger, it is recommended to read data with timeout 
+		different than -1 (infinity) this will prevent from freezing Scilab in the case 
+		when the trigger will not occur. Only one trigger type can be used for analog input 
+		scanning session. When a function is called more then one time it will overwrite previous 
+		trigger configuration. Function <link linkend="mdaqAIScanInit">mdaqAIScanInit()</link> disables trigger.
+		</para>
+		<para>The function allows configuring different trigger types which are defined by trigger type string.
+		
+		
+		</para>
+		<para>
+			<emphasis role="bold">Supported triggers types:</emphasis>
+		</para>
+
+		<itemizedlist>
+			<listitem>
+				<para>
+					<emphasis role="bold">"none": </emphasis> disables trigger for analog input scan</para>
+					<para>		
+					<programlisting role="example">
+						<![CDATA[
+						mdaqAIScanTrigger("none");
+						 ]]>
+					</programlisting>
+					</para>
+			</listitem>
+			<listitem>
+				<para>
+					<emphasis role="bold">"dioValue":  </emphasis> trigger occurs when state (0|1) is present on one of DIO1...8 digital input channel. /para>
+					<para>Function parameters: p1 - DIO channel number in range 1...8, p2 - DIO state which which triggers AI scan start </para>
+					<para>		
+					<programlisting role="example">
+						<![CDATA[
+						mdaqAIScanTrigger("dioValue", 1, 0);
+						 ]]>
+					</programlisting>
+					</para>
+				</para>
+			</listitem>			<listitem>
+				<para>
+					<emphasis role="bold">"dioPattern":  </emphasis> trigger occurs when defined digital pattern matches DIO1...8 digital input channels state
+					<para>Function parameters: p1 - DIO pattern string containing eight characters (x|1|0) defining desired DIO1...8 state. 
+					The 'x' character indicates that DIO is state is ignored, while 0 and 1 indicated low and high state respectively. DIO pattern defines
+					DIO state in the following order DIO1, DIO2, DIO3, DIO4, DIO5, DIO6, DIO7, DIO8 e.g pattern '11xxxxxx' is related to DIO1 and DIO2 state.</para>
+				</para>
+					<programlisting role="example">
+						<![CDATA[
+						mdaqAIScanTrigger("dioPattern", "xxxxxx11");
+						 ]]>
+					</programlisting>
+			</listitem>			<listitem>
+				<para>
+					<emphasis role="bold">"encoderValue":  </emphasis> trigger occurs when value of selected encoder module is greater or lower then provided value
+					<para>Function parameters: p1 - encoder module number (1|2), p2 - encoder value, p3 - defines if trigger shall occur for value greater(1) or lower(0) then p2 argument </para>
+				</para>
+					<programlisting role="example">
+						<![CDATA[
+						mdaqAIScanTrigger("encoderValue", 1, 0, 1);
+						 ]]>
+					</programlisting>
+			</listitem>			<listitem>
+				<para>
+					<emphasis role="bold">"dspStart":  </emphasis> trigger occurs when DSP application is started on MicroDAQ DSP</para>
+					<programlisting role="example">
+						<![CDATA[
+						mdaqAIScanTrigger("dspStart");
+						 ]]>
+					</programlisting>
+			</listitem>
+			<listitem>
+				<para>
+					<emphasis role="bold">"aoStart":  </emphasis> trigger occurs when AO scan session is started</para>
+					<programlisting role="example">
+						<![CDATA[
+						mdaqAIScanTrigger("aoStart");
+						 ]]>
+					</programlisting>
+			</listitem>
+		</itemizedlist>
+		
+	</refsection>  
+
+	<refsection id="Parameters_mdaqAIScanTrigger">
+		<title>Input arguments</title>
+		<itemizedlist>
+			<listitem>
+				<para>
+					<emphasis role="bold">linkID: </emphasis> Valid connection link id (optional)</para>
+			</listitem>
+			<listitem>
+				<para>
+					<emphasis role="bold">triggerType:  </emphasis> Trigger type string</para>
+			</listitem>
+			<listitem>
+				<para>
+					<emphasis role="bold">p1,...,pn:  </emphasis> Trigger parameters</para>
+			</listitem>
+		</itemizedlist>
+	</refsection>
+
+
+	<refsection>
+		<title>Examples</title>
+
+		<para>dioValue trigger type - set trigger to wait for high state on DIO7</para>
+		<programlisting role="example">
+			<![CDATA[
+			mdaqAIScanInit(1, [-10,10], %F, 10000, 1)
+			mdaqAIScanTrigger("dioValue", 7, 1);
+			data = mdaqAIScan(10000, 10);
+			plot(data);
+			 ]]>
+		</programlisting>
+
+		<para>dioPattern trigger type - set trigger to wait for high state on DIO7</para>
+		<programlisting role="example">
+			<![CDATA[
+			mdaqAIScanInit(1, [-10,10], %F, 10000, 1)
+			mdaqAIScanTrigger("dioPattern", "xxxxxx1x");
+			data = mdaqAIScan(10000, 10);
+			plot(data);
+			 ]]>
+		</programlisting>
+
+		<para>dioPattern trigger type - set trigger to wait for high state on DIO7 and low on DIO6</para>
+		<programlisting role="example">
+			<![CDATA[
+			mdaqAIScanInit(1, [-10,10], %F, 10000, 1)
+			mdaqAIScanTrigger("dioPattern", "xxxxx01x");
+			data = mdaqAIScan(10000, 10);
+			plot(data);
+			 ]]>
+		</programlisting>
+		
+		<para>encoderValue trigger type - set trigger to wait encoder 1 value greater then 1000</para>
+		<programlisting role="example">
+			<![CDATA[
+			mdaqEncoderInit(1, 0);
+			mdaqAIScanInit(1, [-10,10], %F, 10000, 1)
+			mdaqAIScanTrigger("encoderValue", 1, 1000, 1);
+			data = mdaqAIScan(10000, 10);
+			plot(data);
+			 ]]>
+		</programlisting>
+
+		<para>encoderValue trigger type - set trigger to wait encoder 2 value lower then 0</para>
+		<programlisting role="example">
+			<![CDATA[
+			mdaqEncoderInit(2, 0);
+			mdaqAIScanInit(1, [-10,10], %F, 10000, 1)
+			mdaqAIScanTrigger("encoderValue", 2, 0, 0);
+			data = mdaqAIScan(10000, 10);
+			plot(data);
+			 ]]>
+		</programlisting>
+		
+		<para>dspStart trigger type - synchronize AI scan start with DSP application start</para>
+		<programlisting role="example">
+			<![CDATA[
+			mdaqAIScanInit(1, [-10,10], %F, 10000, 1)
+			mdaqAIScanTrigger("dspStart");
+			data = mdaqAIScan(10000, 10);
+			plot(data);
+			 ]]>
+		</programlisting>
+
+		<para>aoStart trigger type - synchronize AI scan start with AO scan start</para>
+		<programlisting role="example">
+			<![CDATA[
+			mdaqAIScanInit(1, [-10,10], %F, 10000, 1)
+			mdaqAIScanTrigger("dspStart");
+			data = mdaqAIScan(10000, 10);
+			plot(data);
+			 ]]>
+		</programlisting>
+
+	</refsection>
+
+	<refsection id="SeeAlso_mdaqAIScanTrigger">
+		<title>See Also</title>
+		<simplelist type="inline">
+			<member>
+				<link linkend="mdaqAIScanInit">mdaqAOScanInit</link>
+			</member>
+			<member>
+				<link linkend="mdaqAIScanStart">mdaqAOScan</link>
+			</member>
+			<member>
+				<link linkend="mdaqAIScanStop">mdaqAOScanIsDone</link>
+			</member>
+		</simplelist>
+	</refsection>
+</refentry>

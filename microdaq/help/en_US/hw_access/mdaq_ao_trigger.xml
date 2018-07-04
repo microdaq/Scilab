@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaqAOScanTrigger">
+	<refnamediv>
+		<refname>mdaqAOScanTrigger</refname>
+		<refpurpose>Sets AO scan trigger</refpurpose>
+	</refnamediv>
+
+	<refsynopsisdiv>
+		<title>Calling Sequence</title>
+		<synopsis>
+			mdaqAOScanTrigger(triggerType, p1,...,pn);
+			mdaqAOScanTrigger(linkID, triggerType, p1,...,pn);
+		</synopsis>
+	</refsynopsisdiv>
+
+	<refsection id="Description_mdaqAOScanTrigger">
+		<title>Description</title>
+		<para>
+
+
+		This function configures and sets a trigger for analog output scan session. 
+		If a trigger is used, after starting analog output scan with <link linkend="mdaqAOScan">mdaqAOScan()</link> 
+		scan operation is blocked until certain condition defined by trigger occurs. 
+		In this state, signal is not generated on analog outputs. 
+		Blocked scan session can be interrupted by calling <link linkend="mdaqAOScanStop">mdaqAOScanStop()</link>. 
+		The <link linkend="mdaqAOScanTrigger">mdaqAOScanTrigger()</link> function can be called only after scan initialization 
+		function  <link linkend="mdaqAOScanInit">mdaqAOScanInit()</link> call and before scan start function <link linkend="mdaqAOScan">mdaqAOScan()</link> call. 
+		When scan session uses a trigger, function <link linkend="mdaqAOScanIsDone">mdaqAOScanIsDone()</link> or <link linkend="mdaqAOScanWait">mdaqAOScanWait()</link> 
+		can be use to check if signal generation is done or wait until signal generation operation is done. 
+		When trigger is used it is recommended to use <link linkend="mdaqAOScanWait">mdaqAOScanWait()</link> with timeout different 
+		than -1 (infinity) this will prevent from freezing Scilab in the case 
+		when the trigger will not occur. Only one trigger type can be used for analog outputs 
+		scan session. When a function is called more then one time it will overwrite previous 
+		trigger configuration. Function <link linkend="mdaqAOScanInit">mdaqAOScanInit()</link> disables trigger.
+		</para>
+		<para>The function allows configuring different trigger types which are defined by trigger type string.
+		
+		
+		</para>
+		<para>
+			<emphasis role="bold">Supported triggers types:</emphasis>
+		</para>
+
+		<itemizedlist>
+			<listitem>
+				<para>
+					<emphasis role="bold">"none": </emphasis> disables trigger for analog output scan</para>
+					<para>		
+					<programlisting role="example">
+						<![CDATA[
+						mdaqAOScanTrigger("none");
+						 ]]>
+					</programlisting>
+					</para>
+			</listitem>
+			<listitem>
+				<para>
+					<emphasis role="bold">"dioValue":  </emphasis> trigger occurs when state (0|1) is present on one of DIO1...8 digital input channel. /para>
+					<para>Function parameters: p1 - DIO channel number in range 1...8, p2 - DIO state which which triggers AI scan start </para>
+					<para>		
+					<programlisting role="example">
+						<![CDATA[
+						mdaqAOScanTrigger("dioValue", 1, 0);
+						 ]]>
+					</programlisting>
+					</para>
+				</para>
+			</listitem>			<listitem>
+				<para>
+					<emphasis role="bold">"dioPattern":  </emphasis> trigger occurs when defined digital pattern matches DIO1...8 digital input channels state
+					<para>Function parameters: p1 - DIO pattern string containing eight characters (x|1|0) defining desired DIO1...8 state. 
+					The 'x' character indicates that DIO is state is ignored, while 0 and 1 indicated low and high state respectively. DIO pattern defines
+					DIO state in the following order DIO1, DIO2, DIO3, DIO4, DIO5, DIO6, DIO7, DIO8 e.g pattern '11xxxxxx' is related to DIO1 and DIO2 state.</para>
+				</para>
+					<programlisting role="example">
+						<![CDATA[
+						mdaqAOScanTrigger("dioPattern", "xxxxxx11");
+						 ]]>
+					</programlisting>
+			</listitem>			<listitem>
+				<para>
+					<emphasis role="bold">"encoderValue":  </emphasis> trigger occurs when value of selected encoder module is greater or lower then provided value
+					<para>Function parameters: p1 - encoder module number (1|2), p2 - encoder value, p3 - defines if trigger shall occur for value greater(1) or lower(0) then p2 argument </para>
+				</para>
+					<programlisting role="example">
+						<![CDATA[
+						mdaqAOScanTrigger("encoderValue", 1, 0, 1);
+						 ]]>
+					</programlisting>
+			</listitem>			<listitem>
+				<para>
+					<emphasis role="bold">"dspStart":  </emphasis> trigger occurs when DSP application is started on MicroDAQ DSP</para>
+					<programlisting role="example">
+						<![CDATA[
+						mdaqAOScanTrigger("dspStart");
+						 ]]>
+					</programlisting>
+			</listitem>
+			<listitem>
+				<para>
+					<emphasis role="bold">"aiStart":  </emphasis> trigger occurs when AI scan session is started</para>
+					<programlisting role="example">
+						<![CDATA[
+						mdaqAOScanTrigger("aoStart");
+						 ]]>
+					</programlisting>
+			</listitem>
+		</itemizedlist>
+		
+	</refsection>  
+
+	<refsection id="Parameters_mdaqAOScanTrigger">
+		<title>Input arguments</title>
+		<itemizedlist>
+			<listitem>
+				<para>
+					<emphasis role="bold">linkID: </emphasis> Valid connection link id (optional)</para>
+			</listitem>
+			<listitem>
+				<para>
+					<emphasis role="bold">triggerType:  </emphasis> Trigger type string</para>
+			</listitem>
+			<listitem>
+				<para>
+					<emphasis role="bold">p1,...,pn:  </emphasis> Trigger parameters</para>
+			</listitem>
+		</itemizedlist>
+	</refsection>
+
+
+	<refsection>
+		<title>Examples</title>
+
+		<para>dioValue trigger type - set trigger to wait for high state on DIO7</para>
+		<programlisting role="example">
+			<![CDATA[
+			mdaqAOScanInit(1, [1 2 3 4 5]', [0, 5], %F, 10, 1)
+			mdaqAOScanTrigger("dioValue", 7, 1);
+			mdaqAOScan();
+			 ]]>
+		</programlisting>
+
+		<para>dioPattern trigger type - set trigger to wait for high state on DIO7</para>
+		<programlisting role="example">
+			<![CDATA[
+			mdaqAOScanInit(1, [1 2 3 4 5]', [0, 5], %F, 10, 1)
+			mdaqAOScanTrigger("dioPattern", "xxxxxx1x");
+			mdaqAOScan();
+			 ]]>
+		</programlisting>
+
+		<para>dioPattern trigger type - set trigger to wait for high state on DIO7 and low on DIO6</para>
+		<programlisting role="example">
+			<![CDATA[
+			mdaqAOScanInit(1, [1 2 3 4 5]', [0, 5], %F, 10, 1)
+			mdaqAOScanTrigger("dioPattern", "xxxxx01x");
+			mdaqAOScan();
+			 ]]>
+		</programlisting>
+		
+		<para>encoderValue trigger type - set trigger to wait encoder 1 value greater then 1000</para>
+		<programlisting role="example">
+			<![CDATA[
+			mdaqEncoderInit(1, 0);
+			mdaqAOScanInit(1, [1 2 3 4 5]', [0, 5], %F, 10, 1)
+			mdaqAOScanTrigger("encoderValue", 1, 1000, 1);
+			mdaqAOScan();
+			disp("Waiting until signal generation is finished")
+			isTimeout = %f; 
+			try
+				mdaqAOScanWait(10);
+			catch
+				isTimeout = %T;
+			end
+			
+			if isTimeout then
+				disp("Timeout")
+			else
+				disp("Success")
+			end
+			 ]]>
+		</programlisting>
+
+		
+		<para>dspStart trigger type - synchronize AO scan start with DSP application start</para>
+		<programlisting role="example">
+			<![CDATA[
+			mdaqAOScanInit(1, [1 2 3 4 5]', [0, 5], %F, 10, 1)
+			mdaqAOScanTrigger("dspStart");
+			mdaqAOScan();
+			 ]]>
+		</programlisting>
+
+		<para>aoStart trigger type - synchronize AO scan start with AI scan start</para>
+		<programlisting role="example">
+			<![CDATA[
+			mdaqAOScanInit(1, [1 2 3 4 5]', [0, 5], %F, 10, 1)
+			mdaqAOScanTrigger("aiStart");
+			mdaqAOScan();
+			 ]]>
+		</programlisting>
+
+	</refsection>
+
+	<refsection id="SeeAlso_mdaqAOScanTrigger">
+		<title>See Also</title>
+		<simplelist type="inline">
+			<member>
+				<link linkend="mdaqAOScanInit">mdaqAOScanInit</link>
+			</member>
+			<member>
+				<link linkend="mdaqAOScan">mdaqAOScan</link>
+			</member>
+			<member>
+				<link linkend="mdaqAOScanIsDone">mdaqAOScanIsDone</link>
+			</member>
+			<member>
+				<link linkend="mdaqAOScanWait">mdaqAOScanWait</link>
+			</member>
+			<member>
+				<link linkend="mdaqAOScan">mdaqAOScan</link>
+			</member>
+		</simplelist>
+	</refsection>
+</refentry>
