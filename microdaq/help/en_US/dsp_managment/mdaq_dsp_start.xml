@@ -9,15 +9,9 @@ version="5.0-subset Scilab"
 xml:id="mdaqDSPStart">
   <refnamediv>
     <refname>mdaqDSPStart</refname>
-    <refpurpose>Starts DSP application on MicroDAQ</refpurpose>
+    <refpurpose>Starts DSP task</refpurpose>
   </refnamediv>
   <refsynopsisdiv>
-	<title>Description</title>
-	<para>Function starts executing appliation initialized by mdaqDSPInit funciton on MicroDAQ DSP unit.</para>
-	<para>
-	After DSP application is started (in Ext mode) it starts to send data to host and Scilab script can receive data with mdaqDSPRead() function.
-	</para>
-
     <title>Calling Sequence</title>
     <synopsis>
 	  mdaqDSPStart(linkID);
@@ -25,6 +19,12 @@ xml:id="mdaqDSPStart">
     </synopsis>
   </refsynopsisdiv>
   <refsection id="Parameters___FUNC_NAME__">
+	<title>Description</title>
+	<para>Function starts executing appliation initialized by <link linkend="mdaqDSPInit">mdaqDSPInit()</link> funciton on MicroDAQ DSP unit.</para>
+	<para>
+        After DSP application is started (in Ext mode) it starts to send data to host and Scilab script can receive data with <link linkend="mdaqDSPRead">mdaqDSPRead()</link> function.
+        Through <link linkend="mdaqDSPRead">mdaqDSPWrite()</link> function user can write data into DSP task (running DSP application) no matter if it's started in external or standalone mode.
+	</para>
     <title>Arguments</title>
     <itemizedlist>
 	    <listitem><para><emphasis role="bold">linkID: </emphasis> Valid connection link id (optional)</para></listitem>
@@ -164,7 +164,7 @@ end
 	  <member><link linkend="mdaqDSPStop">mdaqDSPStop</link> : Terminates DSP task</member>
       <member><link linkend="mdaqDSPStop">mdaqDSPWrite</link> : Writes data to DSP task</member>
       <member><link linkend="mdaqDSPRead">mdaqDSPRead</link> : Reads data from DSP task</member>
-      <member><link linkend="mdaqDSPWait">mdaqDSPWait</link> : Waits until DSP task is over</member>
+      <member><link linkend="mdaqDSPWait">mdaqDSPWait</link> : Waits until DSP task is complited</member>
       <member><link linkend="mdaqDSPIsDone">mdaqDSPIsDone</link> : Checks DSP task status</member>
       <member>
       <link type="scilab" linkend="scilab.help/sum">Link to the Scilab help page</link>

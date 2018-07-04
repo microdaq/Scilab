@@ -2,7 +2,7 @@
 <refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaqDSPWait">
 	<refnamediv>
 		<refname>mdaqDSPWait</refname>
-	<refpurpose> Waits until DSP task is over.</refpurpose>
+	<refpurpose> Waits until DSP task is complited.</refpurpose>
 	</refnamediv>
 	
 	<refsynopsisdiv>
@@ -24,7 +24,7 @@
 		<title>Parameters</title>
 		<itemizedlist>
 			<listitem><para><emphasis role="bold">linkID: </emphasis> Valid connection link ID (optional) </para></listitem>
-			<listitem><para><emphasis role="bold">timeout: </emphasis> Amount of time in seconds to wait for samples (-1 - wait indefinitely) </para></listitem>
+			<listitem><para><emphasis role="bold">timeout: </emphasis> Amount of time in seconds to wait (-1 - wait indefinitely) </para></listitem>
 		</itemizedlist>
 	</refsection>
 	
@@ -36,9 +36,6 @@ Example 1: Using standard DSP API
         <programlisting role="example"><![CDATA[
 Freq = 10;     // Hz
 Druration = 5; // seconds
-
-// Create DSP task 
-dsp = mdaqDSPTask();
 
 disp("Building DSP model...");
 mdaqDSPBuild(mdaqToolboxPath() + filesep() + "examples" + filesep() +"led_demo.zcos");
@@ -59,11 +56,11 @@ Example 2: Using DSP task API
 Freq = 10;     // Hz
 Druration = 5; // seconds
 
-// Create DSP task 
-dsp = mdaqDSPTask();
-
 disp("Building DSP model...");
 mdaqDSPBuild(mdaqToolboxPath() + filesep() + "examples" + filesep() +"led_demo.zcos");
+
+// Create DSP task 
+dsp = mdaqDSPTask();
 
 disp("Starting DSP model...");
 dsp.init('led_demo_scig\led_demo.out', Freq, Druration);

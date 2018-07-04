@@ -31,7 +31,7 @@
 	<refsection>
         <title>Examples</title>
 <para>
-    XCOS model used in examples below:
+    The examples use Xcos model with MEM_READ and SIGNAL blocks. Model compiles (<link linkend="mdaqDSPBuild">mdaqDSPBuild</link>) to C code and runs (<link linkend="mdaqDSPInit">mdaqDSPInit</link>, <link linkend="mdaqDSPStart">mdaqDSPStart</link>) on dedicated DSP core on MicroDAQ device. The first block is reading data from MicroDAQ shared memory on index 1. It's acting as our input where we can write data through <link linkend="mdaqDSPWrite">mdaqDSPWrite()</link> function. In this model input data is multiplied by factor 2 and passed to SIGNAL block which is our model output. The <link linkend="mdaqDSPRead()">mdaqDSPRead()</link> function receives data from SIGNAL block. Here is a Xcos model used in examples below:
         <programlisting role="example"><![CDATA[
 xcos(mdaqToolboxPath() + filesep() + "examples" + filesep() +"dsp_rw_demo.zcos");
 ]]></programlisting>

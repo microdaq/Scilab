@@ -12,14 +12,14 @@ xml:id="mdaqDSPBuild">
     <refpurpose>Build model for MicroDAQ DSP</refpurpose>
   </refnamediv>
   <refsynopsisdiv>
-	<title>Description</title>
-	<para>This function builds DSP executable from provided Xcos model.</para>
     <title>Calling Sequence</title>
     <synopsis>
       mdaqDSPBuild(path);
     </synopsis>
   </refsynopsisdiv>
   <refsection id="Parameters___FUNC_NAME__">
+	<title>Description</title>
+	<para>This function builds DSP executable from provided Xcos model.</para>
     <title>Arguments</title>
     <itemizedlist>
 	    <listitem><para><emphasis role="bold">path : </emphasis> Xcos model path</para></listitem>
@@ -93,7 +93,7 @@ end
 	  <member><link linkend="mdaqDSPStop">mdaqDSPStop</link> : Terminates DSP task</member>
       <member><link linkend="mdaqDSPStop">mdaqDSPWrite</link> : Writes data to DSP task</member>
       <member><link linkend="mdaqDSPRead">mdaqDSPRead</link> : Reads data from DSP task</member>
-      <member><link linkend="mdaqDSPWait">mdaqDSPWait</link> : Waits until DSP task is over</member>
+      <member><link linkend="mdaqDSPWait">mdaqDSPWait</link> : Waits until DSP task is complited</member>
       <member><link linkend="mdaqDSPIsDone">mdaqDSPIsDone</link> : Checks DSP task status</member>
       <member>
         <link type="scilab" linkend="scilab.help/sum">Link to the Scilab help page</link>

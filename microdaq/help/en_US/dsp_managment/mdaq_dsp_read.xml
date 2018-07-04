@@ -9,9 +9,16 @@ version="5.0-subset Scilab"
 xml:id="mdaqDSPRead">
   <refnamediv>
     <refname>mdaqDSPRead</refname>
-    <refpurpose>Read SIGNAL block data</refpurpose>
+    <refpurpose>Read data from DSP task</refpurpose>
   </refnamediv>
   <refsynopsisdiv>
+	<title>Calling Sequence</title>
+    <synopsis>
+      [data] = mdaqDSPRead(linkID, signalID, vectorSize, vectorCount, timeout);
+      [data] = mdaqDSPRead(signalID, vectorSize, vectorCount, timeout);
+    </synopsis>
+  </refsynopsisdiv>
+  <refsection id="Parameters___FUNC_NAME__">
 	<title>Description</title>
 	<para>This function reads data from running DSP application generated from XCos model in external mode. Xcos model has to contain SIGNAL block with defined ID. Function blocks execution until it gathers all requested samples or 'timeout' is reached. For example, if a user wants to read data from DSP application where SIGNAL block with ID=13 is connected to MUX block which is passing 4 doubles (data size = 4), the function call will be as follows: mdaqDSPRead(13, 4, 1, 1). In that case, timeout is set to 1 second. </para>
     <para>
@@ -30,13 +37,6 @@ xml:id="mdaqDSPRead">
           t1 = mdaqDSPRead(3, vectorSize, vectorCount, timeout); <-- samples from time t1
           ]]></programlisting>
     </para>
-	<title>Calling Sequence</title>
-    <synopsis>
-      [data] = mdaqDSPRead(linkID, signalID, vectorSize, vectorCount, timeout);
-      [data] = mdaqDSPRead(signalID, vectorSize, vectorCount, timeout);
-    </synopsis>
-  </refsynopsisdiv>
-  <refsection id="Parameters___FUNC_NAME__">
     <title>Arguments</title>
     <itemizedlist>
       <listitem><para><emphasis role="bold">linkID: </emphasis> Valid connection link id (optional)</para></listitem>
@@ -49,7 +49,7 @@ xml:id="mdaqDSPRead">
   	<refsection>
         <title>Examples</title>
 <para>
-    XCOS model used in examples below:
+   The examples use Xcos model with MEM_READ and SIGNAL blocks. Model compiles (<link linkend="mdaqDSPBuild">mdaqDSPBuild</link>) to C code and runs (<link linkend="mdaqDSPInit">mdaqDSPInit</link>, <link linkend="mdaqDSPStart">mdaqDSPStart</link>) on dedicated DSP core on MicroDAQ device. The first block is reading data from MicroDAQ shared memory on index 1. It's acting as our input where we can write data through <link linkend="mdaqDSPWrite">mdaqDSPWrite()</link> function. In this model input data is multiplied by factor 2 and passed to SIGNAL block which is our model output. The <link linkend="mdaqDSPRead()">mdaqDSPRead()</link> function receives data from SIGNAL block. Here is a Xcos model used in examples below:
         <programlisting role="example"><![CDATA[
 xcos(mdaqToolboxPath() + filesep() + "examples" + filesep() +"dsp_rw_demo.zcos");
 ]]></programlisting>
@@ -138,7 +138,7 @@ disp("End of execution DSP model");
       <member><link linkend="mdaqDSPStart">mdaqDSPStart</link> : Start DSP task</member>
 	  <member><link linkend="mdaqDSPStop">mdaqDSPStop</link> : Terminates DSP task</member>
       <member><link linkend="mdaqDSPStop">mdaqDSPWrite</link> : Writes data to DSP task</member>
-      <member><link linkend="mdaqDSPWait">mdaqDSPWait</link> : Waits until DSP task is over</member>
+      <member><link linkend="mdaqDSPWait">mdaqDSPWait</link> : Waits until DSP task is complited</member>
       <member><link linkend="mdaqDSPIsDone">mdaqDSPIsDone</link> : Checks DSP task status</member>
       <member>
         <link type="scilab" linkend="scilab.help/sum">Link to the Scilab help page</link>
