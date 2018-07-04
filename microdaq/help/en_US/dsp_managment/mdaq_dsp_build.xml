@@ -29,7 +29,7 @@ xml:id="mdaqDSPBuild">
     	<refsection>
 	<title>Example</title>
           <programlisting role="example"><![CDATA[
-// Script execution duration in seconds
+  // Script execution duration in seconds
 TIME = 20;
 
 // Model execution frequency in Hertz
@@ -39,7 +39,8 @@ FREQ = 5000;
 mdaqDSPBuild(mdaqToolboxPath() + filesep() + "examples" + filesep() +"fft_demo.zcos");
 
 // Start DSP application
-mdaqDSPStart('fft_demo_scig\fft_demo.out', 1.0/FREQ);
+mdaqDSPInit('fft_demo_scig\fft_demo.out', FREQ, -1);
+mdaqDSPStart();
 
 first_time = 1;
 a = []; s = [];
@@ -49,7 +50,7 @@ sample_count = FREQ/10;
 fig = figure("Figure_name","MicroDAQ FFT demo");
 
 for i=1:(TIME*10)
-    s = mdaqDSPSignalRead(1, 1, sample_count, 1000);
+    s = mdaqDSPRead(1, 1, sample_count, 1);
    
     N=size(s,'*');  //number of samples
     s = s - mean(s);//cut DC
@@ -82,14 +83,18 @@ mprintf("\nFFT demo has been stopped.");
 if is_handle_valid(fig) then
     close(fig);
 end
- ]]></programlisting>
+]]></programlisting>
  </refsection>
   <refsection id="SeeAlso___FUNC_NAME__">
     <title>See Also</title>
     <simplelist type="inline">
-      <member><link linkend="mdaqDSPStart">mdaqDSPStart</link> : Start DSP execution </member>
-	  <member><link linkend="mdaqDSPSignalRead">mdaqDSPSignalRead</link> : Read DSP signal data </member>
-	  <member><link linkend="mdaqDSPStop">mdaqDSPStop</link> : Terminate DSP execution </member>
+	  <member><link linkend="mdaqDSPInit">mdaqDSPInit</link> : Initializes DSP task</member>
+      <member><link linkend="mdaqDSPStart">mdaqDSPStart</link> : Start DSP task</member>
+	  <member><link linkend="mdaqDSPStop">mdaqDSPStop</link> : Terminates DSP task</member>
+      <member><link linkend="mdaqDSPStop">mdaqDSPWrite</link> : Writes data to DSP task</member>
+      <member><link linkend="mdaqDSPRead">mdaqDSPRead</link> : Reads data from DSP task</member>
+      <member><link linkend="mdaqDSPWait">mdaqDSPWait</link> : Waits until DSP task is over</member>
+      <member><link linkend="mdaqDSPIsDone">mdaqDSPIsDone</link> : Checks DSP task status</member>
       <member>
         <link type="scilab" linkend="scilab.help/sum">Link to the Scilab help page</link>
       </member>

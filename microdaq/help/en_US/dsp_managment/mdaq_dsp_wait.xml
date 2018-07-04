@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaqDSPWait">
+	<refnamediv>
+		<refname>mdaqDSPWait</refname>
+	<refpurpose> Waits until DSP task is over.</refpurpose>
+	</refnamediv>
+	
+	<refsynopsisdiv>
+		<title>Calling Sequence</title>
+		<synopsis>
+			mdaqDSPWait(timeout)
+			mdaqDSPWait(linkID, timeout)
+		</synopsis>
+	</refsynopsisdiv>
+	
+	<refsection id="Description___FUNC_NAME__">
+		<title>Description</title>
+		<para>
+			This function waits until end of the DSP application execution.  
+		</para>
+	</refsection>  
+  
+	<refsection id="Parameters___FUNC_NAME__">
+		<title>Parameters</title>
+		<itemizedlist>
+			<listitem><para><emphasis role="bold">linkID: </emphasis> Valid connection link ID (optional) </para></listitem>
+			<listitem><para><emphasis role="bold">timeout: </emphasis> Amount of time in seconds to wait for samples (-1 - wait indefinitely) </para></listitem>
+		</itemizedlist>
+	</refsection>
+	
+	<refsection>
+        <title>Examples</title>
+        <para>
+Example 1: Using standard DSP API
+</para>
+        <programlisting role="example"><![CDATA[
+Freq = 10;     // Hz
+Druration = 5; // seconds
+
+// Create DSP task 
+dsp = mdaqDSPTask();
+
+disp("Building DSP model...");
+mdaqDSPBuild(mdaqToolboxPath() + filesep() + "examples" + filesep() +"led_demo.zcos");
+
+disp("Starting DSP model...");
+mdaqDSPInit('led_demo_scig\led_demo.out', Freq, Druration);
+
+mdaqDSPStart();
+
+disp("Waiting for the end of execution...");
+daqDSPWait(-1);
+
+disp("End of execution DSP model"); ]]></programlisting>
+ <para>
+Example 2: Using DSP task API
+</para>
+        <programlisting role="example"><![CDATA[
+Freq = 10;     // Hz
+Druration = 5; // seconds
+
+// Create DSP task 
+dsp = mdaqDSPTask();
+
+disp("Building DSP model...");
+mdaqDSPBuild(mdaqToolboxPath() + filesep() + "examples" + filesep() +"led_demo.zcos");
+
+disp("Starting DSP model...");
+dsp.init('led_demo_scig\led_demo.out', Freq, Druration);
+dsp.start(); 
+
+disp("Waiting for the end of execution...");
+sp.waitUntilDone(-1);
+
+disp("End of execution DSP model");
+]]></programlisting>
+
+    </refsection>
+	
+   <refsection id="SeeAlso___FUNC_NAME__">
+    <title>See Also</title>
+    <simplelist type="inline">
+	  <member><link linkend="mdaqDSPBuild">mdaqDSPBuild</link> : Builds DSP application from provided Xcos model </member>
+	  <member><link linkend="mdaqDSPInit">mdaqDSPInit</link> : Initializes DSP task</member>
+      <member><link linkend="mdaqDSPStart">mdaqDSPStart</link> : Start DSP task</member>
+	  <member><link linkend="mdaqDSPStop">mdaqDSPStop</link> : Terminates DSP task</member>
+      <member><link linkend="mdaqDSPRead">mdaqDSPRead</link> : Reads data from DSP task</member>
+      <member><link linkend="mdaqDSPIsDone">mdaqDSPIsDone</link> : Checks DSP task status</member>
+      <member>
+        <link type="scilab" linkend="scilab.help/sum">Link to the Scilab help page</link>
+      </member>
+    </simplelist>
+  </refsection>
+</refentry>
+
+
+
+
+
+

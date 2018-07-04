@@ -1,43 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<refentry xmlns="http://docbook.org/ns/docbook" 
-xmlns:xlink="http://www.w3.org/1999/xlink" 
-xmlns:svg="http://www.w3.org/2000/svg" 
-xmlns:ns5="http://www.w3.org/1999/xhtml" 
-xmlns:mml="http://www.w3.org/1998/Math/MathML" 
-xmlns:db="http://docbook.org/ns/docbook" 
-version="5.0-subset Scilab" 
-xml:id="mdaqDSPStop">
-  <refnamediv>
-    <refname>mdaqDSPStop</refname>
-    <refpurpose>Stop currently running DSP application</refpurpose>
-  </refnamediv>
-  <refsynopsisdiv>
-	<title>Description</title>
-	<para>This function terminates model execution on MicroDAQ DSP core. It has to be called after DSP processing is done.</para>
-    <title>Calling Sequence</title>
-    <synopsis>
-      mdaqDSPStop();
-	  mdaqDSPStop(linkID);
-    </synopsis>
-  </refsynopsisdiv>
-  <refsection id="Parameters___FUNC_NAME__">
-    <title>Arguments</title>
-    <itemizedlist>
-			<listitem>
-				<para>
-					<emphasis role="bold">linkID: </emphasis> Valid connection link id (optional)</para>
-			</listitem>
-    </itemizedlist>
-  </refsection>
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaqDSPIsDone">
+	<refnamediv>
+		<refname>mdaqDSPIsDone</refname>
+	<refpurpose>Checks DSP task status.</refpurpose>
+	</refnamediv>
+	
+	<refsynopsisdiv>
+		<title>Calling Sequence</title>
+		<synopsis>
+			mdaqDSPIsDone()
+			mdaqDSPIsDone(linkID, index, data)
+		</synopsis>
+	</refsynopsisdiv>
+	
+	<refsection id="Description___FUNC_NAME__">
+		<title>Description</title>
+		<para>
+			This function returns DSP task status. Returns true (%T) if DSP task is over, false (%F) if is still running. 
+		</para>
+	</refsection>  
   
-    		<refsection>
+	<refsection id="Parameters___FUNC_NAME__">
+		<title>Parameters</title>
+		<itemizedlist>
+			<listitem><para><emphasis role="bold">linkID: </emphasis> Valid connection link ID (optional) </para></listitem>
+		</itemizedlist>
+	</refsection>
+	
+	<refsection>
         <title>Examples</title>
         <para>
 Example 1: Using standard DSP API
 </para>
         <programlisting role="example"><![CDATA[
-Freq = 10;      //  Hz
-Druration = -1; // infinite
+Freq = 10;     // Hz
+Druration = 5; // seconds
 
 // Create DSP task 
 dsp = mdaqDSPTask();
@@ -47,10 +44,13 @@ mdaqDSPBuild(mdaqToolboxPath() + filesep() + "examples" + filesep() +"led_demo.z
 
 disp("Starting DSP model...");
 mdaqDSPInit('led_demo_scig\led_demo.out', Freq, Druration);
+
 mdaqDSPStart();
 
-sleep(5000);
-mdaqDSPStop();
+disp("Waiting for the end of execution...");
+while mdaqDSPIsDone() == %F then 
+    sleep(100);
+end
 
 disp("End of execution DSP model");
 ]]></programlisting>
@@ -58,8 +58,8 @@ disp("End of execution DSP model");
 Example 2: Using DSP task API
 </para>
         <programlisting role="example"><![CDATA[
-Freq = 10;      // Hz
-Druration = -1; // infinite
+Freq = 10;     // Hz
+Druration = 5; // seconds
 
 // Create DSP task 
 dsp = mdaqDSPTask();
@@ -71,25 +71,33 @@ disp("Starting DSP model...");
 dsp.init('led_demo_scig\led_demo.out', Freq, Druration);
 dsp.start(); 
 
-sleep(5000);
-dsp.stop();
+disp("Waiting for the end of execution...");
+while dsp.isDone() == %F then 
+    sleep(100);
+end
 
 disp("End of execution DSP model"); ]]></programlisting>
 
     </refsection>
-  <refsection id="SeeAlso___FUNC_NAME__">
+	
+   <refsection id="SeeAlso___FUNC_NAME__">
     <title>See Also</title>
     <simplelist type="inline">
 	  <member><link linkend="mdaqDSPBuild">mdaqDSPBuild</link> : Builds DSP application from provided Xcos model </member>
 	  <member><link linkend="mdaqDSPInit">mdaqDSPInit</link> : Initializes DSP task</member>
       <member><link linkend="mdaqDSPStart">mdaqDSPStart</link> : Start DSP task</member>
-      <member><link linkend="mdaqDSPStop">mdaqDSPWrite</link> : Writes data to DSP task</member>
+	  <member><link linkend="mdaqDSPStop">mdaqDSPStop</link> : Terminates DSP task</member>
       <member><link linkend="mdaqDSPRead">mdaqDSPRead</link> : Reads data from DSP task</member>
       <member><link linkend="mdaqDSPWait">mdaqDSPWait</link> : Waits until DSP task is over</member>
-      <member><link linkend="mdaqDSPIsDone">mdaqDSPIsDone</link> : Checks DSP task status</member>
       <member>
         <link type="scilab" linkend="scilab.help/sum">Link to the Scilab help page</link>
       </member>
     </simplelist>
   </refsection>
 </refentry>
+
+
+
+
+
+
