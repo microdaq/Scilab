@@ -93,7 +93,7 @@ end
 	  <member><link linkend="mdaqDSPStop">mdaqDSPStop</link> : Terminates DSP task</member>
       <member><link linkend="mdaqDSPStop">mdaqDSPWrite</link> : Writes data to DSP task</member>
       <member><link linkend="mdaqDSPRead">mdaqDSPRead</link> : Reads data from DSP task</member>
-      <member><link linkend="mdaqDSPWait">mdaqDSPWait</link> : Waits until DSP task is complited</member>
+      <member><link linkend="mdaqDSPWait">mdaqDSPWait</link> : Waits until DSP task is completed</member>
       <member><link linkend="mdaqDSPIsDone">mdaqDSPIsDone</link> : Checks DSP task status</member>
       <member>
         <link type="scilab" linkend="scilab.help/sum">Link to the Scilab help page</link>
