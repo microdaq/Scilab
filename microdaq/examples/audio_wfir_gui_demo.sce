@@ -614,7 +614,7 @@ function [ok,values_res,exprs]=wfir_gui_demo(exprs)
             mdaqAIScanInit(ChannelIN, aiRange, IsDifferential, Rate, -1);
             mdaqAOScanInit(ChannelOUT, initialData, aoRange, IsContinuous, Rate, -1);
             
-            audioData = mdaqAIScan(ChunkSize, %T);    
+            audioData = mdaqAIScan(ChunkSize, 10);    
             mdaqAOScan();
             mdaqAOScanData(ChannelOUT, audioData, %T);
             
@@ -625,7 +625,7 @@ function [ok,values_res,exprs]=wfir_gui_demo(exprs)
 
                 // Acquire data
                 pastAudioData = audioData;
-                audioData = mdaqAIScan(ChunkSize, %T);
+                audioData = mdaqAIScan(ChunkSize, 10);
                 audioDataExt = [pastAudioData(ChunkSize-SampleOffset+1:ChunkSize, :); audioData];
                 
                 // FIR Filter 

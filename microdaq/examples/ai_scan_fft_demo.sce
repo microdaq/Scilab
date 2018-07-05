@@ -21,7 +21,7 @@ mdaqAIScanInit(channel, AIRange, isDifferential, scanFreq, duration);
 
 while %T
     // Acquire data
-    [data result] = mdaqAIScan(numOfSmaples, %T);
+    [data result] = mdaqAIScan(numOfSmaples, 1);
     
     // Calculate FFT
     data = data - mean(data);

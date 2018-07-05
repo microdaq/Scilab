@@ -19,7 +19,7 @@ mdaqAOScan();
 // Acquire data in the loop
 while(mdaqKeyRead(1) == %F)
     // Audio stream acqisition
-    audioData = mdaqAIScan(Rate / 10, %T);
+    audioData = mdaqAIScan(Rate / 10, 1);
     
     // Signal processing 
     audioData = audioData * Gain; 
