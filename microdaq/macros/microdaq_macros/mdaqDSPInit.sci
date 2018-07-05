@@ -44,8 +44,8 @@ function mdaqDSPInit( arg1, arg2, arg3, arg4 )
 
     if argn(2) == 3 then
         link_id = mdaqOpen();
-        if link_id < 0  then
-            error(mdaq_error2(link_id), 10000 + abs(link_id)); 
+        if link_id < 0 then
+            error("Unable to connect to MicroDAQ device!");
         end
     end
 
