@@ -1,6 +1,7 @@
-function  mdaqAIScanInit(arg1, arg2, arg3, arg4, arg5, arg6)
+function result = mdaqAIScanInit(arg1, arg2, arg3, arg4, arg5, arg6)
     link_id = -1;
-
+    result = [];
+                 
     if argn(2) == 5 then
         channels = arg1;
         aiRange = arg2;
@@ -154,56 +155,10 @@ function  mdaqAIScanInit(arg1, arg2, arg3, arg4, arg5, arg6)
         else
             limited_cap = %f;
         end
-
-        rows = [];
-        row = '';
-
-        adc_res = strtod(part(adc_info.resolution, 1:2))
-        for j=1:ch_count
-            if aiMode(j) == 1 then
-                measure_type = "Differential"
-            elseif (aiMode(j) == 0)
-                measure_type = "Single-ended"
-            end
-            adc_range = aiRange_t(j, 2) - aiRange_t(j, 1); 
-            resolution = string((int(adc_range/2^adc_res * 1000000)) / 1000);
-            rangeStr="";
-            if aiRange_t(j, 1) < 0 then
-                rangeStr = "±" + string(aiRange_t(j, 2))+"V";
-            else 
-                rangeStr = "0-" + string(aiRange_t(j, 2))+"V";
-            end
-            rows = [rows; "AI"+string(channels(j)), measure_type, rangeStr, resolution+"mV"]
-        end
-
-        mprintf("\nAnalog input task settings:\n");
-        mprintf("\t--------------------------------------------------\n")
-        str2table(rows, ["Channel", "Terminal config", "Range", "Resolution"], 3)
-        mprintf("\t--------------------------------------------------\n")
-        mprintf("\tTask rate:\t\t%.1f scans per second\n", scan_freq);
-        mprintf("\tActual task rate:\t%.1f scans per second\n", real_freq);
-
-        if 1 /real_freq > 0.001 then
-            mprintf("\tScan period: \t\t%.5f seconds\n", 1 / real_freq);
-        end
         
-        if 1 /real_freq <= 0.001 then
-            mprintf("\tScan period: \t\t%.5f ms\n", 1 / real_freq * 1000);
-        end
-
-        if scan_time < 0
-            mprintf("\tNumber of channels:\t%d\n", ch_count)
-            mprintf("\tNumber of scans:\tInf\n");
-            mprintf("\tDuration:\t\tInf\n");
-        else
-            mprintf("\tNumber of channels:\t%d\n", ch_count)
-            mprintf("\tNumber of scans:\t%d\n", scan_time * scan_freq);
-            if scan_time == 1 
-                mprintf("\tDuration:\t\t%.2f second\n", scan_time);
-            else
-                mprintf("\tDuration:\t\t%.2f seconds\n", scan_time);
-            end
-        end
-        mprintf("\t--------------------------------------------------\n")
+        adc_res = strtod(part(adc_info.resolution, 1:2)); 
+        result = tlist(["istlist",..
+            "scan_freq","real_freq","scan_time","ch_count","adc_res","aiMode","aiRange", "channels"],..
+             scan_freq,  real_freq,  scan_time,  ch_count,  adc_res,  aiMode,  aiRange_t, channels);
     end
 endfunction
