@@ -40,6 +40,8 @@ bin/
 #
 *_scig
 *.o
+*.gif
+*.svg
 
 
 #
@@ -53,3 +55,4 @@ bin/
 
 # Test directory
 test/*
+tmp/*
