@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaqDSPTask">
+	<refnamediv>
+		<refname>mdaqDSPTask</refname>
+		<refpurpose>Creates DSP task object</refpurpose>
+	</refnamediv>
+
+	<refsynopsisdiv>
+		<title>Calling Sequence</title>
+		<synopsis>
+			obj = mdaqDSPTask()
+		</synopsis>
+	</refsynopsisdiv>
+
+	<refsection id="Description_mdaqDSPTask">
+		<title>Description</title>
+		<para>
+			This function creates DSP task object which gathers all functions used for executing Xcos generated DSP applications on MicroDAQ DSP core. 
+			The function does not introduce new functionality, it wraps existing API into an object-like code and allows to write more readable 
+			and compact code. In order to get function list which can be used with object display its content. 
+			</para>
+			<para>
+			The following calling convention applies: 
+
+			<itemizedlist>
+				<listitem>
+					<para>
+						<emphasis role="bold">obj.start(): </emphasis> Starts DSP task - <link linkend="mdaqAIScanStart">mdaqDSPStart()</link></para>
+				</listitem>
+				<listitem>
+					<para>
+						<emphasis role="bold">obj.init(): </emphasis> Configure and initialize DSP task  - <link linkend="mdaqAIScanInit">mdaqDSPInit()</link></para>
+				</listitem>
+				<listitem>
+					<para>
+						<emphasis role="bold">obj.read(): </emphasis> Read data from DSP task - <link linkend="mdaqAIScanRead">mdaqDSPRead()</link></para>
+				</listitem>
+				<listitem>
+					<para>
+						<emphasis role="bold">obj.stop(): </emphasis> Stop DSP task - <link linkend="mdaqAIScanStop">mdaqDSPStop()</link></para>
+				</listitem>
+				<listitem>
+					<para>
+						<emphasis role="bold">obj.isDone(): </emphasis> Check DSP state - <link linkend="mdaqDSPIsDone">mdaqDSPIsDone()</link></para>
+				</listitem>
+				<listitem>
+					<para>
+						<emphasis role="bold">obj.waitUntilDone(): </emphasis> Wait until DSP task is done - <link linkend="mdaqDSPWait">mdaqDSPWait()</link></para>
+				</listitem>
+			</itemizedlist>
+			
+		</para>
+	</refsection>  
+
+	<refsection id="Parameters_mdaqDSPTask">
+			<title>Output arguments</title>
+			<para>
+
+			<itemizedlist>
+				<listitem>
+					
+						<emphasis role="bold">obj: </emphasis> tlist type object gathering analog input scan functions
+				</listitem>
+			</itemizedlist>
+			 
+		</para>
+	</refsection>
+
+	<refsection>
+		<title>Examples</title>
+		<para>Start 'dsp.out' DSP application for 5 seconds with 5000Hz frequency</para>
+		<programlisting role="example">
+			<![CDATA[
+				dsp = mdaqDSPTask(); 
+				dsp.init("dsp.out", 5000, 5);
+				dsp.start(); 
+			 ]]>
+		</programlisting>
+		
+		<para>Start 'dsp.out' DSP application for 5 seconds with 5000Hz frequency and wait until is done</para>
+		<programlisting role="example">
+			<![CDATA[
+				dsp = mdaqDSPTask(); 
+				dsp.init("dsp.out", 5000, 5);
+				dsp.start();
+				dsp.waitUntilDone(6);
+			 ]]>
+		</programlisting>
+	</refsection>
+
+	<refsection id="SeeAlso_mdaqDSPTask">
+	<title>See Also</title>
+		<simplelist type="inline">
+	  <member><link linkend="mdaqDSPBuild">mdaqDSPBuild</link> : Builds DSP application from provided Xcos model </member>
+      <member><link linkend="mdaqDSPStart">mdaqDSPStart</link> : Starts DSP task</member>
+	  <member><link linkend="mdaqDSPStop">mdaqDSPStop</link> : Stops DSP task</member>
+      <member><link linkend="mdaqDSPStop">mdaqDSPWrite</link> : Writes data to DSP task</member>
+      <member><link linkend="mdaqDSPRead">mdaqDSPRead</link> : Reads data from DSP task</member>
+      <member><link linkend="mdaqDSPWait">mdaqDSPWait</link> : Waits until DSP task is complited</member>
+      <member><link linkend="mdaqDSPIsDone">mdaqDSPIsDone</link> : Checks DSP task status</member>
+		</simplelist>
+	</refsection>
+</refentry>

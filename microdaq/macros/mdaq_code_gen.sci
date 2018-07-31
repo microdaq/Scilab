@@ -1,7 +1,7 @@
 function mdaq_code_gen(load_dsp_app)
 
     if  check_mdaq_compiler() == %F then
-        message("ERROR: Unable to find compiler - run microdaq_setup! ");
+        message("ERROR: Unable to find compiler - configure toolbox with microdaq_setup! ");
         return;
     end
 
@@ -49,13 +49,12 @@ function mdaq_code_gen(load_dsp_app)
 
                 // mdaq_setup block found so code gen can be executed
                 continue_code_gen = %t;
-                
             end;
         end
     end
 
     if continue_code_gen == %f then
-        message('In order to run MicroDAQ Code Gen scheme must contains ''mdaq_setup'' block from MicroDAQ palette');
+        messagebox('Unable to generate code, place SETUP (''mdaq_setup'') block from MicroDAQ palette and try again',  "Simulation problem", "error");
         return;
     end
 
@@ -72,10 +71,10 @@ function mdaq_code_gen(load_dsp_app)
         format(oldFormat(2), oldFormat(1));
         if ok == %f then
 
-            disp("### ERROR: Correct scheme and run code generation again!");
+            disp("### ERROR: Unable to generate code from model");
         end
     else
-        message("Generation Code only work for a Super Block!")
+        messagebox('MicroDAQ code generator requires superblock to generate code',  "Model structure problem", "error");
     end
 
 endfunction

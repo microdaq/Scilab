@@ -1,0 +1,10 @@
+function %dsptlist_p(obj)
+    mprintf("DSP task object\n")
+    mprintf("   .start() - starts task\n")
+    mprintf("   .init() - initializes DSP task\n")
+    mprintf("   .write() - writes DSP data\n")
+    mprintf("   .read() - reads DSP data\n")
+    mprintf("   .stop() - stops task\n")
+    mprintf("   .isDone() - checks if task is done\n")
+    mprintf("   .waitUntilDone() - blocks until task is done\n")
+endfunction
