@@ -129,7 +129,7 @@
 	<refsection>
 		<title>Examples</title>
 
-		<para>dioValue trigger type - set trigger to wait for high state on DIO7</para>
+		<para>dioValue trigger type - start data acquisition from AI1 analog input when DIO7 state is high</para>
 		<programlisting role="example">
 			<![CDATA[
 			mdaqAIScanInit(1, [-10,10], %F, 10000, 1)
@@ -139,7 +139,7 @@
 			 ]]>
 		</programlisting>
 
-		<para>dioPattern trigger type - set trigger to wait for high state on DIO7</para>
+		<para>dioPattern trigger type - start data acquisition from AI1 analog input when DIO7 state is high</para>
 		<programlisting role="example">
 			<![CDATA[
 			mdaqAIScanInit(1, [-10,10], %F, 10000, 1)
@@ -149,7 +149,7 @@
 			 ]]>
 		</programlisting>
 
-		<para>dioPattern trigger type - set trigger to wait for high state on DIO7 and low on DIO6</para>
+		<para>dioPattern trigger type - start data acquisition from AI1 analog input when DIO7 state is high and DIO6 is low</para>
 		<programlisting role="example">
 			<![CDATA[
 			mdaqAIScanInit(1, [-10,10], %F, 10000, 1)
@@ -159,7 +159,7 @@
 			 ]]>
 		</programlisting>
 		
-		<para>encoderValue trigger type - set trigger to wait encoder 1 value greater then 1000</para>
+		<para>encoderValue trigger type - start data acquisition from AI1 analog input when encoder channel 1 value is greater then 1000</para>
 		<programlisting role="example">
 			<![CDATA[
 			mdaqEncoderInit(1, 0);
@@ -170,7 +170,7 @@
 			 ]]>
 		</programlisting>
 
-		<para>encoderValue trigger type - set trigger to wait encoder 2 value lower then 0</para>
+		<para>encoderValue trigger type - start data acquisition from AI1 analog input when encoder channel 2 value is lower then 0</para>
 		<programlisting role="example">
 			<![CDATA[
 			mdaqEncoderInit(2, 0);

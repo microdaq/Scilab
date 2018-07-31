@@ -131,7 +131,7 @@
 	<refsection>
 		<title>Examples</title>
 
-		<para>dioValue trigger type - set trigger to wait for high state on DIO7</para>
+		<para>dioValue trigger type - start to generate signal on AO1 analog output when DIO7 state is high</para>
 		<programlisting role="example">
 			<![CDATA[
 			mdaqAOScanInit(1, [1 2 3 4 5]', [0, 5], %F, 10, 1)
@@ -140,7 +140,7 @@
 			 ]]>
 		</programlisting>
 
-		<para>dioPattern trigger type - set trigger to wait for high state on DIO7</para>
+		<para>dioPattern trigger type - start to generate signal on AO1 analog output when DIO7 state is high</para>
 		<programlisting role="example">
 			<![CDATA[
 			mdaqAOScanInit(1, [1 2 3 4 5]', [0, 5], %F, 10, 1)
@@ -149,7 +149,7 @@
 			 ]]>
 		</programlisting>
 
-		<para>dioPattern trigger type - set trigger to wait for high state on DIO7 and low on DIO6</para>
+		<para>dioPattern trigger type - start to generate signal on AO1 analog output when DIO7 state is high and DIO6 is low</para>
 		<programlisting role="example">
 			<![CDATA[
 			mdaqAOScanInit(1, [1 2 3 4 5]', [0, 5], %F, 10, 1)
@@ -158,7 +158,7 @@
 			 ]]>
 		</programlisting>
 		
-		<para>encoderValue trigger type - set trigger to wait encoder 1 value greater then 1000</para>
+		<para>encoderValue trigger type - start to generate signal on AO1 analog output when encoder value is greater then 1000</para>
 		<programlisting role="example">
 			<![CDATA[
 			mdaqEncoderInit(1, 0);

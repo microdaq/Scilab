@@ -9,7 +9,7 @@ version="5.0-subset Scilab"
 xml:id="mdaqDSPBuild">
   <refnamediv>
     <refname>mdaqDSPBuild</refname>
-    <refpurpose>Build model for MicroDAQ DSP</refpurpose>
+    <refpurpose>Build DSP application from Xcos model</refpurpose>
   </refnamediv>
   <refsynopsisdiv>
     <title>Calling Sequence</title>

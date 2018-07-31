@@ -8,15 +8,15 @@
 	<refsynopsisdiv>
 		<title>Calling Sequence</title>
 		<synopsis>
-			[status] = mdaqDSPIsDone()
-			[status] = mdaqDSPIsDone(linkID)
+			status = mdaqDSPIsDone()
+			status = mdaqDSPIsDone(linkID)
 		</synopsis>
 	</refsynopsisdiv>
 	
 	<refsection id="Description___FUNC_NAME__">
 		<title>Description</title>
 		<para>
-			This function returns DSP task status. Returns true (%T) if DSP task is over, false (%F) if is still running. 
+			This function returns DSP task status. Returns true (%T) if DSP task is complited, false (%F) if is still running. 
 		</para>
 	</refsection>  
   

@@ -14,13 +14,17 @@ xml:id="mdaqDSPRead">
   <refsynopsisdiv>
 	<title>Calling Sequence</title>
     <synopsis>
-      [data] = mdaqDSPRead(linkID, signalID, vectorSize, vectorCount, timeout);
-      [data] = mdaqDSPRead(signalID, vectorSize, vectorCount, timeout);
+      data = mdaqDSPRead(linkID, signalID, vectorSize, vectorCount, timeout);
+      data = mdaqDSPRead(signalID, vectorSize, vectorCount, timeout);
     </synopsis>
   </refsynopsisdiv>
   <refsection id="Parameters___FUNC_NAME__">
 	<title>Description</title>
-	<para>This function reads data from running DSP application generated from XCos model in external mode. Xcos model has to contain SIGNAL block with defined ID. Function blocks execution until it gathers all requested samples or 'timeout' is reached. For example, if a user wants to read data from DSP application where SIGNAL block with ID=13 is connected to MUX block which is passing 4 doubles (data size = 4), the function call will be as follows: mdaqDSPRead(13, 4, 1, 1). In that case, timeout is set to 1 second. </para>
+	<para>This function reads data from Xcos generated DSP application. Function can be used only for Ext modelss model in external mode. 
+	Xcos model has to contain SIGNAL block with defined ID. Function blocks execution until it gathers 
+	all requested samples or 'timeout' is reached. For example, if a user wants to read data from DSP 
+	application where SIGNAL block with ID=13 is connected to MUX block which is passing 4 doubles (data size = 4), 
+	the function call will be as follows: mdaqDSPRead(13, 4, 1, 1). In that case, timeout is set to 1 second. </para>
     <para>
         Signals reading mechanism is buffering data for all signal ONLY from one data request. The data request is performed when there is no data available at specific signal ID. 
         To keep data coherency over the time there is a recommendation to read all signals. Example below: 
@@ -47,9 +51,24 @@ xml:id="mdaqDSPRead">
     </itemizedlist>
   </refsection>
   	<refsection>
-        <title>Examples</title>
+     <title>Examples</title>
 <para>
-   The examples use Xcos model with MEM_READ and SIGNAL blocks. Model compiles (<link linkend="mdaqDSPBuild">mdaqDSPBuild</link>) to C code and runs (<link linkend="mdaqDSPInit">mdaqDSPInit</link>, <link linkend="mdaqDSPStart">mdaqDSPStart</link>) on dedicated DSP core on MicroDAQ device. The first block is reading data from MicroDAQ shared memory on index 1. It's acting as our input where we can write data through <link linkend="mdaqDSPWrite">mdaqDSPWrite()</link> function. In this model input data is multiplied by factor 2 and passed to SIGNAL block which is our model output. The <link linkend="mdaqDSPRead()">mdaqDSPRead()</link> function receives data from SIGNAL block. Here is a Xcos model used in examples below:
+    This example shows how to modify and read DSP application data during its execution. 
+	The example uses Xcos model with 'MEM Read' and SIGNAL blocks and a script which modifies and reads DSP data 
+	with <link linkend="mdaqDSPWrite">mdaqDSPWrite()</link> and <link linkend="mdaqDSPRead">mdaqDSPRead()</link> functions. 
+	The <link linkend="mdaqDSPBuild">mdaqDSPBuild()</link> function is used to build executable from existing Xcos model. When built, 
+	resulting binary file path is passed as a first argument to <link linkend="mdaqDSPInit">mdaqDSPInit()</link> function which 
+	initializes DSP and configures the model frequency and its execution duration. After calling <link linkend="mdaqDSPStart">mdaqDSPStart()</link>
+	DSP application is started on MicroDAQ DSP. 
+	</para><para>
+	When DSP application is started 'MEM Read' block reads data from memory index 1 every model step. 
+	By calling  <link linkend="mdaqDSPWrite">mdaqDSPWrite()</link> 	function we change the value 
+	of number located at index 1. This way we can change the DSP application parameter during its execution. 
+	Apart from reading our model performs multiplication by 2 and after that operation it passes value to 
+	SIGNAL block which sends data to the host PC. This modified value can be read by 
+	<link linkend="mdaqDSPRead()">mdaqDSPRead()</link> function. 
+	</para><para>
+	Xcos model used in examples below:
         <programlisting role="example"><![CDATA[
 xcos(mdaqToolboxPath() + filesep() + "examples" + filesep() +"dsp_rw_demo.zcos");
 ]]></programlisting>
@@ -130,6 +149,7 @@ disp("End of execution DSP model");
  ]]></programlisting>
 
     </refsection>
+	
   <refsection id="SeeAlso___FUNC_NAME__">
     <title>See Also</title>
     <simplelist type="inline">

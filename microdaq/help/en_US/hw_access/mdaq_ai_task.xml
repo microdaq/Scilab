@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaqAITask">
+	<refnamediv>
+		<refname>mdaqAITask</refname>
+		<refpurpose>Creates AI task object</refpurpose>
+	</refnamediv>
+
+	<refsynopsisdiv>
+		<title>Calling Sequence</title>
+		<synopsis>
+			obj = mdaqAITask()
+		</synopsis>
+	</refsynopsisdiv>
+
+	<refsection id="Description_mdaqAITask">
+		<title>Description</title>
+		<para>
+			This function creates AI task object which gathers all functions used for data acquisition from analog inputs. 
+			The function does not introduce new functionality, it wraps existing API into an object-like code and allows to write more readable 
+			and compact code. In order to get function list which can be used with object display its content. 
+			</para>
+			<para>
+			The following calling convention applies: 
+
+			<itemizedlist>
+				<listitem>
+					<para>
+						<emphasis role="bold">obj.start(): </emphasis> Starts data acquisition - <link linkend="mdaqAIScanStart">mdaqAIScanStart()</link></para>
+				</listitem>
+				<listitem>
+					<para>
+						<emphasis role="bold">obj.init(): </emphasis> Initialize analog input data acquisistion - <link linkend="mdaqAIScanInit">mdaqAIScanInit()</link></para>
+				</listitem>
+				<listitem>
+					<para>
+						<emphasis role="bold">obj.read(): </emphasis> Read acquired data - <link linkend="mdaqAIScanRead">mdaqAIScanRead()</link></para>
+				</listitem>
+				<listitem>
+					<para>
+						<emphasis role="bold">obj.stop(): </emphasis> Stop data acquisition - <link linkend="mdaqAIScanStop">mdaqAIScanStop()</link></para>
+				</listitem>
+				<listitem>
+					<para>
+						<emphasis role="bold">obj.setTrigger(): </emphasis> Configure analog input scan trigger - <link linkend="mdaqAIScanTrigger">mdaqAIScanTrigger()</link></para>
+				</listitem>
+
+			</itemizedlist>
+			
+		</para>
+	</refsection>  
+
+	<refsection id="Parameters_mdaqAITask">
+			<title>Output arguments</title>
+			<para>
+
+			<itemizedlist>
+				<listitem>
+					
+						<emphasis role="bold">obj: </emphasis> tlist type object gathering analog input scan functions
+				</listitem>
+			</itemizedlist>
+			 
+		</para>
+	</refsection>
+
+	<refsection>
+		<title>Examples</title>
+		<para>Acquire data from AI1 for one second with 1000 samples per second rate</para>
+		<programlisting role="example">
+			<![CDATA[
+				ai = mdaqAITask(); 
+				ai.init(1, [-10, 10], %f, 1000, 1);
+				ai.start(); 
+				data = ai.read(1000, 2);
+				plot(data)
+			 ]]>
+		</programlisting>
+		
+		<para>Start data acquisition from AI1 analog input when DIO8 is high. Acquire data for one second with 1000 samples per second rate</para>
+		<programlisting role="example">
+			<![CDATA[
+				ai = mdaqAITask(); 
+				ai.init(1, [-10, 10], %f, 1000, 1);
+				ai.setTrigger("dioPattern", "xxxxxxx1");
+				ai.start(); 
+				data = ai.read(1000, 2);
+				plot(data)
+			 ]]>
+		</programlisting>
+	</refsection>
+
+	<refsection id="SeeAlso_mdaqAITask">
+	<title>See Also</title>
+		<simplelist type="inline">
+		<member><link linkend="mdaqAIRead">mdaqAIRead</link> : Performs single AI read</member>
+		<member><link linkend="mdaqAIScanStart">mdaqAIScanStart</link> : Starts AI scan</member>
+		<member><link linkend="mdaqAIScan">mdaqAIScan</link> : Reads acquired AI scan data</member>
+		<member><link linkend="mdaqAIScanInit">mdaqAIScanInit</link> : Initializes AI scan</member>
+		<member><link linkend="mdaqAIScanStop">mdaqAIScanStop</link> : Stops AI scan</member>
+		<member><link linkend="mdaqAIScanTrigger">mdaqAIScanTrigger</link> : Sets AI scan trigger</member>
+		</simplelist>
+	</refsection>
+</refentry>

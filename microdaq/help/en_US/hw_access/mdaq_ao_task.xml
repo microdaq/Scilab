@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaqAOTask">
+	<refnamediv>
+		<refname>mdaqAOTask</refname>
+		<refpurpose>Creates AO task object</refpurpose>
+	</refnamediv>
+
+	<refsynopsisdiv>
+		<title>Calling Sequence</title>
+		<synopsis>
+			obj = mdaqAOTask()
+		</synopsis>
+	</refsynopsisdiv>
+
+	<refsection id="Description_mdaqAOTask">
+		<title>Description</title>
+		<para>
+			This function creates AO task object which gathers all functions used for signal generation on analog outputs. 
+			The function does not introduce new functionality, it wraps existing API into an object-like code and allows to write more readable 
+			and compact code. In order to get function list which can be used with object display its content. 
+			</para>
+			<para>
+			The following calling convention applies: 
+
+			<itemizedlist>
+				<listitem>
+					<para>
+						<emphasis role="bold">obj.start(): </emphasis> Start signal generation - <link linkend="mdaqAOScanStart">mdaqAOScanStart()</link></para>
+				</listitem>
+				<listitem>
+					<para>
+						<emphasis role="bold">obj.init(): </emphasis> Initialize analog outputs scan - <link linkend="mdaqAOScanInit">mdaqAOScanInit()</link></para>
+				</listitem>
+				<listitem>
+					<para>
+						<emphasis role="bold">obj.write(): </emphasis> Queue AO data - <link linkend="mdaqAOScanData">mdaqAOScanData()</link></para>
+				</listitem>
+				<listitem>
+					<para>
+						<emphasis role="bold">obj.stop(): </emphasis> Stop signal generation - <link linkend="mdaqAOScanStop">mdaqAOScanStop()</link></para>
+				</listitem>
+				<listitem>
+					<para>
+						<emphasis role="bold">obj.setTrigger(): </emphasis> Configure signal generation trigger - <link linkend="mdaqAOScanTrigger">mdaqAOScanTrigger()</link></para>
+				</listitem>
+
+				<listitem>
+					<para>
+						<emphasis role="bold">obj.isDone(): </emphasis> Check signal generation state - <link linkend="mdaqAOScanIsDone">mdaqAOScanIsDone()</link></para>
+				</listitem>
+				<listitem>
+					<para>
+						<emphasis role="bold">obj.waitUntilDone(): </emphasis> Wait until signal generation is done - <link linkend="mdaqAOScanWait">mdaqAOScanWait()</link></para>
+				</listitem>
+
+			</itemizedlist>
+			
+		</para>
+	</refsection>  
+
+	<refsection id="Parameters_mdaqAOTask">
+			<title>Output arguments</title>
+			<para>
+
+			<itemizedlist>
+				<listitem>
+					
+						<emphasis role="bold">obj: </emphasis> tlist type object gathering analog output scan functions
+				</listitem>
+			</itemizedlist>
+			 
+		</para>
+	</refsection>
+
+	<refsection>
+		<title>Examples</title>
+		<para>Generate signal on AO1 analog output</para>
+		<programlisting role="example">
+			<![CDATA[
+				ao = mdaqAOTask(); 
+				ao.init(1, [1 2 3 4 5]', [0, 5], %f, 10, 1);
+				ao.start(); 
+			 ]]>
+		</programlisting>
+		
+		<para>Start  signal generation on AO1 analog output when DIO8 is high.</para>
+		<programlisting role="example">
+			<![CDATA[
+				ao = mdaqAOTask(); 
+				ao.init(1, [1 2 3 4 5]', [0, 5], %f, 10, 1);
+				ao.setTrigger("dioPattern", "xxxxxxx1");
+				ao.start();
+			 ]]>
+		</programlisting>
+		<para>Generate signal on AO1 analog output and wait until signal generation is done</para>
+		<programlisting role="example">
+			<![CDATA[
+				ao = mdaqAOTask(); 
+				ao.init(1, [1 2 3 4 5]', [0, 5], %f, 10, 1);
+				ao.start(); 
+				ao.waitUntilDone(2); 
+			 ]]>
+		</programlisting>
+	</refsection>
+
+	<refsection id="SeeAlso_mdaqAOTask">
+	
+	<title>See Also</title>
+		<simplelist type="inline">
+		<member><link linkend="mdaqAOScanStart">mdaqAOScanStart</link> : Starts AO scan</member>
+		<member><link linkend="mdaqAOScanData">mdaqAOScanData</link> : Queue AO data to be written to analog output</member>
+		<member><link linkend="mdaqAOScanInit">mdaqAOScanInit</link> : Initializes AO scan</member>
+		<member><link linkend="mdaqAOScanStop">mdaqAOScanStop</link> : Stops AO scan</member>
+		<member><link linkend="mdaqAOScanTrigger">mdaqAOScanTrigger</link> : Sets AO scan trigger</member>
+		<member><link linkend="mdaqAOScanIsDone">mdaqAOScanIsDone</link> : Returns AO scan status</member>
+		<member><link linkend="mdaqAOScanWait">mdaqAOScanWait</link> : Waits until AO scan is done</member>
+		</simplelist>
+	</refsection>
+</refentry>

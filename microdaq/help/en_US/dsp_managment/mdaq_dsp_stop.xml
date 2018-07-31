@@ -13,7 +13,7 @@ xml:id="mdaqDSPStop">
   </refnamediv>
   <refsynopsisdiv>
 	<title>Description</title>
-	<para>This function terminates model execution on MicroDAQ DSP core. It has to be called after DSP processing is done.</para>
+	<para>This function stops model execution on MicroDAQ DSP core. It has to be called after DSP processing is done.</para>
     <title>Calling Sequence</title>
     <synopsis>
       mdaqDSPStop();

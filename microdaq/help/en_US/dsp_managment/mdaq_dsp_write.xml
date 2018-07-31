@@ -16,7 +16,13 @@
 	<refsection id="Description___FUNC_NAME__">
 		<title>Description</title>
 		<para>
-			This function writes data to MicroDAQ shared memory. Together with 'MEM Read' block, function can be used in Standalone and Ext applications to change its parameters. 
+            This function writes data to an application running on MicroDAQ DSP core. 
+            The function must be used with DSP application generated from XCos model containing 'MEM Read' block. 
+            Data written by the function is read by 'MEM Read' block during every DSP application 'step'. 
+            The 'index' argument shall be equal to 'Start index' 'MEM Read' block parameter. 
+            Depending on 'MEM Read' block 'Mode' parameter, function can be used to write initial data. 
+			In case of writing initial data, the function shall be called before starting DSP application. 
+			This functionality allows changing DSP application parameters during its execution in Ext and Standalone mode. 
 		</para>
 	</refsection>  
   
@@ -24,14 +30,29 @@
 		<title>Parameters</title>
 		<itemizedlist>
 			<listitem><para><emphasis role="bold">linkID: </emphasis> Valid connection link ID (optional) </para></listitem>
-			<listitem><para><emphasis role="bold">start: </emphasis> MicroDAQ memory start index </para></listitem>
-			<listitem><para><emphasis role="bold">data: </emphasis> Data to be written to MicroDAQ memory </para></listitem>
+			<listitem><para><emphasis role="bold">index: </emphasis> Memory index on which data will be written from</para></listitem>
+			<listitem><para><emphasis role="bold">data: </emphasis> Data to be written </para></listitem>
 		</itemizedlist>
 	</refsection>
 	<refsection>
         <title>Examples</title>
 <para>
-    The examples use Xcos model with MEM_READ and SIGNAL blocks. Model compiles (<link linkend="mdaqDSPBuild">mdaqDSPBuild</link>) to C code and runs (<link linkend="mdaqDSPInit">mdaqDSPInit</link>, <link linkend="mdaqDSPStart">mdaqDSPStart</link>) on dedicated DSP core on MicroDAQ device. The first block is reading data from MicroDAQ shared memory on index 1. It's acting as our input where we can write data through <link linkend="mdaqDSPWrite">mdaqDSPWrite()</link> function. In this model input data is multiplied by factor 2 and passed to SIGNAL block which is our model output. The <link linkend="mdaqDSPRead()">mdaqDSPRead()</link> function receives data from SIGNAL block. Here is a Xcos model used in examples below:
+    This example shows how to modify and read DSP application data during its execution. 
+	The example uses Xcos model with 'MEM Read' and SIGNAL blocks and a script which modifies and reads DSP data 
+	with <link linkend="mdaqDSPWrite">mdaqDSPWrite()</link> and <link linkend="mdaqDSPRead">mdaqDSPRead()</link> functions. 
+	The <link linkend="mdaqDSPBuild">mdaqDSPBuild()</link> function is used to build executable from existing Xcos model. When built, 
+	resulting binary file path is passed as a first argument to <link linkend="mdaqDSPInit">mdaqDSPInit()</link> function which 
+	initializes DSP and configures the model frequency and its execution duration. After calling <link linkend="mdaqDSPStart">mdaqDSPStart()</link>
+	DSP application is started on MicroDAQ DSP. 
+	</para><para>
+	When DSP application is started 'MEM Read' block reads data from memory index 1 every model step. 
+	By calling  <link linkend="mdaqDSPWrite">mdaqDSPWrite()</link> 	function we change the value 
+	of number located at index 1. This way we can change the DSP application parameter during its execution. 
+	Apart from reading our model performs multiplication by 2 and after that operation it passes value to 
+	SIGNAL block which sends data to the host PC. This modified value can be read by 
+	<link linkend="mdaqDSPRead()">mdaqDSPRead()</link> function. 
+	</para><para>
+	Xcos model used in examples below:
         <programlisting role="example"><![CDATA[
 xcos(mdaqToolboxPath() + filesep() + "examples" + filesep() +"dsp_rw_demo.zcos");
 ]]></programlisting>

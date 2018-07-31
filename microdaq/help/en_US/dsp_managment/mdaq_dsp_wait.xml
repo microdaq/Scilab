@@ -16,7 +16,7 @@
 	<refsection id="Description___FUNC_NAME__">
 		<title>Description</title>
 		<para>
-			This function waits until end of the DSP application execution.  
+			This function waits (blocks Scilab console) until end of the DSP application execution.
 		</para>
 	</refsection>  
   
