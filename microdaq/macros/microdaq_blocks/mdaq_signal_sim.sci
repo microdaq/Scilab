@@ -8,7 +8,7 @@ function block=mdaq_signal_sim(block,flag)
         if %microdaq.dsp_loaded == %T then
                 if %microdaq.private.signal_buffer_index(block.ipar(1)) < 1 then
                     try
-                    %microdaq.private.signal_buffer(block.ipar(1)) = mdaqDSPTaskRead(block.ipar(1), block.insz(1), %microdaq.private.signal_buffer_size(block.ipar(1)), 5000);
+                    %microdaq.private.signal_buffer(block.ipar(1)) = mdaqDSPRead(block.ipar(1), block.insz(1), %microdaq.private.signal_buffer_size(block.ipar(1)), 5000);
 
                     %microdaq.private.signal_buffer_index(block.ipar(1)) = %microdaq.private.signal_buffer_size(block.ipar(1)); 
                     catch

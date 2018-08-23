@@ -1138,7 +1138,7 @@ function  [ok,XX,alreadyran,flgcdgen,szclkINTemp,freof] = do_compile_superblock_
             return;
         end
     
-        res = mlink_dsp_load(connection_id, rpat + filesep() + dsp_binary, 'l');
+        res = mlink_dsp_load(connection_id, rpat + filesep() + dsp_binary, 'l'); 
         if res < 0 then
             res = mlink_dsp_load(connection_id, rpat + filesep() + dsp_binary, 'l');
             if res < 0 then
