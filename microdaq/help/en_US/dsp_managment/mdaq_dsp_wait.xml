@@ -46,7 +46,7 @@ mdaqDSPInit('led_demo_scig\led_demo.out', Freq, Druration);
 mdaqDSPStart();
 
 disp("Waiting for the end of execution...");
-daqDSPWait(-1);
+mdaqDSPWait(-1);
 
 disp("End of execution DSP model"); ]]></programlisting>
  <para>
@@ -67,7 +67,7 @@ dsp.init('led_demo_scig\led_demo.out', Freq, Druration);
 dsp.start(); 
 
 disp("Waiting for the end of execution...");
-sp.waitUntilDone(-1);
+dsp.waitUntilDone(-1);
 
 disp("End of execution DSP model");
 ]]></programlisting>
