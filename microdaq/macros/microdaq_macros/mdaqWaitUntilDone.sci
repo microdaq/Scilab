@@ -33,10 +33,10 @@ function  mdaqWaitUntilDone(arg1, arg2, arg3)
         mprintf("Description:\n");
         mprintf("\tWait until operation is done\n");
         mprintf("Usage:\n");
-        mprintf("\t[data, result] = mdaqWaitUntilDone(linkID, operation, timeout\n")
+        mprintf("\t[data, result] = mdaqWaitUntilDone(linkID, operation, timeout)\n")
         mprintf("\tlinkID - connection id returned by mdaqOpen() (OPTIONAL)\n");
         mprintf("\toperation - operation name which function waits for\n");
-        mprintf("\ttimeout - amount of time in seconds to wait for samples (-1 - wait indefinitely)\n");
+        mprintf("\ttimeout - amount of time in seconds to wait (-1 - wait indefinitely)\n");
         return;
     end
     
