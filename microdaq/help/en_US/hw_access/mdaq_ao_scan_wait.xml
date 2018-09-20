@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaqAOScanWait">
+	<refnamediv>
+		<refname>mdaqAOScanWait</refname>
+		<refpurpose>Waits until AO scan is done.</refpurpose>
+	</refnamediv>
+
+	<refsynopsisdiv>
+		<title>Calling Sequence</title>
+		<synopsis>
+			mdaqAOScanWait(linkID, timeout)
+			mdaqAOScanWait(timeout)
+		</synopsis>
+	</refsynopsisdiv>
+
+	<refsection id="Description_mdaqAOScanWait">
+		<title>Description</title>
+        <para> 
+        This function waits (blocking function) until analog output scan session is done or the timeout is reached.
+		</para> 
+	</refsection>  
+
+	<refsection id="Parameters_mdaqAOScanWait">
+		<title>Input arguments</title>
+		<itemizedlist>
+			<listitem>
+				<para>
+					<emphasis role="bold">linkID: </emphasis> Valid connection link ID (optional)
+                </para>
+			</listitem>
+			<listitem>
+				<para>
+                    <emphasis role="bold">timeout: </emphasis> Amount of time in seconds to wait (-1 - wait indefinitely)
+                </para>
+			</listitem>
+		</itemizedlist>
+	</refsection>
+	<refsection>
+		<title>Examples</title>
+		<para> 
+		Generate sine and sawtooth waveform in periodic mode. Sample update frequency 1000Hz, duration - 5 seconds.
+		</para>
+		<programlisting role="example">
+			<![CDATA[
+sineData = sin(linspace(0, 2*%pi, 1000)) + 1.0;
+sawtoothData = linspace(0, 5, 1000);
+mdaqAOScanInit(1:2, [sineData' sawtoothData'], [0,5], %F, 1000, 5);
+mdaqAOScan();
+mdaqAOScanWait(-1);
+disp("AO scan is done.");
+		 ]]>
+		</programlisting>
+
+		<para>
+			Results:
+			<imagedata align="center" fileref="../images/single_result.png" valign="middle"/>
+		</para>
+	</refsection>  			
+	<refsection id="SeeAlso_mdaqAOScanWait">
+		<title>See Also</title>
+        <simplelist type="inline">
+		<member><link linkend="mdaqAOScan">mdaqAOScan</link> : Starts AO scan</member>
+		<member><link linkend="mdaqAOScanData">mdaqAOScanData</link> : Queue AO data to be written to analog output</member>
+		<member><link linkend="mdaqAOScanInit">mdaqAOScanInit</link> : Initializes AO scan</member>
+		<member><link linkend="mdaqAOScanStop">mdaqAOScanStop</link> : Stops AO scan</member>
+		<member><link linkend="mdaqAOScanTrigger">mdaqAOScanTrigger</link> : Sets AO scan trigger</member>
+		<member><link linkend="mdaqAOScanIsDone">mdaqAOScanIsDone</link> : Returns AO scan status</member>
+		</simplelist>
+	</refsection>
+</refentry>

@@ -136,18 +136,14 @@
 	</refsection>
 
 	<refsection id="SeeAlso_mdaqAOScanInit">
-		<title>See Also</title>
-		<simplelist type="inline">
-			<member>
-				<link linkend="mdaq_ao_data_update">mdaqAOScanData</link>
-			</member>
-			<member>
-				<link linkend="mdaqAOScanStop">mdaqAOScanStop</link>
-			</member>
-			<member>
-				<link linkend="mdaqAOScan">mdaqAOScan</link>
-			</member>
-
+        <title>See Also</title>
+	    <simplelist type="inline">
+		<member><link linkend="mdaqAOScan">mdaqAOScan</link> : Starts AO scan</member>
+		<member><link linkend="mdaqAOScanData">mdaqAOScanData</link> : Queue AO data to be written to analog output</member>
+		<member><link linkend="mdaqAOScanStop">mdaqAOScanStop</link> : Stops AO scan</member>
+		<member><link linkend="mdaqAOScanTrigger">mdaqAOScanTrigger</link> : Sets AO scan trigger</member>
+		<member><link linkend="mdaqAOScanIsDone">mdaqAOScanIsDone</link> : Returns AO scan status</member>
+		<member><link linkend="mdaqAOScanWait">mdaqAOScanWait</link> : Waits until AO scan is done</member>
 		</simplelist>
 	</refsection>
 </refentry>

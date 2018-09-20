@@ -25,7 +25,7 @@
 			<itemizedlist>
 				<listitem>
 					<para>
-						<emphasis role="bold">obj.start(): </emphasis> Start signal generation - <link linkend="mdaqAOScanStart">mdaqAOScanStart()</link></para>
+						<emphasis role="bold">obj.start(): </emphasis> Start signal generation - <link linkend="mdaqAOScan">mdaqAOScan()</link></para>
 				</listitem>
 				<listitem>
 					<para>
@@ -107,7 +107,7 @@
 	
 	<title>See Also</title>
 		<simplelist type="inline">
-		<member><link linkend="mdaqAOScanStart">mdaqAOScanStart</link> : Starts AO scan</member>
+		<member><link linkend="mdaqAOScan">mdaqAOScan</link> : Starts AO scan</member>
 		<member><link linkend="mdaqAOScanData">mdaqAOScanData</link> : Queue AO data to be written to analog output</member>
 		<member><link linkend="mdaqAOScanInit">mdaqAOScanInit</link> : Initializes AO scan</member>
 		<member><link linkend="mdaqAOScanStop">mdaqAOScanStop</link> : Stops AO scan</member>
