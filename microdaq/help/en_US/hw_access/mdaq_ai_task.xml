@@ -43,7 +43,10 @@
 					<para>
 						<emphasis role="bold">obj.setTrigger(): </emphasis> Configure analog input scan trigger - <link linkend="mdaqAIScanTrigger">mdaqAIScanTrigger()</link></para>
 				</listitem>
-
+				<listitem>
+					<para>
+						<emphasis role="bold">obj.sync(): </emphasis> Synchronizes analg input conversion with digital input - <link linkend="mdaqAIScanSync">mdaqAIScanSync()</link></para>
+				</listitem>
 			</itemizedlist>
 			
 		</para>
@@ -98,6 +101,7 @@
 		<member><link linkend="mdaqAIScanInit">mdaqAIScanInit</link> : Initializes AI scan</member>
 		<member><link linkend="mdaqAIScanStop">mdaqAIScanStop</link> : Stops AI scan</member>
 		<member><link linkend="mdaqAIScanTrigger">mdaqAIScanTrigger</link> : Sets AI scan trigger</member>
+		<member><link linkend="mdaqAIScanSync">mdaqAIScanSync</link> : Synchronizes AI conversion with DI</member>
 		</simplelist>
 	</refsection>
 </refentry>
