@@ -1,4 +1,4 @@
-function result = mdaqAIScanSync(arg1, arg2, arg3)
+function mdaqAIScanSync(arg1, arg2, arg3)
     link_id = -1;
     result = [];
                  
