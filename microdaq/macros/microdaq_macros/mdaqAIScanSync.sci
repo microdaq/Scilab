@@ -39,15 +39,13 @@ function mdaqAIScanSync(arg1, arg2, arg3)
         end
     end
     
-    trigger = 1; // AI_TRIGGER
     result = [];
-    result = call("sci_mlink_scan_trigger_conv",..
+    result = call("sci_mlink_ai_scan_sync",..
                     link_id, 1, "i",..
-                    trigger, 2, "i",..
-                    dio, 3, "i",..
-                    edge, 4, "i",..
+                    dio, 2, "i",..
+                    edge, 3, "i",..
                 "out",..
-                    [1, 1], 5, "i");
+                    [1, 1], 4, "i");
 
     if result < 0 then
         if argn(2) == 2 then
