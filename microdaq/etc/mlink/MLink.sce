@@ -94,6 +94,7 @@ function MLink()
                                "sci_mlink_scan_trigger_dio_pattern"..
                                "sci_mlink_scan_trigger_encoder"..
                                "sci_mlink_scan_trigger_external_start"..
+                               "sci_mlink_ai_scan_sync"..
                                ], 'c');
 endfunction
 

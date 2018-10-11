@@ -73,13 +73,12 @@
 	<refsection id="SeeAlso_mdaqAIScanStop">
 		<title>See Also</title>
 		<simplelist type="inline">
-			<member>
-				<link linkend="mdaqAIScanInit">mdaqAIScanInit</link>
-			</member>
-			<member>
-				<link linkend="mdaqAIScan">mdaqAIScan</link>
-			</member>
-
+        <member><link linkend="mdaqAIRead">mdaqAIRead</link> : Performs single AI read</member>
+		<member><link linkend="mdaqAIScanStart">mdaqAIScanStart</link> : Starts AI scan</member>
+		<member><link linkend="mdaqAIScan">mdaqAIScan</link> : Reads acquired AI scan data</member>
+		<member><link linkend="mdaqAIScanInit">mdaqAIScanInit</link> : Initializes AI scan</member>
+		<member><link linkend="mdaqAIScanTrigger">mdaqAIScanTrigger</link> : Sets AI scan trigger</member>
+		<member><link linkend="mdaqAIScanSync">mdaqAIScanSync</link> : Synchronizes AI conversion with DI</member>
 		</simplelist>
 	</refsection>
 </refentry>
