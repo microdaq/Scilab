@@ -35,8 +35,12 @@ function continueSimulation=pre_xcos_simulate(scs_m, needcompile)
 
             if %microdaq.dsp_loaded == %T then
                 look_for_mdaqBlocks = %F; 
-                scs_m.props.tol(5) = 0;
-
+                if %microdaq.private.mdaq_signal_id == [] then
+                    scs_m.props.tol(5) = 1;
+                else
+                    scs_m.props.tol(5) = 0;
+                end
+                
                 [mdaq_ip_addr, result] = mdaq_get_ip();
                 if result < 0 then
                     disp("Unable to get MicroDAQ IP address - run microdaq_setup!");
@@ -92,7 +96,7 @@ function continueSimulation=pre_xcos_simulate(scs_m, needcompile)
             end
         end
        
-        %microdaq.private.mdaq_signal_id = 0;      
+        %microdaq.private.mdaq_signal_id = [];      
     end
 
     scs_m=resume(scs_m)
