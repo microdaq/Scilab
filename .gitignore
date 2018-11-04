@@ -6,4 +6,5 @@ microdaq/etc/mlink/hwid
 microdaq/etc/mblockstmpdir
 microdaq/loader.sce
 microdaq/etc/mlink/hwid
-microdaq/etc/mlink/hwid
+microdaq/etc/sysbios/cpu0/configPkg/linker.cmd
+microdaq/etc/sysbios/cpu1/configPkg/linker.cmd
