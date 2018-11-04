@@ -1,0 +1,150 @@
+
+--retain="*(xdc.meta)"
+
+
+--args 0x0
+-heap  0x0
+-stack 0xf000
+
+MEMORY
+{
+    IROM (RX) : org = 0x11700000, len = 0x100000
+    IRAM (RWX) : org = 0x11800000, len = 0x40000
+    L3_CBA_RAM (RWX) : org = 0x80000000, len = 0x20000
+    SDRAM : org = 0xc3000000, len = 0x1000000
+}
+
+/*
+ * Linker command file contributions from all loaded packages:
+ */
+
+/* Content from xdc.services.global (null): */
+
+/* Content from xdc (null): */
+
+/* Content from xdc.corevers (null): */
+
+/* Content from xdc.shelf (null): */
+
+/* Content from xdc.services.spec (null): */
+
+/* Content from xdc.services.intern.xsr (null): */
+
+/* Content from xdc.services.intern.gen (null): */
+
+/* Content from xdc.services.intern.cmd (null): */
+
+/* Content from xdc.bld (null): */
+
+/* Content from ti.targets (null): */
+
+/* Content from ti.targets.elf (null): */
+
+/* Content from xdc.rov (null): */
+
+/* Content from xdc.runtime (null): */
+
+/* Content from ti.targets.rts6000 (null): */
+
+/* Content from ti.sysbios.interfaces (null): */
+
+/* Content from ti.sysbios.family (null): */
+
+/* Content from xdc.services.getset (null): */
+
+/* Content from ti.sysbios.family.c62 (null): */
+
+/* Content from xdc.runtime.knl (null): */
+
+/* Content from ti.sysbios.family.c64p.primus (null): */
+
+/* Content from ti.catalog.c6000 (null): */
+
+/* Content from ti.catalog (null): */
+
+/* Content from ti.catalog.peripherals.hdvicp2 (null): */
+
+/* Content from xdc.platform (null): */
+
+/* Content from xdc.cfg (null): */
+
+/* Content from ti.catalog.arm.peripherals.timers (null): */
+
+/* Content from ti.catalog.arm (null): */
+
+/* Content from ti.platforms.evmOMAPL137 (null): */
+
+/* Content from ti.sysbios (null): */
+
+/* Content from ti.sysbios.hal (null): */
+
+/* Content from ti.sysbios.rts (ti/sysbios/rts/linkcmd.xdt): */
+
+/* Content from ti.sysbios.rts.ti (ti/sysbios/rts/ti/linkcmd.xdt): */
+
+/* Content from ti.sysbios.knl (null): */
+
+/* Content from ti.sysbios.family.c64p (ti/sysbios/family/c64p/linkcmd.xdt): */
+ti_sysbios_family_c64p_Cache_l1dSize = 32768;
+ti_sysbios_family_c64p_Cache_l1pSize = 32768;
+ti_sysbios_family_c64p_Cache_l2Size = 262144;
+
+/* Content from ti.sysbios.gates (null): */
+
+/* Content from ti.sysbios.heaps (null): */
+
+/* Content from ti.sysbios.xdcruntime (null): */
+
+/* Content from ti.sysbios.timers.timer64 (null): */
+
+/* Content from ti.sysbios.utils (null): */
+
+/* Content from configPkg (null): */
+
+/* Content from xdc.services.io (null): */
+
+
+/*
+ * symbolic aliases for static instance objects
+ */
+xdc_runtime_Startup__EXECFXN__C = 1;
+xdc_runtime_Startup__RESETFXN__C = 1;
+
+SECTIONS
+{
+    .text: load >> SDRAM
+    .ti.decompress: load > SDRAM
+    .stack: load > SDRAM
+    .cinit: load > SDRAM
+    .pinit: load >> SDRAM
+    .init_array: load > SDRAM
+    .const: load >> SDRAM
+    .data: load >> SDRAM
+    .fardata: load >> SDRAM
+    .switch: load >> SDRAM
+    .sysmem: load > SDRAM
+    .far: load >> SDRAM
+    .args: load > SDRAM align = 0x4, fill = 0 {_argsize = 0x0; }
+    .cio: load >> SDRAM
+    .ti.handler_table: load > SDRAM
+    .c6xabi.exidx: load > SDRAM
+    .c6xabi.extab: load >> SDRAM
+    .c_int00 { boot.ae674<boot.oe674> (.text) } load > SDRAM align = 0x800
+    .data_exchange: load > L3_CBA_RAM
+    .vecs: load > SDRAM
+    xdc.meta: load > SDRAM, type = COPY
+
+}
+/* This is an additional linker script which places */
+/* global variables in non cacheable memory         */
+
+SECTIONS
+{
+    GROUP: load > L3_CBA_RAM
+    {
+        .bss:
+        .neardata:
+        .rodata:
+    }
+}
+ 

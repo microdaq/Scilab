@@ -1,31 +1,47 @@
-function [] = microdaq_setup(arg1, arg2, arg3, arg4)
+function [] = microdaq_setup(arg1, arg2)
     sciVer = getversion('scilab');
-    if isequal(sciVer(1:2), [5,5]) & argn(2) == 0 then
-        mprintf("\nInfo : To run GUI installer enter following command in Scilab console:\n\t--> exec(mdaqToolboxPath()+pathconvert('"/macros/microdaq_setup_gui.sce'", %s), -1);", "%F");
+    if sciVer(1) == 5 & argn(2) <> 2 then
+        mprintf("Description:\n");
+        mprintf("\tConfigures MicroDAQ toolbox\n");
+        mprintf("Usage:\n");
+        mprintf("\tmicrodaq_setup(compilerPath, ipAddress)\n")
+        mprintf("\tcompilerPath - the C6000 compiler installation path e.g ""c:\\ti\\c6000_7.4.21\\""\n");
+        mprintf("\tipAddress - MicroDAQ IP address e.g ""10.10.1.1""\n");
         return
-    elseif sciVer(1) == 6 then
-        if argn(2) <> 1 then
-            mprintf("Use microdaq_setup with IP address setting to configure toolbox e.g.:\n\tmicrodaq_setup(""10.10.1.1"")\n");
-            return
-        else
-            mdaqSetIP(arg1)
-            return
-        end
-    elseif isequal(sciVer(1:2), [5,5]) & argn(2) == 4 then
-        CompilerRoot = getshortpathname(pathconvert(arg1, %F));
-        XDCRoot = getshortpathname(pathconvert(arg2, %F));
-        BIOSRoot = getshortpathname(pathconvert(arg3, %F));
-        ipAddress = arg4;
-    else
-        error("Unsupported Scilab version!");
+    elseif sciVer(1) == 6 & argn(2) <> 1 then
+        mprintf("Description:\n");
+        mprintf("\tConfigures MicroDAQ toolbox\n");
+        mprintf("Usage:\n");
+        mprintf("\tmicrodaq_setup(ipAddress)\n")
+        mprintf("\tipAddress - MicroDAQ IP address e.g ""10.10.1.1""\n");
+        return
     end
 
+    if sciVer(1) == 5 then
+        if isfile(pathconvert(arg1 + "\bin\") + "cl6x.exe") | isfile(pathconvert(arg1 + "/bin/") + "cl6x") then
+            CompilerRoot = getshortpathname(pathconvert(arg1, %F));
+            ipAddress = arg2;         
+        else
+            error("Unable to locate compiler in " + arg1);
+        end
+    elseif sciVer(1) == 6 then
+        ipAddress = arg1; 
+        try
+            mdaqSetIP(ipAddress)
+        catch 
+            error("Unable to set MicroDAQ IP address");
+        end
+        disp('Setup complete - toolbox is ready to use!');
+        return 
+    else
+        error("Unsupported Scilab version");
+    end
+    
+    // set MicroDAQ IP address
     try
-        mdaqSetIP(ipAddress);
-    catch
-        mprintf("Wrong IP address!\n");
-        mprintf("Usage:\n\t microdaq_setup(compilerPath, xdctoolsPath, sysbiosPath, ipAddress);\n");
-        return;
+        mdaqSetIP(ipAddress)
+    catch 
+        error("Unable to set MicroDAQ IP address");
     end
 
     // checking firmware
@@ -47,59 +63,49 @@ function [] = microdaq_setup(arg1, arg2, arg3, arg4)
 
     dir_temp = pwd();
 
-    TARGET_ROOT = pathconvert(dirname(get_function_path('microdaq_setup'))+"\..\etc", %F);
-    FILE_ROOT = pathconvert(dirname(get_function_path('microdaq_setup'))+"\..\rt_templates\target_paths.mk", %F);
+    targetRoot = pathconvert(dirname(get_function_path('microdaq_setup'))+"\..\etc", %F);
+    targetPathsFile = pathconvert(dirname(get_function_path('microdaq_setup'))+"\..\rt_templates\target_paths.mk", %F);
+    cpu0LinkerFile = pathconvert(targetRoot + '\sysbios\cpu0\configPkg\linker.cmd', %F);
+    cpu1LinkerFile = pathconvert(targetRoot + '\sysbios\cpu1\configPkg\linker.cmd', %F);
+    linkerTemplateFile = pathconvert(targetRoot + '\sysbios\linker.template', %F);
 
-    sysbios_build_cmd = 'SET PATH=' + pathconvert(XDCRoot + "/jre/bin/") + ';%PATH% & ';
-    sysbios_build_cmd = XDCRoot + filesep() + 'xs --xdcpath=""' + BIOSRoot + filesep() +'packages' + '"" xdc.tools.configuro -o configPkg -t ti.targets.elf.C674 -p ti.platforms.evmOMAPL137 -r release -c ' + CompilerRoot + ' --compileOptions ""-g --optimize_with_debug""  sysbios.cfg';
-
-    sysbios_build_cmd = strsubst(sysbios_build_cmd, filesep()+filesep(), filesep());
-
-    disp("Building TI SYS/BIOS real-time operating system for MicroDAQ");
-    cd( TARGET_ROOT+ filesep() + 'sysbios' + filesep() + 'cpu0' + filesep());
-    unix_w(sysbios_build_cmd);
-    cd( TARGET_ROOT+ filesep() + 'sysbios' + filesep() + 'cpu1' + filesep());
-    unix_w(sysbios_build_cmd);
-
-    //path to /configPkg/linker.cmd
-    LINKER0_PATH = pathconvert(TARGET_ROOT + '\sysbios\cpu0\configPkg\linker.cmd', %F);
-    LINKER1_PATH = pathconvert(TARGET_ROOT + '\sysbios\cpu1\configPkg\linker.cmd', %F);
-
-    if isfile(LINKER0_PATH) then
-        [linker0,err] = mopen(LINKER0_PATH,'a')
-        [linker1,err] = mopen(LINKER1_PATH,'a')
-        if err < 0 then
-            error("Unable to build MicroDAQ toolbox components!")
-        else
-            //Append 'sysbios_linker.cmd' to /configPkg/linker.cmd
-            SYSBIOS_LINKER_PATH = pathconvert(TARGET_ROOT + '\sysbios\sysbios_linker.cmd', %F);
-            [sysbios_linker,err] = mopen(SYSBIOS_LINKER_PATH, 'r');
-            content = mgetl(sysbios_linker);
-            mclose(sysbios_linker)
-            mputl(content,linker0)
-            mputl(content,linker1)
-            mclose(linker0);
-            mclose(linker1);
-
-            //Generate 'target_path.mk'
-            [f,result0] = mopen(FILE_ROOT,'w');
-            if result0 < 0 then
-                error('Building failed. Cannot create file ''target_path.mk''');
-            else
-                mputl('# MicroDAQ paths',f)
-                mputl('',f)
-                mputl('CompilerRoot  = '+CompilerRoot,f)
-                mputl('TargetRoot    = '+TARGET_ROOT,f)
-                mputl('XDCRoot       = '+XDCRoot,f)
-                mputl('BIOSRoot      = '+BIOSRoot,f)
-                mclose(f)
-            end
-            disp('Setup complete - toolbox is ready to use!');
-            cd(dir_temp);
-        end;
-    else
-        cd(dir_temp);
-        error('Building failed.');
+    [cpu0Linker, res1] = mopen(cpu0LinkerFile, 'w')
+    [cpu1Linker, res2] = mopen(cpu1LinkerFile, 'w')
+    if res1 < 0 | res2 < 0 then
+        error("Unable to create linker file")
+    end
+    
+    [linkerTemplate, res1] = mopen(linkerTemplateFile, 'r')
+    if res1 < 0 then
+        error("Unable to open linker template file")
+    end 
+    linker = mgetl(linkerTemplate);
+    mclose(linkerTemplate);    
+ 
+    [targetPaths, res1] = mopen(targetPathsFile, 'w');
+    if res1 < 0 then
+        error('Building failed. Cannot create file ''target_path.mk''');
     end
 
+    mputl('-l""' + pathconvert(targetRoot + '\sysbios\boot.ae674', %F) + '""', cpu0Linker);
+    mputl('-l""' + pathconvert(targetRoot + '\sysbios\ti.targets.rts6000.ae674', %F) + '""', cpu0Linker);
+    mputl('-l""' + pathconvert(targetRoot + '\sysbios\cpu0\libs\sysbios_pe674.oe674', %F) + '""', cpu0Linker);
+    mputl('-l""' + pathconvert(targetRoot + '\sysbios\cpu0\libs\sysbios.ae674', %F) + '""', cpu0Linker);
+    mputl(linker, cpu0Linker);
+    mclose(cpu0Linker)
+
+    mputl('-l""' + pathconvert(targetRoot + '\sysbios\boot.ae674', %F) + '""', cpu1Linker);
+    mputl('-l""' + pathconvert(targetRoot + '\sysbios\ti.targets.rts6000.ae674', %F) + '""', cpu1Linker);
+    mputl('-l""' + pathconvert(targetRoot + '\sysbios\cpu1\libs\sysbios_pe674.oe674', %F) + '""', cpu1Linker);
+    mputl('-l""' + pathconvert(targetRoot + '\sysbios\cpu1\libs\sysbios.ae674', %F) + '""', cpu1Linker);
+    mputl(linker, cpu1Linker);
+    mclose(cpu1Linker)
+    
+    mputl('# MicroDAQ paths', targetPaths)
+    mputl('',targetPaths)
+    mputl('CompilerRoot  = ' + CompilerRoot, targetPaths)
+    mputl('TargetRoot    = '+ targetRoot, targetPaths)
+    mclose(targetPaths)
+
+    disp('Setup complete - toolbox is ready to use!');
 endfunction

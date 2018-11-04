@@ -10,16 +10,6 @@
 #include <stdio.h>
 #include <stdint.h>
 
-#include <xdc/std.h>
-#include <xdc/runtime/Error.h>
-#include <xdc/runtime/System.h>
-
-#include <ti/sysbios/BIOS.h>
-#include <ti/sysbios/knl/Task.h>
-#include <ti/sysbios/knl/Clock.h>
-#include <ti/sysbios/hal/Timer.h>
-#include <ti/sysbios/knl/Semaphore.h>
-
 #define MODEL_TSAMP     ($$MODEL_TSAMP$$)
 #define MODEL_DURATION  ($$MODEL_DURATION$$)
 
@@ -37,8 +27,12 @@ int NAME(MODEL, _isr)(double t);
 int NAME(MODEL, _end)(void);
 double NAME(MODEL, _get_tsamp)(void);
 
+extern void mdaq_start_rtos();
+extern int mdaq_create_signal_task(void);
+extern int mdaq_create_rt_task(double, void (*f)(int));
+
 /* Real-time task */ 
-void rt_task(UArg arg0);
+void rt_task(int arg0);
 
 volatile double model_exec_timer = 0.0; 
 volatile double model_stop_flag = 0.0;
@@ -67,29 +61,12 @@ double NAME(MODEL, _get_tsamp)(void)
     return model_tsamp;
 }
 
-Int main()
+int main()
 {   
-    Task_Handle signal_task;    
-    Clock_Params clkParams;
-    Timer_Params user_sys_tick_params;
-    Timer_Handle user_sys_tick_timer;
-    Error_Block eb;
 
 #ifdef MODEL_PROFILING
     int32_t t_begin, t_end;
 #endif 
-
-    Error_init(&eb);
-
-    /* Create a periodic Clock Instance with period = 1 system time units */
-    Clock_Params_init(&clkParams);      
-    clkParams.period = 1;
-    clkParams.startFlag = TRUE;
-    Clock_create(rt_task, 2, &clkParams, NULL);
-
-    /* Create timer for user system tick */
-    Timer_Params_init(&user_sys_tick_params);
-
     model_is_running = 0.0;
 
     if(model_tsamp <= 0.0)
@@ -98,25 +75,13 @@ Int main()
     if(model_duration == 0.0)
 		model_duration = MODEL_DURATION;
 
-	user_sys_tick_params.period = (uint32_t)(model_tsamp * USEC_PER_SEC);
-
-    user_sys_tick_params.periodType = Timer_PeriodType_MICROSECS;
-    user_sys_tick_params.arg = 1;
-    user_sys_tick_timer = Timer_create(1, 
-            (ti_sysbios_hal_Timer_FuncPtr)Clock_tick, 
-            &user_sys_tick_params, NULL);
-
-    if (user_sys_tick_timer == NULL) 
-        System_abort("Unable to create user system tick timer!");
-
-    signal_task = (Task_Handle)signal_init(&eb);
-    if (signal_task == NULL) 
-        System_abort("Signal task: Task_create() failed!\n");
+    mdaq_create_rt_task(model_tsamp, rt_task);
+    mdaq_create_signal_task();
 
 #ifdef MODEL_PROFILING
-    mdaq_profile_init(); 
-    t_begin = mdaq_profile_read_timer32(); 
-#endif 
+    mdaq_profile_init();
+    t_begin = mdaq_profile_read_timer32();
+#endif
 
     /* Init model */ 
     NAME(MODEL, _init)();
@@ -130,13 +95,11 @@ Int main()
     mdaqnet_open();
     model_is_running = 1.0;
 
-    notyfy_dsp_start(); 
-
-    BIOS_start();
+    mdaq_start_rtos();
 }
 
 /* Real-time task */ 
-Void rt_task(UArg arg0)
+void rt_task(int arg0)
 {
     static int end_called = 0; 
 
