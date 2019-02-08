@@ -1,6 +1,6 @@
 function mdaqDSPWrite(arg1, arg2, arg3)
     // Check version compatibility
-    [is_supp vers] = mdaq_is_working('mdaqDSPTaskWrite');
+    [is_supp vers] = mdaq_is_working('mdaqDSPWrite');
     if is_supp == %F then
         error('ERROR: ' + vers)
         return;
@@ -17,7 +17,7 @@ function mdaqDSPWrite(arg1, arg2, arg3)
         data = arg3;
 
         if link_id < 0 then
-            error("Invalid link ID!")
+            error("Invalid connection id!")
         end
     end
 

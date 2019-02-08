@@ -18,8 +18,7 @@ function res = mdaqIsDone(arg1, arg2)
 
         task = convstr(arg2, "l");; 
         if link_id < 0 then
-            error("Invalid link ID!")
-            return;
+            error("Invalid connection id!")
         end
     end
 

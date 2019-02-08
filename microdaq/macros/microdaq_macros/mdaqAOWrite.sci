@@ -14,8 +14,7 @@ function mdaqAOWrite(arg1, arg2, arg3, arg4)
         data = arg4;
 
         if link_id < 0 then
-            disp("ERROR: Invalid link ID!")
-            return;
+            error("Invalid connection id!")
         end
     end
 
@@ -45,7 +44,6 @@ function mdaqAOWrite(arg1, arg2, arg3, arg4)
 
     if size(ao_range, 'c') <> 2 then
         error("Vector range [low,high;low,high;...] expected!")
-        return;
     end
     
     if data_size <> ch_count then
@@ -66,7 +64,6 @@ function mdaqAOWrite(arg1, arg2, arg3, arg4)
         link_id = mdaqOpen();
         if link_id < 0 then
             error("Unable to connect to MicroDAQ device!");
-            return;
         end
     end
     

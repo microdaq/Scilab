@@ -4,6 +4,6 @@ function mdaqAIScanStart(arg1)
     elseif argn(2) == 1 then
         mdaqAIScan(arg1, 0, 0)
     else 
-        error("Wrong number of arguments");
+        error("Wrong number of imput arguments");
     end
 endfunction

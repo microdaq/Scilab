@@ -16,7 +16,7 @@ function [data, result] = mdaqAIScan(arg1, arg2, arg3)
 
     ch_count = call("sci_mlink_ai_scan_get_ch_count", "out", [1, 1], 1, "i");
     if ch_count < 1 | ch_count > 16 then
-        error("AI task not initialized");
+        error("AI data acquisition not initialized");
     end
     
     if argn(2) == 2 then;  
@@ -30,8 +30,7 @@ function [data, result] = mdaqAIScan(arg1, arg2, arg3)
         timeout = arg3;
 
         if link_id < 0 then
-            disp("ERROR: Invalid link ID!")
-            return;
+            error("Invalid connection id!")
         end
     end
     
@@ -54,8 +53,7 @@ function [data, result] = mdaqAIScan(arg1, arg2, arg3)
     if argn(2) == 2 then
         link_id = mdaqOpen();
         if link_id < 0 then
-            disp("ERROR: Unable to connect to MicroDAQ device!");
-            return;
+            error("Unable to connect to MicroDAQ device!");
         end
     end
     

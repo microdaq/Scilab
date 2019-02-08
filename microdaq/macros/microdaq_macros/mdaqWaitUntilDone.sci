@@ -1,8 +1,5 @@
 function  mdaqWaitUntilDone(arg1, arg2, arg3)
     link_id = -1; 
-    data = [];
-    result = [];
-    
     supported_task = {"dsp", "ai", "ao"};
     
     if argn(2) == 2 then;  
@@ -15,8 +12,7 @@ function  mdaqWaitUntilDone(arg1, arg2, arg3)
     
     if argn(2) == 3 then
         if link_id < 0 then
-            disp("ERROR: Invalid link ID!")
-            return;
+            error("Invalid connection id!")
         end
         
         link_id = arg1; 
@@ -31,12 +27,15 @@ function  mdaqWaitUntilDone(arg1, arg2, arg3)
 
     if argn(2) > 3 | argn(2) < 2 then
         mprintf("Description:\n");
-        mprintf("\tWait until operation is done\n");
+        mprintf("\tWaits until operation is done\n");
         mprintf("Usage:\n");
-        mprintf("\t[data, result] = mdaqWaitUntilDone(linkID, operation, timeout)\n")
+        mprintf("\tmdaqWaitUntilDone(linkID, module, timeout)\n")
         mprintf("\tlinkID - connection id returned by mdaqOpen() (OPTIONAL)\n");
-        mprintf("\toperation - operation name which function waits for\n");
-        mprintf("\ttimeout - amount of time in seconds to wait (-1 - wait indefinitely)\n");
+        mprintf("\tmodule - name of module which performs operation\n");
+        mprintf("\t\t""ai"" - data acquisistion from analog inputs\n");
+        mprintf("\t\t""ao"" - signal generation on analog output\n");
+        mprintf("\t\t""dsp"" - DSP application execution\n");
+        mprintf("\ttimeout - amount of time in seconds (-1 - infinity)\n");
         return;
     end
     
@@ -55,8 +54,7 @@ function  mdaqWaitUntilDone(arg1, arg2, arg3)
     if argn(2) == 2 then
         link_id = mdaqOpen();
         if link_id < 0 then
-            disp("ERROR: Unable to connect to MicroDAQ device!");
-            return;
+            error("Unable to connect to MicroDAQ device!");
         end
     end
     

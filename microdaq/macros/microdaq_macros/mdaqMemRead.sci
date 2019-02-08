@@ -15,25 +15,24 @@ function [data] = mdaqMemRead(arg1, arg2, arg3, arg4)
         vector_size = arg4;
 
         if link_id < 0 then
-            error("Invalid link ID!")
-            return;
+            error("Invalid connection id!")
         end
     end
 
     if argn(2) > 4 | argn(2) < 3 then
         mprintf("Description:\n");
-        mprintf("\tReads MicroDAQ volatile memory\n");
+        mprintf("\tReads shared memory\n");
         mprintf("Usage:\n");
         mprintf("\tdata = mdaqMemRead(linkID, start, size, vectorSize)\n")
         mprintf("\tlinkID - connection id returned by mdaqOpen() (OPTIONAL)\n");
         mprintf("\tstart - memory start index\n");
         mprintf("\tsize - total data size to be read\n");
-        mprintf("\tvectorSize - MEM write block vector size\n");
+        mprintf("\tvectorSize - Xcos MEM write block vector size\n");
         return;
     end
 
     if data_size < 1 then
-        error("ERROR: Incorrect data size!");
+            error("Invalid  ID!")
     end
 
     if vector_size < 1 then
@@ -55,8 +54,7 @@ function [data] = mdaqMemRead(arg1, arg2, arg3, arg4)
     if argn(2) == 3 then
         link_id = mdaqOpen();
         if link_id < 0 then
-            disp("ERROR: Unable to connect to MicroDAQ device!");
-            return;
+            error("Unable to connect to MicroDAQ device!");
         end
     end
 

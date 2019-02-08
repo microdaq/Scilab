@@ -10,7 +10,7 @@ function mdaqDIODir(arg1, arg2, arg3)
         direction = arg3; 
 
         if link_id < 0 then
-            error("Invalid link ID!")
+            error("Invalid connection id!")
         end
     end
 
@@ -26,8 +26,7 @@ function mdaqDIODir(arg1, arg2, arg3)
     end
 
     if bank < 1 | bank > 4 then
-        disp("ERROR: Wrong bank number!")
-        return;
+        error("Wrong bank number!")
     end
 
     if direction <> 0 then
@@ -37,8 +36,7 @@ function mdaqDIODir(arg1, arg2, arg3)
     if argn(2) == 2 then
         link_id = mdaqOpen();
         if link_id < 0 then
-            disp("ERROR: Unable to connect to MicroDAQ device!");
-            return; 
+            error("Unable to connect to MicroDAQ device!"); 
         end
     end
 
