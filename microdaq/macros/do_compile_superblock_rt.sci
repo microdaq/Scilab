@@ -597,7 +597,7 @@ function ok = compile_standalone()
     wd = pwd();
     chdir(rpat);
 
-    GMAKE = dirname(get_function_path('do_compile_superblock_rt'))+"\..\etc\bin\gmake.exe";
+    GMAKE = fileparts(get_function_path('do_compile_superblock_rt'))+"..\etc\bin\gmake.exe";
 
     if getenv('WIN32','NO')=='OK' then
         unix_w(GMAKE + ' -f Makefile');
@@ -910,15 +910,15 @@ function  [ok,XX,alreadyran,flgcdgen,szclkINTemp,freof] = do_compile_superblock_
             Tsamp_delay=sci2exp(Tsamp_delay);
         elseif all_scs_m.objs(o_ev).gui=='rtai_ext_clock' then
             sTsamp=all_scs_m.objs(o_ev).graphics.exprs(1);
-            sTsamp=sci2exp(eval(sTsamp));
+            sTsamp=sci2exp(evstr(sTsamp));
             Tsamp_delay="0.0";
             useInternTimer = 0;
             extClockCode = all_scs_m.objs(o_ev).graphics.exprs(2);
         else
             sTsamp=all_scs_m.objs(o_ev).model.rpar.objs(2).graphics.exprs(1);
-            sTsamp=sci2exp(eval(sTsamp));
+            sTsamp=sci2exp(evstr(sTsamp));
             Tsamp_delay=all_scs_m.objs(o_ev).model.rpar.objs(2).graphics.exprs(2);
-            Tsamp_delay=sci2exp(eval(Tsamp_delay));
+            Tsamp_delay=sci2exp(evstr(Tsamp_delay));
         end
     end
 
@@ -950,9 +950,9 @@ function  [ok,XX,alreadyran,flgcdgen,szclkINTemp,freof] = do_compile_superblock_
     rdnom='foo';
     rpat = pwd();
     archname='';
-    Tsamp = sci2exp(eval(sTsamp));
+    Tsamp = sci2exp(evstr(sTsamp));
 
-    TARGETDIR = dirname(get_function_path('do_compile_superblock_rt'))+"/../rt_templates";
+    TARGETDIR = fileparts(get_function_path('do_compile_superblock_rt'))+"../rt_templates";
 
     libs='';
     template = ''; //** default values for this version
@@ -1051,7 +1051,7 @@ function  [ok,XX,alreadyran,flgcdgen,szclkINTemp,freof] = do_compile_superblock_
     maxnin=max(inpptr(2:$)-inpptr(1:$-1))
     maxnout=max(outptr(2:$)-outptr(1:$-1))
     maxdim=[];
-    for i=1:lstsize(cpr.state.outtb)
+    for i=1:size(cpr.state.outtb)
         maxdim=max(size(cpr.state.outtb(i)))
     end
     maxtotal=max([maxnrpar;maxnipar;maxnx;maxnz;maxnin;maxnout;maxdim]);
@@ -1412,7 +1412,7 @@ function [Code,Code_common]=make_standalone42(sample_time)
     BigIndent='          ';
 
     work=zeros(nblk,1)
-    Z=[z;zeros(lstsize(outtb),1);work]';
+    Z=[z;zeros(size(outtb),1);work]';
     nX=size(x,'*');
     nztotal=size(z,1);
 
@@ -1507,7 +1507,7 @@ function [Code,Code_common]=make_standalone42(sample_time)
     cformatline('     z_initial_condition={'+...
     strcat(string(z),",")+'};',70)
     cformatline('     outtbptr={'+...
-    strcat(string(zeros(lstsize(outtb),1)),"," )+'};',70)
+    strcat(string(zeros(size(outtb),1)),"," )+'};',70)
     cformatline('     work= {'+...
     strcat(string(work),"," )+'};',70)
     '  */'
@@ -1517,7 +1517,7 @@ function [Code,Code_common]=make_standalone42(sample_time)
 
     //** declaration of outtb
     Code_outtb = [];
-    for i=1:lstsize(outtb)
+    for i=1:size(outtb)
         if mat2scs_c_nb(outtb(i)) <> 11 then
             Code_outtb=[Code_outtb;
             cformatline('  static '+mat2c_typ(outtb(i))+...
@@ -1532,6 +1532,7 @@ function [Code,Code_common]=make_standalone42(sample_time)
         end
     end
     Code=[Code;
+
     Code_outtb;
     '']
 
@@ -1598,7 +1599,7 @@ function [Code,Code_common]=make_standalone42(sample_time)
 
     //** declaration of oz
     Code_oz = [];
-    for i=1:lstsize(oz)
+    for i=1:size(oz)
         if mat2scs_c_nb(oz(i)) <> 11 then
             Code_oz=[Code_oz;
             cformatline('  '+mat2c_typ(oz(i))+...
@@ -1623,7 +1624,7 @@ function [Code,Code_common]=make_standalone42(sample_time)
     '  /* Get work ptr of blocks */'
     '  void **work;'
 
-    '  work = (void **)(z+'+string(size(z,'*')+lstsize(outtb))+');'
+    '  work = (void **)(z+'+string(size(z,'*')+size(outtb))+');'
     '']
 
 
@@ -1635,7 +1636,7 @@ function [Code,Code_common]=make_standalone42(sample_time)
     end
 
     Code_outtbptr=[];
-    for i=1:lstsize(outtb)
+    for i=1:size(outtb)
         Code_outtbptr=[Code_outtbptr;
         '  '+rdnom+'_block_outtbptr['+...
         string(i-1)+'] = (void *) outtb_'+string(i)+';'];
@@ -2004,6 +2005,7 @@ function [Code,Code_common]=make_standalone42(sample_time)
             txt = write_code_cdoit(flag);
 
             if txt <> [] then
+
                 txt3=[''
                 '  '+get_comment('ev',list(0))
                 txt;
@@ -2520,7 +2522,7 @@ function txt=make_static_standalone42()
 
     //Alan added opar (27/06/07)
     //*** Object parameters ***//
-    if lstsize(opar)<>0 then
+    if size(opar)<>0 then
         txt=[txt;
         '/* def object parameters */']
         for i=1:(length(opptr)-1)
@@ -2819,7 +2821,7 @@ function Makename=rt_gen_make(name,files,libs,standalone,debug_build,SMCube_file
 	global %microdaq
     Makename=rpat+'/Makefile';
 
-    MICRODAQ_ROOT = dirname(get_function_path('do_compile_superblock_rt'))+"\..\";
+    MICRODAQ_ROOT = fileparts(get_function_path('do_compile_superblock_rt'))+"..\";
 
     TARGET_PATHS = MICRODAQ_ROOT + "rt_templates\target_paths.mk";
     TARGET_TOOLS = MICRODAQ_ROOT + "rt_templates\target_tools.mk";
