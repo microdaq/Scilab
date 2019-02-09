@@ -47,8 +47,8 @@ function [res] = load_mdaq_palette()
         
         //Load generated sod files
         if isdir(tmp_dir) == %F then 
-            mkdir(dirname(TMPDIR)+filesep()+basename(tmp_dir));
-            copyfile(tbx_tmp_path+filesep()+basename(tmp_dir), dirname(TMPDIR)+filesep()+basename(tmp_dir));
+            mkdir(fileparts(TMPDIR)+basename(tmp_dir));
+            copyfile(tbx_tmp_path+filesep()+basename(tmp_dir), fileparts(TMPDIR)+basename(tmp_dir));
         end
 
         load_saved_palette(palette_path);

@@ -63,8 +63,8 @@ function [] = microdaq_setup(arg1, arg2)
 
     dir_temp = pwd();
 
-    targetRoot = pathconvert(dirname(get_function_path('microdaq_setup'))+"\..\etc", %F);
-    targetPathsFile = pathconvert(dirname(get_function_path('microdaq_setup'))+"\..\rt_templates\target_paths.mk", %F);
+    targetRoot = pathconvert(fileparts(get_function_path('microdaq_setup'))+"..\etc", %F);
+    targetPathsFile = pathconvert(fileparts(get_function_path('microdaq_setup'))+"\..\rt_templates\target_paths.mk", %F);
     cpu0LinkerFile = pathconvert(targetRoot + '\sysbios\cpu0\configPkg\linker.cmd', %F);
     mkdir(pathconvert(targetRoot + '\sysbios\cpu0\configPkg', %F));
     cpu1LinkerFile = pathconvert(targetRoot + '\sysbios\cpu1\configPkg\linker.cmd', %F);

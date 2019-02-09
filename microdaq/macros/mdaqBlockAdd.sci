@@ -44,7 +44,7 @@ function mdaqBlockAdd(block_def)
         FORCE_SIM = %T;
     end
 
-    path = dirname(get_function_path('mdaqBlockAdd')) + filesep();
+    path = fileparts(get_function_path('mdaqBlockAdd'));
     module_path = part(path,1:length(path)-length("macros") - 1 );
     SCRIPT_FILE_ROOT = path + 'user_blocks' + filesep();
     C_FILE_ROOT = module_path+'src'+filesep()+'c'+ filesep()+'userlib'+filesep();

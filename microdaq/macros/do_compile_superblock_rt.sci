@@ -624,6 +624,10 @@ function  [ok,XX,alreadyran,flgcdgen,szclkINTemp,freof] = do_compile_superblock_
     scs_m = XX.model.rpar ; //** isolate the super block scs_m data structure
     par = scs_m.props;
 
+    if isdef("oldEmptyBehaviour") then
+        oldEmptyBehaviour("on")
+    end
+    
     // Perform pre code generation step for MicroDAQ
     [res1, scs_m] = pre_code_gen(scs_m);
     if res1 <> %t then
@@ -985,6 +989,7 @@ function  [ok,XX,alreadyran,flgcdgen,szclkINTemp,freof] = do_compile_superblock_
     else
         rdnom = hname;
         rpat = pwd()+'/'+hname+"_scig";
+
     end
 
 
@@ -1166,6 +1171,10 @@ function  [ok,XX,alreadyran,flgcdgen,szclkINTemp,freof] = do_compile_superblock_
         beep();
         mdaqClose(connection_id);
 
+    end
+
+    if isdef("oldEmptyBehaviour") then
+        oldEmptyBehaviour("off")
     end
 
 endfunction
@@ -1452,43 +1461,6 @@ function [Code,Code_common]=make_standalone42(sample_time)
         '']
     end
 
-//    Code=[Code;
-//    '/* Table of constant values */'
-//    'static int nrd_'+string(0:maxtotal)'+' = '+string(0:maxtotal)'+';']
-//
-//    if maxtotal<10 then
-//        Code=[Code;
-//        'static int nrd_10 = 10;']
-//    end
-//    if maxtotal<11 then
-//        Code=[Code;
-//        'static int nrd_11 = 11;']
-//    end
-//
-//    if maxtotal<81 then
-//        Code=[Code;
-//        'static int nrd_81 = 81;']
-//    end
-//    if maxtotal<82 then
-//        Code=[Code;
-//        'static int nrd_82 = 82;']
-//    end
-//    if maxtotal<84 then
-//        Code=[Code;
-//        'static int nrd_84 = 84;']
-//    end
-//    if maxtotal<811 then
-//        Code=[Code;
-//        'static int nrd_811 = 811;']
-//    end
-//    if maxtotal<812 then
-//        Code=[Code;
-//        'static int nrd_812 = 812;']
-//    end
-//    if maxtotal<814 then
-//        Code=[Code;
-//        'static int nrd_814 = 814;']
-//    end
 
     Code=[Code;
     ''
@@ -2822,6 +2794,7 @@ function Makename=rt_gen_make(name,files,libs,standalone,debug_build,SMCube_file
     Makename=rpat+'/Makefile';
 
     MICRODAQ_ROOT = fileparts(get_function_path('do_compile_superblock_rt'))+"..\";
+
 
     TARGET_PATHS = MICRODAQ_ROOT + "rt_templates\target_paths.mk";
     TARGET_TOOLS = MICRODAQ_ROOT + "rt_templates\target_tools.mk";
