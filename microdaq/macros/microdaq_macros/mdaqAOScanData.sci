@@ -15,8 +15,7 @@ function mdaqAOScanData(arg1, arg2, arg3, arg4)
         blocking = arg4;
 
         if link_id < 0 then
-            error("ERROR: Invalid link ID!")
-            return;
+            error("Invalid connection id!")
         end
     end
 
@@ -49,7 +48,6 @@ function mdaqAOScanData(arg1, arg2, arg3, arg4)
         link_id = mdaqOpen();
         if link_id < 0 then
             error("ERROR: Unable to connect to MicroDAQ device!");
-            return;
         end
     end
 

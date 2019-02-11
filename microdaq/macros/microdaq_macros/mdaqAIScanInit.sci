@@ -19,8 +19,7 @@ function result = mdaqAIScanInit(arg1, arg2, arg3, arg4, arg5, arg6)
         scan_time = arg6;
 
         if link_id < 0 then
-            error("Invalid connection ID!")
-            return;
+            error("Invalid connection id!")
         end
     end
 
@@ -39,7 +38,7 @@ function result = mdaqAIScanInit(arg1, arg2, arg3, arg4, arg5, arg6)
             mprintf("\t        [-10,10;-5,5] - multi-range argument for two channels\n");
 			mprintf("\tisDifferential - scalar or vector with measurement mode settings: %s - differential, %s - single-ended mode\n", "%T", "%F");
             mprintf("\trate - read per second rate for channels in use\n");
-            mprintf("\tduration - task duration in seconds (-1 - infinity)\n");
+            mprintf("\tduration - duration in seconds (-1 - infinity)\n");
             return;
         end
     else
@@ -124,7 +123,7 @@ function result = mdaqAIScanInit(arg1, arg2, arg3, arg4, arg5, arg6)
         error(mdaq_error2(result), 10000 + abs(result));
     else
         if result == -88 then
-            disp("Warninng: AI task interrupted!")
+            warning("AI scan interrupted!")
             mdaqAIScanStop()
 
             // time to terminate TCP connection

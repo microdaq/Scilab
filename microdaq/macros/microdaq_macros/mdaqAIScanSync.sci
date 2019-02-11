@@ -13,8 +13,7 @@ function mdaqAIScanSync(arg1, arg2, arg3)
         edge = arg3;
 
         if link_id < 0 then
-            error("Invalid connection ID!")
-            return;
+            error("Invalid connection id!")
         end
     end
  
@@ -26,9 +25,9 @@ function mdaqAIScanSync(arg1, arg2, arg3)
 		mprintf("\tlinkID - connection id returned by mdaqOpen() (OPTIONAL)\n");
         mprintf("\tdio - digital input pin (1-8)\n");
         mprintf("\tedge - type of edge which triggers analog input conversion\n");
-        mprintf("\t\t 1 - falling edge\n");
-        mprintf("\t\t 2 - rising edge\n");
-        mprintf("\t\t 3 - falling or rising edge\n");
+        mprintf("\t\t""falling"" - falling edge\n");
+        mprintf("\t\t""rising"" - rising edge\n");
+        mprintf("\t\t""both"" - falling and rising edge\n");
         return;
     end
 

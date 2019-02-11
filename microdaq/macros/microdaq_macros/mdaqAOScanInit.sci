@@ -1,4 +1,4 @@
-function mdaqAOScanInit(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
+﻿function mdaqAOScanInit(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
     global %microdaq;
     
     link_id = -1;
@@ -21,8 +21,7 @@ function mdaqAOScanInit(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
         scan_time = arg7;
 
         if link_id < 0 then
-            disp("ERROR: Invalid link ID!")
-            return;
+            error("Invalid connection id!")
         end
     end
     
@@ -34,18 +33,18 @@ function mdaqAOScanInit(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
         dac_info = get_dac_info(%microdaq.private.mdaq_hwid);
         if argn(2) > 7 | argn(2) < 6 then
         mprintf("Description:\n");
-        mprintf("\tInitiates AO scanning session\n");
+        mprintf("\tInitiates analog signal generation\n");
         mprintf("Usage:\n");
-        mprintf("\tmdaqAOScanInit(linkID, channels, initialData, range, isStreamMode, rate, duration\n")
+        mprintf("\tmdaqAOScanInit(linkID, channels, initialData, range, isStreamMode, rate, duration)\n")
         mprintf("\tlinkID - connection id (optional)\n");
-        mprintf("\tchannels - analog output channels to write\n");
-        mprintf("\tinitialData - task initial output data\n");
+        mprintf("\tchannels - analog output channels\n");
+        mprintf("\tinitialData - initial output data\n");
 		mprintf("\trange - analog output range matrix e.g.\n");
 		mprintf("\t        [-10,10] - single range argument applied for all used channels\n");
 		mprintf("\t        [-10,10; -5,5] - multi-range argument for two channels\n");
         mprintf("\tisStreamMode - mode of operation (%s - stream, %s - periodic)\n", "%T", "%F");
-        mprintf("\trate - update per second rate for channels in use\n");
-        mprintf("\tduration - task duration in seconds (-1 - infinity)\n");
+        mprintf("\trate - update per second per channel rate\n");
+        mprintf("\tduration - duration in seconds (-1 - infinity)\n");
         return;
         end
     else
@@ -67,7 +66,7 @@ function mdaqAOScanInit(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
         error("Wrong AO channel selected!")
     end
     
-    if size(data, "c") <> ch_count then
+    if size(data, "c") <> ch_count & data <> [] then
         error("Wrong output data - colums should match selected channels!")
     end
     
@@ -85,8 +84,12 @@ function mdaqAOScanInit(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
     range_tmp = ao_range;
     ao_range = matrix(ao_range', 1, ch_count*2);
     
-    data_size = size(data, "*"); 
-    
+    if data <> [] then
+        data_size = size(data, "*"); 
+    else
+        data_size = 0; 
+    end
+        
     if type(continuous) == 1 then
         if size(find(continuous>1), '*') > 0
             error('Wrong isContinuous - boolean value expected (%T/1, %F/0)');
@@ -100,7 +103,7 @@ function mdaqAOScanInit(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
     end
     
     if scan_time < 0 & scan_time <> -1 then
-        mprintf("WARNING: For infinite AO task use -1 as a duration parameter!\n"); 
+        warning("For infinite AO scan operation use -1 as a duration parameter.\n"); 
         scan_time = -1;
     end
     
@@ -109,8 +112,7 @@ function mdaqAOScanInit(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
     if argn(2) == 6 then
         link_id = mdaqOpen();
         if link_id < 0 then
-            disp("ERROR: Unable to connect to MicroDAQ device!");
-            return;
+            error("Unable to connect to MicroDAQ device!"); 
         end
     end
 
@@ -137,7 +139,7 @@ function mdaqAOScanInit(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
         error(mdaq_error2(result), 10000 + abs(result)); 
     else
         if result == 1 then
-            mprintf("\nWARNING: Your MicroDAQ device does not allow running AI and AO tasks simultaneously.\n")
+            mprintf("\nWARNING: Your MicroDAQ device does not support running AI and AO scan simultaneously.\n")
         end
         
         rows = [];
@@ -155,33 +157,37 @@ function mdaqAOScanInit(arg1, arg2, arg3, arg4, arg5, arg6, arg7)
             rows = [rows; "AO"+string(channels(j)), rangeStr, resolution+"mV"]
         end
         
-        mprintf("\nAO task settings:\n");
+        mprintf("\nAnalog signal generation settings:\n");
         mprintf("\t--------------------------------------------------\n")
         str2table(rows, ["Channel",  "Range", "Resolution"], 12)
         mprintf("\t--------------------------------------------------\n")
         
-        mprintf("\tTask frequency:\t\t%d Hz\n", scan_freq);
-        if 1 /scan_freq > 0.001 then
-            mprintf("\tTask period: \t\t%.5f seconds\n", 1 / scan_freq);
-        end
-        
-        if 1 /scan_freq <= 0.001 then
-            mprintf("\tTask period: \t\t%.5f ms\n", 1 / scan_freq * 1000);
-        end
         if continuous == 1 then
             mprintf("\tMode:\t\t\tStream\n"); 
         else
             mprintf("\tMode:\t\t\tPeriodic\n"); 
         end
+        
+        mprintf("\tOutput update rate:\t%d samples per second\n", scan_freq);
+        if 1 /scan_freq > 0.001 then
+            mprintf("\tOutput update period: \t%.5f seconds\n", 1 / scan_freq);
+        end
 
-        mprintf("\tQueue data size: \t%sx%s\n", string(size(data,"c")), string(size(data,"r")))
+        if 1 /scan_freq <= 0.001 then
+            mprintf("\tOutput update period: \t%.5f ms\n", 1 / scan_freq * 1000);
+        end
+
+        if data <> [] then
+            mprintf("\tSample buffer size: \t%sx%s\n", string(size(data,"c")), string(size(data,"r")))
+        end
+        
         if scan_time < 0
-            mprintf("\tNumber of channels:\t%d\n", ch_count)
-            mprintf("\tNumber of ouput updates:\tInf\n");
+            mprintf("\tNumber of used channels:\t%d\n", ch_count)
+            mprintf("\tNumber of samples to generate:\tInf\n");
             mprintf("\tDuration:\t\tInf\n");
         else
-            mprintf("\tNumber of channels:\t%d\n", ch_count)
-            mprintf("\tNumber of output update:\t%d\n", scan_time * scan_freq);
+            mprintf("\tChannels in use:\t%d\n", ch_count)
+            mprintf("\tSmaples to generate:\t%d\n", scan_time * scan_freq);
             if scan_time == 1 
                 mprintf("\tDuration:\t\t%.2f second\n", scan_time);
             else

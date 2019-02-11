@@ -15,7 +15,7 @@ function continueSimulation=pre_xcos_simulate(scs_m, needcompile)
 
         if (typeof(curObj) == "Block" & curObj.gui == "CLOCK_c")
             sTsamp=curObj.model.rpar.objs(2).graphics.exprs(1);
-            %microdaq.private.model_tsamp=strtod(sci2exp(eval(sTsamp)));
+            %microdaq.private.model_tsamp=strtod(sci2exp(evstr(sTsamp)));
         end
 
         if (typeof(curObj) == "Block" & curObj.gui == "mdaq_setup")

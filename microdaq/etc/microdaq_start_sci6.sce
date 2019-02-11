@@ -139,7 +139,8 @@ end
 mprintf("\tLoad MLink library\n");
 exec(pathconvert(root_tlbx + "/etc/mlink/MLink.sce", %f),-1);
 
-if (sci_ver_str == 'scilab-5.5.2') | (sci_ver_str == 'scilab-5.5.2.1') then
+//if (sci_ver_str == 'scilab-5.5.2') | (sci_ver_str == 'scilab-5.5.2.1') then
+if %t then
     if isdef("xcosAddToolsMenu") == %F then
         loadXcosLibs();
         sleep(1000)
@@ -180,7 +181,7 @@ if (sci_ver_str == 'scilab-5.5.2') | (sci_ver_str == 'scilab-5.5.2.1') then
 end
 // ---- Load MicroDAQ User blocks ----
 // This feature is not available on Scilab 6, yet 
-if sci_ver(1) <> 6 then
+if %T then
     if isfile(userblock_path+'lib') == %T then
         microdaqUserBlocks = lib(userblock_path);
     else

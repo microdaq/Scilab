@@ -2,16 +2,14 @@ function mdaqAIScanStop(arg1)
   if argn(2) == 1 then
         link_id = arg1;   
         if link_id < 0 then
-            disp("ERROR: Invalid link ID!")
-            return;
+            error("Invalid connection id!")
         end
     end
 
     if argn(2) <> 1 then
         link_id = mdaqOpen();
         if link_id < 0 then
-            disp("ERROR: Unable to connect to MicroDAQ device!");
-            return; 
+            error("ERROR: Unable to connect to MicroDAQ device!");
         end
     end
     

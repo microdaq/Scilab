@@ -1,11 +1,4 @@
 function mdaqDSPInit( arg1, arg2, arg3, arg4 )
-     // Check version compatibility 
-    [is_supp vers] = mdaq_is_working('mdaqDSPTaskInit');
-    if is_supp == %F then
-        error('ERROR: ' + vers)
-        return;
-    end
-
     global %microdaq;
     result = -1;
 
@@ -21,20 +14,19 @@ function mdaqDSPInit( arg1, arg2, arg3, arg4 )
         rate = arg3; 
         duration = arg4; 
         if link_id < 0 then
-            disp("ERROR: Invalid link ID!")
-            return;
+            error("Invalid connection id!")
         end
     end
 
     if argn(2) > 4 | argn(2) < 3 then
         mprintf("Description:\n");
-        mprintf("\tInitializes DSP task\n");
+        mprintf("\tLoads and configures DSP application\n");
         mprintf("Usage:\n");
-        mprintf("\tmdaqDSPTaskInit(linkId, path, rate, duration);\n")
+        mprintf("\tmdaqDSPInit(linkId, executable, rate, duration);\n")
         mprintf("\tlinkId - connection id returned by mdaqOpen() (OPTIONAL)\n");
-        mprintf("\tpath - XCos generated DSP application path\n");
+        mprintf("\texecutable - XCos generated DSP application path\n");
         mprintf("\trate - DSP application step per second rate (-1 - keep Xcos settings)\n");
-        mprintf("\tduration - task duration in seconds (-1 - infinity)\n");
+        mprintf("\tduration - defines how many seconds DSP application will be executed (-1 - infinity)\n");
         return;
     end
 

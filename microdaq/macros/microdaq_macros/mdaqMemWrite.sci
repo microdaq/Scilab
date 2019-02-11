@@ -11,13 +11,13 @@ function mdaqMemWrite(arg1, arg2, arg3)
         data = arg3; 
 
         if link_id < 0 then
-            error("Invalid link ID!")
+            error("Invalid connection id")
         end
     end
 
     if argn(2) > 3 | argn(2) < 2 then
         mprintf("Description:\n");
-        mprintf("\tWrites MicroDAQ memory\n");
+        mprintf("\tWrites shared memory\n");
         mprintf("Usage:\n");
         mprintf("\tmdaqMemWrite(linkID, index, data)\n")
         mprintf("\tlinkID - connection id returned by mdaqOpen() (OPTIONAL)\n");
@@ -28,7 +28,7 @@ function mdaqMemWrite(arg1, arg2, arg3)
     
     len = size(data, "*");
     if  start_idx < 1 | start_idx > 250000-len then
-        error("Incorrect start index - use values from 1 to 250000-(data size)!")
+        error("Incorrect start index - use values from 1 to 250000!")
     end
 
     if argn(2) == 2 then

@@ -1,10 +1,6 @@
 function [data] = mdaqDSPRead(arg1, arg2, arg3, arg4, arg5)
-    // Check version compatibility
-    [is_supp vers] = mdaq_is_working('mdaqDSPSignalRead');
-    if is_supp == %F then
-        error('ERROR: ' + vers)
-        return;
-    end
+    data = [];
+    result = -1;
 
     if argn(2) == 4 then
         signalID = arg1;
@@ -25,9 +21,6 @@ function [data] = mdaqDSPRead(arg1, arg2, arg3, arg4, arg5)
             return;
         end
     end
-
-    data = [];
-    result = -1;
 
     if argn(2) <> 4 & argn(2) <> 5 then
         mprintf("Description:\n");

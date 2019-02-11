@@ -21,9 +21,8 @@ function block=mdaq_encoder_sim(block,flag)
                    if block.ipar(1) > 2 then 
                         warning("Encoder ENC3/ENC4 is not supported in simulation mode.");
                    else
-                    mdaqEncoderInit(%microdaq.private.connection_id,..
-                                  block.ipar(1),..
-                                  block.ipar(2));
+                        mdaqEncoderInit(%microdaq.private.connection_id,...
+                                        block.ipar(1), block.ipar(3), block.ipar(2));
                    end
             end
         case 5 // Ending
