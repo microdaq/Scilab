@@ -23,8 +23,8 @@ function mdaqEncoderInit(arg1, arg2, arg3, arg4)
         mprintf("\tmdaqEncoderInit(linkID, module, mode, initValue)\n")
         mprintf("\tlinkID - connection id returned by mdaqOpen() (OPTIONAL)\n");
         mprintf("\tmodule - encoder module (1 | 2)\n");
-        mprintf("\tmode - encoder mode (""quadrature"" | ""dir-count"" | ""up-count"" | ""down-count"")\n");
-        mprintf("\tinitValue - initial position value\n");
+        mprintf("\tmode - encoder counter mode (""quadrature"" | ""dir"" | ""up"" | ""down"")\n");
+        mprintf("\tinitValue - initial counter value\n");
         return;
     end
 
@@ -33,11 +33,11 @@ function mdaqEncoderInit(arg1, arg2, arg3, arg4)
         select count_mode
         case "quadrature" then
           mode_arg = 0; 
-        case "dir-count" then
+        case "dir" then
           mode_arg = 1; 
-        case "up-count" then
+        case "up" then
           mode_arg = 2; 
-        case "down-count" then
+        case "down" then
           mode_arg = 3; 
         else
           error("Unsupported Encoder mode");

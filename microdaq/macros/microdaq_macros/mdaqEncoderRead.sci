@@ -17,9 +17,9 @@ function [position, direction] = mdaqEncoderRead(arg1, arg2)
     
     if argn(2) > 2 | argn(2) < 1 | enc > 2 | enc < 1 then
         mprintf("Description:\n");
-        mprintf("\tReads encoder position and motion direction\n");
+        mprintf("\tReads encoder counter\n");
         mprintf("Usage:\n");
-        mprintf("\t[position, direction] = mdaqEncoderRead(linkID, module)\n")
+        mprintf("\t[value, direction] = mdaqEncoderRead(linkID, module)\n")
         mprintf("\tlinkID - connection id returned by mdaqOpen() (OPTIONAL)\n");
         mprintf("\tmodule - encoder module (1 | 2)\n");
         return;
