@@ -1123,6 +1123,7 @@ function  [ok,XX,alreadyran,flgcdgen,szclkINTemp,freof] = do_compile_superblock_
     end
     
     disp('### Generating binary file...');
+    
     ok=compile_standalone();
 
     result = isfile(rpat + filesep() + dsp_binary);
@@ -1131,46 +1132,40 @@ function  [ok,XX,alreadyran,flgcdgen,szclkINTemp,freof] = do_compile_superblock_
         return;
     end
     
-    // save path to generated application
-    mputl(rpat + filesep() + dsp_binary ,TMPDIR + filesep() + "last_mdaq_dsp_image");
+    dspPath = rpat + filesep() + dsp_binary; 
+    dspTsamp = Tsamp;
+    dspDuration = Sim_duration;
 
+    save(TMPDIR + filesep() + "last_model", "dspPath", "dspTsamp", "dspDuration");
+    
+    %microdaq.dsp_loaded = %F;
     if load_dsp_app == %t then
         disp('### Connecting to MicroDAQ...');
-        close_last_connection();
-        connection_id = mdaqOpen();
-        if connection_id < 0 then
-            message("ERROR: Unable to connect to MicroDAQ device!");
-            return;
-        end
-    
-        res = mlink_dsp_load(connection_id, rpat + filesep() + dsp_binary, 'l'); 
-        if res < 0 then
-            res = mlink_dsp_load(connection_id, rpat + filesep() + dsp_binary, 'l');
-            if res < 0 then
-                message(mdaq_error2(res));                
-                mdaqClose(connection_id);
-                return
-            end
-        end
         
-        disp('### ' + dsp_binary + ' has been loaded to MicroDAQ.');
-
-        res = mlink_dsp_start(connection_id,-1);
-        if res < 0 then
-            message("Unable to start DSP application!");
-            mdaqClose(connection_id);
-            return;
+        // close all connections
+        mdaqClose();
+        
+        try
+            mdaqDSPInit(rpat + filesep() + dsp_binary, -1, Sim_duration);
+            disp("### Loading DSP executable " + dsp_binary + " on MicroDAQ...")
+        catch
+            messagebox(lasterror(), "Error", "error")
+            return
         end
         
         if standalone == %t then
-            disp('### Model has been started in Standalone mode.');
+            mdaqDSPStart();    
+            if dspDuration > 0 then 
+                durationStr = string(dspDuration) 
+            else
+                durationStr = "Inf"
+            end
+            msg = "(duration: " + durationStr + "s, rate: " + string(1/strtod(dspTsamp)) + "Hz)..." 
+            disp("### Starting " + dsp_binary + " in standalone mode " + msg);      
         end
 
         %microdaq.dsp_loaded = %T;
-
         beep();
-        mdaqClose(connection_id);
-
     end
 
     if isdef("oldEmptyBehaviour") then
@@ -1265,6 +1260,7 @@ function [CCode,FCode]=gen_blocks()
                 path($+1)='rpar';
                 path($+1)='objs';
             end
+
             path($+1)=corinv(kdyn)($);
             O=scs_m(path);
         end
@@ -2027,6 +2023,7 @@ function [Code,Code_common]=make_standalone42(sample_time)
 
     if x<>[] then
         Code=[Code
+
         ''
         '  tout=t;'
         '  dt='+sample_time+';'
@@ -2321,6 +2318,7 @@ endfunction
 
 function txt=make_static_standalone42()
 
+
     txt=[''];
 
     //*** Continuous state ***//
@@ -2337,8 +2335,12 @@ function txt=make_static_standalone42()
     //************************//
 
     txt=[txt;
+
     'scicos_block block_'+rdnom+'['+string(nblk)+'];'
+
+
     ''];
+
 
     //*** Real parameters ***//
     nbrpa=0;strRCode='';lenRCode=[];ntot_r=0;
@@ -2559,6 +2561,7 @@ endfunction
 //
 //16/06/07 Author : A.Layec
 //Copyright INRIA
+
 function [txt]=mat2c_typ(outtb)
     select type(outtb)
         //real matrix
@@ -3106,6 +3109,7 @@ function [txt]=write_code_cdoit(flag)
                 txt=[txt;
                 '  }'];
                 //*******//
+
             end
             //** Unknown block
         else
