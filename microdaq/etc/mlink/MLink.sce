@@ -58,6 +58,8 @@ function MLink()
                                "sci_mlink_ai_scan_get_ch_count"..
                                "sci_mlink_ai_scan"..
                                "sci_mlink_ai_scan_stop"..
+                               "sci_mlink_ai_wait_until_done"..
+                               "sci_mlink_ai_is_done"..
                                "sci_mlink_dio_set"..
                                "sci_mlink_dio_get"..
                                "sci_mlink_dio_set_dir"..
