@@ -28,6 +28,8 @@ int NAME(MODEL, _end)(void);
 double NAME(MODEL, _get_tsamp)(void);
 
 extern void mdaq_start_rtos();
+extern void mdaq_rtos_checkpoint();
+
 extern int mdaq_create_signal_task(void);
 extern int mdaq_create_rt_task(double, void (*f)(int));
 
@@ -70,10 +72,10 @@ int main()
     model_is_running = 0.0;
 
     if(model_tsamp <= 0.0)
-		model_tsamp = MODEL_TSAMP;
+        model_tsamp = MODEL_TSAMP;
 
     if(model_duration == 0.0)
-		model_duration = MODEL_DURATION;
+        model_duration = MODEL_DURATION;
 
     mdaq_create_rt_task(model_tsamp, rt_task);
     mdaq_create_signal_task();
@@ -101,11 +103,17 @@ int main()
 /* Real-time task */ 
 void rt_task(int arg0)
 {
-    static int end_called = 0; 
+    static int end_called = 0, checkpoint_done = 0;
 
 #ifdef MODEL_PROFILING
     int32_t t_begin, t_end;
 #endif 
+
+    if(!checkpoint_done)
+    {
+        mdaq_rtos_checkpoint();
+        checkpoint_done = 1;
+    }
 
     /* This condition determine if model step/isr is executed */ 
     if( model_stop_flag == 0.0 && ( model_exec_timer <= model_duration || model_duration == -1 ))
@@ -120,7 +128,7 @@ void rt_task(int arg0)
 
 #ifdef MODEL_PROFILING
         t_end = mdaq_profile_read_timer32(); 
-	model_step_cycle_cnt = t_end - t_begin; 
+    model_step_cycle_cnt = t_end - t_begin; 
         mdaq_profile_save( t_end - t_begin,0);
 #endif
         /* increment execution timer */ 
@@ -128,6 +136,7 @@ void rt_task(int arg0)
     }
     else
     {
+
         /* call model end only once */ 
         if(!end_called)
         {

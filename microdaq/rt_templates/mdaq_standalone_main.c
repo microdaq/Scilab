@@ -25,6 +25,8 @@ int NAME(MODEL, _end)(void);
 double NAME(MODEL, _get_tsamp)(void);
 
 extern void mdaq_start_rtos();
+extern void mdaq_rtos_checkpoint();
+
 extern int mdaq_create_signal_task(void);
 extern int mdaq_create_rt_task(double, void (*f)(int));
 
@@ -76,7 +78,13 @@ int main()
 /* Real-time task */ 
 void rt_task(int arg0)
 {
-    static int end_called = 0; 
+    static int end_called = 0, checkpoint_done = 0;
+
+    if(!checkpoint_done)
+    {
+        mdaq_rtos_checkpoint();
+        checkpoint_done = 1;
+    }
 
 	if( model_stop_flag == 0.0 && ( model_exec_timer <= model_duration || model_duration == -1 ))
     {
