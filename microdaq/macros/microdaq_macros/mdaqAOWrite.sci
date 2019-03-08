@@ -28,7 +28,7 @@ function mdaqAOWrite(arg1, arg2, arg3, arg4)
             mprintf("\tmdaqAOWrite(linkID, channels, range, data)\n")
             mprintf("\tlinkID - connection id returned by mdaqOpen() (OPTIONAL)\n");
             mprintf("\tchannels - analog output channels\n");
-            mprintf("\trange - analog output range matrix e.g.\n");
+            mprintf("\trange - analog output range\n");
             mprintf("\t        [-10,10] - single range argument applied for all used channels\n");
             mprintf("\t        [-10,10;-5,5] - multi-range argument for two channels\n");
             mprintf("\tdata - data to be written\n");

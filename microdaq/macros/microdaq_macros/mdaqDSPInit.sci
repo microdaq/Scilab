@@ -26,7 +26,7 @@ function mdaqDSPInit( arg1, arg2, arg3, arg4 )
         mprintf("\tlinkId - connection id returned by mdaqOpen() (OPTIONAL)\n");
         mprintf("\texecutable - XCos generated DSP application path\n");
         mprintf("\trate - DSP application step per second rate (-1 - keep Xcos settings)\n");
-        mprintf("\tduration - defines how many seconds DSP application will be executed (-1 - infinity)\n");
+        mprintf("\tduration - DSP application execution duration in seconds (-1 - infinity)\n");
         return;
     end
 

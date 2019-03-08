@@ -17,12 +17,12 @@ function mdaqDIOWrite(arg1, arg2, arg3)
 
     if argn(2) > 3 | argn(2) < 2 then
         mprintf("Description:\n");
-        mprintf("\tWrites DIO state\n");
+        mprintf("\tWrites DIO lines state\n");
         mprintf("Usage:\n");
         mprintf("\tmdaqDIOWrite(linkID, dio, state);\n")
         mprintf("\tlinkID - connection id returned by mdaqOpen() (OPTIONAL)\n");
-        mprintf("\tdio - DIO line number(s)\n");
-        mprintf("\tstate - DIO output value(s) to be written\n");
+        mprintf("\tdio - DIO line numbers\n");
+        mprintf("\tstate - DIO output values to be written\n");
         return;
     end
     

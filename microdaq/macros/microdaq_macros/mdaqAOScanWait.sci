@@ -5,10 +5,10 @@ function  mdaqAOScanWait(arg1, arg2)
         mdaqWaitUntilDone(arg1, "ao", arg2)
     else
         mprintf("Description:\n");
-        mprintf("\tWaits until analog signal generation is done\n");
+        mprintf("\tWaits until analog signal generation is complited\n");
         mprintf("Usage:\n");
         mprintf("\tmdaqAOScanWait(linkID, timeout)\n")
         mprintf("\tlinkID - connection id returned by mdaqOpen() (OPTIONAL)\n");
-        mprintf("\ttimeout - amount of time in seconds(-1 - infinity)\n");
+        mprintf("\ttimeout - amount of time in seconds (-1 - infinity)\n");
     end
 endfunction

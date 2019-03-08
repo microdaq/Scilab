@@ -24,7 +24,7 @@ function [data] = mdaqDSPRead(arg1, arg2, arg3, arg4, arg5)
 
     if argn(2) <> 4 & argn(2) <> 5 then
         mprintf("Description:\n");
-        mprintf("\tReads DSP task data\n");
+        mprintf("\tReads DSP application data\n");
         mprintf("Usage:\n");
         mprintf("\tmdaqDSPRead(linkId, signalId, vectorSize, vectorCount, timeout);\n")
         mprintf("\tlinkId - connection id returned by mdaqOpen() (OPTIONAL)\n");

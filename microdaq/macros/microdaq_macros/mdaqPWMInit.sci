@@ -24,7 +24,7 @@ function mdaqPWMInit(arg1, arg2, arg3, arg4, arg5, arg6)
 
     if argn(2) > 6 | argn(2) < 5 | module > 3 | module < 1 | period > 500000 | period < 2 then
         mprintf("Description:\n");
-        mprintf("\tSetup MicroDAQ PWM outputs\n");
+        mprintf("\tConfigures MicroDAQ PWM module\n");
         mprintf("Usage:\n");
         mprintf("\tmdaqPWMInit(linkID, module, period, activeLow, dutyChannelA, dutyChannelB)\n")
         mprintf("\tlink_id - connection id returned by mdaqOpen() (OPTIONAL)\n");

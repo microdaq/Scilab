@@ -1,6 +1,6 @@
 function  mdaqWaitUntilDone(arg1, arg2, arg3)
     link_id = -1; 
-    supported_task = {"dsp", "ai", "ao"};
+    supported_task = ["dsp", "ai", "ao"];
     
     if argn(2) == 2 then;  
         if type(arg1) <> 10 then

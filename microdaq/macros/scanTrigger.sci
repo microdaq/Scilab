@@ -1,6 +1,6 @@
 function scanTrigger(trigger, varargin)
     result = -1; 
-    supported_trig = {"none", "dioValue", "dioPattern", "encoderValue", "dspStart", "aiStart", "aoStart"};
+    supported_trig = ["none", "dio", "dioPattern", "encoder", "dsp", "ai", "ao"];
 
     if trigger <> 1 & trigger <> 2 then
         error("Unsupported trigger"); 
@@ -9,7 +9,7 @@ function scanTrigger(trigger, varargin)
     if argn(2) == 1 then
         mprintf("Description:\n");
         if trigger == 1 then 
-            mprintf("\tSets AI task start trigger\n");
+            mprintf("\tConfigures data acquisition start trigger\n");
             mprintf("Usage:\n");
             mprintf("\tmdaqAITaskTrigger(linkID, triggerType, p1,...,pn);\n")
         elseif trigger == 2 then
@@ -22,12 +22,12 @@ function scanTrigger(trigger, varargin)
         mprintf("\t    ""%s"" - disables trigger\n", supported_trig(1)); 
         mprintf("\t    ""%s"" - triggers, when on single DIO line (p1) a value (p2) is present\n", supported_trig(2)); 
         mprintf("\t    ""%s"" - triggers, when digital pattern (p1) is present on DIO1-8\n", supported_trig(3)); 
-		mprintf("\t    ""%s"" - triggers, when encoder value is lower/greater (p2) then value (p1)\n", supported_trig(4));
+		mprintf("\t    ""%s"" - triggers, when encoder counter value of module (p1) is lower/greater (p3) then value (p2)\n", supported_trig(4));
         mprintf("\t    ""%s"" - triggers, when Xcos generated application is started on DSP\n", supported_trig(5)); 
         if trigger == 1 then 
-            mprintf("\t    ""%s"" - triggers, when AO scan is started\n", supported_trig(7)); 
+            mprintf("\t    ""%s"" - triggers, when signal generation is started\n", supported_trig(7)); 
         elseif trigger == 2 then
-            mprintf("\t    ""%s"" - triggers, when AI scan is started \n", supported_trig(6)); 
+            mprintf("\t    ""%s"" - triggers, when data acquisition is started \n", supported_trig(6)); 
         end   
         return;
     end
@@ -79,20 +79,20 @@ function scanTrigger(trigger, varargin)
 
 
 
-    if trig_type == "aiStart" | trig_type == "aoStart" | trig_type == "dspStart" then
+    if trig_type == "ai" | trig_type == "ao" | trig_type == "dsp" then
         if trigger == 1 then
-            if trig_type == "aiStart" then
-                error("Unable to use ""aiStart"" trigger for AI scan"); 
+            if trig_type == "ai" then
+                error("Unable to use ""ai"" trigger for AI scan"); 
             end
         end
         
         if trigger == 2 then
-            if trig_type == "aoStart" then
-                error("Unable to use ""aoStart"" trigger for AO scan"); 
+            if trig_type == "ao" then
+                error("Unable to use ""ao"" trigger for AO scan"); 
             end
         end
 
-        if trig_type == "aiStart" | trig_type == "aoStart" then
+        if trig_type == "ai" | trig_type == "ao" then
             src = 2; 
         else
             src = 3; 
@@ -104,7 +104,7 @@ function scanTrigger(trigger, varargin)
                 error(mdaq_error2(link_id), 10000 + abs(link_id)); 
             end
         end
-        
+
         result = call("sci_mlink_scan_trigger_external_start",..
                         link_id, 1, "i",..
                         trigger, 2, "i",..
@@ -114,7 +114,7 @@ function scanTrigger(trigger, varargin)
     end
     
     //// DIO Trigger ////
-    if trig_type == "dioValue" then 
+    if trig_type == "dio" then 
         if type(varargin(1)) == 1 then
             if argn(2) <> 5  then
                 error("Wrong number of input arguments")
@@ -198,7 +198,7 @@ function scanTrigger(trigger, varargin)
     
 
     //// ENCODER Trigger ////
-    if trig_type == "encoderValue" then 
+    if trig_type == "encoder" then 
         if type(varargin(1)) == 1 then
             if argn(2) <> 6  then
                 error("Wrong number of input arguments")

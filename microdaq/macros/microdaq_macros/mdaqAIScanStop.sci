@@ -9,7 +9,7 @@ function mdaqAIScanStop(arg1)
     if argn(2) <> 1 then
         link_id = mdaqOpen();
         if link_id < 0 then
-            error("ERROR: Unable to connect to MicroDAQ device!");
+            error("Unable to connect to MicroDAQ device!");
         end
     end
     

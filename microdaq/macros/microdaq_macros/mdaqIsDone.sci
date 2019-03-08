@@ -1,6 +1,6 @@
 function res = mdaqIsDone(arg1, arg2)
     res = [];
-    supported_task = {"dsp", "ai", "ao"};
+    supported_task = ["dsp", "ai", "ao"];
     
     if argn(2) == 1 then
         if type(arg1) <> 10 then
@@ -26,9 +26,9 @@ function res = mdaqIsDone(arg1, arg2)
         mprintf("Description:\n");
         mprintf("\tChecks if operation is done\n");
         mprintf("Usage:\n");
-        mprintf("\tstate = mdaqIsDone(linkID, operation)\n")
+        mprintf("\tstate = mdaqIsDone(linkID, module)\n")
         mprintf("\tlinkID - connection id returned by mdaqOpen() (OPTIONAL)\n");
-        mprintf("\toperation - operation name\n");
+        mprintf("\tmodule - module name which operation is performed (""ai"" | ""ao"" | ""dsp"")\n");
         return;
     end
 

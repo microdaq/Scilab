@@ -37,7 +37,7 @@ function str2table(str,param,spacing)
             sstr = sstr + text(r,c) + char(ones(1,max_c_size(c) - length(text(r,c)) + spacing) * 32) ;
         end
         f_str(r) =sstr;
-        mprintf("\t%s\n",sstr )
+        mprintf("  %s\n",sstr )
     sstr = ''
     end
 
