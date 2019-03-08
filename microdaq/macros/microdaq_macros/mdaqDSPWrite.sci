@@ -1,10 +1,4 @@
 function mdaqDSPWrite(arg1, arg2, arg3)
-    // Check version compatibility
-    [is_supp vers] = mdaq_is_working('mdaqDSPWrite');
-    if is_supp == %F then
-        error('ERROR: ' + vers)
-        return;
-    end
 
     if argn(2) == 2 then
         start_idx = arg1;
@@ -23,7 +17,7 @@ function mdaqDSPWrite(arg1, arg2, arg3)
 
     if argn(2) > 3 | argn(2) < 2 then
         mprintf("Description:\n");
-        mprintf("\tWrites data to DSP task\n");
+        mprintf("\tWrites data to DSP application\n");
         mprintf("Usage:\n");
         mprintf("\tmdaqDSPWrite(linkID, index, data)\n")
         mprintf("\tlinkID - connection id returned by mdaqOpen() (OPTIONAL)\n");

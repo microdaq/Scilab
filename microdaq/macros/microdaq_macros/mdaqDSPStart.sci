@@ -1,10 +1,4 @@
 function mdaqDSPStart( arg1)
-    // Check version compatibility
-    [is_supp vers] = mdaq_is_working('mdaqDSPStart');
-    if is_supp == %F then
-        error('ERROR: ' + vers)
-        return;
-    end
 
     if argn(2) == 1 then
         link_id = arg1;

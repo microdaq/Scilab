@@ -1,11 +1,4 @@
 function mdaqBlockAdd(block_def)
-    // Check version compatibility 
-    [is_supp vers] = mdaq_is_working('mdaqBlockAdd');
-    if is_supp == %F then
-        error('ERROR: ' + vers)
-        return;
-    end
-    
     if type(block_def) <> 17 then
         disp("ERROR: Wrong type of input argument!");
         if type(block_def) == 13 then
