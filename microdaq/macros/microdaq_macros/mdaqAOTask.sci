@@ -1,7 +1,7 @@
 function task = mdaqAOTask()
    task = tlist(["aotlist","init","start","write","stop","isDone","waitUntilDone", "setTrigger"],..
                      mdaqAOScanInit,..
-                     mdaqAOScan,..
+                     mdaqAOScanStart,..
                      mdaqAOScanData,..
                      mdaqAOScanStop,..
                      mdaqAOScanIsDone,..
