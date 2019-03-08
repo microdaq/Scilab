@@ -3,22 +3,23 @@ function [x,y,typ] = mdaq_to_file(job,arg1,arg2)
 
     to_file_desc = [ "To File block";
     "";
-    "This block writes data to file. Files are created on user disk in";
-    "''dsp/data'' directory. Files can be downloaded with web browser or";
-    "mass storage interface. ";
+    "This block writes data to file. Files are stored on user disk in";
+    "''dsp/data'' directory. Function mdaqFileData can be used to load";
+    "data into Scilab workspace from file created with ''To file'' block.";
     "";
-    "In order to import file data to Scilab mdaqFileData script can be used.";
-    "See mdaqFileData help for more info.";
+    "Block supports text and binary files. Text (CSV) files can be viewed";
+    "with file browser from MicroDAQ web interface without download.";
     "";
-    "Data can be written to file in text of binary format. Depending ";
-    "on selected option data can appended to previous content of the file";
-    "or data will be written to empty file (Create option)";
+    "Depending on the selected option data can appended to previous content";
+    "of the file or data will be written to empty file (Create option)";
     "To avoid time time consuming wirte operation during every";
     "simulation step block can buffer data.";
     "";
-    "Rising edge on Trigger input(2) will create new file. To define sequential file";
-    "name use ''%d'' e.g. data_%d.txt will produce files data_0.txt, data_1.txt,...";
-    "If ''%d'' isn''t included in file name data will be written to one file.";
+    "Block allows sequential file creation for large data sets or events.";
+    "Rising edge on Trigger input(2) will create new file. To define"; 
+    "sequential file name use ''%d'' in the file name  e.g. data_%d.txt";
+    "will create files data_0.csv, data_1.csv. If ''%d'' isn''t included"
+    "in file name single file will be used.";
     "";
     "Trigger input has to be connected with a signal, if a sequential file is ";
     "not used, the constant block with value 1 shall be connected."; 
@@ -26,8 +27,8 @@ function [x,y,typ] = mdaq_to_file(job,arg1,arg2)
     "D input - data input"
     "T input - trigger new sequential file creation"
     "";
-    "Filt type:";
-    "   1 - Text";
+    "File type:";
+    "   1 - CSV";
     "   2 - Binary";
     "";
     "Mode:";
@@ -79,11 +80,6 @@ function [x,y,typ] = mdaq_to_file(job,arg1,arg2)
                 message("File name too long - 64 character max!");
             end
 
-//            if vec_buff_size > 500 then
-//                ok = %f;
-//                message("Wrong vector buffer size - 500 max!");
-//            end
-
             if vec_size > 8 then
                 ok = %f;
                 message("Wrong vector size - 8 max!");
@@ -100,12 +96,10 @@ function [x,y,typ] = mdaq_to_file(job,arg1,arg2)
             end
         end
     case 'define' then
-        file_name='data.txt'
+        file_name='data.csv'
         filt_type = 1;
         file_mode = 1;
-        vec_buff_size = 100;
         vec_size = 1;
-
         model=scicos_model()
         model.sim=list('mdaq_to_file_sim',5)
         model.in = [1; 1]
