@@ -1,6 +1,6 @@
 function [] = microdaq_setup(arg1, arg2)
-    sciVer = getversion('scilab');
-    if sciVer(1) == 5 & argn(2) <> 2 then
+
+    if argn(2) <> 2 then
         mprintf("Description:\n");
         mprintf("\tConfigures MicroDAQ toolbox\n");
         mprintf("Usage:\n");
@@ -8,35 +8,22 @@ function [] = microdaq_setup(arg1, arg2)
         mprintf("\tcompilerPath - the C6000 compiler installation path e.g ""c:\\ti\\c6000_7.4.21\\""\n");
         mprintf("\tipAddress - MicroDAQ IP address e.g ""10.10.1.1""\n");
         return
-    elseif sciVer(1) == 6 & argn(2) <> 1 then
-        mprintf("Description:\n");
-        mprintf("\tConfigures MicroDAQ toolbox\n");
-        mprintf("Usage:\n");
-        mprintf("\tmicrodaq_setup(ipAddress)\n")
-        mprintf("\tipAddress - MicroDAQ IP address e.g ""10.10.1.1""\n");
-        return
     end
 
-    if sciVer(1) == 5 then
-        if isfile(pathconvert(arg1 + "\bin\") + "cl6x.exe") | isfile(pathconvert(arg1 + "/bin/") + "cl6x") then
-            CompilerRoot = getshortpathname(pathconvert(arg1, %F));
-            ipAddress = arg2;         
-        else
-            error("Unable to locate compiler in " + arg1);
-        end
-    elseif sciVer(1) == 6 then
-        ipAddress = arg1; 
-        try
-            mdaqSetIP(ipAddress)
-        catch 
-            error("Unable to set MicroDAQ IP address");
-        end
-        disp('Setup complete - toolbox is ready to use!');
-        return 
+    // check provided compiler install path
+    if getos() == "Windows" then
+        compilerFile = "cl6x.exe"
     else
-        error("Unsupported Scilab version");
+        compilerFile = "cl6x"
     end
-    
+    if isfile(pathconvert(arg1 + "\bin\") + compilerFile) then
+        CompilerRoot = getshortpathname(pathconvert(arg1, %F));
+        ipAddress = arg2;         
+    else
+        error("Unable to locate compiler (" + compilerFile + ") in " + arg1);
+    end
+
+
     // set MicroDAQ IP address
     try
         mdaqSetIP(ipAddress)
@@ -76,14 +63,14 @@ function [] = microdaq_setup(arg1, arg2)
     if res1 < 0 | res2 < 0 then
         error("Unable to create linker file")
     end
-    
+
     [linkerTemplate, res1] = mopen(linkerTemplateFile, 'r')
     if res1 < 0 then
         error("Unable to open linker template file")
     end 
     linker = mgetl(linkerTemplate);
     mclose(linkerTemplate);    
- 
+
     [targetPaths, res1] = mopen(targetPathsFile, 'w');
     if res1 < 0 then
         error('Building failed. Cannot create file ''target_path.mk''');
@@ -102,12 +89,12 @@ function [] = microdaq_setup(arg1, arg2)
     mputl('-l""' + pathconvert(targetRoot + '\sysbios\cpu1\libs\sysbios.ae674', %F) + '""', cpu1Linker);
     mputl(linker, cpu1Linker);
     mclose(cpu1Linker)
-    
+
     mputl('# MicroDAQ paths', targetPaths)
     mputl('',targetPaths)
     mputl('CompilerRoot  = ' + CompilerRoot, targetPaths)
     mputl('TargetRoot    = '+ targetRoot, targetPaths)
     mclose(targetPaths)
 
-    disp('Setup complete - toolbox is ready to use!');
+    messagebox("MicroDAQ toolbox is configured and ready to use!", "Toolbox configuration", "info");
 endfunction
