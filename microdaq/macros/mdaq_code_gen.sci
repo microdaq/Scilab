@@ -1,7 +1,7 @@
 function mdaq_code_gen(load_dsp_app)
 
     if  check_mdaq_compiler() == %F then
-        message("ERROR: Unable to find compiler - configure toolbox with microdaq_setup! ");
+        messagebox("Can''t locate compiler for compiling generated code. To solve this problem run microdaq_setup() function", "Settings error", "error");
         return;
     end
 
@@ -10,13 +10,20 @@ function mdaq_code_gen(load_dsp_app)
     profiling = %f;
     solver_type = 0;
     continue_code_gen = %f;
-    
+
     scs_m; 
+
+    // TODO: make general solution for scilab 5/6
+    try 
+        size(scs_m.objs)
+    catch
+        messagebox("Can''t generate code from inside of superblock.", "Code generation problem", "error")
+        return
+    end
 
     if argn(2)<2 then
         k=1;
         for i=1:(size(scs_m.objs)-1)
-
             // in case of superblock set k
             if scs_m.objs(i).model.sim(1)=="super" then
                 k=i;
@@ -54,7 +61,7 @@ function mdaq_code_gen(load_dsp_app)
     end
 
     if continue_code_gen == %f then
-        messagebox('Unable to generate code, place SETUP (''mdaq_setup'') block from MicroDAQ palette and try again',  "Simulation problem", "error");
+        messagebox("Can''t determine model settings - use SETUP block from MicroDAQ palette.", "SETUP missing", "error");
         return;
     end
 
@@ -70,11 +77,10 @@ function mdaq_code_gen(load_dsp_app)
         // Restore format
         format(oldFormat(2), oldFormat(1));
         if ok == %f then
-
-            disp("### ERROR: Unable to generate code from model");
+            messagebox("Can''t generate code from model. Check model for errors", "Model error", "error");
         end
     else
-        messagebox('MicroDAQ code generator requires superblock to generate code',  "Model structure problem", "error");
+        messagebox("Can''t find superblock for code generation",  "Model structure problem", "error");
     end
 
 endfunction
