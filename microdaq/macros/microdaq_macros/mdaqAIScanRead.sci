@@ -1,22 +1,22 @@
-function [data, result] = mdaqAIScan(arg1, arg2, arg3)
+function [data, result] = mdaqAIScanRead(arg1, arg2, arg3)
     link_id = -1; 
     data = [];
     result = [];
     
     if argn(2) > 3 | argn(2) < 2 then
         mprintf("Description:\n");
-        mprintf("\tReads AI scan data\n");
+        mprintf("\tReads acquired data\n");
         mprintf("Usage:\n");
-        mprintf("\t[data, result] = mdaqAIScan(linkID, scanCount, timeout)\n")
+        mprintf("\t[data, result] = mdaqAIScanRead(linkID, count, timeout)\n")
         mprintf("\tlinkID - connection id returned by mdaqOpen() (OPTIONAL)\n");
-        mprintf("\tscanCount - number of scans to read\n");
-        mprintf("\ttimeout - amount of time in seconds to wait for samples (-1 - wait indefinitely)\n");
+        mprintf("\tcount - number of scans to read\n");
+        mprintf("\ttimeout - amount of time in seconds (-1 - wait indefinitely)\n");
         return;
     end
 
     ch_count = call("sci_mlink_ai_scan_get_ch_count", "out", [1, 1], 1, "i");
     if ch_count < 1 | ch_count > 16 then
-        error("AI data acquisition not initialized");
+        error("Data acquisition not initialized");
     end
     
     if argn(2) == 2 then;  
