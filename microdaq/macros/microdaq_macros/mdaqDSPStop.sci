@@ -20,6 +20,6 @@ function mdaqDSPStop(arg1)
     end
 
     if result < 0  then
-        error(mdaq_error2(result), 10000 + abs(result));
+        error("Unable to stop DSP core.", 10000 + abs(result));
     end
 endfunction

@@ -30,29 +30,29 @@ function []=%mdaqai_p(obj)
             rows = [rows; "AI"+string(obj.Channels(j)), measure_type, rangeStr, resolution+"mV", nameStr]
         end
         
-        mprintf("Analog input data acquisition session:\n");
-        mprintf("  --------------------------------------------------------------\n")
+        mprintf("Analog input data acquisition:\n");
+        mprintf("  ------------------------------------------------------------------\n")
         str2table(rows, ["Channel", "Terminal config", "Range", "Resolution", "Name"], 4)
-        mprintf("  --------------------------------------------------------------\n")
+        mprintf("  ------------------------------------------------------------------\n")
 
         if obj.Rate < 1000 then
-            mprintf("  Rate:\t\t\t%.1f sps per channel\n", obj.Rate);
+            mprintf("  Rate:\t\t\t%g sps per channel\n", obj.Rate);
         else
-            mprintf("  Rate:\t\t\t%.1f ksps per channel\n", obj.Rate/1000);
+            mprintf("  Rate:\t\t\t%g ksps per channel\n", obj.Rate/1000);
         end
         
         if obj._RealRate < 1000 then
-            mprintf("  Actual rate:\t\t%.1f sps per channel\n", obj._RealRate);
+            mprintf("  Actual rate:\t\t%g sps per channel\n", obj._RealRate);
         else
-            mprintf("  Actual rate:\t\t%.1f ksps per channel\n", obj._RealRate/1000);
+            mprintf("  Actual rate:\t\t%g ksps per channel\n", obj._RealRate/1000);
         end
         
         if 1 / obj._RealRate > 0.001 then
-            mprintf("  Scan period: \t\t%.5f seconds\n", 1 / obj._RealRate);
+            mprintf("  Scan period: \t\t%g seconds\n", 1 / obj._RealRate);
         end
         
         if 1 /obj._RealRate <= 0.001 then
-            mprintf("  Scan period: \t\t%.5f ms\n", 1 / obj._RealRate * 1000);
+            mprintf("  Scan period: \t\t%g ms\n", 1 / obj._RealRate * 1000);
         end
 
         if obj.DurationInSeconds < 0 then
@@ -63,12 +63,12 @@ function []=%mdaqai_p(obj)
             mprintf("  Channels in use:\t%d\n", obj._ChannelCount)
             mprintf("  Number of scans:\t%d\n", obj.DurationInSeconds* obj.Rate);
             if obj.DurationInSeconds == 1 then
-                mprintf("  Duration:\t\t%.2f second\n", obj.DurationInSeconds);
+                mprintf("  Duration:\t\t%g second\n", obj.DurationInSeconds);
             else
-                mprintf("  Duration:\t\t%.2f seconds\n", obj.DurationInSeconds);
+                mprintf("  Duration:\t\t%g seconds\n", obj.DurationInSeconds);
             end
         end
-        mprintf("  --------------------------------------------------------------\n")
+        mprintf("  ------------------------------------------------------------------\n")
     end
 endfunction
 

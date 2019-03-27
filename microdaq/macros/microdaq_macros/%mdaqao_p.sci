@@ -27,29 +27,29 @@ function []=%mdaqao_p(obj)
             rows = [rows; "AO"+string(obj.Channels(j)), rangeStr, resolution+"mV", nameStr]
         end
 
-        mprintf("Analog signal generation session:\n");
-        mprintf("  --------------------------------------------------------------\n")
+        mprintf("Analog signal generation:\n");
+        mprintf("  ------------------------------------------------------------------\n")
         str2table(rows, ["Channel",  "Output range", "Resolution", "Name"], 8)
-        mprintf("  --------------------------------------------------------------\n")
+        mprintf("  ------------------------------------------------------------------\n")
 
-        if obj.isContinuous == 1 then
+        if obj.isContinuous == %t then
             mprintf("  Mode:\t\t\tStream\n");
         else
             mprintf("  Mode:\t\t\tPeriodic (regeneration)\n");
         end
 
         if obj.Rate < 1000 then
-            mprintf("  Output update rate:\t%d sps per channel\n", obj.Rate);
+            mprintf("  Output update rate:\t%g sps per channel\n", obj.Rate);
         else
-            mprintf("  Output update rate:\t%.5f ksps per channel\n", obj.Rate/1000);
+            mprintf("  Output update rate:\t%g ksps per channel\n", obj.Rate/1000);
         end
 
         if obj.Rate < 1000 then
-            mprintf("  Output update period: %.5f seconds\n", 1 / obj.Rate);
+            mprintf("  Output update period: %g seconds\n", 1 / obj.Rate);
         end
 
         if obj.Rate >= 1000 then
-            mprintf("  Output update period: %.5f ms\n", 1 / obj.Rate * 1000);
+            mprintf("  Output update period: %g ms\n", 1 / obj.Rate * 1000);
         end
 
         if obj.BufferSize(1) <> 0 then
@@ -57,19 +57,19 @@ function []=%mdaqao_p(obj)
         end
 
         if obj.DurationInSeconds < 0 then
-            mprintf("  Number of used channels:\t%d\n", size(obj.Channels, "c"))
-            mprintf("  Number of samples to generate:\tInf\n");
+            mprintf("  Number of channels:\t%d\n", size(obj.Channels, "c"))
+            mprintf("  Smaples to generate:\tInf\n");
             mprintf("  Duration:\t\tInf\n");
         else
-            mprintf("  Channels in use:\t%d\n", size(obj.Channels, "c"))
+            mprintf("  Number of channels:\t%d\n", size(obj.Channels, "c"))
             mprintf("  Smaples to generate:\t%d\n", obj.DurationInSeconds * obj.Rate);
             if obj.DurationInSeconds == 1 then
-                mprintf("  Duration:\t\t%.2f second\n", obj.DurationInSeconds);
+                mprintf("  Duration:\t\t%g second\n", obj.DurationInSeconds);
             else
-                mprintf("  Duration:\t\t%.2f seconds\n", obj.DurationInSeconds);
+                mprintf("  Duration:\t\t%g seconds\n", obj.DurationInSeconds);
             end
         end
-        mprintf("  --------------------------------------------------------------")
+        mprintf("  ------------------------------------------------------------------")
     end
 endfunction
 
