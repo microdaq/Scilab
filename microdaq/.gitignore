@@ -17,7 +17,6 @@ etc/tmp/
 src/c/mdaq_ccs/mdaq/Debug/
 src/c/mdaq_ccs/mdaq/Release/
 images/h5/*.h5
-images/h5/*.sod
 help/*/master_help.xml
 help/*/scilab_*_help
 tests/unit_test/code/
