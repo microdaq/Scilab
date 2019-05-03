@@ -8,16 +8,15 @@ function block=mdaq_signal_sim(block,flag)
         if %microdaq.dsp_loaded == %T then
                 if %microdaq.private.signal_buffer_index(block.ipar(1)) < 1 then
                     try
-                        %microdaq.private.signal_buffer(block.ipar(1)) = mdaqDSPRead(block.ipar(1), block.insz(1), %microdaq.private.signal_buffer_size(block.ipar(1)), 5000);
+                        %microdaq.private.signal_buffer(block.ipar(1)) = mdaqDSPRead(block.ipar(1), block.insz(1), %microdaq.private.signal_buffer_size(block.ipar(1)), 2);
     
                         %microdaq.private.signal_buffer_index(block.ipar(1)) = %microdaq.private.signal_buffer_size(block.ipar(1)); 
                     catch
-                        warning("Unable to receive DSP data from MicroDAQ device"); 
-                        return;
+                        error("Unable to receive data from MicroDAQ device"); 
                     end
                     
                 end
-                block.outptr(1) = %microdaq.private.signal_buffer(block.ipar(1))(%microdaq.private.signal_buffer_size(block.ipar(1)) + 1 - %microdaq.private.signal_buffer_index(block.ipar(1)),:);
+                block.outptr(1) = %microdaq.private.signal_buffer(block.ipar(1))(%microdaq.private.signal_buffer_size(block.ipar(1)) + 1 - %microdaq.private.signal_buffer_index(block.ipar(1)),:)';
                 %microdaq.private.signal_buffer_index(block.ipar(1)) = %microdaq.private.signal_buffer_index(block.ipar(1)) - 1; 
         else
             // Simply copy input to output
