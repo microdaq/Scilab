@@ -50,8 +50,8 @@ function [microdaqlib, microdaqBlocks, microdaqMacros]  = startModule()
                         "mdaq_signal_id", 0,..
                         "mdaq_param_id", 0,..
                         "ao_scan_ch_count", -1,..
-                        "mdaq_hwid",..
-                        "adc_info",..
+                        "mdaq_hwid", [],..
+                        "adc_info", [],..
                         "dac_info", [],..
                         "model_tsamp", -1,..
                         "signal_buffer", list(),..
@@ -183,8 +183,6 @@ function [microdaqlib, microdaqBlocks, microdaqMacros]  = startModule()
             h5  = ls(root_tlbx + "/images/h5/"  + blocks(i) + "." + ["sod" "h5"]);
             gif = ls(root_tlbx + "/images/img/" + blocks(i) + "." + ["png" "gif"]);
             svg = ls(root_tlbx + "/images/svg/" + blocks(i) + "." + ["png" "jpg" "gif" "svg"]);
-            disp("gif content ")
-            disp(gif)
             pal = xcosPalAddBlock(pal, h5(1), gif(1), svg(1));
         end
     
