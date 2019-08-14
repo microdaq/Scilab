@@ -18,6 +18,8 @@ function cleanmacros()
   for i = 1:size(blockfiles,'*')
     mdelete(blockfiles(i));
   end
+  
+  mdelete(libpath+'../etc/mlink/hwid');
 endfunction
 
 cleanmacros();
