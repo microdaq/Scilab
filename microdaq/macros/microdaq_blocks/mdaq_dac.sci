@@ -183,6 +183,7 @@ function [x,y,typ] = mdaq_dac(job,arg1,arg2)
                 model.dstate = [];
                 x.graphics = graphics;
                 x.model = model;
+                x.graphics.style=["mdaq_dac;blockWithLabel;verticalLabelPosition=center;displayedLabel=CH:%1$s;fontColor=#5f5f5f"]
                 break
             end
         end

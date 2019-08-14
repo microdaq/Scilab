@@ -130,6 +130,7 @@ function [x,y,typ] = mdaq_adc(job,arg1,arg2)
                 model.dstate = [];
                 x.graphics = graphics;
                 x.model = model;
+                x.graphics.style=["mdaq_adc;blockWithLabel;verticalLabelPosition=center;displayedLabel=CH:%1$s;fontColor=#5f5f5f"]
                 break;
             end
         end
@@ -155,6 +156,6 @@ function [x,y,typ] = mdaq_adc(job,arg1,arg2)
         x=standard_define([4 3],model,exprs,gr_i)
         x.graphics.in_implicit=[];
         x.graphics.exprs=exprs;
-        x.graphics.style=["blockWithLabel;verticalLabelPosition=center;displayedLabel=CH:%1$s;fontColor=#5f5f5f"]
+        x.graphics.style=["mdaq_adc;blockWithLabel;verticalLabelPosition=center;displayedLabel=CH:%1$s;fontColor=#5f5f5f"]
     end
 endfunction

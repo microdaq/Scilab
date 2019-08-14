@@ -92,6 +92,7 @@ function [x,y,typ] = mdaq_to_file(job,arg1,arg2)
                 model.ipar=[filt_type;file_mode;0;vec_size;0;ascii(file_name)';0];
                 model.dstate=[];
                 x.graphics=graphics;x.model=model
+                x.graphics.style=["mdaq_to_file;blockWithLabel;verticalLabelPosition=center;displayedLabel=%1$s;fontColor=#5f5f5f"]
                 break
             end
         end

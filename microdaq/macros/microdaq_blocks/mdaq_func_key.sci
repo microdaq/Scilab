@@ -41,6 +41,7 @@ function [x,y,typ] = mdaq_func_key(job,arg1,arg2)
                 model.ipar=[func_key];
                 model.dstate=[];
                 x.graphics=graphics;x.model=model
+                x.graphics.style=["mdaq_func_key;blockWithLabel;verticalLabelPosition=center;displayedLabel=F%1$s;fontColor=#5f5f5f"]
                 break
             end
         end

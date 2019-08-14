@@ -97,8 +97,8 @@ function [x,y,typ] = mdaq_setup(job,arg1,arg2)
                 else
                     duration_style = "Duration:%ss";
                 end
-            
-                x.graphics.style=["blockWithLabel;verticalLabelPosition=center;displayedLabel="+duration_style+";fontColor=#5f5f5f"]
+  
+                x.graphics.style=["mdaq_setup;blockWithLabel;displayedLabel="+duration_style+""]
                 break
             end
         end
@@ -125,6 +125,6 @@ function [x,y,typ] = mdaq_setup(job,arg1,arg2)
         x=standard_define([4 3],model,exprs,gr_i)
         x.graphics.in_implicit=[];
         x.graphics.exprs=exprs;
-        x.graphics.style=["blockWithLabel;verticalLabelPosition=center;displayedLabel=Duration:%ss;fontColor=#5f5f5f"]
+        x.graphics.style=["mdaq_setup;blockWithLabel;displayedLabel=10s"]
     end
 endfunction

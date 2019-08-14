@@ -93,6 +93,7 @@ function [x,y,typ] = mdaq_encoder(job,arg1,arg2)
                 model.dstate = [];
                 x.graphics = graphics;
                 x.model = model;
+                x.graphics.style=["mdaq_encoder;blockWithLabel;verticalLabelPosition=center;displayedLabel=%1$s;fontColor=#5f5f5f"]
                 break;
             end
         end
