@@ -92,7 +92,6 @@ function continueSimulation=pre_xcos_simulate(scs_m, needcompile)
         tmp = scs_m;
         perform_scan(tmp);
         if %microdaq.private.has_mdaqBlock then
-            disp("### Running model in simulation mode... ")
             close_last_connection();       
             result = mdaqOpen();
             if result > -1 then
@@ -105,6 +104,5 @@ function continueSimulation=pre_xcos_simulate(scs_m, needcompile)
         end
         %microdaq.private.mdaq_signal_id = [];      
     end
-
     scs_m=resume(scs_m)
 endfunction
