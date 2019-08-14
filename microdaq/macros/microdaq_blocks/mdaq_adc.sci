@@ -60,66 +60,55 @@ function [x,y,typ] = mdaq_adc(job,arg1,arg2)
             end
             
             ch_count = size(channels, 'c');
-            if %microdaq.private.mdaq_hwid <> [] then
-                adc_id = %microdaq.private.mdaq_hwid(2);
-                if ok & (find(adc_id == get_adc_list()) == []) then
-                    ok = %f;
-                    message("Configuration not detected - run mdaqHWInfo and try again!");
-                end
-
-                if ok & size(channels, 'r') > 1 then
-                    message("Single row channel vector expected!")
-                    ok = %f;
-                end
-
-                if ok & size(aiRange, 'c') <> 2 then
-                    message("Vector range [low,high;low,high;...] expected!")
-                    ok = %f;
-                end
-
-                if ok & size(aiMode, 'r') > 1 then
-                    message("Single row measurement mode vector expected!")
-                    ok = %f;
-                end
-
-                aiRangeSize = size(aiRange, 'r');
-                if ok &  (aiRangeSize <> 1 & aiRangeSize <> ch_count) then
-                    message("Range vector should match selected channels!")
-                    ok = %f;
-                end
-
-                aiModeSize = size(aiMode, 'c');
-                if ok & (aiModeSize <> 1 & aiModeSize <> ch_count) then
-                    message("Mode vector should match selected channels!")
-                    ok = %f;
-                end
-
-                if ok & (averaging < 0) | (averaging > 4) then
-                    ok = %f;
-                    message("Wrong averaging facator selected!");
-                end
-
-                if aiRangeSize == 1 & ok then
-                    range_tmp = aiRange;
-                    aiRange = ones(ch_count,2);
-                    aiRange(:,1) = range_tmp(1);
-                    aiRange(:,2) = range_tmp(2);
-                end
-                
-                if aiModeSize == 1 & ok then
-                    aiMode = ones(1, ch_count)*aiMode;
-                end
-                
-                if ok & ~exists("%scicos_prob") then
-                    result = adc_check_params(channels, aiRange, aiMode);
-                    if result < 0 then
-                        message(mdaq_error2(result));
-                        ok = %f;
-                    end
-                end
-            else
+            if ok & size(channels, 'r') > 1 then
+                message("Single row channel vector expected!")
                 ok = %f;
-                message('Unable to detect MicroDAQ confituration - run mdaqHWInfo and try again!');
+            end
+
+            if ok & size(aiRange, 'c') <> 2 then
+                message("Vector range [low,high;low,high;...] expected!")
+                ok = %f;
+            end
+
+            if ok & size(aiMode, 'r') > 1 then
+                message("Single row measurement mode vector expected!")
+                ok = %f;
+            end
+
+            aiRangeSize = size(aiRange, 'r');
+            if ok &  (aiRangeSize <> 1 & aiRangeSize <> ch_count) then
+                message("Range vector should match selected channels!")
+                ok = %f;
+            end
+
+            aiModeSize = size(aiMode, 'c');
+            if ok & (aiModeSize <> 1 & aiModeSize <> ch_count) then
+                message("Mode vector should match selected channels!")
+                ok = %f;
+            end
+
+            if ok & (averaging < 0) | (averaging > 4) then
+                ok = %f;
+                message("Wrong averaging facator selected!");
+            end
+
+            if aiRangeSize == 1 & ok then
+                range_tmp = aiRange;
+                aiRange = ones(ch_count,2);
+                aiRange(:,1) = range_tmp(1);
+                aiRange(:,2) = range_tmp(2);
+            end
+            
+            if aiModeSize == 1 & ok then
+                aiMode = ones(1, ch_count)*aiMode;
+            end
+
+            if ok & ~exists("%scicos_prob") then
+                result = adc_check_params(channels, aiRange, aiMode);
+                if result < -1 then
+                    message(mdaq_error2(result));
+                    ok = %f;
+                end
             end
 
             if ok then

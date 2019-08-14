@@ -57,98 +57,86 @@ function [x,y,typ] = mdaq_dac(job,arg1,arg2)
                 break
             end
 
-            if %microdaq.private.mdaq_hwid <> [] then
-                dac_id = %microdaq.private.mdaq_hwid(3);
-                if find(dac_id == get_dac_list()) == [] then
-                    ok = %f;
-                    message("Configuration not detected - run mdaqHWInfo and try again!");
-                end
-
-                n_channels = size(channels, 'c');
-                if ok & size(channels, 'r') > 1 then
-                    message("Single row channel vector expected!")
-                    ok = %f;
-                end
-
-                // check Range parameter
-                if ok & size(dac_range, 'c') <> 2 then
-                    message("Vector range [low,high;low,high;...] expected!")
-                    ok = %f;
-                end
-
-                dac_range_size = size(dac_range, 'r');
-                if ok & (dac_range_size > 1) & (dac_range_size <> n_channels) then
-                    ok = %f;
-                    error_msg = 'Wrong range vector - size should match channel vector!';
-                    message(error_msg);
-                end
-
-                // check Init value parameter
-                if ok & (size(init_value, 'r') > 1) then
-                    ok = %f;
-                    error_msg = 'Wrong Init value vector - single row vector expected!';
-                    message(error_msg);
-                end
-
-                init_value_size = size(init_value, 'c');
-                if ok & (init_value_size > 1) & (init_value_size <> n_channels) then
-                    ok = %f;
-                    error_msg = 'Wrong init value vector - scalar or vector for selected channels expected!';
-                    message(error_msg);
-                end
-
-                // check Termination value parameter
-                if ok & (size(term_value, 'r') > 1) then
-                    ok = %f;
-                    error_msg = 'Wrong termination value vector - single row vector expected!';
-                    message(error_msg);
-                end
-
-                term_value_size = size(term_value, 'c');
-                if ok & (term_value_size > 1) & (term_value_size <> n_channels) then
-                    ok = %f;
-                    error_msg = 'Wrong termination value vector - scalar or vector for selected channels expected!';
-                    message(error_msg);
-                end
-                
-                // check init term enable
-                if ok & (find(use_init_term > 3) <> []) | (find(use_init_term < 0) <> []) then
-                    ok = %f;
-                    error_msg = 'Wrong Use init/term paremeter value!';
-                    message(error_msg);
-                end
-                    
-                if ok & (size(use_init_term, 'r') > 1) then
-                    ok = %f;
-                    error_msg = 'Wrong Use init/term paremeter vector - single row vector expected!';
-                    message(error_msg);
-                end
-
-                use_init_term_size = size(use_init_term, 'c');
-                if ok & (use_init_term_size > 1) & (use_init_term_size <> n_channels) then
-                    ok = %f;
-                    error_msg = 'Wrong Use init/term paremeter vector - scalar or vector for selected channels expected!';
-                    message(error_msg);
-                end
-                
-                if dac_range_size == 1 & ok then
-                    range_tmp = dac_range;
-                    dac_range = ones(n_channels,2);
-                    dac_range(:,1) = range_tmp(1);
-                    dac_range(:,2) = range_tmp(2);
-                end
-                
-                if ok & ~exists("%scicos_prob") then
-                    result = dac_check_params(channels, dac_range);
-                    if result < 0 then
-                        message(mdaq_error2(result));
-                        ok = %f;
-                    end
-                end
-            else
+            n_channels = size(channels, 'c');
+            if ok & size(channels, 'r') > 1 then
+                message("Single row channel vector expected!")
                 ok = %f;
-                error_msg = 'Unable to detect MicroDAQ analog outputs - run mdaqHWInfo and try again!';
+            end
+
+            // check Range parameter
+            if ok & size(dac_range, 'c') <> 2 then
+                message("Vector range [low,high;low,high;...] expected!")
+                ok = %f;
+            end
+
+            dac_range_size = size(dac_range, 'r');
+            if ok & (dac_range_size > 1) & (dac_range_size <> n_channels) then
+                ok = %f;
+                error_msg = 'Wrong range vector - size should match channel vector!';
                 message(error_msg);
+            end
+
+            // check Init value parameter
+            if ok & (size(init_value, 'r') > 1) then
+                ok = %f;
+                error_msg = 'Wrong Init value vector - single row vector expected!';
+                message(error_msg);
+            end
+
+            init_value_size = size(init_value, 'c');
+            if ok & (init_value_size > 1) & (init_value_size <> n_channels) then
+                ok = %f;
+                error_msg = 'Wrong init value vector - scalar or vector for selected channels expected!';
+                message(error_msg);
+            end
+
+            // check Termination value parameter
+            if ok & (size(term_value, 'r') > 1) then
+                ok = %f;
+                error_msg = 'Wrong termination value vector - single row vector expected!';
+                message(error_msg);
+            end
+
+            term_value_size = size(term_value, 'c');
+            if ok & (term_value_size > 1) & (term_value_size <> n_channels) then
+                ok = %f;
+                error_msg = 'Wrong termination value vector - scalar or vector for selected channels expected!';
+                message(error_msg);
+            end
+            
+            // check init term enable
+            if ok & (find(use_init_term > 3) <> []) | (find(use_init_term < 0) <> []) then
+                ok = %f;
+                error_msg = 'Wrong Use init/term paremeter value!';
+                message(error_msg);
+            end
+                
+            if ok & (size(use_init_term, 'r') > 1) then
+                ok = %f;
+                error_msg = 'Wrong Use init/term paremeter vector - single row vector expected!';
+                message(error_msg);
+            end
+
+            use_init_term_size = size(use_init_term, 'c');
+            if ok & (use_init_term_size > 1) & (use_init_term_size <> n_channels) then
+                ok = %f;
+                error_msg = 'Wrong Use init/term paremeter vector - scalar or vector for selected channels expected!';
+                message(error_msg);
+            end
+            
+            if dac_range_size == 1 & ok then
+                range_tmp = dac_range;
+                dac_range = ones(n_channels,2);
+                dac_range(:,1) = range_tmp(1);
+                dac_range(:,2) = range_tmp(2);
+            end
+
+            if ok & ~exists("%scicos_prob") then
+                result = dac_check_params(channels, dac_range);
+                if result < -1 then
+                    message(mdaq_error2(result));
+                    ok = %f;
+                end
             end
 
             if ok then
