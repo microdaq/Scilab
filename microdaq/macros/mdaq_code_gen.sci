@@ -24,6 +24,13 @@ function mdaq_code_gen(load_dsp_app)
     if argn(2)<2 then
         k=1;
         for i=1:(size(scs_m.objs)-1)
+            sciVersion = getversion('scilab');
+            if sciVersion(1) == 6 then 
+                if typeof(scs_m.objs(i)) <> "Block" then
+                    continue;
+                end
+            end
+            
             // in case of superblock set k
             if scs_m.objs(i).model.sim(1)=="super" then
                 k=i;
@@ -56,7 +63,7 @@ function mdaq_code_gen(load_dsp_app)
 
                 // mdaq_setup block found so code gen can be executed
                 continue_code_gen = %t;
-            end;
+            end
         end
     end
 
