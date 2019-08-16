@@ -1,7 +1,5 @@
 function buildmacros()
-    // create global microdaq settings struct
-    sci_ver_str = getversion('scilab', 'string_info');
-    
+   
     global %microdaq;
     %microdaq = struct("model", ["Unknown"],..
         "ip_address", [],..
@@ -29,9 +27,11 @@ function buildmacros()
     script_path = get_absolute_file_path("buildmacros.sce");
     module_path = part(script_path,1:length(script_path)-length("macros") - 1 )
 
-    tbx_build_macros(TOOLBOX_NAME, script_path);
+
+    
     tbx_build_macros(TOOLBOX_NAME, script_path + filesep() + "microdaq_blocks");
     tbx_build_macros(TOOLBOX_NAME, script_path + filesep() + "microdaq_macros");
+    tbx_build_macros(TOOLBOX_NAME, script_path);
 
     // check user_blocks beafore build
     if isdir(script_path + filesep() + "user_blocks") == %F then
@@ -40,14 +40,14 @@ function buildmacros()
 
     tbx_build_macros(TOOLBOX_NAME, script_path + filesep() + "user_blocks");
 
-if sci_ver_str == 'scilab-5.5.2' then
     // Build MicroDAQ blocks 
-    microdaq_blocks = mgetl( script_path + filesep() + "microdaq_blocks" + filesep() + "names");
-    microdaq_blocks = microdaq_blocks';
+    microdaq_blocks = []
+    f = ls(script_path + filesep() + "microdaq_blocks" + filesep() + "*.bin")
+    microdaq_blocks = basename(f)
 
     blocks = [];
     for i=1:size(microdaq_blocks, "*")
-        if strstr(microdaq_blocks(i), "_sim") == "" 
+        if strstr(microdaq_blocks(i), "_sim") == "" then
             blocks = [blocks, microdaq_blocks(i)];
         end
     end
@@ -57,13 +57,13 @@ if sci_ver_str == 'scilab-5.5.2' then
     // Build MicroDAQ User blocks 
     if isfile(script_path + filesep() + "user_blocks" + filesep() + "names")  == %T then
 
-        microdaq_blocks = mgetl( script_path + filesep() + "user_blocks" + filesep() + "names");
-        microdaq_blocks = microdaq_blocks';
-
+        microdaq_blocks = []
+        f = ls(script_path + filesep() + "user_blocks" + filesep() + "*.bin")
+        microdaq_blocks = basename(f)
 
         blocks = [];
         for i=1:size(microdaq_blocks, "*")
-            if strstr(microdaq_blocks(i), "_sim") == "" 
+            if strstr(microdaq_blocks(i), "_sim") == "" then
                 if isfile(script_path + filesep() + "user_blocks" + filesep() + microdaq_blocks(i) + '.sci')  == %T then
                     blocks = [blocks, microdaq_blocks(i)];
                 end
@@ -74,7 +74,7 @@ if sci_ver_str == 'scilab-5.5.2' then
             tbx_build_blocks(module_path, blocks, "macros" + filesep() + "user_blocks");
         end
     end
-end
+
 endfunction
 
 buildmacros();
