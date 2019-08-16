@@ -4,22 +4,32 @@
 // This file is released under the 3-clause BSD license. See COPYING-BSD.
 
 function cleanmacros()
-  libpath = get_absolute_file_path('cleanmacros.sce');
+    basepath = get_absolute_file_path('cleanmacros.sce');
 
-  binfiles = ls(libpath+'/*.bin');
-  for i = 1:size(binfiles,'*')
-    mdelete(binfiles(i));
-  end
+    libpaths = ["", "microdaq_blocks", "microdaq_macros", "user_blocks"]
 
-  mdelete(libpath+'/names');
-  mdelete(libpath+'/lib');
+    for i = 1:size(libpaths, "c")
+        libpath = basepath + libpaths(i)
+        binfiles = ls(libpath+'/*.bin');
+        for i = 1:size(binfiles,'*')
+            mdelete(binfiles(i));
+        end
 
-  blockfiles = ls(libpath+'../images/h5/*.h5');
-  for i = 1:size(blockfiles,'*')
-    mdelete(blockfiles(i));
-  end
-  
-  mdelete(libpath+'../etc/mlink/hwid');
+        mdelete(libpath+'/names');
+        mdelete(libpath+'/lib');
+    end
+
+    blockfiles = ls(basepath+'../images/h5/*.h5');
+    for i = 1:size(blockfiles,'*')
+        mdelete(blockfiles(i));
+    end
+
+    try
+        mdelete(basepath+'../etc/mlink/hwid');
+        mdelete(basepath+'../etc/mlink/ip_config.txt');
+    catch
+    end
+
 endfunction
 
 cleanmacros();
