@@ -33,7 +33,7 @@
 				<para>
 					<emphasis role="bold">channels: </emphasis> Scalar or vector with channels to be read</para>
 				<para>
-					Analog input channel selection in differential mode: 
+					Analog input channel selection for differential terminal configuration: 
 					<simplelist type="inline">
 						<member>Channel 1 - AI1(+), AI2(-)</member>
 						<member>Channel 2 - AI3(+), AI4(-)</member>
@@ -53,7 +53,7 @@
 			</listitem>
 			<listitem>
 				<para>
-					<emphasis role="bold">isDifferential: </emphasis> Scalar or vector with measurement mode settings: %T - differential, %F - single-ended mode
+					<emphasis role="bold">isDifferential: </emphasis> Scalar or vector with terminal configuration settings: %T - differential, %F - single-ended mode
 				</para>
 			</listitem>
 		</itemizedlist>

@@ -77,7 +77,7 @@
 					</programlisting>
 			</listitem>			<listitem>
 				<para>
-					<emphasis role="bold">"encoderValue":  </emphasis> trigger occurs when value of selected encoder module is greater or lower then provided value
+					<emphasis role="bold">"encoder":  </emphasis> trigger occurs when value of selected encoder module is greater or lower then provided value
 					<para>Function parameters: p1 - encoder module number (1|2), p2 - encoder value, p3 - defines if trigger shall occur for value greater(1) or lower(0) then p2 argument </para>
 				</para>
 					<programlisting role="example">
@@ -134,7 +134,7 @@
 			<![CDATA[
 			mdaqAIScanInit(1, [-10,10], %F, 10000, 1)
 			mdaqAIScanTrigger("dioValue", 7, 1);
-			data = mdaqAIScan(10000, 10);
+			data = mdaqAIScanRead(10000, 10);
 			plot(data);
 			 ]]>
 		</programlisting>
@@ -144,7 +144,7 @@
 			<![CDATA[
 			mdaqAIScanInit(1, [-10,10], %F, 10000, 1)
 			mdaqAIScanTrigger("dioPattern", "xxxxxx1x");
-			data = mdaqAIScan(10000, 10);
+			data = mdaqAIScanRead(10000, 10);
 			plot(data);
 			 ]]>
 		</programlisting>
@@ -165,7 +165,7 @@
 			mdaqEncoderInit(1, 0);
 			mdaqAIScanInit(1, [-10,10], %F, 10000, 1)
 			mdaqAIScanTrigger("encoderValue", 1, 1000, 1);
-			data = mdaqAIScan(10000, 10);
+			data = mdaqAIScanRead(10000, 10);
 			plot(data);
 			 ]]>
 		</programlisting>
@@ -173,10 +173,10 @@
 		<para>encoderValue trigger type - start data acquisition from AI1 analog input when encoder channel 2 value is lower then 0</para>
 		<programlisting role="example">
 			<![CDATA[
-			mdaqEncoderInit(2, 0);
+			mdaqEncoderInit(2, 0, "quadrature");
 			mdaqAIScanInit(1, [-10,10], %F, 10000, 1)
-			mdaqAIScanTrigger("encoderValue", 2, 0, 0);
-			data = mdaqAIScan(10000, 10);
+			mdaqAIScanTrigger("encoder", 2, 0, 0);
+			data = mdaqAIScanRead(10000, 10);
 			plot(data);
 			 ]]>
 		</programlisting>
@@ -186,7 +186,7 @@
 			<![CDATA[
 			mdaqAIScanInit(1, [-10,10], %F, 10000, 1)
 			mdaqAIScanTrigger("dspStart");
-			data = mdaqAIScan(10000, 10);
+			data = mdaqAIScanRead(10000, 2);
 			plot(data);
 			 ]]>
 		</programlisting>
@@ -196,7 +196,7 @@
 			<![CDATA[
 			mdaqAIScanInit(1, [-10,10], %F, 10000, 1)
 			mdaqAIScanTrigger("dspStart");
-			data = mdaqAIScan(10000, 10);
+			data = mdaqAIScan(10000, 2);
 			plot(data);
 			 ]]>
 		</programlisting>
@@ -208,10 +208,9 @@
 		<simplelist type="inline">
         <member><link linkend="mdaqAIRead">mdaqAIRead</link> : Performs single AI read</member>
 		<member><link linkend="mdaqAIScanStart">mdaqAIScanStart</link> : Starts AI scan</member>
-		<member><link linkend="mdaqAIScan">mdaqAIScan</link> : Reads acquired AI scan data</member>
+		<member><link linkend="mdaqAIScanRead">mdaqAIScanRead</link> : Reads acquired AI scan data</member>
 		<member><link linkend="mdaqAIScanInit">mdaqAIScanInit</link> : Initializes AI scan</member>
 		<member><link linkend="mdaqAIScanStop">mdaqAIScanStop</link> : Stops AI scan</member>
-		<member><link linkend="mdaqAIScanSync">mdaqAIScanSync</link> : Synchronizes AI conversion with DI</member>
 		</simplelist>
 	</refsection>
 </refentry>

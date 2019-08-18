@@ -47,7 +47,7 @@
 		<para> Perform blocking data acquisition from 8 single-ended analog input channels, one analog input range, scan frequency of 10kHz and 1 second duration.</para>
         <programlisting role="example"><![CDATA[
 			mdaqAIScanInit(1:8, [-10,10], %F, 10000, 1)
-			plot(mdaqAIScan(10000, %T));
+			plot(mdaqAIScanRead(10000, 2));
 			 ]]>
 		</programlisting>
 		<para> Data acquisition from 8 single-ended analog input channels, one analog input range, scan frequency of 10kHz and 1 second duration.</para>
@@ -56,7 +56,7 @@
 			dataCount = 0;
 			mdaqAIScanInit(1:8, [-10,10], %F, 10000, 1)
 			for i=1:10
-				[data result] = mdaqAIScan(1000, %T);
+				[data result] = mdaqAIScanRead(1000, 1);
 				aiData = [aiData; data];
 				dataCount = dataCount + result;
 				mprintf('Acquired %d scans (total: %d scans)\n', result, dataCount);
@@ -73,7 +73,7 @@
 			dataCount = 0;
 			mdaqAIScanInit([1 3 4], [-10,10; -5,5; -5,5], [%T %F %F], 10000, 1)
 			for i=1:10
-				[data result] = mdaqAIScan(1000, %T);
+				[data result] = mdaqAIScanRead(1000, 1);
 				aiData = [aiData; data];
 				dataCount = dataCount + result;
 				mprintf('Acquired %d scans (total: %d scans)\n', result, dataCount);
@@ -90,7 +90,7 @@
 			dataCount = 0;
 			mdaqAIScanInit(1:8, [-10,10], %F, 1000, -1)
 			while(mdaqKeyRead(1) == %F)
-				[data result] = mdaqAIScan(100, %T);
+				[data result] = mdaqAIScanRead(100, 1);
 				aiData = [aiData; data];
 				dataCount = dataCount + result;
 				mprintf('Acquired %d scans (total: %d scans)\n', result, dataCount);
@@ -108,10 +108,10 @@
 		<simplelist type="inline">
         <member><link linkend="mdaqAIRead">mdaqAIRead</link> : Performs single AI read</member>
 		<member><link linkend="mdaqAIScanStart">mdaqAIScanStart</link> : Starts AI scan</member>
-		<member><link linkend="mdaqAIScan">mdaqAIScan</link> : Reads acquired AI scan data</member>
+		<member><link linkend="mdaqAIScanRead">mdaqAIScanRead</link> : Reads acquired AI scan data</member>
 		<member><link linkend="mdaqAIScanStop">mdaqAIScanStop</link> : Stops AI scan</member>
 		<member><link linkend="mdaqAIScanTrigger">mdaqAIScanTrigger</link> : Sets AI scan trigger</member>
-		<member><link linkend="mdaqAIScanSync">mdaqAIScanSync</link> : Synchronizes AI conversion with DI</member>
+		
 		</simplelist>
   </refsection>
 </refentry>

@@ -41,11 +41,7 @@
 				</listitem>
 				<listitem>
 					<para>
-						<emphasis role="bold">obj.setTrigger(): </emphasis> Configure analog input scan trigger - <link linkend="mdaqAIScanTrigger">mdaqAIScanTrigger()</link></para>
-				</listitem>
-				<listitem>
-					<para>
-						<emphasis role="bold">obj.sync(): </emphasis> Synchronizes analg input conversion with digital input - <link linkend="mdaqAIScanSync">mdaqAIScanSync()</link></para>
+						<emphasis role="bold">obj.trigger(): </emphasis> Configure analog input start scan trigger - <link linkend="mdaqAIScanTrigger">mdaqAIScanTrigger()</link></para>
 				</listitem>
 			</itemizedlist>
 			
@@ -84,7 +80,7 @@
 			<![CDATA[
 				ai = mdaqAITask(); 
 				ai.init(1, [-10, 10], %f, 1000, 1);
-				ai.setTrigger("dioPattern", "xxxxxxx1");
+				ai.trigger("dioPattern", "xxxxxxx1");
 				ai.start(); 
 				data = ai.read(1000, 2);
 				plot(data)
@@ -101,7 +97,6 @@
 		<member><link linkend="mdaqAIScanInit">mdaqAIScanInit</link> : Initializes AI scan</member>
 		<member><link linkend="mdaqAIScanStop">mdaqAIScanStop</link> : Stops AI scan</member>
 		<member><link linkend="mdaqAIScanTrigger">mdaqAIScanTrigger</link> : Sets AI scan trigger</member>
-		<member><link linkend="mdaqAIScanSync">mdaqAIScanSync</link> : Synchronizes AI conversion with DI</member>
 		</simplelist>
 	</refsection>
 </refentry>
