@@ -1,15 +1,15 @@
 function mdaqEncoderInit(arg1, arg2, arg3, arg4)
     if argn(2) == 3 then
         enc = arg1; 
-        enc_mode = arg2;
-        init_value = arg3; 
+        init_value = arg2; 
+        enc_mode = arg3;
     end
     
     if argn(2) == 4 then
         link_id = arg1;   
         enc = arg2; 
-        enc_mode = arg3;
-        init_value = arg4; 
+        init_value = arg3; 
+        enc_mode = arg4;
 
         if link_id < 0 then
             error("Invalid connection id!")
@@ -20,11 +20,11 @@ function mdaqEncoderInit(arg1, arg2, arg3, arg4)
         mprintf("Description:\n");
         mprintf("\tInitializes encoder module\n");
         mprintf("Usage:\n");
-        mprintf("\tmdaqEncoderInit(linkID, module, mode, initValue)\n")
+        mprintf("\tmdaqEncoderInit(linkID, module, initValue, mode)\n")
         mprintf("\tlinkID - connection id returned by mdaqOpen() (OPTIONAL)\n");
         mprintf("\tmodule - encoder module (1 | 2)\n");
-        mprintf("\tmode - encoder counter mode (""quadrature"" | ""dir"" | ""up"" | ""down"")\n");
         mprintf("\tinitValue - initial counter value\n");
+        mprintf("\tmode - encoder counter mode (""quadrature"" | ""dir"" | ""up"" | ""down"")\n");
         return;
     end
 
