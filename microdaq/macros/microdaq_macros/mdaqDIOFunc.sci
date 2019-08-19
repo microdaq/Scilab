@@ -79,7 +79,7 @@ function mdaqDIOFunc(arg1, arg2, arg3)
     
     result = call("sci_mlink_dio_set_func",..
             link_id, 1, "i",..
-            func, 2, "i",..
+            dio_func, 2, "i",..
             enable, 3, "i",..
         "out",..
             [1, 1], 4, "i");
