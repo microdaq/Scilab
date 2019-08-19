@@ -62,7 +62,7 @@
 				<link linkend="mdaqDIORead">mdaqDIORead</link>
 			</member>
 			<member>
-				<link linkend="mdaq_dio_dir">mdaq_dio_dir</link>
+				<link linkend="mdaqDIODir">mdaqDIODir</link>
 			</member>
 		</simplelist>
 	</refsection>

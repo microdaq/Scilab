@@ -125,7 +125,7 @@
 			sineData = sin(linspace(0, 2*%pi, 1000)) + 1.0;
 			sawtoothData = linspace(0, 5, 1000);
 			mdaqAOScanInit(1:2, [sineData' sawtoothData'], [0,5], %F, 1000, 5);
-			mdaqAOScan();
+			mdaqAOScanStart();
 		 ]]>
 		</programlisting>
 
@@ -138,7 +138,7 @@
 	<refsection id="SeeAlso_mdaqAOScanInit">
         <title>See Also</title>
 	    <simplelist type="inline">
-		<member><link linkend="mdaqAOScan">mdaqAOScan</link> : Starts AO scan</member>
+		<member><link linkend="mdaqAOScanStart">mdaqAOScanStart</link> : Starts AO scan</member>
 		<member><link linkend="mdaqAOScanData">mdaqAOScanData</link> : Queue AO data to be written to analog output</member>
 		<member><link linkend="mdaqAOScanStop">mdaqAOScanStop</link> : Stops AO scan</member>
 		<member><link linkend="mdaqAOScanTrigger">mdaqAOScanTrigger</link> : Sets AO scan trigger</member>

@@ -185,7 +185,7 @@
 		<programlisting role="example">
 			<![CDATA[
 			mdaqAIScanInit(1, [-10,10], %F, 10000, 1)
-			mdaqAIScanTrigger("dspStart");
+			mdaqAIScanTrigger("dsp");
 			data = mdaqAIScanRead(10000, 2);
 			plot(data);
 			 ]]>
@@ -195,8 +195,8 @@
 		<programlisting role="example">
 			<![CDATA[
 			mdaqAIScanInit(1, [-10,10], %F, 10000, 1)
-			mdaqAIScanTrigger("dspStart");
-			data = mdaqAIScan(10000, 2);
+			mdaqAIScanTrigger("dsp");
+			data = mdaqAIScanRead(10000, 2);
 			plot(data);
 			 ]]>
 		</programlisting>

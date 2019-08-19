@@ -24,12 +24,12 @@
 		</para>
 		<simplelist type="inline">
 			<member>0 - NONE (doesn't set anything)</member>
-			<member>1 - ENC1</member>
-			<member>2 - ENC2</member>
-			<member>3 - PWM1</member>
-			<member>4 - PWM2</member>
-			<member>5 - PWM3</member>
-			<member>6 - UART</member>
+			<member>1 or "enc1" - to configure function ENC1</member>
+			<member>2 or "enc2" - to configure function ENC2</member>
+			<member>3 or "pwm1" - to configure function PWM1</member>
+			<member>4 or "pwm2" - to configure function PWM2</member>
+			<member>5 or "pwm3" - to configure function PWM3</member>
+			<member>6 or "uart" - to configure function UART</member>
 		</simplelist>
 	</refsection>   
 
@@ -42,7 +42,7 @@
 			</listitem>
 			<listitem>
 				<para>
-					<emphasis role="bold">func: </emphasis> Alternative DIO function </para>
+					<emphasis role="bold">func: </emphasis> Alternative DIO function (number | string) </para>
 			</listitem>
 			<listitem>
 				<para>
@@ -56,7 +56,7 @@
 			<![CDATA[
 				// disable Encoder1 function - set to DIO
 				linkID = mdaqOpen(); 
-				mdaqDIOFunc(linkID, 1, 0);
+				mdaqDIOFunc(linkID, "enc1", 0);
 				mdaqClose(linkID);
 			 ]]>
 		</programlisting>
@@ -72,7 +72,7 @@
 				<link linkend="mdaqDIORead">mdaqDIORead</link>
 			</member>
 			<member>
-				<link linkend="mdaq_dio_dir">mdaq_dio_dir</link>
+				<link linkend="mdaqDioDir">mdaqDioDir</link>
 			</member>
 		</simplelist>
 	</refsection>

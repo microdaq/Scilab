@@ -16,11 +16,11 @@
 	<refsection id="Description_mdaqEncoderRead">
 		<title>Description</title>
 		<para>
-			This function reads current value of quadrature encoder (ENC1, ENC2) position register on selected ENC module. Function returns current position and rotation direction. 
+			This function reads current value of encoder (ENC1, ENC2) position register on selected ENC module. Function returns current position and rotation direction. 
 			Value of direction indicates rotation direction (0 - no motion, 1 - CW, 2 - CCW).
 		</para>
 		<para>
-			The  quadrature encoder pulse (ENC) module is used for direct interface with a linear or rotary incremental encoder to get position, direction, and speed information from a rotating machine for use in a high-performance motion and position-control systems. 
+			The  encoder pulse (ENC) module is used for direct interface with a linear or rotary incremental encoder to get position, direction, and speed information from a rotating machine for use in a high-performance motion and position-control systems. 
 		</para>
 	</refsection>  
 
@@ -33,7 +33,7 @@
 			</listitem>
 			<listitem>
 				<para>
-					<emphasis role="bold">module: </emphasis> Quadrature encoder module (1|2) </para>
+					<emphasis role="bold">module: </emphasis> Encoder module (1|2) </para>
 			</listitem>
 		</itemizedlist>
 	</refsection>
@@ -46,7 +46,7 @@
 			</listitem>
 			<listitem>
 				<para>
-					<emphasis role="bold">position: </emphasis> Current quadrature encoder position value </para>
+					<emphasis role="bold">position: </emphasis> Current  encoder position counter </para>
 			</listitem>
 			<listitem>
 				<para>
@@ -61,7 +61,7 @@
 				// mdaqEncoderRead usage example
 				link_id =  mdaqOpen(); 
 				// initialize quadrature encoder with 0 
-				mdaqEncoderInit(link_id, 1, 0); 
+				mdaqEncoderInit(link_id, 1, 0, "quadrature"); 
 				// read quadrature encoder module 1
 				mdaqEncoderRead(link_id, 1)
 				mdaqClose(link_id);

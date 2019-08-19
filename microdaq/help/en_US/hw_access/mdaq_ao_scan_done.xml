@@ -17,7 +17,7 @@
 		<title>Description</title>
 
         <para> 
-             This function checks if analog output scan session is done. Returns %T if scanning is completed (analog outputs are no longer updated), otherwise function returns %F. 
+             This function checks if analog output scan session is completed. Returns %T if scanning is completed (analog outputs are no longer updated), otherwise function returns %F. 
 		</para> 
 	</refsection>  
 
@@ -37,25 +37,25 @@
 		</para>
 		<programlisting role="example">
             <![CDATA[
-sineData = sin(linspace(0, 2*%pi, 1000)) + 1.0;
-sawtoothData = linspace(0, 5, 1000);
-mdaqAOScanInit(1:2, [sineData' sawtoothData'], [0,5], %F, 1000, -1);
-mdaqAOScan();
+			sineData = sin(linspace(0, 2*%pi, 1000)) + 1.0;
+			sawtoothData = linspace(0, 5, 1000);
+			mdaqAOScanInit(1:2, [sineData' sawtoothData'], [0,5], %F, 1000, -1);
+			mdaqAOScanStart();
 
-if mdaqAOScanIsDone() == %F then
-    disp("AO scan in progress");
-else
-    disp("AO scan is done");
-end
+			if mdaqAOScanIsDone() == %F then
+				disp("AO scan in progress");
+			else
+				disp("AO scan is done");
+			end
 
-sleep(5000);
-mdaqAOScanStop();
+			sleep(5000);
+			mdaqAOScanStop();
 
-if mdaqAOScanIsDone() == %F then
-    disp("AO scan in progress");
-else
-    disp("AO scan is done");
-end
+			if mdaqAOScanIsDone() == %F then
+				disp("AO scan in progress");
+			else
+				disp("AO scan is done");
+			end
 		 ]]>
 		</programlisting>
 
@@ -67,7 +67,7 @@ end
 	<refsection id="SeeAlso_mdaqAOScanIsDone">
 		<title>See Also</title>
 		<simplelist type="inline">
-		<member><link linkend="mdaqAOScan">mdaqAOScan</link> : Starts AO scan</member>
+		<member><link linkend="mdaqAOScanStart">mdaqAOScanStart</link> : Starts AO scan</member>
 		<member><link linkend="mdaqAOScanData">mdaqAOScanData</link> : Queue AO data to be written to analog output</member>
 		<member><link linkend="mdaqAOScanInit">mdaqAOScanInit</link> : Initializes AO scan</member>
 		<member><link linkend="mdaqAOScanStop">mdaqAOScanStop</link> : Stops AO scan</member>

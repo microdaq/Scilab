@@ -2,7 +2,7 @@
 <refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaqDIORead">
 	<refnamediv>
 		<refname>mdaqDIORead</refname>
-		<refpurpose>Reads DIO channel</refpurpose>
+		<refpurpose>Reads DIO channels</refpurpose>
 	</refnamediv>
 
 	<refsynopsisdiv>
@@ -31,7 +31,7 @@
 			</listitem>
 			<listitem>
 				<para>
-					<emphasis role="bold">dio: </emphasis>DIO channel number</para>	
+					<emphasis role="bold">dio: </emphasis> Vector with DIO channel numbers</para>	
 			</listitem>
 
 		</itemizedlist>
@@ -51,12 +51,14 @@
 		<programlisting role="example">
 			<![CDATA[
 				// disable Encoder 1 function
-				mdaqDIOFunc(1, %f);    
+				mdaqDIOFunc("enc1", %f)
 				// read DIO1 state			
-				disp("DIO 1 state:");
+				disp("DIO 1 state:")
 				disp(mdaqDIORead(1))
+				disp("DIO 1/2 state:")
+				disp(mdaqDIORead(1:2))
 				// enable Encoder 1 function
-				mdaqDIOFunc(1, %t);
+				mdaqDIOFunc(1, %t)
 			 ]]>
 		</programlisting>
 	</refsection>

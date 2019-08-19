@@ -41,7 +41,7 @@
 				</listitem>
 				<listitem>
 					<para>
-						<emphasis role="bold">obj.setTrigger(): </emphasis> Configure signal generation trigger - <link linkend="mdaqAOScanTrigger">mdaqAOScanTrigger()</link></para>
+						<emphasis role="bold">obj.trigger(): </emphasis> Configure signal generation trigger - <link linkend="mdaqAOScanTrigger">mdaqAOScanTrigger()</link></para>
 				</listitem>
 
 				<listitem>
@@ -50,7 +50,7 @@
 				</listitem>
 				<listitem>
 					<para>
-						<emphasis role="bold">obj.waitUntilDone(): </emphasis> Wait until signal generation is done - <link linkend="mdaqAOScanWait">mdaqAOScanWait()</link></para>
+						<emphasis role="bold">obj.wait(): </emphasis> Wait until signal generation is done - <link linkend="mdaqAOScanWait">mdaqAOScanWait()</link></para>
 				</listitem>
 
 			</itemizedlist>
@@ -88,7 +88,7 @@
 			<![CDATA[
 				ao = mdaqAOTask(); 
 				ao.init(1, [1 2 3 4 5]', [0, 5], %f, 10, 1);
-				ao.setTrigger("dioPattern", "xxxxxxx1");
+				ao.trigger("dioPattern", "xxxxxxx1");
 				ao.start();
 			 ]]>
 		</programlisting>
@@ -98,7 +98,7 @@
 				ao = mdaqAOTask(); 
 				ao.init(1, [1 2 3 4 5]', [0, 5], %f, 10, 1);
 				ao.start(); 
-				ao.waitUntilDone(2); 
+				ao.wait(2); 
 			 ]]>
 		</programlisting>
 	</refsection>
@@ -107,7 +107,7 @@
 	
 	<title>See Also</title>
 		<simplelist type="inline">
-		<member><link linkend="mdaqAOScan">mdaqAOScan</link> : Starts AO scan</member>
+		<member><link linkend="mdaqAOScanStart">mdaqAOScanStart</link> : Starts AO scan</member>
 		<member><link linkend="mdaqAOScanData">mdaqAOScanData</link> : Queue AO data to be written to analog output</member>
 		<member><link linkend="mdaqAOScanInit">mdaqAOScanInit</link> : Initializes AO scan</member>
 		<member><link linkend="mdaqAOScanStop">mdaqAOScanStop</link> : Stops AO scan</member>

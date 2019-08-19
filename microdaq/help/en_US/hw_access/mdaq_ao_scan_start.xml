@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaqAOScan">
 	<refnamediv>
-		<refname>mdaqAOScan</refname>
+		<refname>mdaqAOScanStart</refname>
 		<refpurpose>Starts analog output scanning</refpurpose>
 	</refnamediv>
 
 	<refsynopsisdiv>
 		<title>Calling Sequence</title>
 		<synopsis>
-			mdaqAOScan()
-			mdaqAOScan(linkID)
+			mdaqAOScanStart()
+			mdaqAOScanStart(linkID)
+			mdaqAOScanStart(sync)
+			mdaqAOScanStart(linkID, sync)
 		</synopsis>
 	</refsynopsisdiv>
 
@@ -24,7 +26,7 @@
 				</listitem>
 				<listitem>
 					<para>
-						<emphasis role="bold">Start scanning session</emphasis> - <link linkend="mdaqAOScan">mdaqAOScan()</link>
+						<emphasis role="bold">Start scanning session</emphasis> - <link linkend="mdaqAOScan">mdaqAOScanStart()</link>
 					</para>
 				</listitem>
 				<listitem>
@@ -54,6 +56,10 @@
 				<para>
 					<emphasis role="bold">linkID: </emphasis> Valid connection link ID (optional)</para>
 			</listitem>
+			<listitem>
+				<para>
+					<emphasis role="bold">sync: </emphasis> Synchronize signal generation with AI or DSP start ("ai" | "dsp")</para>
+			</listitem>
 		</itemizedlist>
 	</refsection>
 
@@ -68,7 +74,7 @@
 			// initialize scanning session
 			mdaqAOScanInit(1, sineData', [0,5], %F, 1000, 5);
 			// start sine waveform generation
-			mdaqAOScan();
+			mdaqAOScanStart();
  ]]>
 		</programlisting>
 	</refsection>

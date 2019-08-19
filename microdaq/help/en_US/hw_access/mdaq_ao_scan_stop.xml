@@ -8,8 +8,8 @@
 	<refsynopsisdiv>
 		<title>Calling Sequence</title>
 		<synopsis>
-			mdaqAOScanStop(linkID)
 			mdaqAOScanStop()
+			mdaqAOScanStop(linkID)
 		</synopsis>
 	</refsynopsisdiv>
 
@@ -23,7 +23,7 @@
 					</para>
 				</listitem>
 				<listitem>
-					<para>Start scanning session - <link linkend="mdaqAOScan">mdaqAOScan()</link>
+					<para>Start scanning session - <link linkend="mdaqAOScan">mdaqAOScanStart()</link>
 					</para>
 				</listitem>
 				<listitem>
@@ -62,7 +62,7 @@
 			sineData = sin(linspace(0, 2*%pi, 1000)) + 1.0;
 			sawtoothData = linspace(0, 5, 1000);
 			mdaqAOScanInit(1:2, [sineData' sawtoothData'], [0,5], %F, 1000, -1);
-			mdaqAOScan();
+			mdaqAOScanStart();
 			sleep(5000);
 			mdaqAOScanStop();
 		 ]]>
@@ -76,7 +76,7 @@
 	<refsection id="SeeAlso_mdaqAOScanStop">
 		<title>See Also</title>
 		<simplelist type="inline">
-		<member><link linkend="mdaqAOScan">mdaqAOScan</link> : Starts AO scan</member>
+		<member><link linkend="mdaqAOScanStart">mdaqAOScanStart</link> : Starts AO scan</member>
 		<member><link linkend="mdaqAOScanData">mdaqAOScanData</link> : Queue AO data to be written to analog output</member>
 		<member><link linkend="mdaqAOScanInit">mdaqAOScanInit</link> : Initializes AO scan</member>
 		<member><link linkend="mdaqAOScanTrigger">mdaqAOScanTrigger</link> : Sets AO scan trigger</member>

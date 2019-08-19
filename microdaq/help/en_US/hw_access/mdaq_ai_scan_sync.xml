@@ -37,7 +37,7 @@
             expectedRate = 10000;
 			mdaqAIScanInit(1:8, [-10,10], %F, expectedRate, 1)
 	        mdaqAIScanSync(1, 1);	
-			plot(mdaqAIScan(10000, -1));
+			plot(mdaqAIScanRead(10000, -1));
 			 ]]>
 		</programlisting>
 		
@@ -48,7 +48,7 @@
         <simplelist type="inline">
 		<member><link linkend="mdaqAIRead">mdaqAIRead</link> : Performs single AI read</member>
 		<member><link linkend="mdaqAIScanStart">mdaqAIScanStart</link> : Starts AI scan</member>
-		<member><link linkend="mdaqAIScan">mdaqAIScan</link> : Reads acquired AI scan data</member>
+		<member><link linkend="mdaqAIScanRead">mdaqAIScanRead</link> : Starts and reads acquired AI scan data</member>
 		<member><link linkend="mdaqAIScanInit">mdaqAIScanInit</link> : Initializes AI scan</member>
 		<member><link linkend="mdaqAIScanStop">mdaqAIScanStop</link> : Stops AI scan</member>
 		<member><link linkend="mdaqAIScanTrigger">mdaqAIScanTrigger</link> : Sets AI scan trigger</member>

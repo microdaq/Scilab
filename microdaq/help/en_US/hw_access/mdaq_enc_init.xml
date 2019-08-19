@@ -2,22 +2,45 @@
 <refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaqEncoderInit">
 	<refnamediv>
 		<refname>mdaqEncoderInit</refname>
-		<refpurpose>Initializes quadrature encoder module</refpurpose>
+		<refpurpose>Initializes encoder module</refpurpose>
 	</refnamediv>
 
 	<refsynopsisdiv>
 		<title>Calling Sequence</title>
 		<synopsis>
-			mdaqEncoderInit(module, initValue)
-			mdaqEncoderInit(linkID, module, initValue)
+			mdaqEncoderInit(module, initValue, mode)
+			mdaqEncoderInit(linkID, module, initValue, mode)
 		</synopsis>
 	</refsynopsisdiv>
 
 	<refsection id="Description_mdaqEncoderInit">
 		<title>Description</title>
 		<para>
-			This function initializes selected quadrature encoder module (ENC1, ENC2) with provided initial value. 
+			This function initializes selected encoder module (ENC1, ENC2) with provided initial value. Module supports different modes 
+			which can be used. 
+			
+
 		</para>
+
+		<para>
+			Quadrature Count Mode ("quadrature") the ENCxA and ENCxB inputs are used for A and B channels. 
+		</para>
+
+		<para>
+			In Direction-count Mode ("dir") the ENCxA input will provide the clock for position counter and the ENCxB input will have the direction information. The position counteris 
+			incremented on every rising edge of ENCxA input when the direction input is high and decremented when the direction input is low.
+		</para>
+		
+
+		<para>
+			In Up-Count Mode ("up") the position counter is incremented on both edges of the ENCxA input.
+		</para>
+
+		<para>
+			In Up-Down Mode ("down") the position counter is decremented on both edges of the ENCxA input.
+		</para>
+
+		
 	</refsection>  
 
 	<refsection id="Parameters_mdaqEncoderInit">
@@ -35,6 +58,11 @@
 				<para>
 					<emphasis role="bold">initValue: </emphasis> Initial position value for selected quadrature encoder module </para>
 			</listitem>
+			<listitem>
+				<para>
+					<emphasis role="bold">mode: </emphasis> encoder counting mode</para>
+
+			</listitem>
 		</itemizedlist>
 	</refsection>
 
@@ -45,7 +73,7 @@
 				// mdaqEncoderInit usage example
 				link_id =  mdaqOpen(); 
 				// initialize quadrature encoder with 0 
-				mdaqEncoderInit(link_id, 1, 0); 
+				mdaqEncoderInit(link_id, 1, 0, "quadrature"); 
 				// read quadrature encoder module 1
 				mprintf('Encoder position: %d\n', mdaqEncoderRead(link_id, 1));
 				mdaqClose(link_id)
