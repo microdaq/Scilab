@@ -2,7 +2,7 @@
 // All rights reserved.
 // This file is released under the 3-clause BSD license. See COPYING-BSD.
    
-function [microdaqlib, microdaqBlocks, microdaqMacros]  = startModule()
+function [microdaqlib, microdaqBlocks, microdaqMacros, microdaqUserBlocks]  = startModule()
     etc_tlbx  = get_absolute_file_path("microdaq.start");
     etc_tlbx  = getshortpathname(etc_tlbx);
     root_tlbx = strncpy( etc_tlbx, length(etc_tlbx)-length("etc\") );
@@ -206,5 +206,5 @@ function [microdaqlib, microdaqBlocks, microdaqMacros]  = startModule()
 endfunction
 
 loadXcosLibs();
-[microdaqlib, microdaqBlocks, microdaqMacros] = startModule();
+[microdaqlib, microdaqBlocks, microdaqMacros, microdaqUserBlocks] = startModule();
 clear startModule;
