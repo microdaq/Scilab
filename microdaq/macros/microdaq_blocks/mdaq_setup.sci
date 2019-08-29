@@ -125,6 +125,6 @@ function [x,y,typ] = mdaq_setup(job,arg1,arg2)
         x=standard_define([4 3],model,exprs,gr_i)
         x.graphics.in_implicit=[];
         x.graphics.exprs=exprs;
-        x.graphics.style=["mdaq_setup;blockWithLabel;displayedLabel=10s"]
+        x.graphics.style=["mdaq_setup;blockWithLabel;displayedLabel=Duration: 10s"]
     end
 endfunction

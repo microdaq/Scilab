@@ -26,7 +26,7 @@ function block=mdaq_signal_sim(block,flag)
     case 3 // OutputEventTiming
     case 4 // Initialization
         global %microdaq;
-        update_rate = 50;
+        update_rate = 25;
         if %microdaq.private.model_tsamp < 1/update_rate then
             %microdaq.private.signal_buffer_size(block.ipar(1)) = (1/update_rate)/%microdaq.private.model_tsamp ;
         else
