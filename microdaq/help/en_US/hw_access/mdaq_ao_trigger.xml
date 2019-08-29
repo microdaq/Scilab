@@ -19,12 +19,12 @@
 
 
 		This function configures and sets a trigger for analog output scan session. 
-		If a trigger is used, after starting analog output scan with <link linkend="mdaqAOScan">mdaqAOScan()</link> 
+		If a trigger is used, after starting analog output scan with <link linkend="mdaqAOScanStart">mdaqAOScanStart()</link> 
 		scan operation is blocked until certain condition defined by trigger occurs. 
 		In this state, signal is not generated on analog outputs. 
 		Blocked scan session can be interrupted by calling <link linkend="mdaqAOScanStop">mdaqAOScanStop()</link>. 
 		The <link linkend="mdaqAOScanTrigger">mdaqAOScanTrigger()</link> function can be called only after scan initialization 
-		function  <link linkend="mdaqAOScanInit">mdaqAOScanInit()</link> call and before scan start function <link linkend="mdaqAOScan">mdaqAOScan()</link> call. 
+		function  <link linkend="mdaqAOScanInit">mdaqAOScanInit()</link> call and before scan start function <link linkend="mdaqAOScanStart">mdaqAOScanStart()</link> call. 
 		When scan session uses a trigger, function <link linkend="mdaqAOScanIsDone">mdaqAOScanIsDone()</link> or <link linkend="mdaqAOScanWait">mdaqAOScanWait()</link> 
 		can be use to check if signal generation is done or wait until signal generation operation is done. 
 		When trigger is used it is recommended to use <link linkend="mdaqAOScanWait">mdaqAOScanWait()</link> with timeout different 
@@ -92,7 +92,7 @@
 					<emphasis role="bold">"dsp":  </emphasis> trigger when DSP application is started on MicroDAQ DSP</para>
 					<programlisting role="example">
 						<![CDATA[
-						mdaqAOScanTrigger("dspStart");
+						mdaqAOScanTrigger("dsp");
 						 ]]>
 					</programlisting>
 			</listitem>
@@ -101,7 +101,7 @@
 					<emphasis role="bold">"ai":  </emphasis> trigger when AI scan session is started</para>
 					<programlisting role="example">
 						<![CDATA[
-						mdaqAOScanTrigger("aoStart");
+						mdaqAOScanTrigger("ao");
 						 ]]>
 					</programlisting>
 			</listitem>
@@ -145,7 +145,7 @@
 			<![CDATA[
 			mdaqAOScanInit(1, [1 2 3 4 5]', [0, 5], %F, 10, 1)
 			mdaqAOScanTrigger("dioPattern", "xxxxxx1x");
-			mdaqAOScan();
+			mdaqAOScanStart();
 			 ]]>
 		</programlisting>
 

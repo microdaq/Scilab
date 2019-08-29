@@ -23,7 +23,7 @@
 					</para>
 				</listitem>
 				<listitem>
-					<para>Start scanning session - <link linkend="mdaqAOScan">mdaqAOScanStart()</link>
+					<para>Start scanning session - <link linkend="mdaqAOScanStart">mdaqAOScanStart()</link>
 					</para>
 				</listitem>
 				<listitem>
@@ -104,7 +104,7 @@
 			<![CDATA[
 			data0 = linspace(0,2,1000)';
 			mdaqAOScanInit(1, data0, [0,5], %F, 1000, 10);
-			mdaqAOScan();
+			mdaqAOScanStart();
 			 ]]>
 		</programlisting>
 
@@ -115,7 +115,7 @@
 			data0 = linspace(0,1,1000)';
 			data1 = linspace(0,2,1000)';
 			mdaqAOScanInit(1:2, [data0 data1], [0,5], %F, 1000, 10);
-			mdaqAOScan();
+			mdaqAOScanStart();
 			 ]]>
 		</programlisting>
 		<para> 
@@ -142,7 +142,7 @@
 		// synchronize AI data acquisition with AO signal generation
 		mdaqAIScanStart("ao");
 		// start signal generation
-		mdaqAOScan();
+		mdaqAOScanStart();
 		n = (rate  * duration) / scanDataSize;
 
 		for i=1:n-1
@@ -168,7 +168,7 @@
 	<refsection id="SeeAlso_mdaq_ao_data_queue">
 		<title>See Also</title>
 		<simplelist type="inline">
-            <member><link linkend="mdaqAOScan">mdaqAOScan</link> : Starts AO scan</member>
+            <member><link linkend="mdaqAOScanStart">mdaqAOScanStart</link> : Starts AO scan</member>
             <member><link linkend="mdaqAOScanInit">mdaqAOScanInit</link> : Initializes AO scan</member>
             <member><link linkend="mdaqAOScanStop">mdaqAOScanStop</link> : Stops AO scan</member>
             <member><link linkend="mdaqAOScanTrigger">mdaqAOScanTrigger</link> : Sets AO scan trigger</member>

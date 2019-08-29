@@ -24,7 +24,7 @@
 					</para>
 				</listitem>
 				<listitem>
-					<para>Start scanning session - <link linkend="mdaqAOScan">mdaqAOScan()</link>
+					<para>Start scanning session - <link linkend="mdaqAOScanStart">mdaqAOScanStart()</link>
 					</para>
 				</listitem>
 				<listitem>

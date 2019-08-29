@@ -59,10 +59,6 @@
 		 ]]>
 		</programlisting>
 
-		<para>
-			Results:
-			<imagedata align="center" fileref="../images/single_result.png" valign="middle"/>
-		</para>
 	</refsection>  			
 	<refsection id="SeeAlso_mdaqAOScanIsDone">
 		<title>See Also</title>
