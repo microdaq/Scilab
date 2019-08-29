@@ -1,4 +1,4 @@
-// Data acqisition parameters
+﻿// Data acqisition parameters
 Rate = 44100;
 Channel = 1; 
 aiRange = [-1, 1];    // analog input range: ±1V
@@ -14,12 +14,13 @@ mdaqAIScanInit(Channel, aiRange, isDifferential, Rate, -1);
 mdaqAOScanInit(Channel, initialAOData, aoRange, isContinuous, Rate, -1);
 
 // Start scanning - analog input and output
-mdaqAOScan();
+mdaqAOScanStart();
+mdaqAIScanStart();
 
 // Acquire data in the loop
 while(mdaqKeyRead(1) == %F)
     // Audio stream acqisition
-    audioData = mdaqAIScan(Rate / 10, 1);
+    audioData = mdaqAIScanRead(Rate / 10, 1);
     
     // Signal processing 
     audioData = audioData * Gain; 

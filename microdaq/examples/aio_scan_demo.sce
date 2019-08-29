@@ -17,7 +17,7 @@ mdaqAIScanInit(channels, [-10,10], %F, rate, duration);
 mdaqAIScanStart();
 
 // start signal generation
-mdaqAOScan();
+mdaqAOScanStart();
 n = (rate  * duration) / scanDataSize;
  
 for i=1:n-1
@@ -27,8 +27,8 @@ for i=1:n-1
     // queue new data 
     mdaqAOScanData(channels, sineWave', %T);
     // start and acquire data from analog inputs
-    aiData = [aiData; mdaqAIScan(scanDataSize, 10)];
+    aiData = [aiData; mdaqAIScanRead(scanDataSize, 10)];
 end
 // acquire rest of samples
-aiData = [aiData; mdaqAIScan(scanDataSize, 10)];
+aiData = [aiData; mdaqAIScanRead(scanDataSize, 10)];
 plot(aiData)
