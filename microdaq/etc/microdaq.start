@@ -10,9 +10,17 @@ function [microdaqlib, microdaqBlocks, microdaqMacros, microdaqUserBlocks]  = st
     mprintf("Start MicroDAQ toolbox ver: %s\n", mgetl(root_tlbx + filesep() + "VERSION", 1));
     
     sciVersion = getversion('scilab');
-    if sciVersion(1:3) <> [ 6,0,2 ] | sciVersion(1:3) <> [ 5,5,2 ] then
-        mprintf("\nERROR: Scilab versions 5.5.2 and 6.0.2 are only supported.");
-        return
+    if getos() == "Linux" then
+        // Scilab 6 not stable on linux - no support
+        if sciVersion(1:3) <> [ 5,5,2 ] then
+            mprintf("\nERROR: On Linux Scilab 5.5.2 is only supported.");
+            return
+        end
+    else
+        if sciVersion(1:3) <> [ 6,0,2 ] & sciVersion(1:3) <> [ 5,5,2 ] then
+            mprintf("\nERROR: Scilab versions 5.5.2 and 6.0.2 are only supported.");
+            return
+        end
     end
     
     [version, opts] = getversion();
@@ -200,7 +208,7 @@ function [microdaqlib, microdaqBlocks, microdaqMacros, microdaqUserBlocks]  = st
     
     %microdaq.ip_address = mdaq_get_ip();
     if %microdaq.ip_address == [] then
-        mprintf("\nThank you for using MicroDAQ toolbox. The project sources can be found\non: https://github.com/microdaq/Scilab where you can report issues or suggestions.\nFeel free to contribute to the project with new features or improvments.\n")
+        mprintf("\nThank you for using MicroDAQ toolbox. The toolbox sources can be found\non: https://github.com/microdaq/Scilab where you can report issues or suggestions.\nFeel free to contribute to the toolbox with new features or improvments.\n")
         mprintf("\nRun microdaq_setup() to configure MicroDAQ toolbox")
     end
 endfunction
