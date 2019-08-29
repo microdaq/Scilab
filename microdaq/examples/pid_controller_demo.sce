@@ -39,7 +39,7 @@ if con > -1 then
     mdaqPWMInit(con, pwm_module, pwm_period, %F, 0, 0); 
     
     // initialize MicroDAQ Encoder 2 module with 0 value
-    mdaqEncoderInit(con, enc, 0);
+    mdaqEncoderInit(con, enc, 0, "quadrature");
     
     // set initial state of DIO20, DIO20 and PWM module to 0 duty
     mdaqDIOWrite(con, dio_enable, %T)
