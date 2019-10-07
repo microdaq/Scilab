@@ -79,14 +79,21 @@ enum mdaq_pwm_polarity
 	ACTIVE_LOW
 };
 
+/* basic PWM function */ 
 int mdaq_pwm_init(uint8_t module, int32_t period, uint8_t active_low, float a_channel, float b_channel);
 void mdaq_pwm_write(uint8_t module, float a_channel, float b_channel);
+
+/* advanced PWM functions */ 
+void mdaq_pwm_start(uint8_t channel);
+void mdaq_pwm_stop(uint8_t channel);
+void mdaq_pwm_set_period(uint8_t channel, uint32_t period);
+void mdaq_pwm_set_duty(uint8_t channel, float duty);
+void mdaq_pwm_set_polarity(uint8_t channel, uint8_t polarity);
 
 void mdaq_pwm_tb_sync(uint8_t module, uint8_t phsen, uint8_t syncosel );
 void mdaq_pwm_tb_set_phase(uint8_t module, uint16_t phase);
 
 void mdaq_pwm_db_setup(uint8_t module, uint8_t mode, uint8_t polsel );
 void mdaq_pwm_db_set_delay(uint8_t module, uint16_t red, uint16_t fed);
-
 
 #endif /* MDAQ_PWM_H_ */
