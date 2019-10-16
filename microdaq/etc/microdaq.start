@@ -23,6 +23,10 @@ function [microdaqlib, microdaqBlocks, microdaqMacros, microdaqUserBlocks]  = st
         end
     end
     
+    if sciVersion(1:3) == [ 5,5,2 ] then
+        loadXcosLibs();
+    end
+
     [version, opts] = getversion();
     if getos() == "Linux" & opts(2) == 'x86' then 
         mprintf("\nERROR: The x86 architecture is not supported");
@@ -213,6 +217,5 @@ function [microdaqlib, microdaqBlocks, microdaqMacros, microdaqUserBlocks]  = st
     end
 endfunction
 
-loadXcosLibs();
 [microdaqlib, microdaqBlocks, microdaqMacros, microdaqUserBlocks] = startModule();
 clear startModule;
