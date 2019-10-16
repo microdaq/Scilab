@@ -1156,11 +1156,11 @@ function  [ok,XX,alreadyran,flgcdgen,szclkINTemp,freof] = do_compile_superblock_
         if standalone == %t then
             mdaqDSPStart();    
             if dspDuration > 0 then 
-                durationStr = string(dspDuration) 
+                durationStr = string(dspDuration) + "s";
             else
                 durationStr = "Inf"
             end
-            msg = "(duration: " + durationStr + "s, rate: " + string(1/strtod(dspTsamp)) + "Hz)..." 
+            msg = "(duration: " + durationStr + ", rate: " + string(1/strtod(dspTsamp)) + "Hz)..." 
             disp("### Starting " + dsp_binary + " in standalone mode " + msg);      
         end
 
@@ -3098,6 +3098,7 @@ function [txt]=write_code_cdoit(flag)
                     txt=[txt;
                     '   case '+string(i)+' :';]
                     //*******//
+
                     txt=[txt;
                     BigIndent+write_code_doit(clkptr(bk)+i-1,flag);]
                     //** C **//
