@@ -78,7 +78,9 @@ function mdaq_code_gen(load_dsp_app)
         // Save format
         oldFormat = format();
         format('v',10);
-
+        
+        xcos_compile(scs_m)
+        
         [ok, XX, alreadyran, flgcdgen, szclkINTemp, freof] =  do_compile_superblock_rt(XX, scs_m, k, %f, standalone, debug_build, profiling, solver_type, load_dsp_app);
 
         // Restore format
