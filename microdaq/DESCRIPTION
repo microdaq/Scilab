@@ -2,7 +2,7 @@ Toolbox: microdaq
 
 Title: MicroDAQ Toolbox
 
-Summary: Toolbox for MicroDAQ real-time DSP control measurement system
+Summary: Toolbox for MicroDAQ real-time multifunction DAQ device
 
 Version: 1.3.0
 
@@ -14,9 +14,9 @@ Category: Instruments Control
 
 Entity: Embedded Solutions
 
-WebSite: http://microdaq.org/
+WebSite: http://www.microdaq.org/
 
-URL: http://atoms.scilab.org/toolboxes/microdaq/1.0
+URL: http://atoms.scilab.org/toolboxes/microdaq/1.3
 
 License: BSD
 
@@ -24,9 +24,10 @@ ScilabVersion: >= 5.5.2
 
 Depends: 
 
-Date: 2017-10-31 00:00:00
+Date: 2019-10-18 10:00:00
 
-Description: MicroDAQ toolbox for Scilab can be used to develop advanced data 
+Description: 
+ MicroDAQ toolbox for Scilab can be used to develop advanced data 
  acquisitions applications. Toolbox lets you make a variety of measurements 
  directly from Scilab without the need to convert the data or import from 
  other software. Software includes functions for controlling analog inputs, 
@@ -53,14 +54,60 @@ Description: MicroDAQ toolbox for Scilab can be used to develop advanced data
  This tool gives a clear answer about model execution times which in a real-time 
  application is very crucial. 
  
- Release notes
- www.microdaq.org/scilab/toolbox/MicroDAQ%20toolbox%20for%20Scilab%201.2v%20-%20release%20notes.pdf
+ Release notes:
+
+ Major changes: 
+ - Scilab 5.5.2 and Scilab 6.0.2 full support with code generation
+ - No need to install SYS/BIOS and XDCTools - only DSP compiler required
+ - Firmware 2.2 is required
+
+ Data acqisition and signal generation:
+  - Additional object-like API for AI/AO (mdaqAITask, mdaqAOTask)
+  - Triggers for start acquisition or signal generation added
+   - Start data acquisition or signal generation when DIO state is present
+   - Start data acquisition or signal generation when one or more 
+     DIO states are present - DIO pattern
+   - Start data acquisition or signal generation when quadrature/edge counter 
+     is lower/greater then value
+   - Start data acquisition or signal generation when when DSP application 
+     is started - AI/AO synchronization with DSP 
+	 
+  - mdaqAIScanTrigger, mdaqAOScanTrigger added
+  - mdaqAIScanRead, mdaqAIScanStart added
+  - mdaqAOScanIsDone, mdaqAOScanWait allows to check if signal generation 
+    is comleted or wait until is comleted (mdaqAOScanWait)
+  - mdaqAIScanInit and mdaqAOScanInit() returns an object 
+  - mdaqAIScanInit and mdaqAOScanInit() can be called with object 
+    instead of multiple arguments
+  - data acquisition object contains custom channel name
+  - mdaqEncoderInit supports additional modes (dir count, up count, down count)
+  - mdaqDIOWrite, mdaqDIORead accepts vector of digital values
  
- Toolbox overview
+ DSP managment: 
+  - mdaqDSPInit added - loads and configures DSP executable with duration 
+    and rate arguments
+  - mdaqDSPIsDone, mdaqDSPWait allows to check if signal generation is comleted 
+    or wait until is comleted (mdaqAOScanWait)
+  - Additional object-like API for DSP managment (mdaqDSPTask)
+
+ Xcos improvements:
+  - optimized SIGNAL block allows read DSP data with higher rates
+  - duration and rate printed when model is loaded on DSP 
+
+ Xcos blocks: 
+  - MEM read block can load CSV file 
+  - Profiler block added - allows to measure execution time of the model live
+  - Encoder block supports additional modes (dir count, up count, down count)
+
+ Other:
+  - mdaqDSPSignalRead is obsolete use mdaqDSPRead instead
+  - PWM ZVSFB example
+
+ Toolbox overview:
  https://www.youtube.com/watch?v=p9ed3iIV_Ug&t=0s (video)
  http://www.microdaq.org/software/scilab/microdaq-toolbox-for-scilab-overview-2.html
  
- Data acquisition - examples:
+ Data acquisition examples:
  http://www.microdaq.org/software/scilab/data-acquisition-with-scilab.html
 
  Embedded Solutions Team
