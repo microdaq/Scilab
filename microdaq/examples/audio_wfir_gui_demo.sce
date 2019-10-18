@@ -1,4 +1,4 @@
-// Scilab ( http://www.scilab.org/ ) - This file is part of Scilab
+﻿// Scilab ( http://www.scilab.org/ ) - This file is part of Scilab
 // Copyright (C) 2011-2014 - INRIA - Serge Steer
 //
 // Copyright (C) 2012 - 2016 - Scilab Enterprises
@@ -614,8 +614,8 @@ function [ok,values_res,exprs]=wfir_gui_demo(exprs)
             mdaqAIScanInit(ChannelIN, aiRange, IsDifferential, Rate, -1);
             mdaqAOScanInit(ChannelOUT, initialData, aoRange, IsContinuous, Rate, -1);
             
-            audioData = mdaqAIScan(ChunkSize, %T);    
-            mdaqAOScan();
+            audioData = mdaqAIScanRead(ChunkSize, 10);    
+            mdaqAOScanStart();
             mdaqAOScanData(ChannelOUT, audioData, %T);
             
             mprintf("\nFiltering h as been started...\n");
@@ -625,7 +625,7 @@ function [ok,values_res,exprs]=wfir_gui_demo(exprs)
 
                 // Acquire data
                 pastAudioData = audioData;
-                audioData = mdaqAIScan(ChunkSize, %T);
+                audioData = mdaqAIScanRead(ChunkSize, 10);
                 audioDataExt = [pastAudioData(ChunkSize-SampleOffset+1:ChunkSize, :); audioData];
                 
                 // FIR Filter 

@@ -597,7 +597,7 @@ function ok = compile_standalone()
     wd = pwd();
     chdir(rpat);
 
-    GMAKE = dirname(get_function_path('do_compile_superblock_rt'))+"\..\etc\bin\gmake.exe";
+    GMAKE = fileparts(get_function_path('do_compile_superblock_rt'))+"..\etc\bin\gmake.exe";
 
     if getenv('WIN32','NO')=='OK' then
         unix_w(GMAKE + ' -f Makefile');
@@ -624,6 +624,10 @@ function  [ok,XX,alreadyran,flgcdgen,szclkINTemp,freof] = do_compile_superblock_
     scs_m = XX.model.rpar ; //** isolate the super block scs_m data structure
     par = scs_m.props;
 
+    if isdef("oldEmptyBehaviour") then
+        oldEmptyBehaviour("on")
+    end
+    
     // Perform pre code generation step for MicroDAQ
     [res1, scs_m] = pre_code_gen(scs_m);
     if res1 <> %t then
@@ -910,15 +914,15 @@ function  [ok,XX,alreadyran,flgcdgen,szclkINTemp,freof] = do_compile_superblock_
             Tsamp_delay=sci2exp(Tsamp_delay);
         elseif all_scs_m.objs(o_ev).gui=='rtai_ext_clock' then
             sTsamp=all_scs_m.objs(o_ev).graphics.exprs(1);
-            sTsamp=sci2exp(eval(sTsamp));
+            sTsamp=sci2exp(evstr(sTsamp));
             Tsamp_delay="0.0";
             useInternTimer = 0;
             extClockCode = all_scs_m.objs(o_ev).graphics.exprs(2);
         else
             sTsamp=all_scs_m.objs(o_ev).model.rpar.objs(2).graphics.exprs(1);
-            sTsamp=sci2exp(eval(sTsamp));
+            sTsamp=sci2exp(evstr(sTsamp));
             Tsamp_delay=all_scs_m.objs(o_ev).model.rpar.objs(2).graphics.exprs(2);
-            Tsamp_delay=sci2exp(eval(Tsamp_delay));
+            Tsamp_delay=sci2exp(evstr(Tsamp_delay));
         end
     end
 
@@ -950,9 +954,9 @@ function  [ok,XX,alreadyran,flgcdgen,szclkINTemp,freof] = do_compile_superblock_
     rdnom='foo';
     rpat = pwd();
     archname='';
-    Tsamp = sci2exp(eval(sTsamp));
+    Tsamp = sci2exp(evstr(sTsamp));
 
-    TARGETDIR = dirname(get_function_path('do_compile_superblock_rt'))+"/../rt_templates";
+    TARGETDIR = fileparts(get_function_path('do_compile_superblock_rt'))+"../rt_templates";
 
     libs='';
     template = ''; //** default values for this version
@@ -985,6 +989,7 @@ function  [ok,XX,alreadyran,flgcdgen,szclkINTemp,freof] = do_compile_superblock_
     else
         rdnom = hname;
         rpat = pwd()+'/'+hname+"_scig";
+
     end
 
 
@@ -1051,7 +1056,7 @@ function  [ok,XX,alreadyran,flgcdgen,szclkINTemp,freof] = do_compile_superblock_
     maxnin=max(inpptr(2:$)-inpptr(1:$-1))
     maxnout=max(outptr(2:$)-outptr(1:$-1))
     maxdim=[];
-    for i=1:lstsize(cpr.state.outtb)
+    for i=1:size(cpr.state.outtb)
         maxdim=max(size(cpr.state.outtb(i)))
     end
     maxtotal=max([maxnrpar;maxnipar;maxnx;maxnz;maxnin;maxnout;maxdim]);
@@ -1111,56 +1116,60 @@ function  [ok,XX,alreadyran,flgcdgen,szclkINTemp,freof] = do_compile_superblock_
     Makename=rt_gen_make(rdnom,files,archname,standalone,debug_build,SMCube_filelist);
 
     rt_gen_main(Tsamp, Sim_duration, profiling, standalone)
-
+    try
+        gen_config_file(strtod(Tsamp), Sim_duration, rdnom);
+    catch
+        warning("Unable to create CFG file - skipping."); 
+    end
+    
     disp('### Generating binary file...');
+    
     ok=compile_standalone();
 
-    result = isfile(rpat + '/' + dsp_binary);
+    result = isfile(rpat + filesep() + dsp_binary);
     if result == %f then
         disp('ERROR: file ' + dsp_binary + ' in ' + rpat + ' not found' );
         return;
     end
     
-    // save path to generated application
-    mputl(rpat + filesep() + dsp_binary ,TMPDIR + filesep() + "last_mdaq_dsp_image");
+    dspPath = rpat + filesep() + dsp_binary; 
+    dspTsamp = Tsamp;
+    dspDuration = Sim_duration;
 
+    save(TMPDIR + filesep() + "last_model", "dspPath", "dspTsamp", "dspDuration");
+    
+    %microdaq.dsp_loaded = %F;
     if load_dsp_app == %t then
         disp('### Connecting to MicroDAQ...');
-        close_last_connection();
-        connection_id = mdaqOpen();
-        if connection_id < 0 then
-            message("ERROR: Unable to connect to MicroDAQ device!");
-            return;
-        end
-    
-        res = mlink_dsp_load(connection_id, rpat + filesep() + dsp_binary, 'l');
-        if res < 0 then
-            res = mlink_dsp_load(connection_id, rpat + filesep() + dsp_binary, 'l');
-            if res < 0 then
-                message(mdaq_error2(res));                
-                mdaqClose(connection_id);
-                return
-            end
-        end
         
-        disp('### ' + dsp_binary + ' has been loaded to MicroDAQ.');
-
-        res = mlink_dsp_start(connection_id,-1);
-        if res < 0 then
-            message("Unable to start DSP application!");
-            mdaqClose(connection_id);
-            return;
+        // close all connections
+        mdaqClose();
+        
+        try
+            mdaqDSPInit(rpat + filesep() + dsp_binary, -1, Sim_duration);
+            disp("### Loading DSP executable " + dsp_binary + " on MicroDAQ...")
+        catch
+            messagebox(lasterror(), "Error", "error")
+            return
         end
         
         if standalone == %t then
-            disp('### Model has been started in Standalone mode.');
+            mdaqDSPStart();    
+            if dspDuration > 0 then 
+                durationStr = string(dspDuration) + "s";
+            else
+                durationStr = "Inf"
+            end
+            msg = "(duration: " + durationStr + ", rate: " + string(1/strtod(dspTsamp)) + "Hz)..." 
+            disp("### Starting " + dsp_binary + " in standalone mode " + msg);      
         end
 
         %microdaq.dsp_loaded = %T;
-
         beep();
-        mdaqClose(connection_id);
+    end
 
+    if isdef("oldEmptyBehaviour") then
+        oldEmptyBehaviour("off")
     end
 
 endfunction
@@ -1251,6 +1260,7 @@ function [CCode,FCode]=gen_blocks()
                 path($+1)='rpar';
                 path($+1)='objs';
             end
+
             path($+1)=corinv(kdyn)($);
             O=scs_m(path);
         end
@@ -1407,7 +1417,7 @@ function [Code,Code_common]=make_standalone42(sample_time)
     BigIndent='          ';
 
     work=zeros(nblk,1)
-    Z=[z;zeros(lstsize(outtb),1);work]';
+    Z=[z;zeros(size(outtb),1);work]';
     nX=size(x,'*');
     nztotal=size(z,1);
 
@@ -1447,43 +1457,6 @@ function [Code,Code_common]=make_standalone42(sample_time)
         '']
     end
 
-//    Code=[Code;
-//    '/* Table of constant values */'
-//    'static int nrd_'+string(0:maxtotal)'+' = '+string(0:maxtotal)'+';']
-//
-//    if maxtotal<10 then
-//        Code=[Code;
-//        'static int nrd_10 = 10;']
-//    end
-//    if maxtotal<11 then
-//        Code=[Code;
-//        'static int nrd_11 = 11;']
-//    end
-//
-//    if maxtotal<81 then
-//        Code=[Code;
-//        'static int nrd_81 = 81;']
-//    end
-//    if maxtotal<82 then
-//        Code=[Code;
-//        'static int nrd_82 = 82;']
-//    end
-//    if maxtotal<84 then
-//        Code=[Code;
-//        'static int nrd_84 = 84;']
-//    end
-//    if maxtotal<811 then
-//        Code=[Code;
-//        'static int nrd_811 = 811;']
-//    end
-//    if maxtotal<812 then
-//        Code=[Code;
-//        'static int nrd_812 = 812;']
-//    end
-//    if maxtotal<814 then
-//        Code=[Code;
-//        'static int nrd_814 = 814;']
-//    end
 
     Code=[Code;
     ''
@@ -1502,7 +1475,7 @@ function [Code,Code_common]=make_standalone42(sample_time)
     cformatline('     z_initial_condition={'+...
     strcat(string(z),",")+'};',70)
     cformatline('     outtbptr={'+...
-    strcat(string(zeros(lstsize(outtb),1)),"," )+'};',70)
+    strcat(string(zeros(size(outtb),1)),"," )+'};',70)
     cformatline('     work= {'+...
     strcat(string(work),"," )+'};',70)
     '  */'
@@ -1512,7 +1485,7 @@ function [Code,Code_common]=make_standalone42(sample_time)
 
     //** declaration of outtb
     Code_outtb = [];
-    for i=1:lstsize(outtb)
+    for i=1:size(outtb)
         if mat2scs_c_nb(outtb(i)) <> 11 then
             Code_outtb=[Code_outtb;
             cformatline('  static '+mat2c_typ(outtb(i))+...
@@ -1527,6 +1500,7 @@ function [Code,Code_common]=make_standalone42(sample_time)
         end
     end
     Code=[Code;
+
     Code_outtb;
     '']
 
@@ -1593,7 +1567,7 @@ function [Code,Code_common]=make_standalone42(sample_time)
 
     //** declaration of oz
     Code_oz = [];
-    for i=1:lstsize(oz)
+    for i=1:size(oz)
         if mat2scs_c_nb(oz(i)) <> 11 then
             Code_oz=[Code_oz;
             cformatline('  '+mat2c_typ(oz(i))+...
@@ -1618,7 +1592,7 @@ function [Code,Code_common]=make_standalone42(sample_time)
     '  /* Get work ptr of blocks */'
     '  void **work;'
 
-    '  work = (void **)(z+'+string(size(z,'*')+lstsize(outtb))+');'
+    '  work = (void **)(z+'+string(size(z,'*')+size(outtb))+');'
     '']
 
 
@@ -1630,7 +1604,7 @@ function [Code,Code_common]=make_standalone42(sample_time)
     end
 
     Code_outtbptr=[];
-    for i=1:lstsize(outtb)
+    for i=1:size(outtb)
         Code_outtbptr=[Code_outtbptr;
         '  '+rdnom+'_block_outtbptr['+...
         string(i-1)+'] = (void *) outtb_'+string(i)+';'];
@@ -1752,6 +1726,7 @@ function [Code,Code_common]=make_standalone42(sample_time)
             flex_str = rdnom +'_'+string(kf-1)+'_outsz'
             Code2=[Code2;
             '  block_'+rdnom+'['+string(kf-1)+'].outsz = '+'(int *)'+flex_str+';';
+
             ];
 
             //** outptr **//
@@ -1998,6 +1973,7 @@ function [Code,Code_common]=make_standalone42(sample_time)
             txt = write_code_cdoit(flag);
 
             if txt <> [] then
+
                 txt3=[''
                 '  '+get_comment('ev',list(0))
                 txt;
@@ -2047,6 +2023,7 @@ function [Code,Code_common]=make_standalone42(sample_time)
 
     if x<>[] then
         Code=[Code
+
         ''
         '  tout=t;'
         '  dt='+sample_time+';'
@@ -2341,6 +2318,7 @@ endfunction
 
 function txt=make_static_standalone42()
 
+
     txt=[''];
 
     //*** Continuous state ***//
@@ -2357,8 +2335,12 @@ function txt=make_static_standalone42()
     //************************//
 
     txt=[txt;
+
     'scicos_block block_'+rdnom+'['+string(nblk)+'];'
+
+
     ''];
+
 
     //*** Real parameters ***//
     nbrpa=0;strRCode='';lenRCode=[];ntot_r=0;
@@ -2514,7 +2496,7 @@ function txt=make_static_standalone42()
 
     //Alan added opar (27/06/07)
     //*** Object parameters ***//
-    if lstsize(opar)<>0 then
+    if size(opar)<>0 then
         txt=[txt;
         '/* def object parameters */']
         for i=1:(length(opptr)-1)
@@ -2579,6 +2561,7 @@ endfunction
 //
 //16/06/07 Author : A.Layec
 //Copyright INRIA
+
 function [txt]=mat2c_typ(outtb)
     select type(outtb)
         //real matrix
@@ -2746,6 +2729,48 @@ endfunction
 
 //==========================================================================
 
+function gen_config_file(model_tsamp, model_duration, model_name)
+    cfg_fd = mopen(model_name + '_scig' + filesep() + model_name + '.cfg', 'w');
+    mfprintf(cfg_fd, "{\n  ""duration"": %f,\n  ""period"": %f,\n", model_duration, model_tsamp); 
+
+    global %microdaq;
+    if %microdaq.private.mem_read_idx > 0 then
+        if %microdaq.private.mem_read_idx == 1 then
+            mfprintf(cfg_fd, "  ""memory"": {\n"); 
+        end
+
+        if %microdaq.private.mem_read_idx > 1 then
+            mfprintf(cfg_fd, "  ""memory"": [{\n"); 
+        end
+        
+        blk_index = 0;
+        for blk_index = 1:%microdaq.private.mem_read_idx
+            if %microdaq.private.mem_read_file(blk_index) == "" then 
+                mfprintf(cfg_fd, "    ""index"": %d,\n    ""values"": {\n", %microdaq.private.mem_read_begin(blk_index) );      
+                for i = 1:%microdaq.private.mem_read_size(blk_index)-1
+                    mfprintf(cfg_fd, "      ""val%d"": 0,\n", i);
+                end
+                mfprintf(cfg_fd, "      ""val%d"": 0\n      }", %microdaq.private.mem_read_size(blk_index));
+            else
+                mfprintf(cfg_fd, "    ""index"": %d,\n    ""file"": """+%microdaq.private.mem_read_file(blk_index)+"""", %microdaq.private.mem_read_begin(blk_index));
+            end
+
+            if %microdaq.private.mem_read_idx == 1 then
+                mfprintf(cfg_fd, "\n  }\n");
+                
+            else
+                if %microdaq.private.mem_read_idx == blk_index then 
+                    mfprintf(cfg_fd, "\n    }]\n");
+                else
+                    mfprintf(cfg_fd, "\n    },\n    {\n");
+                end
+            end
+        end
+    end
+    mfprintf(cfg_fd, "}\n");    
+    mclose(cfg_fd);
+endfunction
+
 function rt_gen_main(model_tsamp, model_duration, model_profile, standalone)
 
     if standalone == %t then
@@ -2771,7 +2796,8 @@ function Makename=rt_gen_make(name,files,libs,standalone,debug_build,SMCube_file
 	global %microdaq
     Makename=rpat+'/Makefile';
 
-    MICRODAQ_ROOT = dirname(get_function_path('do_compile_superblock_rt'))+"\..\";
+    MICRODAQ_ROOT = fileparts(get_function_path('do_compile_superblock_rt'))+"..\";
+
 
     TARGET_PATHS = MICRODAQ_ROOT + "rt_templates\target_paths.mk";
     TARGET_TOOLS = MICRODAQ_ROOT + "rt_templates\target_tools.mk";
@@ -2816,6 +2842,7 @@ function Makename=rt_gen_make(name,files,libs,standalone,debug_build,SMCube_file
     else
         T=strsubst(T,'$$BUILD_MODE%%','-O2');        
     end
+
     
     if standalone == %t then
         mdaq_main = 'mdaq_standalone_main.c';
@@ -3071,6 +3098,7 @@ function [txt]=write_code_cdoit(flag)
                     txt=[txt;
                     '   case '+string(i)+' :';]
                     //*******//
+
                     txt=[txt;
                     BigIndent+write_code_doit(clkptr(bk)+i-1,flag);]
                     //** C **//
@@ -3082,6 +3110,7 @@ function [txt]=write_code_cdoit(flag)
                 txt=[txt;
                 '  }'];
                 //*******//
+
             end
             //** Unknown block
         else

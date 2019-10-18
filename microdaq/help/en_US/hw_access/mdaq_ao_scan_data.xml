@@ -23,7 +23,7 @@
 					</para>
 				</listitem>
 				<listitem>
-					<para>Start scanning session - <link linkend="mdaqAOScan">mdaqAOScan()</link>
+					<para>Start scanning session - <link linkend="mdaqAOScanStart">mdaqAOScanStart()</link>
 					</para>
 				</listitem>
 				<listitem>
@@ -104,7 +104,7 @@
 			<![CDATA[
 			data0 = linspace(0,2,1000)';
 			mdaqAOScanInit(1, data0, [0,5], %F, 1000, 10);
-			mdaqAOScan();
+			mdaqAOScanStart();
 			 ]]>
 		</programlisting>
 
@@ -115,7 +115,7 @@
 			data0 = linspace(0,1,1000)';
 			data1 = linspace(0,2,1000)';
 			mdaqAOScanInit(1:2, [data0 data1], [0,5], %F, 1000, 10);
-			mdaqAOScan();
+			mdaqAOScanStart();
 			 ]]>
 		</programlisting>
 		<para> 
@@ -133,29 +133,29 @@
 		sineBias = 2.5;
 		sineBase = sin(linspace(0, 2*%pi, scanDataSize));
 		expWave = exp(linspace(expValue, expValue + 0.8, scanDataSize));
-		sineWave = sineBase. * expWave + sineBias;
+		sineWave = sineBase.* expWave + sineBias;
 
 		// initialize analog input/output scanning sessions
 		mdaqAOScanInit(channels, sineWave', [-10,10], %T, rate, duration);
 		mdaqAIScanInit(channels, [-10,10], %F, rate, duration);
 
-		// start AI scanning without waiting for data
-		mdaqAIScan(0, %T);
+		// synchronize AI data acquisition with AO signal generation
+		mdaqAIScanStart("ao");
 		// start signal generation
-		mdaqAOScan();
+		mdaqAOScanStart();
 		n = (rate  * duration) / scanDataSize;
 
 		for i=1:n-1
 			expValue = expValue + 0.8;
 			expWave = exp(linspace(expValue, expValue + 0.8, scanDataSize));
-			sineWave = sineBase. * expWave + sineBias;
+			sineWave = sineBase.* expWave + sineBias;
 			// queue new data 
 			mdaqAOScanData(channels, sineWave', %T);
 			// start and acquire data from analog inputs
-			aiData = [aiData; mdaqAIScan(scanDataSize, %T)];
+			aiData = [aiData; mdaqAIScanRead(scanDataSize, 2)];
 		end
 		// acquire rest of samples
-		aiData = [aiData; mdaqAIScan(scanDataSize, %T)];
+		aiData = [aiData; mdaqAIScanRead(scanDataSize, 2)];
 		plot(aiData)
  ]]>
 		</programlisting>
@@ -168,16 +168,12 @@
 	<refsection id="SeeAlso_mdaq_ao_data_queue">
 		<title>See Also</title>
 		<simplelist type="inline">
-			<member>
-				<link linkend="mdaqAOScanInit">mdaqAOScanInit</link>
-			</member>
-			<member>
-				<link linkend="mdaqAOScan">mdaqAOScan</link>
-			</member>
-			<member>
-				<link linkend="mdaqAOScanStop">mdaqAOScanStop</link>
-			</member>
-
+            <member><link linkend="mdaqAOScanStart">mdaqAOScanStart</link> : Starts AO scan</member>
+            <member><link linkend="mdaqAOScanInit">mdaqAOScanInit</link> : Initializes AO scan</member>
+            <member><link linkend="mdaqAOScanStop">mdaqAOScanStop</link> : Stops AO scan</member>
+            <member><link linkend="mdaqAOScanTrigger">mdaqAOScanTrigger</link> : Sets AO scan trigger</member>
+            <member><link linkend="mdaqAOScanIsDone">mdaqAOScanIsDone</link> : Returns AO scan status</member>
+            <member><link linkend="mdaqAOScanWait">mdaqAOScanWait</link> : Waits until AO scan is done</member>
 		</simplelist>
 	</refsection>
 </refentry>

@@ -11,39 +11,39 @@ function mdaqDIOWrite(arg1, arg2, arg3)
         state = arg3;
 
         if link_id < 0 then
-            disp("ERROR: Invalid link ID!")
-            return;
+            error("Invalid connection id!")
         end
     end
 
     if argn(2) > 3 | argn(2) < 2 then
         mprintf("Description:\n");
-        mprintf("\tWrites DIO state\n");
+        mprintf("\tWrites DIO lines state\n");
         mprintf("Usage:\n");
         mprintf("\tmdaqDIOWrite(linkID, dio, state);\n")
         mprintf("\tlinkID - connection id returned by mdaqOpen() (OPTIONAL)\n");
-        mprintf("\tdio - DIO number\n");
-        mprintf("\tstate - DIO output state\n");
+        mprintf("\tdio - DIO line numbers\n");
+        mprintf("\tstate - DIO output values to be written\n");
         return;
     end
-
-    if type(state) == 4 then
-        if state then
-            state = 1;
-        else
-            state = 0;
-        end
-    else
-        if state <> 0 then
-            state = 1;
-        end
+    
+    if find(%t == (size(dio) <> size(state))) & size(state, '*') <> 1 then
+        error("State argument should be scalar or vector with size the same as dio argument")
+    end
+    
+    if size(dio, 'r')  > 1 then
+        error('Scalar or single row vector expected as a dio argument');
     end
 
+    count = size(dio, 'c');
+    state(find(state==%T))=1;
+    if size(state, 'c') == 1 then
+        state = ones(1, count) * state;    
+    end
+    
     if argn(2) == 2 then
         link_id = mdaqOpen();
         if link_id < 0 then
-            disp("ERROR: Unable to connect to MicroDAQ device!");
-            return;
+            error("Unable to connect to MicroDAQ device!");
         end
     end
 
@@ -51,8 +51,9 @@ function mdaqDIOWrite(arg1, arg2, arg3)
                     link_id, 1, "i",..
                     dio, 2, "i",..
                     state, 3, "i",..
+                    count, 4, "i",..
                 "out",..
-                    [1, 1], 4, "i");
+                    [1, 1], 5, "i");
 
     if argn(2) == 2 then
         mdaqClose(link_id);

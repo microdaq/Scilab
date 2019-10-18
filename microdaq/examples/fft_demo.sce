@@ -15,7 +15,8 @@ FREQ = 5000;
 mdaqDSPBuild(mdaqToolboxPath() + filesep() + "examples" + filesep() +"fft_demo.zcos");
 
 // Start DSP application
-mdaqDSPStart('fft_demo_scig\fft_demo.out', 1.0/FREQ);
+mdaqDSPInit('fft_demo_scig\fft_demo.out', FREQ, -1);
+mdaqDSPStart();
 
 first_time = 1;
 a = []; s = [];
@@ -25,7 +26,7 @@ sample_count = FREQ/10;
 fig = figure("Figure_name","MicroDAQ FFT demo");
 
 for i=1:(TIME*10)
-    s = mdaqDSPSignalRead(1, 1, sample_count, 1000);
+    s = mdaqDSPRead(1, 1, sample_count, 1);
    
     N=size(s,'*');  //number of samples
     s = s - mean(s);//cut DC

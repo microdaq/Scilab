@@ -57,7 +57,7 @@ function [x,y,typ]=mdaq_param(job,arg1,arg2)
         exprs=[sci2exp(param_id)];
         gr_i=[]
         x=standard_define([2.5 1],model,exprs,gr_i);
-        x.graphics.style=["blockWithLabel;verticalLabelPosition=center;displayedLabel=PARAM;fontColor=#0000CD"]
+       // x.graphics.style=["blockWithLabel;verticalLabelPosition=center;displayedLabel=PARAM;fontColor=#0000CD"]
     end
 endfunction
 

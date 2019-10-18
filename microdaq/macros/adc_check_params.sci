@@ -7,9 +7,9 @@ function result = adc_check_params(channels, aiRange, aiMode)
                         "out",..
                             [1, 1], 3, "i",..
                             [1, 1], 4, "i");
+
     if result < 0 then
-        message("Can not verify block settings - connect MicroDAQ device!")
-        result = 0;
+        result = -1; 
         return; 
     end
 

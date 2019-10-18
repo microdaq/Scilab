@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<refentry xmlns="http://docbook.org/ns/docbook" 
+xmlns:xlink="http://www.w3.org/1999/xlink" 
+xmlns:svg="http://www.w3.org/2000/svg" 
+xmlns:ns5="http://www.w3.org/1999/xhtml" 
+xmlns:mml="http://www.w3.org/1998/Math/MathML" 
+xmlns:db="http://docbook.org/ns/docbook" 
+version="5.0-subset Scilab" 
+xml:id="mdaq_profiler">
+    <refnamediv>
+        <refname>mdaq_profiler</refname>
+        <refpurpose>
+		
+		Returns model execution time
+		
+		</refpurpose>
+    </refnamediv>
+    <refsection>
+        <title>Block Screenshot</title>
+        <para>
+            <inlinemediaobject>
+                <imageobject>
+                    <imagedata align="center" fileref="../../../images/gif/mdaq_profiler.gif" valign="middle"/>
+                </imageobject>
+            </inlinemediaobject>
+        </para>
+    </refsection>
+    <refsection id="Description_mdaq_stop">
+        <title>Description</title>
+        <para>
+		
+		This block return model execution time in microseconds. 
+		In order to use block execution profiling feature has to be enabled in SETUP block, if not enable block will return 0. 
+		Returned value presents execution time from previous model step. 
+		
+		</para>
+    </refsection>
+	
+
+</refentry>

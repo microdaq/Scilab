@@ -1,48 +1,59 @@
-function  mdaqAIScanInit(arg1, arg2, arg3, arg4, arg5, arg6)
+function result = mdaqAIScanInit(arg1, arg2, arg3, arg4, arg5, arg6)
     link_id = -1;
-
-    if argn(2) == 5 then
+    result = [];
+    channelNames = [];
+    if argn(2) == 1 then
+        channels = arg1.Channels;
+        aiRange = arg1.Range;
+        aiMode = arg1._Mode;
+        scan_freq = arg1.Rate;
+        scan_time = arg1.DurationInSeconds;
+        channelNames = arg1.Name
+    elseif  argn(2) == 2 then
+        channels = arg2.Channels;
+        aiRange = arg2.Range;
+        aiMode = arg2._Mode;
+        scan_freq = arg2.Rate;
+        scan_time = arg2.DurationInSeconds;
+        channelNames = arg1.Name
+    elseif argn(2) == 5 then
         channels = arg1;
         aiRange = arg2;
         aiMode = arg3;
         scan_freq = arg4;
         scan_time = arg5;
-    end
-
-    if argn(2) == 6 then
+    elseif argn(2) == 6 then
         link_id = arg1;
         channels = arg2;
         aiRange = arg3;
         aiMode = arg4;
         scan_freq = arg5;
         scan_time = arg6;
-
         if link_id < 0 then
-            error("Invalid connection ID!")
-            return;
-        end
+            error("Invalid connection id!")
+        end        
     end
 
     global %microdaq;
     if %microdaq.private.mdaq_hwid <> [] then
         adc_info = get_adc_info(%microdaq.private.mdaq_hwid);
-        if argn(2) > 6 | argn(2) < 5 then
+        if find([1 2 5 6] == argn(2)) == [] then
             mprintf("Description:\n");
-            mprintf("\tInitiates AI scanning session\n");
+            mprintf("\tConfigures analog inputs data acquisition session\n");
             mprintf("Usage:\n");
             mprintf("\tmdaqAIScanInit(linkID, channels, range, isDifferential, rate, duration)\n");
 			mprintf("\tlinkID - connection id returned by mdaqOpen() (OPTIONAL)\n");
             mprintf("\tchannels - analog input channels to read\n");
-            mprintf("\trange - analog input range matrix e.g.\n");
-            mprintf("\t        [-10,10] - single range argument applied for all used channels\n");
-            mprintf("\t        [-10,10;-5,5] - multi-range argument for two channels\n");
-			mprintf("\tisDifferential - scalar or vector with measurement mode settings: %s - differential, %s - single-ended mode\n", "%T", "%F");
-            mprintf("\trate - scans per second rate (scan frequency)\n");
-            mprintf("\tduration - scan duration in seconds\n");
+            mprintf("\trange - analog input range\n");
+            mprintf("\t        [-10,10] - single range argument applied for all selected channels\n");
+            mprintf("\t        [-10,10; -5,5] - multi-range argument for two channels\n");
+			mprintf("\tisDifferential - scalar or vector with terminal configuration: %s - differential, %s - single-ended mode\n", "%T", "%F");
+            mprintf("\trate - read per second rate for selected channels\n");
+            mprintf("\tduration - duration in seconds (-1 - infinity)\n");
             return;
         end
     else
-        error('Unable to detect MicroDAQ configuration. Run mdaqHWInfo() function.');
+        error('Can''t detect MicroDAQ configuration. Run mdaqHWInfo() function.');
     end
     
     ch_count = size(channels, 'c');
@@ -56,7 +67,7 @@ function  mdaqAIScanInit(arg1, arg2, arg3, arg4, arg5, arg6)
     end
 
     if size(aiRange, 'c') <> 2 then
-        error('Wrong range - matrix range [low,high;low,high;...] expected')
+        error('Wrong range argument - matrix with low and high range [low,high;low,high;...] expected')
     end
 
     aiRangeSize = size(aiRange, 'r');
@@ -95,7 +106,7 @@ function  mdaqAIScanInit(arg1, arg2, arg3, arg4, arg5, arg6)
         aiMode = ones(1, ch_count) * aiMode;    
     end
 
-    if argn(2) == 5 then
+    if argn(2) == 5 | argn(2) == 1 then
         link_id = mdaqOpen();
         if link_id < 0 then
             error("Unable to connect to MicroDAQ device!");
@@ -123,7 +134,7 @@ function  mdaqAIScanInit(arg1, arg2, arg3, arg4, arg5, arg6)
         error(mdaq_error2(result), 10000 + abs(result));
     else
         if result == -88 then
-            disp("Warninng: AI scanning interrupted!")
+            warning("AI scan interrupted!")
             mdaqAIScanStop()
 
             // time to terminate TCP connection
@@ -141,73 +152,22 @@ function  mdaqAIScanInit(arg1, arg2, arg3, arg4, arg5, arg6)
                             [1, 1], 8, "d");
         end
 
-        if argn(2) == 5 then
+        if argn(2) == 5 | argn(2) == 1 then
             mdaqClose(link_id);
         end
 
         if result < 0 then
             error(mdaq_error2(result), 10000 + abs(result));
         end
-
-        if result == 1 then
-            limited_cap = %t;
+        if scan_time < 0 then
+            isContinous = %t
         else
-            limited_cap = %f;
+            isContinous = %f
         end
 
-        rows = [];
-        row = '';
-
-        adc_res = strtod(part(adc_info.resolution, 1:2))
-        for j=1:ch_count
-            if aiMode(j) == 1 then
-                measure_type = "Differential"
-            elseif (aiMode(j) == 0)
-                measure_type = "Single-ended"
-            end
-            adc_range = aiRange_t(j, 2) - aiRange_t(j, 1); 
-            resolution = string((int(adc_range/2^adc_res * 1000000)) / 1000);
-            rangeStr="";
-            if aiRange_t(j, 1) < 0 then
-                rangeStr = "±" + string(aiRange_t(j, 2))+"V";
-            else 
-                rangeStr = "0-" + string(aiRange_t(j, 2))+"V";
-            end
-            rows = [rows; "AI"+string(channels(j)), measure_type, rangeStr, resolution+"mV"]
-        end
-
-        mprintf("\nAnalog input scanning session settings:\n");
-        mprintf("\t--------------------------------------------------\n")
-        str2table(rows, ["Channel", "Measurement type", "Range", "Resolution"], 3)
-        mprintf("\t--------------------------------------------------\n")
-        if scan_freq >= 1000
-            mprintf("\tScan frequency:\t\t%.5f kHz\n", scan_freq/1000);
-            mprintf("\tActual scan frequency:\t%.5f kHz\n", real_freq/1000);
-        else
-            mprintf("\tScan frequency:\t\t%.5f Hz\n", scan_freq);
-            mprintf("\tActual scan frequency:\t%.5f Hz\n", real_freq);
-        end
-        if 1 /real_freq > 0.001 then
-            mprintf("\tScan period: \t\t%.5f seconds\n", 1 / real_freq);
-        end
-        
-        if 1 /real_freq <= 0.001 then
-            mprintf("\tScan period: \t\t%.5f ms\n", 1 / real_freq * 1000);
-        end
-
-        if scan_time < 0
-            mprintf("\tNumber of channels:\t%d\n", ch_count)
-            mprintf("\tNumber of scans:\tInf\n");
-            mprintf("\tDuration:\t\tInf\n");
-        else
-            mprintf("\tNumber of channels:\t%d\n", ch_count)
-            mprintf("\tNumber of scans:\t%d\n", scan_time * scan_freq);
-            if scan_time == 1 
-                mprintf("\tDuration:\t\t%.2f second\n", scan_time);
-            else
-                mprintf("\tDuration:\t\t%.2f seconds\n", scan_time);
-            end
-        end
-        mprintf("\t--------------------------------------------------\n")
+        adc_res = strtod(part(adc_info.resolution, 1:2)); 
+        result = tlist(["mdaqai",..
+            "Rate","_RealRate","DurationInSeconds","_ChannelCount","_ADCResolution","_Mode","Range", "Channels", "isContinous", "Name"],..
+             scan_freq,  real_freq,  scan_time,  ch_count,  adc_res,  aiMode,  aiRange_t, channels, isContinous, channelNames);
     end
 endfunction

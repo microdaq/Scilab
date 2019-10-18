@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaqDSPWrite">
+	<refnamediv>
+		<refname>mdaqDSPWrite</refname>
+	<refpurpose>Writes data to DSP task.</refpurpose>
+	</refnamediv>
+	
+	<refsynopsisdiv>
+		<title>Calling Sequence</title>
+		<synopsis>
+			mdaqDSPWrite(index, data)
+			mdaqDSPWrite(linkID, index, data)
+		</synopsis>
+	</refsynopsisdiv>
+	
+	<refsection id="Description___FUNC_NAME__">
+		<title>Description</title>
+		<para>
+            This function writes data to an application running on MicroDAQ DSP core. 
+            The function must be used with DSP application generated from XCos model containing 'MEM Read' block. 
+            Data written by the function is read by 'MEM Read' block during every DSP application 'step'. 
+            The 'index' argument shall be equal to 'Start index' 'MEM Read' block parameter. 
+            Depending on 'MEM Read' block 'Mode' parameter, function can be used to write initial data. 
+			In case of writing initial data, the function shall be called before starting DSP application. 
+			This functionality allows changing DSP application parameters during its execution in Ext and Standalone mode. 
+		</para>
+	</refsection>  
+  
+	<refsection id="Parameters___FUNC_NAME__">
+		<title>Parameters</title>
+		<itemizedlist>
+			<listitem><para><emphasis role="bold">linkID: </emphasis> Valid connection link ID (optional) </para></listitem>
+			<listitem><para><emphasis role="bold">index: </emphasis> Memory index on which data will be written from</para></listitem>
+			<listitem><para><emphasis role="bold">data: </emphasis> Data to be written </para></listitem>
+		</itemizedlist>
+	</refsection>
+	<refsection>
+        <title>Examples</title>
+<para>
+    This example shows how to modify and read DSP application data during its execution. 
+	The example uses Xcos model with 'MEM Read' and SIGNAL blocks and a script which modifies and reads DSP data 
+	with <link linkend="mdaqDSPWrite">mdaqDSPWrite()</link> and <link linkend="mdaqDSPRead">mdaqDSPRead()</link> functions. 
+	The <link linkend="mdaqDSPBuild">mdaqDSPBuild()</link> function is used to build executable from existing Xcos model. When built, 
+	resulting binary file path is passed as a first argument to <link linkend="mdaqDSPInit">mdaqDSPInit()</link> function which 
+	initializes DSP and configures the model frequency and its execution duration. After calling <link linkend="mdaqDSPStart">mdaqDSPStart()</link>
+	DSP application is started on MicroDAQ DSP. 
+	</para><para>
+	When DSP application is started 'MEM Read' block reads data from memory index 1 every model step. 
+	By calling  <link linkend="mdaqDSPWrite">mdaqDSPWrite()</link> 	function we change the value 
+	of number located at index 1. This way we can change the DSP application parameter during its execution. 
+	Apart from reading our model performs multiplication by 2 and after that operation it passes value to 
+	SIGNAL block which sends data to the host PC. This modified value can be read by 
+	<link linkend="mdaqDSPRead()">mdaqDSPRead()</link> function. 
+	</para><para>
+	Xcos model used in examples below:
+        <programlisting role="example"><![CDATA[
+xcos(mdaqToolboxPath() + filesep() + "examples" + filesep() +"dsp_rw_demo.zcos");
+]]></programlisting>
+            <imagedata align="center" fileref="../images/dsp_rw_demo.png" valign="middle"/></para>
+<para>
+Example 1: Using standard DSP API
+</para>
+        <programlisting role="example"><![CDATA[
+Freq = 10;     // Hz
+Druration = 5; // seconds
+signalID = 1;
+memIndex = 1;
+
+disp("Building DSP model...");
+mdaqDSPBuild(mdaqToolboxPath() + filesep() + "examples" + filesep() +"dsp_rw_demo.zcos");
+
+disp("Starting DSP model...");
+mdaqDSPInit('dsp_rw_demo_scig\dsp_rw_demo.out', Freq, Druration);
+mdaqDSPStart();
+
+disp("Passing value 2 to DSP model...");
+mdaqDSPWrite(memIndex, 2);
+
+disp("Reading data from DSP model...");
+data1 = mdaqDSPRead(signalID, 1, 10, -1);
+disp(data1);
+
+disp("Passing value 4 to DSP model...");
+mdaqDSPWrite(memIndex, 4);
+
+disp("Reading data from DSP model...");
+data2 = mdaqDSPRead(signalID, 1, 10, -1);
+disp(data2);
+
+disp("Waiting for the end of execution...");
+mdaqDSPWait(-1);
+
+disp("End of execution DSP model");
+]]></programlisting>
+
+<para>
+Example 2: Using DSP task API
+</para>
+ <programlisting role="example"><![CDATA[
+Freq = 10;     // Hz
+Druration = 5; // seconds
+signalID = 1;
+memIndex = 1;
+
+// Create DSP task 
+dsp = mdaqDSPTask();
+
+disp("Building DSP model...");
+mdaqDSPBuild(mdaqToolboxPath() + filesep() + "examples" + filesep() +"dsp_rw_demo.zcos");
+
+disp("Starting DSP model...");
+dsp.init('dsp_rw_demo_scig\dsp_rw_demo.out', Freq, Druration);
+dsp.start();
+
+disp("Passing value 2 to DSP model...");
+dsp.write(memIndex, 2);
+
+disp("Reading data from DSP model...");
+data1 = dsp.read(signalID, 1, 10, -1);
+disp(data1);
+
+disp("Passing value 4 to DSP model...");
+dsp.write(memIndex, 4);
+
+disp("Reading data from DSP model...");
+data2 = dsp.read(signalID, 1, 10, -1);
+disp(data2);
+
+disp("Waiting for the end of execution...");
+dsp.waitUntilDone(-1);
+
+disp("End of execution DSP model");
+ ]]></programlisting>
+
+    </refsection>
+	
+   <refsection id="SeeAlso___FUNC_NAME__">
+    <title>See Also</title>
+    <simplelist type="inline">
+	  <member><link linkend="mdaqDSPBuild">mdaqDSPBuild</link> : Builds DSP application from provided Xcos model </member>
+	  <member><link linkend="mdaqDSPInit">mdaqDSPInit</link> : Initializes DSP task</member>
+      <member><link linkend="mdaqDSPStart">mdaqDSPStart</link> : Start DSP task</member>
+	  <member><link linkend="mdaqDSPStop">mdaqDSPStop</link> : Terminates DSP task</member>
+      <member><link linkend="mdaqDSPRead">mdaqDSPRead</link> : Reads data from DSP task</member>
+      <member><link linkend="mdaqDSPWait">mdaqDSPWait</link> : Waits until DSP task is over</member>
+      <member><link linkend="mdaqDSPIsDone">mdaqDSPIsDone</link> : Checks DSP task status</member>
+      <member>
+        <link type="scilab" linkend="scilab.help/sum">Link to the Scilab help page</link>
+      </member>
+    </simplelist>
+  </refsection>
+</refentry>
+
+
+
+
+
+

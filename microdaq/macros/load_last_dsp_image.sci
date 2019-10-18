@@ -1,56 +1,34 @@
 function load_last_dsp_image()
     global %microdaq;
-    res = 0; 
     
-    if isfile(TMPDIR + filesep() + "last_mdaq_dsp_image") == %t then
-        dsp_app_path = mgetl(TMPDIR + filesep() + "last_mdaq_dsp_image");
-        if isfile(dsp_app_path) == %t then
-            close_last_connection();
-            connection_id = mdaqOpen();
-            if connection_id < 0 then
-                message("ERROR: Unable to connect to MicroDAQ device!");
-                return;
+    // TODO add verification if binary name is same as model 
+    
+    if isfile(TMPDIR + filesep() + "last_model") == %t then
+        
+        // read dspPath, dspTsamp, dspDuration from file 
+        load(TMPDIR + filesep() + "last_model");
+        [path, fname, extension] = fileparts(dspPath);
+        try 
+            mdaqDSPInit(dspPath, -1, dspDuration);
+            disp("### Loading DSP executable " + fname + extension + " on MicroDAQ...")
+        catch
+            %microdaq.dsp_loaded = %T            
+            messagebox(lasterror(), "Error", "error")
+        end
+        
+        %microdaq.dsp_loaded = %T
+
+        if mdaqIsExtMode() == %F then
+            mdaqDSPStart();
+            if dspDuration > 0 then 
+                durationStr = string(dspDuration) 
+            else
+                durationStr = "Inf"
             end
-
-            res = mlink_dsp_load(connection_id, dsp_app_path, 'l');
-            if res < 0 then
-                // try again to load application
-                mdaqClose(connection_id);
-                connection_id = mdaqOpen();
-                if connection_id < 0 then
-                    message("ERROR: Unable to connect to MicroDAQ device!");
-                    return;
-                end
-                res = mlink_dsp_load(connection_id, dsp_app_path, 'l');
-                if res < 0 then
-                    message('Unable to load DSP firmware! (' + mdaq_error2(res) + ').');
-                    mdaqClose(connection_id);
-                    %microdaq.dsp_loaded = %F
-                    return;
-                end
-            end     
-            disp('### Model has been loaded to MicroDAQ.');
-
-            res_mode = mlink_set_obj(connection_id, "ext_mode", 1);
-           
-            res = mlink_dsp_start(connection_id,-1);
-            if res < 0 then
-                message("Unable to start DSP application!");
-                mdaqClose(connection_id);
-                %microdaq.dsp_loaded = %F;
-                return;
-            end
-
-           if res_mode == -25 then
-                disp('### Model has been started in Standalone mode.');   
-           end
-
-            %microdaq.dsp_loaded = %T;
-            mdaqClose(connection_id);
-        else
-            message("Unable to find model, build model and try again!")
+            msg = "(duration: " + durationStr + "s, rate: " + string(1/strtod(dspTsamp)) + "Hz)..." 
+            disp("### Starting "+ fname + " in Ext mode " + msg);    
         end
     else
-        message("Unable to find model, build model and try again!")
+        messagebox("Can''t find DSP application. Build model first", "Error", "error")
     end
 endfunction

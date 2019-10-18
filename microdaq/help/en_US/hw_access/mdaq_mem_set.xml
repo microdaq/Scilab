@@ -33,20 +33,13 @@
 	<refsection>
         <title>Examples</title>
         <programlisting role="example"><![CDATA[
-// mdaqMemWrite usage example
-// write 10 values to MicroDAQ memory at beginning index 5
-// those values will be stored under 5-15 indexes 
-data = ones(1, 10);
-mdaqMemWrite(5, data);
- ]]></programlisting>
-    </refsection>
+			// mdaqMemWrite usage example
+			// write 10 values to MicroDAQ memory at beginning index 5
+			// those values will be stored under 5-15 indexes 
+			data = ones(1, 10);
+			mdaqMemWrite(5, data);
+	 ]]></programlisting>
+		</refsection>
 	
-  <refsection id="SeeAlso___FUNC_NAME__">
-		<title>See Also</title>
-		<simplelist type="inline">
-		<member>
-			<link type="scilab" linkend="scilab.help/sum">Link to the Scilab help page</link>
-		</member>
-		</simplelist>
-  </refsection>
+
 </refentry>

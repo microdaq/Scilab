@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaqLEDWrite">
+	<refnamediv>
+		<refname>mdaqLEDWrite</refname>
+		<refpurpose>Sets MicroDAQ LED state</refpurpose>
+	</refnamediv>
+
+	<refsynopsisdiv>
+		<title>Calling Sequence</title>
+		<synopsis>
+			mdaqLEDWrite(led, state)
+			mdaqLEDWrite(linkID, led, state)
+		</synopsis>
+	</refsynopsisdiv>
+
+	<refsection id="Description_mdaqLEDWrite">
+		<title>Description</title>
+		<para>
+			This function sets MicroDAQ D1/D2 LED state.
+		</para>
+	</refsection>  
+
+	<refsection id="Parameters_mdaqLEDWrite">
+		<title>Input parameters</title>
+		<itemizedlist>
+			<listitem>
+				<para>
+					<emphasis role="bold">linkID: </emphasis> Valid connection link ID (optional)</para>
+			</listitem>
+			<listitem>
+				<para>
+					<emphasis role="bold">led: </emphasis> LED number (1|2)</para>
+			</listitem>
+			<listitem>
+				<para>
+					<emphasis role="bold">state: </emphasis> LED state (%T/%F or 1/0)</para>
+			</listitem>
+		</itemizedlist>
+	</refsection>
+
+	<refsection>
+		<title>Examples</title>
+		<programlisting role="example">
+			<![CDATA[
+				mdaqLEDWrite(1, 1);
+				sleep(500);
+				mdaqLEDWrite(2, 1);
+				sleep(500);
+				mdaqLEDWrite(1, 0);
+				sleep(500);
+				mdaqLEDWrite(2, 0);
+			 ]]>
+		</programlisting>
+	</refsection>
+
+	<refsection id="SeeAlso_mdaqLEDWrite">
+		<title>See Also</title>
+		<simplelist type="inline">
+			<member>
+				<link linkend="mdaqKeyRead">mdaqKeyRead</link>
+			</member>
+		</simplelist>
+	</refsection>
+</refentry>

@@ -12,7 +12,7 @@ sineWave = sineBase.*expWave + sineBias;
 mdaqAOScanInit(channels, sineWave', [-10,10], %T, rate, duration);
 
 // start signal generation
-mdaqAOScan();
+mdaqAOScanStart();
 n = (rate  * duration) / scanDataSize;
 
 for i=1:n-1

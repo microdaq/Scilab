@@ -26,5 +26,5 @@ function [ok,out]=pre_code_gen(scs_m)
     
     %microdaq.private.mdaq_signal_id = [];
     %microdaq.private.mdaq_param_id = [];
-    reset_mdaq_blk_idx();
+
 endfunction

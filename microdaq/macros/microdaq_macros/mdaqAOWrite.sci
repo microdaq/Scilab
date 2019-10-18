@@ -14,8 +14,7 @@ function mdaqAOWrite(arg1, arg2, arg3, arg4)
         data = arg4;
 
         if link_id < 0 then
-            disp("ERROR: Invalid link ID!")
-            return;
+            error("Invalid connection id!")
         end
     end
 
@@ -28,8 +27,8 @@ function mdaqAOWrite(arg1, arg2, arg3, arg4)
             mprintf("Usage:\n");
             mprintf("\tmdaqAOWrite(linkID, channels, range, data)\n")
             mprintf("\tlinkID - connection id returned by mdaqOpen() (OPTIONAL)\n");
-            mprintf("\tchannels - analog output channels \n");
-            mprintf("\trange - analog output range matrix e.g.\n");
+            mprintf("\tchannels - analog output channels\n");
+            mprintf("\trange - analog output range\n");
             mprintf("\t        [-10,10] - single range argument applied for all used channels\n");
             mprintf("\t        [-10,10;-5,5] - multi-range argument for two channels\n");
             mprintf("\tdata - data to be written\n");
@@ -45,7 +44,6 @@ function mdaqAOWrite(arg1, arg2, arg3, arg4)
 
     if size(ao_range, 'c') <> 2 then
         error("Vector range [low,high;low,high;...] expected!")
-        return;
     end
     
     if data_size <> ch_count then
@@ -66,7 +64,6 @@ function mdaqAOWrite(arg1, arg2, arg3, arg4)
         link_id = mdaqOpen();
         if link_id < 0 then
             error("Unable to connect to MicroDAQ device!");
-            return;
         end
     end
     

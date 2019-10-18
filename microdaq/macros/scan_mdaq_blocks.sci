@@ -7,7 +7,10 @@ function obj=scan_mdaq_blocks(scs_m)
     "mdaq_func_key_sim","mdaq_led_sim","mdaq_pru_reg_get_sim",..
     "mdaq_pru_reg_set_sim","mdaq_pwm_sim"];
 
-
+    %microdaq.private.signal_buffer = list();
+    %microdaq.private.signal_buffer_index = list();
+    %microdaq.private.signal_buffer_size = list();
+                    
     for i=1:(size(scs_m.objs)-1)
         if typeof(scs_m.objs(i))=="Block" then
             if scs_m.objs(i).model.sim=="super"|scs_m.objs(i).model.sim=="csuper" then
@@ -31,7 +34,11 @@ function obj=scan_mdaq_blocks(scs_m)
                 // in case of mdaq_signal_sim block save Signal ID param
                 if scs_m.objs(i).model.sim(1) == "mdaq_signal_sim"
                     %microdaq.private.mdaq_signal_id = [%microdaq.private.mdaq_signal_id, scs_m.objs(i).model.ipar(1)];
+                    %microdaq.private.signal_buffer($+1) = [];
+                    %microdaq.private.signal_buffer_index($+1) = 0;
+                    %microdaq.private.signal_buffer_size($+1) = 0;
                 end                
+                
                 if scs_m.objs(i).model.sim(1) == "mdaq_param_sim"
                     %microdaq.private.has_mdaq_param_sim = %T;
                     %microdaq.private.mdaq_param_id = [%microdaq.private.mdaq_param_id, scs_m.objs(i).model.ipar(1)];
@@ -51,6 +58,18 @@ function obj=scan_mdaq_blocks(scs_m)
                 if scs_m.objs(i).model.sim(1) == "mdaq_mem_read_sim"
                     scs_m.objs(i).model.ipar(5) = %microdaq.private.mem_read_idx;
                     %microdaq.private.mem_read_idx = %microdaq.private.mem_read_idx + 1;
+                    %microdaq.private.mem_read_begin($+1) = scs_m.objs(i).model.ipar(1) + 1;
+                    %microdaq.private.mem_read_size($+1) = scs_m.objs(i).model.ipar(4);
+                    
+                    if scs_m.objs(i).model.label <> "" then
+                        if strindex(scs_m.objs(i).model.label,'file=') == 1;
+                            %microdaq.private.mem_read_file($+1) = msscanf(scs_m.objs(i).model.label, "file=%s")
+                        else
+                            %microdaq.private.mem_read_file($+1) = "";    
+                        end
+                    else 
+                        %microdaq.private.mem_read_file($+1) = "";
+                    end
                     
                     if  %microdaq.private.mem_read_idx > 16 then
                         messagebox('Error: There is more than 16 mdaq_mem_read blocks.');

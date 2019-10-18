@@ -14,8 +14,7 @@ function data = mdaqAIRead(arg1, arg2, arg3, arg4)
         aiRange = arg3;
         aiMode = arg4;
         if link_id < 0 then
-            disp("ERROR: Invalid link ID!")
-            return;
+            error("Invalid connection id!")
         end
     end
 
@@ -29,7 +28,7 @@ function data = mdaqAIRead(arg1, arg2, arg3, arg4)
             mprintf("\tdata = mdaqAIRead(linkId, channels, range, isDifferential)\n")
             mprintf("\tlinkId - connection id returned by mdaqOpen() (OPTIONAL)\n");
             mprintf("\tchannels - scalar or vector with channel numbers\n");
-            mprintf("\trange - analog input range matrix e.g.\n");
+            mprintf("\trange - analog input range\n");
             mprintf("\t        [-10,10] - single range argument applied for all used channels\n");
             mprintf("\t        [-10,10; -5,5] - multi-range argument for two channels\n");
             mprintf("\tisDifferential - scalar or vector defining measurement type (%s - differential, %s - single-ended)\n", "%T", "%F");
@@ -100,8 +99,7 @@ function data = mdaqAIRead(arg1, arg2, arg3, arg4)
     if argn(2) == 3 then
         link_id = mdaqOpen();
         if link_id < 0 then
-            disp("ERROR: Unable to connect to MicroDAQ device!");
-            return;
+            error("Unable to connect to MicroDAQ device!");
         end
     end
 

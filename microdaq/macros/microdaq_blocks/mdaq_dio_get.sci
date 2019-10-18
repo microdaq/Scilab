@@ -43,6 +43,7 @@ function [x,y,typ] = mdaq_dio_get(job,arg1,arg2)
                 model.dstate = [];
                 x.graphics = graphics;
                 x.model = model;
+                x.graphics.style=["mdaq_dio_get;blockWithLabel;verticalLabelPosition=center;displayedLabel=DIO%1$s;fontColor=#5f5f5f"]
                 break
             end
         end

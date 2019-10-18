@@ -45,6 +45,7 @@ function [x,y,typ] = mdaq_led(job,arg1,arg2)
                 model.dstate=[];
                 x.graphics=graphics;
                 x.model=model
+                x.graphics.style=["mdaq_led;blockWithLabel;verticalLabelPosition=center;displayedLabel=D%s;fontColor=#616161"]
                 break
             else
                 message(err_message);

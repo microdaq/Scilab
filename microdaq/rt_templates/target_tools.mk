@@ -3,9 +3,7 @@
 # Compiler command and options
 CC = "$(CompilerRoot)/bin/cl6x"
 CFLAGS = -mv6740 --abi=eabi --include_path="$(CompilerRoot)/include" \
-         --define=omapl137 --include_path="$(XDCRoot)/packages" \
-         --include_path="$(BIOSRoot)/packages" \
-         --display_error_number --diag_warning=225 --diag_wrap=off
+         --define=omapl137 --display_error_number --diag_warning=225 --diag_wrap=off
 
 CFLAGS += $(EXT_CC_OPTS) $(OPTS)
 CDEBUG = -g

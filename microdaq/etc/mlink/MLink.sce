@@ -45,6 +45,8 @@ function MLink()
                                "sci_mlink_dsp_stop"..
                                "sci_mlink_dsp_profile_get"..
                                "sci_mlink_dsp_param"..
+                               "sci_mlink_dsp_is_done"..
+                               "sci_mlink_dsp_wait_until_done"..
                                "sci_mlink_set_obj"..
                                "sci_client_connect"..
                                "sci_client_disconnect"..
@@ -56,6 +58,8 @@ function MLink()
                                "sci_mlink_ai_scan_get_ch_count"..
                                "sci_mlink_ai_scan"..
                                "sci_mlink_ai_scan_stop"..
+                               "sci_mlink_ai_wait_until_done"..
+                               "sci_mlink_ai_is_done"..
                                "sci_mlink_dio_set"..
                                "sci_mlink_dio_get"..
                                "sci_mlink_dio_set_dir"..
@@ -79,11 +83,20 @@ function MLink()
                                "sci_mlink_ao_scan"..
                                "sci_mlink_ao_scan_stop"..
                                "sci_mlink_ao_scan_data"..
+                               "sci_mlink_ao_is_done"..
+                               "sci_mlink_ao_wait_until_done"..
                                "sci_mlink_ao_check_params"..
                                "sci_mlink_ai_check_params"..
                                "sci_mlink_dsp_run"..
+                               "sci_mlink_dsp_init"..
                                "sci_mlink_dsp_signal_read"..
                                "sci_mlink_dsp_mem_write"..
+                               "sci_mlink_scan_trigger_clear"..
+                               "sci_mlink_scan_trigger_dio"..
+                               "sci_mlink_scan_trigger_dio_pattern"..
+                               "sci_mlink_scan_trigger_encoder"..
+                               "sci_mlink_scan_trigger_external_start"..
+                               "sci_mlink_ai_scan_sync"..
                                ], 'c');
 endfunction
 

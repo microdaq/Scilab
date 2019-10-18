@@ -18,17 +18,17 @@ function mdaqPWMInit(arg1, arg2, arg3, arg4, arg5, arg6)
 		channel_a = arg5;
 		channel_b = arg6;
         if link_id < 0 then
-            error("Invalid link ID!")
+            error("Invalid connection id!")
         end
     end
 
     if argn(2) > 6 | argn(2) < 5 | module > 3 | module < 1 | period > 500000 | period < 2 then
         mprintf("Description:\n");
-        mprintf("\tSetup MicroDAQ PWM outputs\n");
+        mprintf("\tConfigures MicroDAQ PWM module\n");
         mprintf("Usage:\n");
         mprintf("\tmdaqPWMInit(linkID, module, period, activeLow, dutyChannelA, dutyChannelB)\n")
         mprintf("\tlink_id - connection id returned by mdaqOpen() (OPTIONAL)\n");
-        mprintf("\tmodule - PWM module (1, 2 or 3)\n");
+        mprintf("\tmodule - PWM module (1|2|3)\n");
         mprintf("\tperiod - PWM module period in microseconds(2-500000)\n");
         mprintf("\tactiveLow - PWM waveform polarity (%s or %s)\n", "%T", "%F");
         mprintf("\tdutyChannelA - initial PWM channel A duty (0-100)\n");
@@ -70,8 +70,7 @@ function mdaqPWMInit(arg1, arg2, arg3, arg4, arg5, arg6)
     if argn(2) == 5 then
         link_id = mdaqOpen();
         if link_id < 0 then
-            disp("ERROR: Unable to connect to MicroDAQ device!");
-            return; 
+            error("Unable to connect to MicroDAQ device!");
         end
     end
 

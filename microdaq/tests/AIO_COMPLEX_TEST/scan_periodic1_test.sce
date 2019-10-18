@@ -21,12 +21,12 @@ function test()
     mdaqAIScanInit(channels, [-10 10], %F, scanFrequency, duration);
     
     // start AI scanning without waiting for data
-    mdaqAIScan(0, %T);
+    mdaqAIScanStart();
     // start signal generation
-    mdaqAOScan();
+    mdaqAOScanStart();
     for i=1:duration
         // start and acquire data from analog inputs
-        aiData = [aiData; mdaqAIScan(scanDataSize, %T)];
+        aiData = [aiData; mdaqAIScanRead(scanDataSize, %T)];
     end
     
     figure();  

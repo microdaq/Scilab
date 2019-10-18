@@ -52,6 +52,7 @@ pal_handle(1) = xcosPalAddBlock(pal_handle(1), 'mdaq_uart_read');
 pal_handle(1) = xcosPalAddBlock(pal_handle(1), 'mdaq_uart_write');
 pal_handle(1) = xcosPalAddBlock(pal_handle(1), 'mdaq_webscope');
 pal_handle(1) = xcosPalAddBlock(pal_handle(1), 'mdaq_time');
+pal_handle(1) = xcosPalAddBlock(pal_handle(1), 'mdaq_profiler');
 pal_handle(1) = xcosPalAddBlock(pal_handle(1), 'mdaq_stop');
 pal_handle(1) = xcosPalAddBlock(pal_handle(1), 'mdaq_setup');
 

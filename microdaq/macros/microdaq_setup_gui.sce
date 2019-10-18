@@ -6,6 +6,9 @@
 global STATE
 STATE = 1
 
+mprintf("This script is no longer supported - use microdaq_setup instead."); 
+return; 
+
 titbx_path = "";
 if getos() == 'Linux' then 
     titbx_path = pathconvert("/home/");

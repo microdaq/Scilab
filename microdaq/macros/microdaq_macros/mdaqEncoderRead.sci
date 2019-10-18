@@ -11,15 +11,15 @@ function [position, direction] = mdaqEncoderRead(arg1, arg2)
         enc = arg2; 
 
         if link_id < 0 then
-            error("Invalid link ID!")
+            error("Invalid connection id!")
         end
     end
     
     if argn(2) > 2 | argn(2) < 1 | enc > 2 | enc < 1 then
         mprintf("Description:\n");
-        mprintf("\tReads encoder position and motion direction\n");
+        mprintf("\tReads encoder counter\n");
         mprintf("Usage:\n");
-        mprintf("\t[position, direction] = mdaqEncoderRead(linkID, module)\n")
+        mprintf("\t[value, direction] = mdaqEncoderRead(linkID, module)\n")
         mprintf("\tlinkID - connection id returned by mdaqOpen() (OPTIONAL)\n");
         mprintf("\tmodule - encoder module (1 | 2)\n");
         return;
@@ -28,8 +28,7 @@ function [position, direction] = mdaqEncoderRead(arg1, arg2)
     if argn(2) == 1 then
         link_id = mdaqOpen();
         if link_id < 0 then
-            disp("ERROR: Unable to connect to MicroDAQ device!");
-            return; 
+            error("Unable to connect to MicroDAQ device!");
         end
     end
     

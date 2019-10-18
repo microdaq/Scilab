@@ -75,6 +75,7 @@ function [x,y,typ] = mdaq_pwm(job,arg1,arg2)
                 model.dstate = [];
                 x.graphics = graphics;
                 x.model = model;
+                x.graphics.style=["mdaq_pwm;blockWithLabel;verticalLabelPosition=center;displayedLabel=%1$s;fontColor=#5f5f5f"]
                 break;
             end
         end

@@ -2,14 +2,6 @@ function [res] = build_mdaq_palette(palette_path)
     toolbox_dir = mdaqToolboxPath();  
     xpal = list();
 
-    //Create complete mdaq palette
-    if isdef("gen_palette") == %T then
-        //load xcos library
-        if isdef("c_pass1") == %F then
-            loadXcosLibs();
-        end
-    end
-
     //Temporary (load & use them somewhere else)
     blocks = [
     "mdaq_sinus"
@@ -23,27 +15,28 @@ function [res] = build_mdaq_palette(palette_path)
 
     // MicroDAQ
     blocks = ["mdaq_adc"
-    "mdaq_dac"
-    "mdaq_dio_config"
-    "mdaq_dio_get"
-    "mdaq_dio_set"
-    "mdaq_encoder"
-    "mdaq_func_key"
-    "mdaq_led"
-    "mdaq_mem_read"
-    "mdaq_mem_write"
-    "mdaq_pwm"
-    "mdaq_signal"
-    "mdaq_param"
-    "mdaq_tcp_recv"
-    "mdaq_tcp_send"
-    "mdaq_udp_recv"
-    "mdaq_udp_send"
-    "mdaq_to_file"
-    "mdaq_time"
-    "mdaq_stop"
-    "mdaq_setup"
-    ];
+            "mdaq_dac"
+            "mdaq_dio_config"
+            "mdaq_dio_get"
+            "mdaq_dio_set"
+            "mdaq_encoder"
+            "mdaq_func_key"
+            "mdaq_led"
+            "mdaq_mem_read"
+            "mdaq_mem_write"
+            "mdaq_pwm"
+            "mdaq_signal"
+            "mdaq_param"
+            "mdaq_tcp_recv"
+            "mdaq_tcp_send"
+            "mdaq_udp_recv"
+            "mdaq_udp_send"
+            "mdaq_to_file"
+            "mdaq_time"
+            "mdaq_profiler"
+            "mdaq_stop"
+            "mdaq_setup"
+            ];
     xpal($+1) = tbx_build_pal(toolbox_dir, "MicroDAQ", blocks);
 
  // MicroDAQ Simulation 

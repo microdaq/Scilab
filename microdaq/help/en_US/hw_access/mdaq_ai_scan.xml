@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <refentry xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svg="http://www.w3.org/2000/svg" xmlns:ns5="http://www.w3.org/1999/xhtml" xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:db="http://docbook.org/ns/docbook" version="5.0-subset Scilab" xml:id="mdaqAIScan">
 	<refnamediv>
-		<refname>mdaqAIScan</refname>
+		<refname>mdaqAIScanRead</refname>
 		<refpurpose>Starts scanning operation and reads acquired data</refpurpose>
 	</refnamediv>
 
 	<refsynopsisdiv>
 		<title>Calling Sequence</title>
 		<synopsis>
-			[data, result] = mdaqAIScan(scanCount, isBlocking)
-			[data, result] = mdaqAIScan(linkID, scanCount, isBlocking)
+			[data, result] = mdaqAIScanRead(scanCount, timeout)
+			[data, result] = mdaqAIScanRead(linkID, scanCount, timeout)
 		</synopsis>
 	</refsynopsisdiv>
 
-	<refsection id="Description_mdaqAIScan">
+	<refsection id="Description_mdaqAIScanRead">
 		<title>Description</title>
 		<para>
-This function starts analog input scanning session and reads acquired data. A function call has to be preceded with <link linkend="mdaqAIScanInit">mdaqAIScanInit()</link> which initiates scanning session parameters. Blocking or non-blocking operation is defined by isBlocking argument. When blocking(isBlocking=%T) mode is used, function will block Scilab command line until required number of scan is acquired. The function has fixed 2-second time-out, a user has to provide scanCout argument which will not cause <link linkend="mdaqAIScan">mdaqAIScan()</link> function time-out. When non-blocking (isBlocking=%F) mode is used, function acquired scan data which is currently available in analog input data queue. The number of acquired scans is returned by result output argument. The scanCount argument in non-blocking mode determines maximum number of scans which can be acquired by function call. Values of acquired data, returned as an m-by-n array, where m is the number of acquired scans, and n is the number of used input channels (defined during initialization with <link linkend="mdaqAIScanInit">mdaqAIScanInit()</link> function call).
+This function starts analog input scanning session and reads acquired data. A function call has to be preceded with <link linkend="mdaqAIScanInit">mdaqAIScanInit()</link> which initiates scanning session parameters. Blocking or non-blocking operation is defined by isBlocking argument. When blocking(isBlocking=%T) mode is used, function will block Scilab command line until required number of scan is acquired. The function has fixed 2-second time-out, a user has to provide scanCout argument which will not cause <link linkend="mdaqAIScanRead">mdaqAIScanRead()</link> function time-out. When non-blocking (isBlocking=%F) mode is used, function acquired scan data which is currently available in analog input data queue. The number of acquired scans is returned by result output argument. The scanCount argument in non-blocking mode determines maximum number of scans which can be acquired by function call. Values of acquired data, returned as an m-by-n array, where m is the number of acquired scans, and n is the number of used input channels (defined during initialization with <link linkend="mdaqAIScanInit">mdaqAIScanInit()</link> function call).
 		</para> 
 		<para>
 			<emphasis role="bold">Limitation:</emphasis> ADC1-DAC01 MicroDAQ configuration doesn't support running simultaneously AI and AO scanning sessions.
 		</para>
 	</refsection>  
 
-	<refsection id="Parameters_mdaqAIScan">
+	<refsection id="Parameters_mdaqAIScanRead">
 		<title>Input arguments</title>
 		<itemizedlist>
 			<listitem>
@@ -36,12 +36,12 @@ This function starts analog input scanning session and reads acquired data. A fu
 			</listitem>
 			<listitem>
 				<para>
-					<emphasis role="bold">isBlocking:  </emphasis> blocking or non-blocking read (%T / %F)</para>
+					<emphasis role="bold">timeout:  </emphasis> timeout in seconds. If -1, wait infinitely. If 0, read current buffer content and return immediately, if no data in the buffer error will be returned.</para>
 			</listitem>
 		</itemizedlist>
 	</refsection>
 
-	<refsection id="Parameters_mdaqAIScan">
+	<refsection id="Parameters_mdaqAIScanRead">
 		<title>Output arguments</title>
 		<itemizedlist>
 			<listitem>
@@ -62,7 +62,7 @@ This function starts analog input scanning session and reads acquired data. A fu
 		<programlisting role="example">
 			<![CDATA[
 			mdaqAIScanInit(1:8, [-10,10], %F, 10000, 1)
-			plot(mdaqAIScan(10000, %T));
+			plot(mdaqAIScanRead(10000, 2));
 			 ]]>
 		</programlisting>
 
@@ -73,7 +73,8 @@ This function starts analog input scanning session and reads acquired data. A fu
 			dataCount = 0;
 			mdaqAIScanInit(1:8, [-10,10], %F, 10000, 1)
 			for i=1:10
-				[data result] = mdaqAIScan(1000, %T);
+				// start and acquire samples
+				[data result] = mdaqAIScanRead(1000, 1);
 				aiData = [aiData; data];
 				dataCount = dataCount + result;
 				mprintf('Acquired %d scans (total: %d scans)\n', result, dataCount);
@@ -89,8 +90,10 @@ This function starts analog input scanning session and reads acquired data. A fu
 			aiData = [];
 			dataCount = 0;
 			mdaqAIScanInit(1:8, [-10,10], %F, 10000, 1)
+			mdaqAIScanStart()
 			while(dataCount < 10000)
-				[data result] = mdaqAIScan(1000, %F);
+				sleep(50)
+				[data result] = mdaqAIScanRead(10000 - dataCount, 0);
 				aiData = [aiData; data];
 				dataCount = dataCount + result;
 				if result > 0 then
@@ -103,16 +106,14 @@ This function starts analog input scanning session and reads acquired data. A fu
 		</programlisting>
 	</refsection>
 
-	<refsection id="SeeAlso_mdaqAIScan">
+	<refsection id="SeeAlso_mdaqAIScanRead">
 		<title>See Also</title>
 		<simplelist type="inline">
-			<member>
-				<link linkend="mdaqAIScanInit">mdaqAIScanInit</link>
-			</member>
-			<member>
-				<link linkend="mdaqAIScanStop">mdaqAIScanStop</link>
-			</member>
-
+        <member><link linkend="mdaqAIRead">mdaqAIRead</link> : Performs single AI read</member>
+		<member><link linkend="mdaqAIScanStart">mdaqAIScanStart</link> : Starts AI scan</member>
+		<member><link linkend="mdaqAIScanInit">mdaqAIScanInit</link> : Initializes AI scan</member>
+		<member><link linkend="mdaqAIScanStop">mdaqAIScanStop</link> : Stops AI scan</member>
+		<member><link linkend="mdaqAIScanTrigger">mdaqAIScanTrigger</link> : Sets AI start scan trigger</member>
 		</simplelist>
 	</refsection>
 </refentry>

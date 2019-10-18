@@ -40,7 +40,7 @@
 			dataCount = 0;
 			mdaqAIScanInit(1:8, [-10,10], %F, 10000, 1)
 			for i=1:10
-				[data result] = mdaqAIScan(1000, %T);
+				[data result] = mdaqAIScanRead(1000, 1);
 				aiData = [aiData; data];
 				dataCount = dataCount + result;
 				mprintf('Acquired %d scans (total: %d scans)\n', result, dataCount);
@@ -58,7 +58,7 @@
 			dataCount = 0;
 			mdaqAIScanInit(1:8, [-10,10], %F, 1000, -1)
 			while(mdaqKeyRead(1) == %F)
-				[data result] = mdaqAIScan(100, %T);
+				[data result] = mdaqAIScanRead(100, 1);
 				aiData = [aiData; data];
 				dataCount = dataCount + result;
 				mprintf('Acquired %d scans (total: %d scans)\n', result, dataCount);
@@ -73,13 +73,12 @@
 	<refsection id="SeeAlso_mdaqAIScanStop">
 		<title>See Also</title>
 		<simplelist type="inline">
-			<member>
-				<link linkend="mdaqAIScanInit">mdaqAIScanInit</link>
-			</member>
-			<member>
-				<link linkend="mdaqAIScan">mdaqAIScan</link>
-			</member>
-
+        <member><link linkend="mdaqAIRead">mdaqAIRead</link> : Performs single AI read</member>
+		<member><link linkend="mdaqAIScanStart">mdaqAIScanStart</link> : Starts AI scan</member>
+		<member><link linkend="mdaqAIScan">mdaqAIScan</link> : Reads acquired AI scan data</member>
+		<member><link linkend="mdaqAIScanInit">mdaqAIScanInit</link> : Initializes AI scan</member>
+		<member><link linkend="mdaqAIScanTrigger">mdaqAIScanTrigger</link> : Sets AI scan trigger</member>
+		<member><link linkend="mdaqAIScanSync">mdaqAIScanSync</link> : Synchronizes AI conversion with DI</member>
 		</simplelist>
 	</refsection>
 </refentry>

@@ -29,17 +29,17 @@ MicroDAQ module simplifies development of real-time control measurements applica
 	<refsection id="SeeAlso_introduction">
 		<title>MicroDAQ device setup</title>
 		<para>
-		Unpack MicroDAQ and connect device to your PC. Use included 5V DC power supply and Ethernet cable to connect device to host PC. During MicroDAQ power up procedure D1, D2 LEDs are used to indicate state of device boot sequence.
+		Unpack your MicroDAQ device, connect DC power supply and Ethernet cable. During MicroDAQ power up procedure D1, D2 LEDs are used to indicate state of device boot sequence.
 		</para>
 		<para> Correct MicroDAQ boot sequence is indicated by following LEDs sequence: 
 			<simplelist type="inline">
-				<member>D2 On - MicroDAQ bootloader initialization done</member>
-				<member>D1 On - MicroDAQ Linux initialization done</member>
-				<member>D1, D2 Off - MicroDAQ firmware initialization done</member>
+				<member>D2 is on - MicroDAQ bootloader initialization is done</member>
+				<member>D2 and D1 are on - MicroDAQ firmware initialization is done</member>
+				<member>D1 and D2 are off - MicroDAQ is ready to use</member>
 			</simplelist>
 		</para>
 		<para>
-		Data exchange between MicroDAQ and host PC is done with Ethernet or Wi-Fi. User has to check if Ethernet or Wi-Fi is configured and if is possible to exchange data between PC and MicroDAQ device. In case of Ethernet connection, 
+		Data exchange between MicroDAQ and host PC can be done with Ethernet or Wi-Fi. User has to check if Ethernet or Wi-Fi is configured and if is possible to exchange data between PC and MicroDAQ device. In case of Ethernet connection, 
 		device and host PC has to be connected with Ethernet cable. Valid connection is indicated by LEDs on MicroDAQ Ethernet connector - yellow LED indicates valid connection, green LED indicates data exchange with host PC.
 		If connection with host PC is valid, IP settings can be checked. Locate your Ethernet interface on host PC and change IP settings to static and set IP address.
 		</para>
@@ -88,48 +88,33 @@ MicroDAQ module simplifies development of real-time control measurements applica
 	</refsection>
 
 	<refsection id="SeeAlso_introduction">
-		<title>Compiler and real-time operating system for MicroDAQ toolbox for Scilab</title>
+		<title>DSP compiler for MicroDAQ toolbox</title>
 		<para>
 		MicroDAQ toolbox for Scilab allows automatic C code generation from Xcos model, generated code is automatically compiled by C compiler. Generated application 
-		is executed on MicroDAQ DSP core. MicroDAQ toolbox for Scilab uses three external components to produce DSP executable binary: 
-			<simplelist type="inline">
-				<member>Compiler - C6000 DSP compiler which compiles C code generated from Xcos model</member>
-				<member>Real-Time Operating System - Texas Instruments SYS/BIOS RTOS which is taking care of timings and task switching in C code generated from Xcos model</member>
-				<member>XDCTools - Texas Instruments tools which allows SYS/BIOS RTOS usage and configuration</member>
-			</simplelist>
+		is executed on MicroDAQ DSP core. MicroDAQ toolbox for Scilab uses C6000 DSP compiler to to generate DSP executables from Xcos model. For MicroDAQ toolbox 1.2v or older 
+		XDCtools and SYS/BIOS components were needed. For MicroDAQ toolbox 1.3v there is no need to install XDCtools and SYS/BIOS - only C6000 DSP compiler is required.
+
 			<para>
-            All mentioned components are available on Texas Instruments website which in case of toolbox it could be use for free. Make sure that correct version of components will be used.
-            Use the following links to download necessary components:
+            The C6000 DSP compiler can be downloaded from Texas Instruments website. In order to download C6000 DSP compiler, a TI account is required. 
 			</para>
             <simplelist type="inline">
 				<member><ulink url="http://software-dl.ti.com/codegen/non-esd/downloads/download.htm#C6000">C6000 compiler (ver. 7.4.21)</ulink> - http://software-dl.ti.com/codegen/non-esd/downloads/download.htm#C6000</member>
-                <member><ulink url="http://software-dl.ti.com/dsps/dsps_public_sw/sdo_sb/targetcontent/sysbios/">SYS/BIOS (ver. 6.50.01.12)</ulink> - http://software-dl.ti.com/dsps/dsps_public_sw/sdo_sb/targetcontent/sysbios/</member>
-				<member><ulink url="http://software-dl.ti.com/dsps/dsps_public_sw/sdo_sb/targetcontent/rtsc/">XDCTools (ver. 3.50.00.10)</ulink> - http://software-dl.ti.com/dsps/dsps_public_sw/sdo_sb/targetcontent/rtsc/</member>
 			</simplelist>
 		</para>
 	</refsection>
 	
 	<refsection id="SeeAlso_introduction">
-		<title>MicroDAQ toolbox for Scilab configuration</title>
+		<title>MicroDAQ toolbox configuration</title>
 		<para>
-		Installed required components and MicroDAQ device configured to work in IP network steps has to be performed to perform this configuration step.
-		MicroDAQ toolbox for Scilab provides function which configures toolbox to work with installed software components (compiler, RTOS). The 'microdaq_setup' script
-		configures installed components to work with toolbox, detects MicroDAQ device, compiles SYS/BIOS RTOS for toolbox usage. Toolbox version 1.2 and higher is not compatible with
-        MicroDAQ firmware below 2.0.0 release.
+		In order to configure MicroDAQ toolbox 'microdaq_setup' function must be executed. This function takes two input arguments, first is C6000 DSP comiler installation path (string) 
+		and the second one is MicroDAQ IP address (string). In case of Scilab 6.x.x function accepts only one input argument which is MicroDAQ IP address. 
 		</para>
-		<para><imagedata align="center" fileref="images/microdaq_setup.png" valign="middle"/></para>
 		<para>
-			<emphasis role="bold">Configuring toolbox with 'microdaq_setup' setup wizard</emphasis>
+			<emphasis role="bold">Configuring toolbox with 'microdaq_setup'</emphasis>
 			<simplelist type="inline">
-				<member>Make sure MicroDAQ device is connected and IP connection is valid.</member>
-				<member>Execute 'microdaq_setup' command from Scilab</member>
-				<member>Provide external components (compiler, XDCTools, SYS/BIOS) install paths</member>
-				<member>Enter MicroDAQ device IP address - this address will be used by toolbox to communicate with the device</member>
-				<member>Press 'Check firmware' button to detect connected MicroDAQ device and check firmware compatibility</member>
-				<member>Device should be detected - detected MicroDAQ device model should be presented</member>
-				<para><imagedata align="center" fileref="images/microdaq_detect.png" valign="middle"/></para>
-				<member>If MicroDAQ device is detected by 'microdaq_setup' press 'OK' button to confirm and build SYS/BIOS RTOS.</member>
-				<member>If compilation of SYS/BIOS went without problems MicroDAQ toolbox for Scilab is ready to use.</member>
+				<member>Make sure MicroDAQ device is powered and connected with PC with Ethernet or Wi-Fi.</member>
+				<member>Execute 'microdaq_setup' with two arguments. The first is the C6000 DSP compiler installation path, the second one is MicroDAQ IP address.</member>
+				<para><imagedata align="left" fileref="images/microdaq_detect.png" valign="middle"/></para>
 			</simplelist>
 		</para>
 	</refsection>

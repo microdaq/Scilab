@@ -1,7 +1,7 @@
 function mdaq_code_gen(load_dsp_app)
 
     if  check_mdaq_compiler() == %F then
-        message("ERROR: Unable to find compiler - run microdaq_setup! ");
+        messagebox("Can''t locate compiler for compiling generated code. To solve this problem run microdaq_setup() function", "Settings error", "error");
         return;
     end
 
@@ -10,13 +10,27 @@ function mdaq_code_gen(load_dsp_app)
     profiling = %f;
     solver_type = 0;
     continue_code_gen = %f;
-    
+
     scs_m; 
+
+    // TODO: make general solution for scilab 5/6
+    try 
+        size(scs_m.objs)
+    catch
+        messagebox("Can''t generate code from inside of superblock.", "Code generation problem", "error")
+        return
+    end
 
     if argn(2)<2 then
         k=1;
         for i=1:(size(scs_m.objs)-1)
-
+            sciVersion = getversion('scilab');
+            if sciVersion(1) == 6 then 
+                if typeof(scs_m.objs(i)) <> "Block" then
+                    continue;
+                end
+            end
+            
             // in case of superblock set k
             if scs_m.objs(i).model.sim(1)=="super" then
                 k=i;
@@ -49,13 +63,12 @@ function mdaq_code_gen(load_dsp_app)
 
                 // mdaq_setup block found so code gen can be executed
                 continue_code_gen = %t;
-                
-            end;
+            end
         end
     end
 
     if continue_code_gen == %f then
-        message('In order to run MicroDAQ Code Gen scheme must contains ''mdaq_setup'' block from MicroDAQ palette');
+        messagebox("Can''t determine model settings - use SETUP block from MicroDAQ palette.", "SETUP missing", "error");
         return;
     end
 
@@ -65,17 +78,18 @@ function mdaq_code_gen(load_dsp_app)
         // Save format
         oldFormat = format();
         format('v',10);
-
+        
+        xcos_compile(scs_m)
+        
         [ok, XX, alreadyran, flgcdgen, szclkINTemp, freof] =  do_compile_superblock_rt(XX, scs_m, k, %f, standalone, debug_build, profiling, solver_type, load_dsp_app);
 
         // Restore format
         format(oldFormat(2), oldFormat(1));
         if ok == %f then
-
-            disp("### ERROR: Correct scheme and run code generation again!");
+            messagebox("Can''t generate code from model. Check model for errors", "Model error", "error");
         end
     else
-        message("Generation Code only work for a Super Block!")
+        messagebox("Can''t find superblock for code generation",  "Model structure problem", "error");
     end
 
 endfunction

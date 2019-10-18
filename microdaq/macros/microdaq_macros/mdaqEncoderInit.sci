@@ -1,47 +1,71 @@
-function mdaqEncoderInit(arg1, arg2, arg3)
-    if argn(2) == 2 then
+function mdaqEncoderInit(arg1, arg2, arg3, arg4)
+    if argn(2) == 3 then
         enc = arg1; 
         init_value = arg2; 
+        enc_mode = arg3;
     end
     
-    if argn(2) == 3 then
+    if argn(2) == 4 then
         link_id = arg1;   
         enc = arg2; 
         init_value = arg3; 
+        enc_mode = arg4;
 
         if link_id < 0 then
-            error("Invalid link ID!")
-            return;
+            error("Invalid connection id!")
         end
     end
 
-    if argn(2) > 3 | argn(2) < 2 | enc > 2 | enc < 1 then
+    if argn(2) > 4 | argn(2) < 3 | enc > 2 | enc < 1 then
         mprintf("Description:\n");
         mprintf("\tInitializes encoder module\n");
         mprintf("Usage:\n");
-        mprintf("\tmdaqEncoderInit(linkID, module, initValue)\n")
+        mprintf("\tmdaqEncoderInit(linkID, module, initValue, mode)\n")
         mprintf("\tlinkID - connection id returned by mdaqOpen() (OPTIONAL)\n");
         mprintf("\tmodule - encoder module (1 | 2)\n");
-        mprintf("\tinitValue - initial position value\n");
+        mprintf("\tinitValue - initial counter value\n");
+        mprintf("\tmode - encoder counter mode (""quadrature"" | ""dir"" | ""up"" | ""down"")\n");
         return;
     end
 
-    if argn(2) == 2 then
+    if  type(enc_mode) == 10 then
+        count_mode = convstr(enc_mode, 'l');
+        select count_mode
+        case "quadrature" then
+          mode_arg = 0; 
+        case "dir" then
+          mode_arg = 1; 
+        case "up" then
+          mode_arg = 2; 
+        case "down" then
+          mode_arg = 3; 
+        else
+          error("Unsupported Encoder mode");
+        end
+    else
+        if enc_mode < 0 | enc_mode > 4 then
+            error("Unsupported Encoder mode");
+        else 
+            mode_arg = enc_mode; 
+        end
+    end
+    
+    if argn(2) == 3 then
         link_id = mdaqOpen();
         if link_id < 0 then
-            disp("ERROR: Unable to connect to MicroDAQ device!");
-            return; 
+            error("Unable to connect to MicroDAQ device!");
         end
     end
     
     result = call("sci_mlink_enc_reset",..
                 link_id, 1, "i",..
                 enc, 2, "i",..
-                init_value, 3, "i",..
+                mode_arg, 3, "i",..
+                init_value, 4, "i",..
             "out",..
-                [1, 1], 4, "i");
+                [1, 1], 5, "i");
                 
-    if argn(2) == 2 then
+    if argn(2) == 3 then
         mdaqClose(link_id);
     end
     

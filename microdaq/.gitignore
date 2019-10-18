@@ -13,14 +13,11 @@ macros/microdaq_macros/names
 macros/user_blocks/
 etc/sysbios/cpu0/src/
 etc/userlib/
-etc/sysbios/cpu0/configPkg/
-etc/sysbios/cpu1/src/
-etc/sysbios/cpu1/configPkg/
 etc/tmp/
+etc/mlink/hwid
 src/c/mdaq_ccs/mdaq/Debug/
 src/c/mdaq_ccs/mdaq/Release/
 images/h5/*.h5
-images/h5/*.sod
 help/*/master_help.xml
 help/*/scilab_*_help
 tests/unit_test/code/
@@ -33,12 +30,15 @@ src/c/userlib/Release/
 src/c/userlib/*.c
 release/
 bin/
+*_backup
 
 #
 # Generated files (Linux/MacOs)
 #
 *_scig
 *.o
+images/gif/*.gif
+images/svg/*.svg
 
 
 #
@@ -52,3 +52,7 @@ bin/
 
 # Test directory
 test/*
+tmp/*
+
+microdaq/etc/sysbios/cpu0/configPkg/linker.cmd
+microdaq/etc/sysbios/cpu1/configPkg/linker.cmd

@@ -11,8 +11,7 @@ function mdaqLEDWrite(arg1, arg2, arg3)
         state = arg3; 
 
         if link_id < 0 then
-            error("Invalid link ID!")
-            return;
+            error("Invalid connection id!")
         end
     end
 
@@ -22,8 +21,8 @@ function mdaqLEDWrite(arg1, arg2, arg3)
         mprintf("Usage:\n");
         mprintf("\tmdaqLEDWrite(linkID, led, state);\n")
         mprintf("\tlinkID - connection id returned by mdaqOpen() (OPTIONAL)\n");
-        mprintf("\tled - LED number (1 or 2)\n");
-        mprintf("\tstate - LED state (%s or %s)\n", "%T", "%F");
+        mprintf("\tled - LED number (1|2)\n");
+        mprintf("\tstate - LED state (%s|%s or 0|1)\n", "%F", "%T");
         return;
     end
 
@@ -42,8 +41,7 @@ function mdaqLEDWrite(arg1, arg2, arg3)
     if argn(2) == 2 then
         link_id = mdaqOpen();
         if link_id < 0 then
-            disp("ERROR: Unable to connect to MicroDAQ device!");
-            return; 
+            error("Unable to connect to MicroDAQ device!");
         end
     end
 

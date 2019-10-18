@@ -10,16 +10,6 @@
 #include <stdio.h>
 #include <stdint.h>
 
-#include <xdc/std.h>
-#include <xdc/runtime/Error.h>
-#include <xdc/runtime/System.h>
-
-#include <ti/sysbios/BIOS.h>
-#include <ti/sysbios/knl/Task.h>
-#include <ti/sysbios/knl/Clock.h>
-#include <ti/sysbios/hal/Timer.h>
-#include <ti/sysbios/knl/Semaphore.h>
-
 #define MODEL_TSAMP     ($$MODEL_TSAMP$$)
 #define MODEL_DURATION  ($$MODEL_DURATION$$)
 #define USEC_PER_SEC    (1000000)
@@ -34,15 +24,22 @@ int NAME(MODEL, _isr)(double t);
 int NAME(MODEL, _end)(void);
 double NAME(MODEL, _get_tsamp)(void);
 
+extern void mdaq_start_rtos();
+extern void mdaq_rtos_checkpoint();
+
+extern int mdaq_create_signal_task(void);
+extern int mdaq_create_rt_task(double, void (*f)(int));
+
 /* Real-time task */ 
-void rt_task(UArg arg0);
+void rt_task(int arg0);
 
 volatile double model_exec_timer = 0.0; 
 volatile double model_stop_flag = 0.0; 
 volatile double model_is_running = 0.0;
+volatile int32_t model_step_cycle_cnt = 0; 
 
-#pragma NOINIT(model_tsamp);
-double model_tsamp;
+volatile double model_tsamp;
+volatile double model_duration;
 
 double get_scicos_time( void )
 {
@@ -59,51 +56,37 @@ double NAME(MODEL, _get_tsamp)(void)
     return model_tsamp;
 }
 
-Int main()
+int main()
 {   
-    Clock_Params clkParams;
-    Timer_Params user_sys_tick_params;
-    Timer_Handle user_sys_tick_timer;
-
-    /* Create a periodic Clock Instance with period = 1 system time units */
-    Clock_Params_init(&clkParams);      
-    clkParams.period = 1;
-    clkParams.startFlag = TRUE;
-    Clock_create(rt_task, 2, &clkParams, NULL);
-
-    /* Create timer for user system tick */
-    Timer_Params_init(&user_sys_tick_params);
-
     model_is_running = 0.0;
 
     if(model_tsamp <= 0.0)
 		model_tsamp = MODEL_TSAMP;
 
-	user_sys_tick_params.period = (uint32_t)(model_tsamp * USEC_PER_SEC);
+    if(model_duration == 0.0)
+		model_duration = MODEL_DURATION;
+   
+    mdaq_create_rt_task(model_tsamp, rt_task);
 
-    user_sys_tick_params.periodType = Timer_PeriodType_MICROSECS;
-    user_sys_tick_params.arg = 1;
-    user_sys_tick_timer = Timer_create(1, 
-            (ti_sysbios_hal_Timer_FuncPtr)Clock_tick, 
-            &user_sys_tick_params, NULL);
-
-    if (user_sys_tick_timer == NULL) 
-        System_abort("Unable to create user system tick timer!");
+    NAME(MODEL, _init)();
 
     model_is_running = 1.0;
 
-    /* Init model */ 
-    NAME(MODEL, _init)();
-
-    BIOS_start();
+    mdaq_start_rtos();
 }
 
 /* Real-time task */ 
-Void rt_task(UArg arg0)
+void rt_task(int arg0)
 {
-    static int end_called = 0; 
+    static int end_called = 0, checkpoint_done = 0;
 
-	if( model_stop_flag == 0.0 && ( model_exec_timer <= MODEL_DURATION || MODEL_DURATION == -1 ))
+    if(!checkpoint_done)
+    {
+        mdaq_rtos_checkpoint();
+        checkpoint_done = 1;
+    }
+
+	if( model_stop_flag == 0.0 && ( model_exec_timer <= model_duration || model_duration == -1 ))
     {
         /* Call model isr function */ 
         NAME(MODEL, _isr)(model_exec_timer);    
