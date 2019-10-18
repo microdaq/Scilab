@@ -36,8 +36,8 @@ bin/
 #
 *_scig
 *.o
-*.gif
-*.svg
+images/gif/*.gif
+images/svg/*.svg
 
 
 #
