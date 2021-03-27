@@ -11,7 +11,7 @@
 
         mdaqClose(connection_id);
 
-        if ((hwid(1) == 1000) |  (hwid(1) == 2000) | (hwid(1) == 1100))..
+        if ((hwid(1) == 1000) |  (hwid(1) == 2000)  |  (hwid(1) == 3000) | (hwid(1) == 1100))..
             & find(get_adc_list() == hwid(2)).. 
             & find(get_dac_list() == hwid(3)) then
             
