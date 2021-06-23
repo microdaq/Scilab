@@ -72,7 +72,7 @@ int main()
 
     model_is_running = 1.0;
 
-    mdaq_start_rtos();
+    mdaq_start_rtos(0, NULL);
 }
 
 /* Real-time task */ 

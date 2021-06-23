@@ -39,8 +39,6 @@ INCLUDES += $(USER_INCLUDES)
 CFLAGS += $(subst \,/,$(INCLUDES))
 CXXFLAGS += $(subst \,/,$(INCLUDES))
 
-LDFLAGS += -l"$(TargetRoot)/sysbios/$(CPU_OPTION)/configPkg/linker.cmd"
-LDFLAGS += -l"libc.a"
 
 ifeq ($(STRIP_BUILD), 1)
 	LDFLAGS += -l$(MDAQLIB)\mdaq_blocks.lib
@@ -55,6 +53,20 @@ LDFLAGS += -l$(DSPLIB)\dsplib.ae674
 LDFLAGS += -l$(MATHLIB)\mathlib.ae674
 LDFLAGS += -l$(SCILABLIB)\lib\libsciscicos_blocks.lib
 LDFLAGS += -l$(SCILABLIB)\lib\liblapack.lib
+LDFLAGS += -l$(MDAQLIB)\csl.lib
+LDFLAGS += -l$(MDAQLIB)\csl.intc.lib
+#LDFLAGS += -l/home/skibool/work/microdaq/src/Scilab/microdaq/etc/sysbios/cpu2/boot.ae66
+#LDFLAGS += -l/home/skibool/work/microdaq/src/Scilab/microdaq/etc/sysbios/cpu2/mdaq_sysbios.lib
+#LDFLAGS += -l/home/skibool/work/microdaq/src/Scilab/microdaq/etc/sysbios/cpu2/mdaq_sysbios_pe66.oe66
+#LDFLAGS += -l/home/skibool/work/microdaq/src/Scilab/microdaq/etc/sysbios/cpu2/microdaq.lib
+#LDFLAGS += -l/home/skibool/work/microdaq/src/Scilab/microdaq/etc/sysbios/cpu2/ti.deh_vayu.ae66
+#LDFLAGS += -l/home/skibool/work/microdaq/src/Scilab/microdaq/etc/sysbios/cpu2/ti.pm_null.ae66
+#LDFLAGS += -l/home/skibool/work/microdaq/src/Scilab/microdaq/etc/sysbios/cpu2/ti.targets.rts6000.ae66
+#LDFLAGS += -l/home/skibool/work/microdaq/src/Scilab/microdaq/etc/sysbios/cpu2/ti.trace.ae66
+
+LDFLAGS += -l/home/skibool/work/microdaq/src/Scilab/microdaq/etc/sysbios/cpu2/linker.cmd
+LDFLAGS += -l"libc.a"
+
 LDFLAGS := $(subst \,/,$(LDFLAGS))
 
 #--------------------- SMCube external files ------------------------------

@@ -42,10 +42,8 @@ volatile double ext_mode = 1.0;
 volatile double model_is_running = 0.0;
 volatile int32_t model_step_cycle_cnt = 0; 
 
-#pragma NOINIT(model_tsamp);
 double model_tsamp;
 
-#pragma NOINIT(model_duration);
 double model_duration;
 
 double get_scicos_time( void )
@@ -63,9 +61,19 @@ double NAME(MODEL, _get_tsamp)(void)
     return model_tsamp;
 }
 
+void init_model(void)
+{
+    /* Init model */ 
+    NAME(MODEL, _init)();
+
+    /* Open mdaqnet and wait for connection */ 
+    mdaqnet_open();
+}
+
 int main()
 {   
-
+    mdaq_dio_init(); 
+    mdaq_dio_write(26,1); 
 #ifdef MODEL_PROFILING
     int32_t t_begin, t_end;
 #endif 
@@ -85,19 +93,14 @@ int main()
     t_begin = mdaq_profile_read_timer32();
 #endif
 
-    /* Init model */ 
-    NAME(MODEL, _init)();
-
 #ifdef MODEL_PROFILING
     t_end = mdaq_profile_read_timer32(); 
     mdaq_profile_save(t_end - t_begin,0);
 #endif
 
-    /* Open mdaqnet and wait for connection */ 
-    mdaqnet_open();
     model_is_running = 1.0;
 
-    mdaq_start_rtos();
+    mdaq_start_rtos(1, init_model);
 }
 
 /* Real-time task */ 
