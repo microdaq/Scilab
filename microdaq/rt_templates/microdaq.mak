@@ -55,6 +55,10 @@ LDFLAGS += -l$(DSPLIB)\dsplib.ae674
 LDFLAGS += -l$(MATHLIB)\mathlib.ae674
 LDFLAGS += -l$(SCILABLIB)\lib\libsciscicos_blocks.lib
 LDFLAGS += -l$(SCILABLIB)\lib\liblapack.lib
+LDFLAGS += -l$(SCILABLIB)\lib\liblapack.lib
+LDFLAGS += -ld:\tools\ccd930\pdk_am57xx_1_0_16\packages\ti\csl\lib\am572x\c66\release\ti.csl.ae66
+LDFLAGS += -ld:\tools\ccd930\pdk_am57xx_1_0_16\packages\ti\csl\lib\am572x\c66\release\ti.csl.intc.ae66
+
 LDFLAGS := $(subst \,/,$(LDFLAGS))
 
 #--------------------- SMCube external files ------------------------------
